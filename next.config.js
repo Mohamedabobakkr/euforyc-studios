@@ -16,12 +16,11 @@ const nextConfig = {
   swcMinify: true,
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
-   // ESLint configuration
-   eslint: {
-     ignoreDuringBuilds: true,
-   },
-
-
+  },
+  
+  // ESLint configuration - moved to top level
+  eslint: {
+    ignoreDuringBuilds: true,
   },
   
   // Security headers
