@@ -1,18 +1,3 @@
-# Install dependencies
-npm install
-
-# Run type checking
-npm run type-check
-
-# Run linting
-npm run lint
-
-# Build the project
-npm run build
-
-# Test the production build locally
-npm run start
-
 import { MetadataRoute } from 'next';
 
 export default function sitemap(): MetadataRoute.Sitemap {
