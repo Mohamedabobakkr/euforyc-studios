@@ -133,7 +133,7 @@ export default function Home() {
             <div className="text-center space-y-6 group cursor-pointer">
               <div className="aspect-square relative overflow-hidden">
                 <Image
-                  src="/private.jpg"
+                  src="/privates.jpg"
                   alt="Private Sessions"
                   fill
                   className="object-cover transition-all duration-500 group-hover:scale-105"
