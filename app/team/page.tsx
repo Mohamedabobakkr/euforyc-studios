@@ -27,7 +27,7 @@ export default function Team() {
             {/* Image - Updated with correct file */}
             <div className="aspect-[3/4] relative overflow-hidden bg-[#1a260e]/5">
               <Image
-                src="/Leadtrainer.JPG"
+                src="/leadtrainer.jpg"
                 alt="Lead Instructor"
                 fill
                 className="object-cover"
@@ -151,7 +151,7 @@ export default function Team() {
             {/* Image - on the right side for desktop */}
             <div className="aspect-[3/4] relative overflow-hidden bg-[#1a260e]/5 order-1 md:order-2">
               <Image
-                src="/Cofounder.JPG"
+                src="/cofounder.jpg"
                 alt="Co-Founder"
                 fill
                 className="object-cover"
