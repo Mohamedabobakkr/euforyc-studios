@@ -17,7 +17,7 @@ export default function Home() {
         {/* Background Image - Updated to background3.jpg */}
         <div className="absolute inset-0 z-0">
           <Image
-            src="/background3.jpg"
+            src="/background3.JPG"
             alt="Background"
             fill
             className="object-cover"
@@ -99,7 +99,7 @@ export default function Home() {
             <div className="text-center space-y-6 group cursor-pointer">
               <div className="aspect-square relative overflow-hidden">
                 <Image
-                  src="/ReformerP.jpg"
+                  src="/reformerp.JPG"
                   alt="Reformer Pilates"
                   fill
                   className="object-cover transition-all duration-500 group-hover:scale-105"
@@ -116,7 +116,7 @@ export default function Home() {
             <div className="text-center space-y-6 group cursor-pointer">
               <div className="aspect-square relative overflow-hidden">
                 <Image
-                  src="/MatP.jpg"
+                  src="/matp.JPG"
                   alt="Mat Pilates"
                   fill
                   className="object-cover transition-all duration-500 group-hover:scale-105"
@@ -133,7 +133,7 @@ export default function Home() {
             <div className="text-center space-y-6 group cursor-pointer">
               <div className="aspect-square relative overflow-hidden">
                 <Image
-                  src="/PrivateS.jpg"
+                  src="/private.JPG"
                   alt="Private Sessions"
                   fill
                   className="object-cover transition-all duration-500 group-hover:scale-105"
