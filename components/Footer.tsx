@@ -30,7 +30,7 @@ const Footer = () => {
               <Link 
                 href="/team" 
                 className="block font-sans text-sm opacity-80 hover:opacity-100 transition-opacity"
-              >
+                >
                 Our Team
               </Link>
               <Link 
@@ -64,13 +64,13 @@ const Footer = () => {
                 London, UK
               </p>
               <div className="space-y-2">
-                <a 
-                  href="https://instagram.com/euforyc" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="flex items-center space-x-2 opacity-80 hover:opacity-100 transition-opacity"
-                >
-                  <Instagram className="h-4 w-4" />
+              <a 
+                href="https://instagram.com/euforyc" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="flex items-center space-x-2 opacity-80 hover:opacity-100 transition-opacity"
+              >
+                <Instagram className="h-4 w-4" />
                   <span className="font-sans text-sm">@euforyc</span>
                 </a>
                 <a 

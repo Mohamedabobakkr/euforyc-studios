@@ -24,7 +24,7 @@ const Navigation = () => {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-[#1a260e]/95 backdrop-blur-sm">
       <div className="container-width px-8 py-5">
-        {/* Desktop Navigation */}
+          {/* Desktop Navigation */}
         <div className="hidden md:flex items-center justify-between">
           {/* Left Navigation */}
           <div className="flex items-center space-x-8 flex-1">
@@ -82,19 +82,19 @@ const Navigation = () => {
         <div className="md:hidden flex flex-col relative">
           {/* Hamburger button positioned absolutely */}
           <div className="absolute right-0 top-1/2 -translate-y-1/2 z-10">
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              aria-label="Toggle menu"
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            aria-label="Toggle menu"
               className="p-2"
-            >
-              {isOpen ? (
+          >
+            {isOpen ? (
                 <X className="h-5 w-5 text-[#fffcf2]" />
-              ) : (
+            ) : (
                 <Menu className="h-5 w-5 text-[#fffcf2]" />
-              )}
-            </button>
-          </div>
-          
+            )}
+          </button>
+        </div>
+
           {/* Centered logo */}
           <div className="flex justify-center w-full">
             <Link href="/" className="flex items-center">
@@ -116,19 +116,19 @@ const Navigation = () => {
         {isOpen && (
           <div className="md:hidden mt-6 pb-4 space-y-4">
             {[...leftNavItems, ...rightNavItems].map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
+                <Link
+                  key={item.href}
+                  href={item.href}
                 className={`block font-sans text-sm tracking-[0.15em] transition-colors duration-300 ${
-                  pathname === item.href
+                    pathname === item.href
                     ? 'text-[#fffcf2] font-medium'
                     : 'text-[#fffcf2] hover:opacity-70'
-                }`}
-                onClick={() => setIsOpen(false)}
-              >
-                {item.label}
-              </Link>
-            ))}
+                  }`}
+                  onClick={() => setIsOpen(false)}
+                >
+                  {item.label}
+                </Link>
+              ))}
           </div>
         )}
       </div>
