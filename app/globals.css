@@ -1,0 +1,214 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Import Google Fonts - Including Playfair Display */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600&display=swap');
+
+:root {
+  --foreground-rgb: 26, 38, 14;
+  --background-rgb: 255, 252, 242;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 252, 242;
+    --background-rgb: 26, 38, 14;
+  }
+}
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 3.9%;
+    --primary: 0 0% 9%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 0 0% 96.1%;
+    --secondary-foreground: 0 0% 9%;
+    --muted: 0 0% 96.1%;
+    --muted-foreground: 0 0% 45.1%;
+    --accent: 0 0% 96.1%;
+    --accent-foreground: 0 0% 9%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 89.8%;
+    --input: 0 0% 89.8%;
+    --ring: 0 0% 3.9%;
+    --chart-1: 12 76% 61%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+    --radius: 0.5rem;
+  }
+  .dark {
+    --background: 0 0% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 0 0% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 0 0% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 0 0% 9%;
+    --secondary: 0 0% 14.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 14.9%;
+    --muted-foreground: 0 0% 63.9%;
+    --accent: 0 0% 14.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 14.9%;
+    --input: 0 0% 14.9%;
+    --ring: 0 0% 83.1%;
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    background-color: #fffcf2;
+    color: #1a260e;
+  }
+}
+
+@layer components {
+  .section-padding {
+    @apply px-8 py-20 md:px-16 lg:px-24 xl:px-32 2xl:px-48;
+  }
+  
+  .container-width {
+    @apply max-w-[1400px] mx-auto;
+  }
+  
+  /* Typography matching brand identity */
+  .heading-primary {
+    @apply font-serif text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-light tracking-tight leading-[0.9];
+    color: #1a260e;
+  }
+  
+  .heading-secondary {
+    @apply font-serif text-3xl md:text-4xl lg:text-5xl font-light tracking-tight leading-tight;
+    color: #1a260e;
+  }
+  
+  .heading-tertiary {
+    @apply font-serif text-2xl md:text-3xl font-light italic;
+    color: #1a260e;
+  }
+  
+  .body-text {
+    @apply font-sans text-base md:text-lg font-light leading-relaxed tracking-wide;
+    color: rgba(26, 38, 14, 0.8);
+  }
+  
+  .tagline {
+    @apply font-sans text-sm tracking-[0.2em] uppercase;
+    color: rgba(26, 38, 14, 0.7);
+  }
+  
+  /* Buttons matching brand aesthetic */
+  .btn-primary {
+    @apply inline-block px-10 py-4 font-sans text-sm tracking-[0.15em] uppercase transition-all duration-500 hover:scale-[1.02];
+    background-color: #1a260e;
+    color: #fffcf2;
+  }
+  
+  .btn-primary:hover {
+    background-color: rgba(26, 38, 14, 0.9);
+  }
+  
+  .btn-secondary {
+    @apply inline-block border px-10 py-4 font-sans text-sm tracking-[0.15em] uppercase transition-all duration-500;
+    border-color: #1a260e;
+    color: #1a260e;
+  }
+  
+  .btn-secondary:hover {
+    background-color: #1a260e;
+    color: #fffcf2;
+  }
+  
+  .btn-minimal {
+    @apply inline-block font-sans text-sm tracking-[0.1em] uppercase transition-all duration-300 border-b border-transparent;
+    color: #1a260e;
+  }
+  
+  .btn-minimal:hover {
+    opacity: 0.7;
+    border-bottom-color: #1a260e;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+  background-color: #fffcf2;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  font-weight: 300;
+  background-color: #fffcf2;
+  color: #1a260e;
+}
+
+/* Custom selection colors */
+::selection {
+  background-color: #1a260e;
+  color: #fffcf2;
+}
+
+/* Smooth page transitions */
+.page-transition {
+  animation: fade-up 0.8s ease-out;
+}
+
+/* Parallax scrolling effect */
+.parallax {
+  will-change: transform;
+}
+
+/* Text reveal animation */
+.text-reveal {
+  overflow: hidden;
+}
+
+.text-reveal > * {
+  animation: slide-up 0.8s ease-out;
+  animation-fill-mode: both;
+}
+
+@keyframes slide-up {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Stagger animation delays */
+.stagger-1 { animation-delay: 0.1s; }
+.stagger-2 { animation-delay: 0.2s; }
+.stagger-3 { animation-delay: 0.3s; }
+.stagger-4 { animation-delay: 0.4s; }
+.stagger-5 { animation-delay: 0.5s; }
+
+@layer utilities {
+  .animation-delay-1000 {
+    animation-delay: 1s;
+  }
+}
