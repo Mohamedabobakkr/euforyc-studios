@@ -122,7 +122,7 @@ export default function Home() {
                   className="object-cover transition-all duration-500 group-hover:scale-105"
                 />
               </div>
-              <h3 className="font-serif text-2xl font-light" style={{color: '#1a260e'}}>Mat Pilates</h3>
+              <h3 className="font-serif text-2xl font-light" style={{color: '#1a260e'}}>Hot Pilates</h3>
               <p className="body-text text-sm">
                 Floor-based practice focusing on core strength, flexibility, 
                 and mindful movement.
