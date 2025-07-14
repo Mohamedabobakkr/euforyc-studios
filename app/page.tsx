@@ -117,7 +117,7 @@ export default function Home() {
               <div className="aspect-square relative overflow-hidden">
                 <Image
                   src="/matp.jpg"
-                  alt="Mat Pilates"
+                  alt="Hot Pilates"
                   fill
                   className="object-cover transition-all duration-500 group-hover:scale-105"
                 />

@@ -44,7 +44,7 @@ export default function About() {
             </div>
             <div className="bg-brand-green/20 rounded-none p-8 text-center">
               <p className="font-playfair text-3xl font-light text-brand-beige mb-4">
-                "is euforyc everything"
+                "euforyc is everything"
               </p>
               <p className="font-inter text-sm text-brand-beige/80 italic">
                 Our mantra that reminds us every feeling, every movement, 
