@@ -3,6 +3,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { MapPin, Clock } from 'lucide-react';
 import CircularText from '@/components/CircularText';
+import { Analytics } from '@vercel/analytics/next';
 
 export const metadata: Metadata = {
   title: 'EUFORYC STUDIOS • Pilates • Wellness • Strength',
@@ -116,7 +117,7 @@ export default function Home() {
             <div className="text-center space-y-6 group cursor-pointer">
               <div className="aspect-square relative overflow-hidden">
                 <Image
-                  src="/matp.jpg"
+                  src="/hotp.JPG"
                   alt="Hot Pilates"
                   fill
                   className="object-cover transition-all duration-500 group-hover:scale-105"
