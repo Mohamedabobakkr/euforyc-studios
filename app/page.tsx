@@ -125,7 +125,7 @@ export default function Home() {
               </div>
               <h3 className="font-serif text-2xl font-light" style={{color: '#1a260e'}}>Hot Pilates</h3>
               <p className="body-text text-sm">
-              Elevate your practice in our infrared-heated hot pilates room where deep heat energizes muscles, enhances flexibility, and maximizes calorie burn while detoxifying the body."
+              Elevate your practice in our infrared-heated hot pilates room where deep heat energizes muscles, enhances flexibility, and maximizes calorie burn while detoxifying the body.
               </p>
             </div>
 
