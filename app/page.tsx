@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { MapPin, Clock } from 'lucide-react';
 import CircularText from '@/components/CircularText';
 import { Analytics } from '@vercel/analytics/next';
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 export const metadata: Metadata = {
   title: 'EUFORYC STUDIOS • Pilates • Wellness • Strength',
@@ -253,6 +254,7 @@ export default function Home() {
         </div>
       </section>
       <Analytics />
+      <SpeedInsights />
     </div>
   );
 }
