@@ -146,6 +146,9 @@ export default function RootLayout({
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#fffcf2" />
         
+        {/* Facebook Domain Verification */}
+        <meta name="facebook-domain-verification" content="5z3pjrzzsqdozv85orz7txyolnps75" />
+        
         {/* Preconnect to external domains */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
