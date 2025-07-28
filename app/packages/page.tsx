@@ -110,7 +110,7 @@ export default function Packages() {
         <div className="container-width text-center">
           <h1 className="heading-primary mb-6">Choose Your Package</h1>
           <p className="body-text text-xl max-w-3xl mx-auto">
-            Select the perfect package for your fitness journey. All packages are valid for 30 days from purchase.
+          Select the perfect package for your fitness journey. All packages are valid for 30 days, starting from the first session you attend. You can begin your package at any time after purchase, giving you the freedom to start when it works best for you!
           </p>
         </div>
       </section>
