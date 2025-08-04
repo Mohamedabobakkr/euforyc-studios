@@ -101,11 +101,20 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="border-t border-[#fffcf2]/20 mt-12 pt-8 text-center">
-          <p className="font-sans text-xs opacity-60 tracking-wider">
-            © 2024 EUFORYC STUDIOS. ALL RIGHTS RESERVED.
-          </p>
-        </div>
+        <div className="border-t border-[#fffcf2]/20 mt-12 pt-8 text-center space-y-3">
+  <div className="space-y-2">
+    <Link 
+      href="/terms" 
+      className="font-sans text-xs opacity-80 hover:opacity-100 transition-opacity"
+    >
+      Terms of Service
+    </Link>
+  </div>
+  <p className="font-sans text-xs opacity-60 tracking-wider">
+    © 2025 EUFORYC STUDIOS. ALL RIGHTS RESERVED. All content, designs, graphics, and code are protected by copyright.
+    Unauthorized use, copying, or reproduction is strictly prohibited.
+  </p>
+</div>
       </div>
     </footer>
   );

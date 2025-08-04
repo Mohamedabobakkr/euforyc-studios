@@ -1,9 +1,15 @@
+/**
+ * @copyright Euforyc Studios 2025
+ * @license Proprietary and confidential
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ */
 import './globals.css';
 import type { Metadata, Viewport } from 'next';
 import { Inter, Playfair_Display } from 'next/font/google';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import Script from 'next/script';
+import Link from 'next/link';
 
 const inter = Inter({ 
   subsets: ['latin'],
@@ -210,6 +216,29 @@ export default function RootLayout({
           {children}
         </main>
         <Footer />
+        {/* Copyright Protection */}
+        <Script id="copyright-protection" strategy="afterInteractive">
+          {`
+            // Disable right-click
+            document.addEventListener('contextmenu', (e) => {
+              e.preventDefault();
+              alert('Content is protected by copyright. Unauthorized use is prohibited.');
+            });
+            
+            // Disable F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U
+            document.addEventListener('keydown', (e) => {
+              if (
+                (e.keyCode === 123) || // F12
+                (e.ctrlKey && e.shiftKey && e.keyCode === 73) || // Ctrl+Shift+I
+                (e.ctrlKey && e.shiftKey && e.keyCode === 74) || // Ctrl+Shift+J
+                (e.ctrlKey && e.keyCode === 85) // Ctrl+U
+              ) {
+                e.preventDefault();
+                return false;
+              }
+            });
+          `}
+        </Script>
       </body>
     </html>
   );
