@@ -145,7 +145,7 @@ export default function Contact() {
                     <h3 className="font-serif text-lg font-light mb-2">Phone</h3>
                     <p className="body-text">
                       <a href="tel:+447375710370" className="hover:text-[#1a260e]/70 transition-colors">
-                      +44 7375 710370
+                      +44 7375 710370 
                       </a>
                     </p>
                   </div>

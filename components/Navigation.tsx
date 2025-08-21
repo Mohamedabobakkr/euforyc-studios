@@ -13,6 +13,7 @@ const Navigation = () => {
   const leftNavItems = [
     { href: '/about', label: 'ABOUT' },
     { href: '/team', label: 'TEAM' },
+    { href: '/packages-memberships', label: 'PACKAGES & MEMBERSHIPS' },
   ];
 
   const rightNavItems = [

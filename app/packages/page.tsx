@@ -16,6 +16,18 @@ interface ClassPackage {
 
 // Package data with specific Momence links
 const packages = {
+  intro: {
+    title: 'Intro Package',
+    subtitle: 'Perfect for first-time visitors',
+    packages: [
+      {
+        name: '3 Classes for £60',
+        price: '£60',
+        savings: 'First-time offer',
+        momenceUrl: 'https://momence.com/m/488100'
+      }
+    ]
+  },
   reformer: {
     title: 'Reformer Pilates (Group)',
     subtitle: 'Equipment-based group classes',
@@ -115,6 +127,52 @@ export default function Packages() {
         </div>
       </section>
 
+      {/* Intro Package Section */}
+      <section className="section-padding bg-[#fffcf2]">
+        <div className="container-width">
+          <div className="max-w-3xl mx-auto">
+            <div className="text-center mb-8">
+              <h2 className="heading-secondary mb-2">{packages.intro.title}</h2>
+              <p className="tagline text-[#1a260e]/60">New to Euforyc? Book an intro class</p>
+            </div>
+            
+            <div className="grid grid-cols-1 gap-6 max-w-md mx-auto">
+              {packages.intro.packages.map((pkg, index) => (
+                <a
+                  key={index}
+                  href={pkg.momenceUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group relative bg-white border border-[#1a260e]/10 rounded-lg p-8 hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+                >
+                  <div className="absolute -top-3 -right-3 bg-[#1a260e] text-[#fffcf2] p-2 rounded-full">
+                    <Sparkles className="h-4 w-4" />
+                  </div>
+                  
+                  <div className="text-center space-y-4">
+                    <Package className="h-10 w-10 text-[#1a260e]/60 mx-auto" />
+                    <h3 className="font-serif text-2xl font-light">{pkg.name}</h3>
+                    <div>
+                      <p className="font-serif text-3xl font-light">{pkg.price}</p>
+                      {pkg.savings && (
+                        <p className="font-sans text-sm text-green-700 font-medium mt-1">{pkg.savings}</p>
+                      )}
+                    </div>
+                    <p className="text-sm text-[#1a260e]/80">
+                      Only for first-time clients - try your first classes at a special introductory price
+                    </p>
+                    <div className="flex items-center justify-center text-[#1a260e] opacity-0 group-hover:opacity-100 transition-opacity">
+                      <span className="font-sans text-sm mr-2">Book Now</span>
+                      <ExternalLink className="h-4 w-4" />
+                    </div>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Reformer Pilates Packages */}
       <section className="section-padding bg-[#fffcf2]">
         <div className="container-width">
@@ -161,7 +219,7 @@ export default function Packages() {
       </section>
 
       {/* Hot Pilates Packages */}
-      <section className="section-padding bg-white">
+      <section className="section-padding bg-[#fffcf2]">
         <div className="container-width">
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-12">
@@ -245,38 +303,38 @@ export default function Packages() {
       </section>
 
       {/* Info Section */}
-      <section className="section-padding bg-[#1a260e] text-[#fffcf2]">
+      <section className="section-padding bg-[#fffcf2]">
         <div className="container-width">
           <div className="max-w-3xl mx-auto text-center space-y-6">
-            <h2 className="heading-secondary text-[#fffcf2]">Package Benefits</h2>
+            <h2 className="heading-secondary">Package Benefits</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               <div className="space-y-2">
                 <h3 className="font-serif text-xl font-light">Flexibility</h3>
-                <p className="text-sm text-[#fffcf2]/80">
+                <p className="text-sm text-[#1a260e]/80">
                   Use your classes for any session type within the same category
                 </p>
               </div>
               <div className="space-y-2">
                 <h3 className="font-serif text-xl font-light">30-Day Validity</h3>
-                <p className="text-sm text-[#fffcf2]/80">
+                <p className="text-sm text-[#1a260e]/80">
                   All packages are valid for 30 days from your first class
                 </p>
               </div>
               <div className="space-y-2">
                 <h3 className="font-serif text-xl font-light">Best Value</h3>
-                <p className="text-sm text-[#fffcf2]/80">
+                <p className="text-sm text-[#1a260e]/80">
                   Save more with larger packages - up to £160 savings
                 </p>
               </div>
             </div>
             
             <div className="pt-8">
-              <p className="text-sm text-[#fffcf2]/70 mb-4">
+              <p className="text-sm text-[#1a260e]/70 mb-4">
                 Need help choosing the right package?
               </p>
               <a
                 href="/contact"
-                className="inline-block bg-[#fffcf2] text-[#1a260e] px-6 py-3 font-serif hover:bg-[#fffcf2]/90 transition-colors duration-200"
+                className="inline-block bg-[#1a260e] text-[#fffcf2] px-6 py-3 font-serif hover:bg-[#1a260e]/90 transition-colors duration-200"
               >
                 CONTACT US
               </a>
