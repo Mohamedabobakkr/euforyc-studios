@@ -299,7 +299,7 @@ export default function Memberships() {
       </section>
 
       {/* Hot Pilates Memberships */}
-      <section className="section-padding bg-white">
+      <section className="section-padding bg-[#fffcf2]">
         <div className="container-width">
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-12">
@@ -317,7 +317,7 @@ export default function Memberships() {
                   className={`group relative rounded-2xl p-8 hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 ${
                     membership.popular 
                       ? 'bg-[#1a260e] text-[#fffcf2] border-2 border-[#1a260e]' 
-                      : 'bg-[#fffcf2] border-2 border-[#1a260e]/10 text-[#1a260e] hover:border-[#1a260e]/20'
+                      : 'bg-white border-2 border-[#1a260e]/10 text-[#1a260e] hover:border-[#1a260e]/20'
                   }`}
                 >
                   {membership.popular && (
