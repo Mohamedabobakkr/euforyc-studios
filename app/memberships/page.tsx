@@ -54,7 +54,7 @@ const memberships = {
         name: '12 Classes/Month',
         monthlyPrice: '£205',
         description: 'Perfect for committed practitioners',
-        savings: 'Save £40/month vs packages',
+        savings: 'Save £35/month vs packages',
         features: [
           '12 Reformer classes per month',
           'Priority booking access',
@@ -67,7 +67,7 @@ const memberships = {
         name: 'Unlimited Classes',
         monthlyPrice: '£260',
         description: 'For the dedicated practitioner',
-        savings: 'Save £35/month vs packages',
+        savings: 'Save £40/month vs packages',
         features: [
           'Unlimited Reformer classes per month',
           'Priority booking access',
