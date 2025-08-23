@@ -72,7 +72,8 @@ const memberships = {
           'Unlimited Reformer classes per month',
           'Priority booking access',
           '4 free grip socks',
-          '4 free matcha'
+          '4 free matcha',
+          '1 free Guest Pass'
         ],
         momenceUrl: 'https://momence.com/m/498247' // Replace with actual membership URL
       }
@@ -131,7 +132,8 @@ const memberships = {
           'Unlimited Hot Pilates classes per month',
           'Priority booking access',
           '4 free grip socks',
-          '4 free matcha'
+          '4 free matcha',
+          '1 free Guest Pass'
         ],
         momenceUrl: 'https://momence.com/m/498697' // Replace with actual membership URL
       }
@@ -190,7 +192,8 @@ const memberships = {
           'Unlimited classes per month (all types)',
           'Priority booking access',
           '4 free grip socks',
-          '4 free matcha'
+          '4 free matcha',
+          '1 free Guest Pass'
         ],
         momenceUrl: 'https://momence.com/m/498719' // Replace with actual membership URL
       }
