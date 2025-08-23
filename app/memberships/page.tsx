@@ -52,7 +52,7 @@ const memberships = {
       },
       {
         name: '12 Classes/Month',
-        monthlyPrice: '£200',
+        monthlyPrice: '£205',
         description: 'Perfect for committed practitioners',
         savings: 'Save £40/month vs packages',
         features: [
