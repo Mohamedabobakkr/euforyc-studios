@@ -2,8 +2,72 @@ import type { Metadata } from 'next';
 import { ExternalLink, Package, Sparkles } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'Class Packages - Euforyc Studios',
-  description: 'Choose from our range of class packages for Reformer Pilates, Hot Pilates, and Private Sessions.',
+  title: 'Pilates Class Packages London | Reformer Pilates Prices Edgware',
+  description: 'Pilates class packages at Euforyc Studios London. Affordable reformer pilates, hot pilates & private session packages in Edgware. Book pilates classes online.',
+};
+
+// Services Schema for SEO
+const servicesSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: 'Pilates Services at Euforyc Studios London',
+  description: 'Professional pilates services offered at our boutique studio in Edgware, London',
+  itemListElement: [
+    {
+      '@type': 'Service',
+      position: 1,
+      name: 'Reformer Pilates Classes',
+      description: 'Equipment-based group pilates classes using professional reformer machines',
+      provider: {
+        '@type': 'LocalBusiness',
+        name: 'Euforyc Studios',
+        address: '7 Holmstall Ave, Edgware HA8 5HX, London'
+      },
+      areaServed: 'London',
+      offers: {
+        '@type': 'AggregateOffer',
+        lowPrice: '60',
+        highPrice: '300',
+        priceCurrency: 'GBP'
+      }
+    },
+    {
+      '@type': 'Service',
+      position: 2,
+      name: 'Hot Pilates Classes',
+      description: 'Infrared-heated pilates classes for enhanced flexibility and detoxification',
+      provider: {
+        '@type': 'LocalBusiness',
+        name: 'Euforyc Studios',
+        address: '7 Holmstall Ave, Edgware HA8 5HX, London'
+      },
+      areaServed: 'London',
+      offers: {
+        '@type': 'AggregateOffer',
+        lowPrice: '75',
+        highPrice: '350',
+        priceCurrency: 'GBP'
+      }
+    },
+    {
+      '@type': 'Service',
+      position: 3,
+      name: 'Private Pilates Sessions',
+      description: 'One-on-one personalized pilates training with expert instructors',
+      provider: {
+        '@type': 'LocalBusiness',
+        name: 'Euforyc Studios',
+        address: '7 Holmstall Ave, Edgware HA8 5HX, London'
+      },
+      areaServed: 'London',
+      offers: {
+        '@type': 'AggregateOffer',
+        lowPrice: '235',
+        highPrice: '620',
+        priceCurrency: 'GBP'
+      }
+    }
+  ]
 };
 
 // Package types
@@ -122,7 +186,14 @@ const packages = {
 
 export default function Packages() {
   return (
-    <div className="pt-32">
+    <>
+      {/* Services Schema */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(servicesSchema) }}
+      />
+
+      <div className="pt-32">
       {/* Header */}
       <section className="section-padding py-24 bg-[#fffcf2]">
         <div className="container-width text-center">
@@ -348,6 +419,7 @@ export default function Packages() {
           </div>
         </div>
       </section>
-    </div>
+      </div>
+    </>
   );
 } 

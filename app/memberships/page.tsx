@@ -2,8 +2,8 @@ import type { Metadata } from 'next';
 import { ExternalLink, Crown, Calendar, Star, CheckCircle } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'Contract Memberships - Euforyc Studios',
-  description: 'Ongoing membership contracts with better value and priority booking for committed Pilates practitioners.',
+  title: 'Pilates Memberships London | Monthly Reformer Pilates Edgware',
+  description: 'Monthly pilates memberships at Euforyc Studios London. Best value reformer pilates, hot pilates contracts in Edgware with priority booking.',
 };
 
 // Membership types

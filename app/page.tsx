@@ -7,8 +7,8 @@ import { Analytics } from '@vercel/analytics/next';
 import { SpeedInsights } from "@vercel/speed-insights/next"
 
 export const metadata: Metadata = {
-  title: 'EUFORYC STUDIOS • Pilates • Wellness • Strength',
-  description: 'Boutique women\'s only Pilates studio in London. Experience transformative reformer and mat Pilates.',
+  title: 'Pilates Studio London | Book Reformer Pilates Classes Edgware',
+  description: 'Book pilates classes in London at Euforyc Studios Edgware. Premier reformer pilates, hot pilates & private sessions. Women-only boutique pilates studio near you.',
 };
 
 export default function Home() {
@@ -20,7 +20,7 @@ export default function Home() {
         <div className="absolute inset-0 z-0">
           <Image
             src="/background3.jpg"
-            alt="Background"
+            alt="Euforyc Studios pilates studio London interior with reformer equipment"
             fill
             className="object-cover"
             priority
@@ -78,7 +78,7 @@ export default function Home() {
             <div className="relative h-[500px] bg-[#fffcf2]">
               <Image
                 src="/euforyc.jpg"
-                alt="Euforyc Studios"
+                alt="Euforyc Studios pilates studio London Edgware boutique fitness"
                 fill
                 className="object-contain"
                 quality={100}
@@ -102,15 +102,17 @@ export default function Home() {
               <div className="aspect-square relative overflow-hidden">
                 <Image
                   src="/reformerp.jpg"
-                  alt="Reformer Pilates"
+                  alt="Reformer pilates classes London Euforyc Studios equipment"
                   fill
                   className="object-cover transition-all duration-500 group-hover:scale-105"
                 />
               </div>
-              <h3 className="font-serif text-2xl font-light" style={{color: '#1a260e'}}>Reformer Pilates</h3>
+              <h3 className="font-serif text-2xl font-light" style={{color: '#1a260e'}}>
+                <Link href="/packages" className="hover:underline">Reformer Pilates</Link>
+              </h3>
               <p className="body-text text-sm">
-                Dynamic, equipment-based sessions that challenge your strength, 
-                flexibility, and coordination.
+                Dynamic, equipment-based sessions that challenge your strength,
+                flexibility, and coordination. <Link href="/packages" className="text-[#1a260e] hover:underline font-medium">View packages</Link>
               </p>
             </div>
 
@@ -119,14 +121,17 @@ export default function Home() {
               <div className="aspect-square relative overflow-hidden">
                 <Image
                   src="/hotp.jpg"
-                  alt="Hot Pilates"
+                  alt="Hot pilates classes London heated studio infrared Euforyc"
                   fill
                   className="object-cover transition-all duration-500 group-hover:scale-105"
                 />
               </div>
-              <h3 className="font-serif text-2xl font-light" style={{color: '#1a260e'}}>Hot Pilates</h3>
+              <h3 className="font-serif text-2xl font-light" style={{color: '#1a260e'}}>
+                <Link href="/packages" className="hover:underline">Hot Pilates</Link>
+              </h3>
               <p className="body-text text-sm">
               Elevate your practice in our infrared-heated hot pilates room where deep heat energizes muscles, enhances flexibility, and maximizes calorie burn while detoxifying the body.
+              <Link href="/packages" className="text-[#1a260e] hover:underline font-medium"> Book hot pilates</Link>
               </p>
             </div>
 
@@ -135,15 +140,17 @@ export default function Home() {
               <div className="aspect-square relative overflow-hidden">
                 <Image
                   src="/privates.jpg"
-                  alt="Private Sessions"
+                  alt="Private pilates sessions London one-on-one training Euforyc Studios"
                   fill
                   className="object-cover transition-all duration-500 group-hover:scale-105"
                 />
               </div>
-              <h3 className="font-serif text-2xl font-light" style={{color: '#1a260e'}}>Private Sessions</h3>
+              <h3 className="font-serif text-2xl font-light" style={{color: '#1a260e'}}>
+                <Link href="/packages" className="hover:underline">Private Sessions</Link>
+              </h3>
               <p className="body-text text-sm">
-                One-on-one training tailored to your specific goals and needs 
-                with our expert instructors.
+                One-on-one training tailored to your specific goals and needs
+                with our expert instructors. <Link href="/packages" className="text-[#1a260e] hover:underline font-medium">Book private session</Link>
               </p>
             </div>
           </div>
@@ -197,9 +204,14 @@ export default function Home() {
             <div className="flex items-center justify-center space-x-3 text-[#1a260e]/70">
               <MapPin className="h-5 w-5 flex-shrink-0" />
               <p className="font-sans text-sm tracking-wider">
-                7 Holmstall Ave, Edgware HA8 5HX, United Kingdom
+                <Link href="/contact" className="hover:underline">
+                  7 Holmstall Ave, Edgware HA8 5HX, London, United Kingdom
+                </Link>
               </p>
             </div>
+            <p className="text-xs text-[#1a260e]/60 text-center">
+              Serving North London: Edgware, Barnet, Mill Hill, Finchley & surrounding areas
+            </p>
 
             {/* Hours */}
             <div className="space-y-6">
@@ -228,13 +240,26 @@ export default function Home() {
             </div>
 
             {/* Contact Button */}
-            <div className="pt-8">
-              <Link 
-                href="/contact" 
-                className="inline-block bg-[#1a260e] text-[#fffcf2] px-12 py-4 font-sans text-sm tracking-[0.2em] uppercase transition-all duration-500 hover:bg-[#1a260e]/90 hover:scale-[1.02]"
-              >
-                CONTACT US
-              </Link>
+            <div className="pt-8 space-y-4">
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Link
+                  href="/contact"
+                  className="inline-block bg-[#1a260e] text-[#fffcf2] px-12 py-4 font-sans text-sm tracking-[0.2em] uppercase transition-all duration-500 hover:bg-[#1a260e]/90 hover:scale-[1.02]"
+                >
+                  CONTACT US
+                </Link>
+                <Link
+                  href="/faq"
+                  className="inline-block border border-[#1a260e] text-[#1a260e] px-12 py-4 font-sans text-sm tracking-[0.2em] uppercase transition-all duration-500 hover:bg-[#1a260e] hover:text-[#fffcf2] hover:scale-[1.02]"
+                >
+                  FAQ
+                </Link>
+              </div>
+              <p className="text-xs text-[#1a260e]/60 text-center">
+                <Link href="/faq" className="hover:underline">Common questions about pilates classes</Link> |
+                <Link href="/packages" className="hover:underline"> View all packages</Link> |
+                <Link href="/book" className="hover:underline"> Book online</Link>
+              </p>
             </div>
           </div>
         </div>

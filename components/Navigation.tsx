@@ -18,6 +18,7 @@ const Navigation = () => {
 
   const rightNavItems = [
     { href: '/pricing', label: 'PRICE LIST' },
+    { href: '/faq', label: 'FAQ' },
     { href: '/book', label: 'BOOK' },
     { href: '/contact', label: 'CONTACT' },
   ];
@@ -52,7 +53,7 @@ const Navigation = () => {
             <div className="relative w-[450px] h-[120px]">
               <Image
                 src="/logo.png"
-                alt="Euforyc Studios"
+                alt="Euforyc Studios - Premier Pilates Studio London Edgware"
                 fill
                 className="object-contain"
                 priority
@@ -102,7 +103,7 @@ const Navigation = () => {
               <div className="relative w-[200px] h-[60px]">
                 <Image
                   src="/logo.png"
-                  alt="Euforyc Studios"
+                  alt="Euforyc Studios - Premier Pilates Studio London Edgware"
                   fill
                   className="object-contain"
                   priority

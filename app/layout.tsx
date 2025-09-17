@@ -33,11 +33,11 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://euforyc.co.uk';
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: 'EUFORYC STUDIOS • Pilates • Wellness • Strength',
-    template: '%s | EUFORYC STUDIOS'
+    default: 'Pilates Studio London | Reformer Pilates Edgware | EUFORYC STUDIOS',
+    template: '%s | EUFORYC STUDIOS - Premier Pilates Studio London'
   },
-  description: 'Boutique women\'s only Pilates studio in London. Experience transformative reformer and mat Pilates in our premium Edgware studio. Expert instructors, small classes, personalized attention.',
-  keywords: ['pilates', 'reformer pilates', 'mat pilates', 'private pilates', 'wellness', 'strength training', 'women only studio', 'boutique fitness', 'edgware', 'london', 'pilates classes', 'pilates studio'],
+  description: 'Premier pilates studio in London offering reformer pilates, hot pilates & private sessions in Edgware. Book pilates classes near you. Women-only boutique studio with expert instructors.',
+  keywords: ['pilates london', 'reformer pilates london', 'pilates studio london', 'pilates edgware', 'pilates classes london', 'hot pilates london', 'pilates near me', 'pilates studio near me', 'reformer pilates edgware', 'pilates classes edgware', 'women only pilates london', 'boutique pilates studio', 'private pilates london', 'pilates booking london', 'pilates reserve london', 'pilates studio uk', 'best pilates london', 'pilates classes uk'],
   authors: [{ name: 'Euforyc Studios', url: siteUrl }],
   creator: 'Euforyc Studios',
   publisher: 'Euforyc Studios',
@@ -47,8 +47,8 @@ export const metadata: Metadata = {
     telephone: false,
   },
   openGraph: {
-    title: 'EUFORYC STUDIOS • Pilates • Wellness • Strength',
-    description: 'Boutique women\'s only Pilates studio in London. Transform your body and mind with expert-led Pilates classes.',
+    title: 'Pilates Studio London | Reformer Pilates Edgware | EUFORYC STUDIOS',
+    description: 'Premier pilates studio in London offering reformer pilates, hot pilates & private sessions in Edgware. Book pilates classes near you.',
     url: siteUrl,
     siteName: 'Euforyc Studios',
     locale: 'en_GB',
@@ -64,8 +64,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'EUFORYC STUDIOS • Pilates • Wellness • Strength',
-    description: 'Boutique women\'s only Pilates studio in London',
+    title: 'Pilates Studio London | Reformer Pilates Edgware | EUFORYC STUDIOS',
+    description: 'Premier pilates studio in London - reformer pilates, hot pilates & private sessions in Edgware',
     images: ['/logo.png'],
   },
   robots: {
@@ -95,13 +95,14 @@ export const viewport: Viewport = {
   themeColor: '#fffcf2',
 };
 
-// Structured Data for Local Business
+// Enhanced Structured Data for Local Business
 const structuredData = {
   '@context': 'https://schema.org',
-  '@type': 'HealthAndBeautyBusiness',
+  '@type': ['HealthAndBeautyBusiness', 'LocalBusiness', 'SportsActivityLocation'],
   '@id': siteUrl,
   name: 'Euforyc Studios',
-  description: 'Boutique women\'s only Pilates studio in London',
+  alternateName: 'Euforyc Pilates Studio',
+  description: 'Premier pilates studio in London offering reformer pilates, hot pilates and private sessions in Edgware. Women-only boutique studio with expert instructors.',
   url: siteUrl,
   telephone: '+447375710370',
   email: 'euforyc@gmail.com',
@@ -109,6 +110,7 @@ const structuredData = {
     '@type': 'PostalAddress',
     streetAddress: '7 Holmstall Ave',
     addressLocality: 'Edgware',
+    addressRegion: 'London',
     postalCode: 'HA8 5HX',
     addressCountry: 'GB'
   },
@@ -133,9 +135,93 @@ const structuredData = {
   ],
   priceRange: '££',
   image: `${siteUrl}/logo.png`,
+  logo: `${siteUrl}/logo.png`,
   sameAs: [
     'https://instagram.com/euforyc',
     'https://www.tiktok.com/@euforyc'
+  ],
+  servedCuisine: null,
+  amenityFeature: [
+    {
+      '@type': 'LocationFeatureSpecification',
+      name: 'Women Only Studio',
+      value: true
+    },
+    {
+      '@type': 'LocationFeatureSpecification',
+      name: 'Reformer Equipment',
+      value: true
+    },
+    {
+      '@type': 'LocationFeatureSpecification',
+      name: 'Hot Pilates Room',
+      value: true
+    },
+    {
+      '@type': 'LocationFeatureSpecification',
+      name: 'Private Sessions',
+      value: true
+    }
+  ],
+  hasOfferCatalog: {
+    '@type': 'OfferCatalog',
+    name: 'Pilates Classes and Services',
+    itemListElement: [
+      {
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: 'Reformer Pilates Classes',
+          description: 'Equipment-based group pilates classes'
+        }
+      },
+      {
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: 'Hot Pilates Classes',
+          description: 'Dynamic heated mat pilates classes'
+        }
+      },
+      {
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: 'Private Pilates Sessions',
+          description: 'One-on-one personalized pilates training'
+        }
+      }
+    ]
+  },
+  areaServed: [
+    {
+      '@type': 'City',
+      name: 'London'
+    },
+    {
+      '@type': 'City',
+      name: 'Edgware'
+    },
+    {
+      '@type': 'City',
+      name: 'Barnet'
+    },
+    {
+      '@type': 'City',
+      name: 'Mill Hill'
+    },
+    {
+      '@type': 'City',
+      name: 'Finchley'
+    }
+  ],
+  knowsAbout: [
+    'Pilates',
+    'Reformer Pilates',
+    'Hot Pilates',
+    'Fitness',
+    'Wellness',
+    'Women\'s Health'
   ]
 };
 
