@@ -7,7 +7,7 @@ import { Analytics } from '@vercel/analytics/next';
 import { SpeedInsights } from "@vercel/speed-insights/next"
 
 export const metadata: Metadata = {
-  title: 'Pilates Studio London | Book Reformer Pilates Classes Edgware',
+  title: 'EUFORYC STUDIOS • Pilates • Wellness • Strength',
   description: 'Book pilates classes in London at Euforyc Studios Edgware. Premier reformer pilates, hot pilates & private sessions. Women-only boutique pilates studio near you.',
 };
 

@@ -3,7 +3,7 @@ import { Heart, Target, Zap } from 'lucide-react';
 import Image from 'next/image';
 
 export const metadata: Metadata = {
-  title: 'About Euforyc Studios | Premier Pilates Studio London Edgware',
+  title: 'About Us - Euforyc Studios',
   description: 'About Euforyc Studios - premier pilates studio in London Edgware. Learn our story, mission & values. Expert reformer pilates instructors, women-only boutique studio.',
 };
 

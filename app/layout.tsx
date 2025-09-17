@@ -33,8 +33,8 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://euforyc.co.uk';
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: 'Pilates Studio London | Reformer Pilates Edgware | EUFORYC STUDIOS',
-    template: '%s | EUFORYC STUDIOS - Premier Pilates Studio London'
+    default: 'EUFORYC STUDIOS • Pilates • Wellness • Strength',
+    template: '%s | EUFORYC STUDIOS'
   },
   description: 'Premier pilates studio in London offering reformer pilates, hot pilates & private sessions in Edgware. Book pilates classes near you. Women-only boutique studio with expert instructors.',
   keywords: ['pilates london', 'reformer pilates london', 'pilates studio london', 'pilates edgware', 'pilates classes london', 'hot pilates london', 'pilates near me', 'pilates studio near me', 'reformer pilates edgware', 'pilates classes edgware', 'women only pilates london', 'boutique pilates studio', 'private pilates london', 'pilates booking london', 'pilates reserve london', 'pilates studio uk', 'best pilates london', 'pilates classes uk'],
@@ -47,7 +47,7 @@ export const metadata: Metadata = {
     telephone: false,
   },
   openGraph: {
-    title: 'Pilates Studio London | Reformer Pilates Edgware | EUFORYC STUDIOS',
+    title: 'EUFORYC STUDIOS • Pilates • Wellness • Strength',
     description: 'Premier pilates studio in London offering reformer pilates, hot pilates & private sessions in Edgware. Book pilates classes near you.',
     url: siteUrl,
     siteName: 'Euforyc Studios',
@@ -64,7 +64,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Pilates Studio London | Reformer Pilates Edgware | EUFORYC STUDIOS',
+    title: 'EUFORYC STUDIOS • Pilates • Wellness • Strength',
     description: 'Premier pilates studio in London - reformer pilates, hot pilates & private sessions in Edgware',
     images: ['/logo.png'],
   },

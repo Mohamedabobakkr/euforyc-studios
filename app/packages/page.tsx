@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { ExternalLink, Package, Sparkles } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'Pilates Class Packages London | Reformer Pilates Prices Edgware',
+  title: 'Class Packages - Euforyc Studios',
   description: 'Pilates class packages at Euforyc Studios London. Affordable reformer pilates, hot pilates & private session packages in Edgware. Book pilates classes online.',
 };
 

@@ -3,7 +3,7 @@ import { ChevronDown } from 'lucide-react';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'Pilates FAQ London | Common Pilates Questions Answered | Euforyc Studios',
+  title: 'FAQ - Euforyc Studios',
   description: 'Get answers to common pilates questions at Euforyc Studios London. Learn about reformer pilates, hot pilates, classes for beginners, what to wear & more.',
 };
 

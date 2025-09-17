@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { ExternalLink, Crown, Calendar, Star, CheckCircle } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'Pilates Memberships London | Monthly Reformer Pilates Edgware',
+  title: 'Contract Memberships - Euforyc Studios',
   description: 'Monthly pilates memberships at Euforyc Studios London. Best value reformer pilates, hot pilates contracts in Edgware with priority booking.',
 };
 
