@@ -25,6 +25,12 @@ const packages = {
         price: '£60',
         savings: 'First-time offer',
         momenceUrl: 'https://momence.com/m/488100'
+      },
+      {
+        name: '3 Hot Pilates Classes for £75',
+        price: '£75',
+        savings: 'First-time offer',
+        momenceUrl: 'https://momence.com/m/507852'
       }
     ]
   },
@@ -136,7 +142,7 @@ export default function Packages() {
               <p className="tagline text-[#1a260e]/60">New to Euforyc? Book an intro class</p>
             </div>
             
-            <div className="grid grid-cols-1 gap-6 max-w-md mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl mx-auto">
               {packages.intro.packages.map((pkg, index) => (
                 <a
                   key={index}
