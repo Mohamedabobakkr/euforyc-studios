@@ -149,25 +149,25 @@ export default function Packages() {
                   href={pkg.momenceUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group relative bg-white border border-[#1a260e]/10 rounded-lg p-8 hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+                  className="group relative bg-[#1a260e] text-[#fffcf2] rounded-lg p-8 hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
                 >
-                  <div className="absolute -top-3 -right-3 bg-[#1a260e] text-[#fffcf2] p-2 rounded-full">
+                  <div className="absolute -top-3 -right-3 bg-[#fffcf2] text-[#1a260e] p-2 rounded-full">
                     <Sparkles className="h-4 w-4" />
                   </div>
-                  
+
                   <div className="text-center space-y-4">
-                    <Package className="h-10 w-10 text-[#1a260e]/60 mx-auto" />
+                    <Package className="h-10 w-10 text-[#fffcf2]/60 mx-auto" />
                     <h3 className="font-serif text-2xl font-light">{pkg.name}</h3>
                     <div>
                       <p className="font-serif text-3xl font-light">{pkg.price}</p>
                       {pkg.savings && (
-                        <p className="font-sans text-sm text-green-700 font-medium mt-1">{pkg.savings}</p>
+                        <p className="font-sans text-sm text-green-400 font-medium mt-1">{pkg.savings}</p>
                       )}
                     </div>
-                    <p className="text-sm text-[#1a260e]/80">
+                    <p className="text-sm text-[#fffcf2]/80">
                       Only for first-time clients - try your first classes at a special introductory price
                     </p>
-                    <div className="flex items-center justify-center text-[#1a260e] opacity-0 group-hover:opacity-100 transition-opacity">
+                    <div className="flex items-center justify-center text-[#fffcf2] opacity-0 group-hover:opacity-100 transition-opacity">
                       <span className="font-sans text-sm mr-2">Book Now</span>
                       <ExternalLink className="h-4 w-4" />
                     </div>
@@ -187,7 +187,7 @@ export default function Packages() {
               <h2 className="heading-secondary mb-2">{packages.reformer.title}</h2>
               <p className="tagline text-[#1a260e]/60">{packages.reformer.subtitle}</p>
             </div>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {packages.reformer.packages.map((pkg, index) => (
                 <a
@@ -195,24 +195,24 @@ export default function Packages() {
                   href={pkg.momenceUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group relative bg-white border border-[#1a260e]/10 rounded-lg p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+                  className="group relative bg-[#1a260e] text-[#fffcf2] rounded-lg p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
                 >
                   {pkg.name === 'Unlimited' && (
-                    <div className="absolute -top-3 -right-3 bg-[#1a260e] text-[#fffcf2] p-2 rounded-full">
+                    <div className="absolute -top-3 -right-3 bg-[#fffcf2] text-[#1a260e] p-2 rounded-full">
                       <Sparkles className="h-4 w-4" />
                     </div>
                   )}
-                  
+
                   <div className="text-center space-y-4">
-                    <Package className="h-10 w-10 text-[#1a260e]/60 mx-auto" />
+                    <Package className="h-10 w-10 text-[#fffcf2]/60 mx-auto" />
                     <h3 className="font-serif text-2xl font-light">{pkg.name}</h3>
                     <div>
-                      <p className="font-serif text-3xl font-light text-[#1a260e]">{pkg.price}</p>
+                      <p className="font-serif text-3xl font-light">{pkg.price}</p>
                       {pkg.savings && (
-                        <p className="font-sans text-sm text-green-700 font-medium mt-1">{pkg.savings}</p>
+                        <p className="font-sans text-sm text-green-400 font-medium mt-1">{pkg.savings}</p>
                       )}
                     </div>
-                    <div className="flex items-center justify-center text-[#1a260e] opacity-0 group-hover:opacity-100 transition-opacity">
+                    <div className="flex items-center justify-center text-[#fffcf2] opacity-0 group-hover:opacity-100 transition-opacity">
                       <span className="font-sans text-sm mr-2">Book Now</span>
                       <ExternalLink className="h-4 w-4" />
                     </div>
@@ -232,7 +232,7 @@ export default function Packages() {
               <h2 className="heading-secondary mb-2">{packages.hotPilates.title}</h2>
               <p className="tagline text-[#1a260e]/60">{packages.hotPilates.subtitle}</p>
             </div>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {packages.hotPilates.packages.map((pkg, index) => (
                 <a
@@ -240,24 +240,24 @@ export default function Packages() {
                   href={pkg.momenceUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group relative bg-[#fffcf2] border border-[#1a260e]/10 rounded-lg p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+                  className="group relative bg-[#1a260e] text-[#fffcf2] rounded-lg p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
                 >
                   {pkg.name === 'Unlimited' && (
-                    <div className="absolute -top-3 -right-3 bg-[#1a260e] text-[#fffcf2] p-2 rounded-full">
+                    <div className="absolute -top-3 -right-3 bg-[#fffcf2] text-[#1a260e] p-2 rounded-full">
                       <Sparkles className="h-4 w-4" />
                     </div>
                   )}
-                  
+
                   <div className="text-center space-y-4">
-                    <Package className="h-10 w-10 text-[#1a260e]/60 mx-auto" />
+                    <Package className="h-10 w-10 text-[#fffcf2]/60 mx-auto" />
                     <h3 className="font-serif text-2xl font-light">{pkg.name}</h3>
                     <div>
-                      <p className="font-serif text-3xl font-light text-[#1a260e]">{pkg.price}</p>
+                      <p className="font-serif text-3xl font-light">{pkg.price}</p>
                       {pkg.savings && (
-                        <p className="font-sans text-sm text-green-700 font-medium mt-1">{pkg.savings}</p>
+                        <p className="font-sans text-sm text-green-400 font-medium mt-1">{pkg.savings}</p>
                       )}
                     </div>
-                    <div className="flex items-center justify-center text-[#1a260e] opacity-0 group-hover:opacity-100 transition-opacity">
+                    <div className="flex items-center justify-center text-[#fffcf2] opacity-0 group-hover:opacity-100 transition-opacity">
                       <span className="font-sans text-sm mr-2">Book Now</span>
                       <ExternalLink className="h-4 w-4" />
                     </div>
