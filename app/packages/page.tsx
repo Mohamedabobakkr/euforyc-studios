@@ -199,7 +199,7 @@ export default function Packages() {
         <div className="container-width text-center">
           <h1 className="heading-primary mb-6">Choose Your Package</h1>
           <p className="body-text text-xl max-w-3xl mx-auto">
-          Select the perfect package for your fitness journey. All packages are valid for 30 days, starting from the first session you attend. You can begin your package at any time after purchase, giving you the freedom to start when it works best for you!
+          Select the perfect package for your fitness journey. All packages are valid for 30 days, starting from the first session you attend except for the intro packages. You can begin your package at any time after purchase, giving you the freedom to start when it works best for you!
           </p>
         </div>
       </section>
@@ -236,7 +236,7 @@ export default function Packages() {
                       )}
                     </div>
                     <p className="text-sm text-[#fffcf2]/80">
-                      Only for first-time clients - try your first classes at a special introductory price
+                      Only for first-time clients - try your first classes at a special introductory price, valid for 20 days from your purchase date
                     </p>
                     <div className="flex items-center justify-center text-[#fffcf2] opacity-0 group-hover:opacity-100 transition-opacity">
                       <span className="font-sans text-sm mr-2">Book Now</span>

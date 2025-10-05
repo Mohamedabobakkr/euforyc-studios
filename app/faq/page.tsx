@@ -14,6 +14,10 @@ const faqs = [
     answer: "Yes! We welcome beginners to our pilates studio in Edgware, London. Our expert instructors provide modifications for all exercises and offer guidance throughout each class. We recommend starting with our intro package of 3 classes for £60 to get familiar with our studio and teaching style."
   },
   {
+    question: "What's the difference between the intro offer, packages, and memberships? Which one is best for me?",
+    answer: "The intro offer (3 classes for £60) is perfect for first-timers to experience our studio and teaching style. Packages are flexible pay-as-you-go options valid for 30 days from your first class booking (not purchase date), ideal for occasional practice or trying different class types. Memberships require a 6-month commitment but offer the best value with priority booking and exclusive perks. Which is best for you? It depends on your goals and schedule - if you're new, start with the intro offer. If you plan to attend regularly (2+ times per week), a membership offers the best value. For occasional practice or flexibility, packages are your best choice."
+  },
+  {
     question: "What should I wear to pilates classes?",
     answer: "Wear comfortable, stretchy clothing that allows for full range of movement. Avoid loose clothing that might get caught in equipment. We recommend leggings and a fitted top. Grip socks are required for reformer classes (available for purchase at the studio). Remove jewelry before class."
   },
@@ -47,7 +51,7 @@ const faqs = [
   },
   {
     question: "What is the difference between your packages and memberships?",
-    answer: "Packages are pay-as-you-go options valid for 30 days, perfect for trying our classes or occasional practice. Memberships are monthly contracts (6-month minimum) offering better value, priority booking, and exclusive perks like free grip socks and matcha passes."
+    answer: "Packages are pay-as-you-go options valid for 30 days starting from your first class, perfect for trying our classes or occasional practice. Memberships are monthly contracts (6-month minimum) offering better value, priority booking, and exclusive perks like free grip socks and matcha passes."
   },
   {
     question: "Do you offer private pilates sessions?",
