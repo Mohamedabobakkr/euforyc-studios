@@ -4,7 +4,7 @@ import { Gift, Heart, Sparkles, ExternalLink } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'Gift Cards - Euforyc Studios',
-  description: 'Give the gift of wellness. Euforyc Studios gift cards for pilates classes in London. Perfect for birthdays, celebrations, or self-care.',
+  description: 'Give the gift of euforyc. Euforyc Studios gift cards for pilates classes in London. Perfect for birthdays, celebrations, or self-care.',
 };
 
 export default function GiftCards() {
@@ -22,8 +22,8 @@ export default function GiftCards() {
                   <Gift className="h-10 w-10 text-[#1a260e]" />
                 </div>
                 <h1 className="font-serif text-5xl md:text-7xl text-[#1a260e] tracking-wider">
-                  GIFT THE GIFT
-                  <span className="block mt-2">OF WELLNESS</span>
+                  GIVE THE GIFT
+                  <span className="block mt-2">OF EUFORYC</span>
                 </h1>
                 <p className="tagline text-[#1a260e]/70 text-base md:text-lg max-w-2xl mx-auto lg:mx-0">
                   Share the transformative power of Pilates with someone special
@@ -60,7 +60,7 @@ export default function GiftCards() {
             <div className="max-w-3xl mx-auto text-center space-y-6">
               <h2 className="heading-secondary">The Perfect Gift</h2>
               <p className="body-text text-lg">
-                An Euforyc Studios gift card is more than just a present—it is an invitation to transformation,
+                A Euforyc Studios gift card is more than just a present, it is an invitation to transformation,
                 self-care, and strength. Whether it is for a birthday, celebration, or simply showing you care,
                 give the gift of mindful movement and lasting wellness.
               </p>
@@ -240,8 +240,8 @@ export default function GiftCards() {
                   },
                   {
                     icon: Heart,
-                    title: 'Never Expires',
-                    description: 'Your recipient can use their gift card whenever they are ready to begin'
+                    title: 'Valid for 90 Days',
+                    description: 'Gift cards are valid for 90 days from the date of purchase'
                   }
                 ].map((benefit, index) => (
                   <div
