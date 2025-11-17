@@ -6,17 +6,24 @@ import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { Menu, X } from 'lucide-react';
 
+type NavItem = {
+  href: string;
+  label: string;
+  external?: boolean;
+};
+
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
 
-  const leftNavItems = [
+  const leftNavItems: NavItem[] = [
     { href: '/about', label: 'ABOUT' },
     { href: '/team', label: 'TEAM' },
+    { href: '/gift-cards', label: 'GIFTING' },
     { href: '/packages-memberships', label: 'PACKAGES & MEMBERSHIPS' },
   ];
 
-  const rightNavItems = [
+  const rightNavItems: NavItem[] = [
     { href: '/pricing', label: 'PRICE LIST' },
     { href: '/faq', label: 'FAQ' },
     { href: '/book', label: 'BOOK' },
@@ -31,17 +38,29 @@ const Navigation = () => {
           {/* Left Navigation */}
           <div className="flex items-center space-x-8 flex-1">
             {leftNavItems.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={`font-sans text-xs tracking-[0.2em] transition-all duration-300 ${
-                  pathname === item.href
-                    ? 'text-[#fffcf2] font-medium'
-                    : 'text-[#fffcf2] hover:opacity-70'
-                }`}
-              >
-                {item.label}
-              </Link>
+              item.external ? (
+                <a
+                  key={item.href}
+                  href={item.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-sans text-xs tracking-[0.2em] transition-all duration-300 text-[#fffcf2] hover:opacity-70"
+                >
+                  {item.label}
+                </a>
+              ) : (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`font-sans text-xs tracking-[0.2em] transition-all duration-300 ${
+                    pathname === item.href
+                      ? 'text-[#fffcf2] font-medium'
+                      : 'text-[#fffcf2] hover:opacity-70'
+                  }`}
+                >
+                  {item.label}
+                </Link>
+              )
             ))}
           </div>
 
@@ -118,10 +137,22 @@ const Navigation = () => {
         {isOpen && (
           <div className="md:hidden mt-6 pb-4 space-y-4">
             {[...leftNavItems, ...rightNavItems].map((item) => (
+              item.external ? (
+                <a
+                  key={item.href}
+                  href={item.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block font-sans text-sm tracking-[0.15em] transition-colors duration-300 text-[#fffcf2] hover:opacity-70"
+                  onClick={() => setIsOpen(false)}
+                >
+                  {item.label}
+                </a>
+              ) : (
                 <Link
                   key={item.href}
                   href={item.href}
-                className={`block font-sans text-sm tracking-[0.15em] transition-colors duration-300 ${
+                  className={`block font-sans text-sm tracking-[0.15em] transition-colors duration-300 ${
                     pathname === item.href
                     ? 'text-[#fffcf2] font-medium'
                     : 'text-[#fffcf2] hover:opacity-70'
@@ -130,7 +161,8 @@ const Navigation = () => {
                 >
                   {item.label}
                 </Link>
-              ))}
+              )
+            ))}
           </div>
         )}
       </div>
