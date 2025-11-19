@@ -60,9 +60,6 @@ export default function BlackFriday() {
           <div className="max-w-5xl mx-auto">
             {/* Section Header */}
             <div className="text-center mb-8 sm:mb-12 px-2">
-              <div className="inline-block mb-3 sm:mb-4">
-                <span className="tagline text-[#2a3a21]">For New Clients Only</span>
-              </div>
               <h2 className="heading-secondary text-[#1a260e] mb-2 sm:mb-3">Founder Membership</h2>
               <p className="text-base sm:text-lg font-light text-[#1a260e]/80 max-w-2xl mx-auto">
                 Get 50% off any membership you pick. Valid from November 19 - December 5th. Limited spots available.
@@ -300,8 +297,141 @@ export default function BlackFriday() {
         </div>
       </section>
 
-      {/* Unlimited Package - Mobile Optimized */}
+      {/* Hot Pilates Packages - Mobile Optimized */}
       <section className="py-12 sm:py-16 md:py-20 px-4 sm:px-8 md:px-16 lg:px-24 xl:px-32 2xl:px-48 bg-[#f5f1e8]">
+        <div className="container-width">
+          <div className="max-w-6xl mx-auto">
+            {/* Section Header */}
+            <div className="text-center mb-8 sm:mb-12 px-2">
+              <div className="inline-block mb-3 sm:mb-4">
+                <span className="tagline text-[#2a3a21]">New & Existing Clients Welcome</span>
+              </div>
+              <h2 className="heading-secondary text-[#1a260e] mb-2 sm:mb-3">Hot Pilates Packages</h2>
+              <p className="text-base sm:text-lg font-light text-[#1a260e]/70">Buy a Hot Pilates pack, get extra sessions free</p>
+            </div>
+
+            {/* Package Cards Grid - Fully Responsive */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+              {/* Starter Pack */}
+              <div className="bg-white rounded-2xl sm:rounded-3xl p-8 border border-[#1a260e]/10 hover:shadow-xl transition-all duration-300">
+                <div className="text-center space-y-6">
+                  <div className="space-y-3">
+                    <div className="inline-block bg-[#f5f1e8] px-4 py-1.5 rounded-full">
+                      <span className="text-xs font-medium uppercase tracking-wider text-[#2a3a21]">Starter Pack</span>
+                    </div>
+                    <div className="text-4xl sm:text-5xl font-serif text-[#1a260e]">5 Classes</div>
+                    <p className="text-sm text-[#1a260e]/60">Buy 4, Get 1 Free</p>
+                    <p className="text-lg font-medium text-[#2a3a21] pt-2">Best for Beginners</p>
+                  </div>
+
+                  <div className="border-t border-[#1a260e]/10 pt-6 space-y-3 text-left">
+                    <div className="flex items-start gap-2.5 text-sm">
+                      <div className="w-1.5 h-1.5 rounded-full bg-[#2a3a21] mt-2 flex-shrink-0"></div>
+                      <span className="text-[#1a260e]/80">4 Hot Pilates Classes</span>
+                    </div>
+                    <div className="flex items-start gap-2.5 text-sm font-medium text-[#2a3a21]">
+                      <Gift className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                      <span>+1 Bonus Class Free</span>
+                    </div>
+                    <p className="text-xs text-[#1a260e]/60 pt-2">Choose Reformer or Hot Pilates</p>
+                  </div>
+
+                  <a
+                    href="https://momence.com/m/473322"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn-primary w-full text-center inline-flex items-center justify-center gap-2 min-h-[52px] text-sm mt-2"
+                  >
+                    BUY NOW
+                    <ExternalLink className="h-4 w-4" />
+                  </a>
+                </div>
+              </div>
+
+              {/* Value Pack - Featured */}
+              <div className="bg-[#2a3a21] rounded-2xl sm:rounded-3xl p-8 border-2 border-[#2a3a21] hover:shadow-2xl transition-all duration-300 relative">
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-10">
+                  <div className="bg-[#fffcf2] text-[#2a3a21] px-4 py-1 rounded-full shadow-md">
+                    <span className="text-xs font-bold uppercase tracking-wider">Most Popular</span>
+                  </div>
+                </div>
+
+                <div className="text-center space-y-6 text-white pt-2">
+                  <div className="space-y-3">
+                    <div className="inline-block bg-white/10 backdrop-blur-sm px-4 py-1.5 rounded-full border border-white/20">
+                      <span className="text-xs font-medium uppercase tracking-wider">Value Pack</span>
+                    </div>
+                    <div className="text-4xl sm:text-5xl font-serif">10 Classes</div>
+                    <p className="text-sm text-white/70">Buy 8, Get 2 Free</p>
+                    <p className="text-lg font-medium pt-2">Best Value</p>
+                  </div>
+
+                  <div className="border-t border-white/20 pt-6 space-y-3 text-left">
+                    <div className="flex items-start gap-2.5 text-sm">
+                      <div className="w-1.5 h-1.5 rounded-full bg-white mt-2 flex-shrink-0"></div>
+                      <span className="text-white/90">8 Hot Pilates Classes</span>
+                    </div>
+                    <div className="flex items-start gap-2.5 text-sm font-medium">
+                      <Gift className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                      <span>+2 Bonus Classes Free</span>
+                    </div>
+                    <p className="text-xs text-white/60 pt-2">Choose Reformer or Hot Pilates or mix both</p>
+                  </div>
+
+                  <a
+                    href="https://momence.com/m/473323"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn-primary bg-white text-[#2a3a21] hover:bg-white/90 w-full text-center inline-flex items-center justify-center gap-2 min-h-[52px] text-sm mt-2"
+                  >
+                    BUY NOW
+                    <ExternalLink className="h-4 w-4" />
+                  </a>
+                </div>
+              </div>
+
+              {/* Committed Pack */}
+              <div className="bg-white rounded-2xl sm:rounded-3xl p-8 border border-[#1a260e]/10 hover:shadow-xl transition-all duration-300">
+                <div className="text-center space-y-6">
+                  <div className="space-y-3">
+                    <div className="inline-block bg-[#f5f1e8] px-4 py-1.5 rounded-full">
+                      <span className="text-xs font-medium uppercase tracking-wider text-[#2a3a21]">Committed Pack</span>
+                    </div>
+                    <div className="text-4xl sm:text-5xl font-serif text-[#1a260e]">15 Classes</div>
+                    <p className="text-sm text-[#1a260e]/60">Buy 12, Get 3 Free</p>
+                    <p className="text-lg font-medium text-[#2a3a21] pt-2">Maximum Savings</p>
+                  </div>
+
+                  <div className="border-t border-[#1a260e]/10 pt-6 space-y-3 text-left">
+                    <div className="flex items-start gap-2.5 text-sm">
+                      <div className="w-1.5 h-1.5 rounded-full bg-[#2a3a21] mt-2 flex-shrink-0"></div>
+                      <span className="text-[#1a260e]/80">12 Hot Pilates Classes</span>
+                    </div>
+                    <div className="flex items-start gap-2.5 text-sm font-medium text-[#2a3a21]">
+                      <Gift className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                      <span>+3 Bonus Classes Free</span>
+                    </div>
+                    <p className="text-xs text-[#1a260e]/60 pt-2">Choose Reformer or Hot Pilates or mix both</p>
+                  </div>
+
+                  <a
+                    href="https://momence.com/m/473324"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn-primary w-full text-center inline-flex items-center justify-center gap-2 min-h-[52px] text-sm mt-2"
+                  >
+                    BUY NOW
+                    <ExternalLink className="h-4 w-4" />
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Unlimited Package - Mobile Optimized */}
+      <section className="py-12 sm:py-16 md:py-20 px-4 sm:px-8 md:px-16 lg:px-24 xl:px-32 2xl:px-48 bg-[#fffcf2]">
         <div className="container-width">
           <div className="max-w-4xl mx-auto">
             {/* Section Header */}
@@ -559,8 +689,18 @@ export default function BlackFriday() {
                       </div>
                     </div>
 
-                    {/* CTA Button */}
+                    {/* Discount Code */}
                     <div className="pt-2 sm:pt-4">
+                      <div className="inline-flex flex-col sm:flex-row items-center gap-2 sm:gap-3 bg-white/5 backdrop-blur-sm px-5 sm:px-8 py-4 sm:py-5 rounded-xl sm:rounded-2xl border border-white/20">
+                        <span className="text-xs sm:text-sm text-white/70 uppercase tracking-wider">Use Code:</span>
+                        <div className="bg-white/10 px-4 sm:px-6 py-2 sm:py-2.5 rounded-lg border border-white/30">
+                          <code className="text-lg sm:text-xl md:text-2xl font-bold text-white tracking-wider">GIFT10</code>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* CTA Button */}
+                    <div className="pt-4 sm:pt-6">
                       <a
                         href="/gift-cards"
                         className="group relative inline-flex items-center gap-2 sm:gap-3 bg-white text-[#2a3a21] px-8 sm:px-10 py-4 sm:py-5 rounded-full font-sans text-xs sm:text-sm uppercase tracking-[0.15em] font-medium hover:bg-white/95 transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-2xl min-h-[48px]"
