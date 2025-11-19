@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { Menu, X } from 'lucide-react';
+import BlackFridayBanner from './BlackFridayBanner';
 
 type NavItem = {
   href: string;
@@ -31,8 +32,9 @@ const Navigation = () => {
   ];
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-[#1a260e]/95 backdrop-blur-sm">
-      <div className="container-width px-8 py-5">
+    <>
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-[#1a260e]/95 backdrop-blur-sm">
+        <div className="container-width px-8 py-5">
           {/* Desktop Navigation */}
         <div className="hidden md:flex items-center justify-between">
           {/* Left Navigation */}
@@ -167,6 +169,10 @@ const Navigation = () => {
         )}
       </div>
     </nav>
+    <div className="fixed top-[90px] md:top-[160px] left-0 right-0 z-40">
+      <BlackFridayBanner />
+    </div>
+    </>
   );
 };
 
