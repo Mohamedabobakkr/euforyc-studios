@@ -9,7 +9,6 @@ import { Inter, Playfair_Display } from 'next/font/google';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import Script from 'next/script';
-import Link from 'next/link';
 
 const inter = Inter({ 
   subsets: ['latin'],
@@ -252,8 +251,101 @@ export default function RootLayout({
             t.src=v;s=b.getElementsByTagName(e)[0];
             s.parentNode.insertBefore(t,s)}(window, document,'script',
             'https://connect.facebook.net/en_US/fbevents.js');
-            fbq('init', '1085377523538304');
+
+            // Collect advanced matching data for improved targeting and conversion tracking
+            var advancedMatchData = {};
+
+            // Try to collect email
+            var emailInputs = document.querySelectorAll('input[type="email"], input[name*="email" i], input[id*="email" i]');
+            if (emailInputs.length > 0 && emailInputs[0].value) {
+              advancedMatchData.em = emailInputs[0].value.trim().toLowerCase();
+            }
+
+            // Try to collect phone
+            var phoneInputs = document.querySelectorAll('input[type="tel"], input[name*="phone" i], input[id*="phone" i]');
+            if (phoneInputs.length > 0 && phoneInputs[0].value) {
+              advancedMatchData.ph = phoneInputs[0].value.replace(/\\D/g, '');
+            }
+
+            // Try to collect first name
+            var fnInputs = document.querySelectorAll('input[name*="firstname" i], input[name*="first_name" i], input[id*="firstname" i]');
+            if (fnInputs.length > 0 && fnInputs[0].value) {
+              advancedMatchData.fn = fnInputs[0].value.trim().toLowerCase();
+            }
+
+            // Try to collect last name
+            var lnInputs = document.querySelectorAll('input[name*="lastname" i], input[name*="last_name" i], input[id*="lastname" i]');
+            if (lnInputs.length > 0 && lnInputs[0].value) {
+              advancedMatchData.ln = lnInputs[0].value.trim().toLowerCase();
+            }
+
+            // Try to collect city
+            var cityInputs = document.querySelectorAll('input[name*="city" i], input[id*="city" i]');
+            if (cityInputs.length > 0 && cityInputs[0].value) {
+              advancedMatchData.ct = cityInputs[0].value.trim().toLowerCase();
+            }
+
+            // Try to collect postal code
+            var zipInputs = document.querySelectorAll('input[name*="zip" i], input[name*="postal" i], input[id*="zip" i]');
+            if (zipInputs.length > 0 && zipInputs[0].value) {
+              advancedMatchData.zp = zipInputs[0].value.trim().toLowerCase();
+            }
+
+            // Default country to GB for UK business
+            advancedMatchData.country = 'gb';
+
+            // Initialize with advanced matching - data will be hashed automatically by the pixel using SHA-256
+            fbq('init', '1085377523538304', advancedMatchData);
             fbq('track', 'PageView');
+
+            // Re-collect and update advanced matching data on form field changes
+            function updateAdvancedMatching() {
+              var updatedData = {};
+
+              var emailInputs = document.querySelectorAll('input[type="email"], input[name*="email" i], input[id*="email" i]');
+              if (emailInputs.length > 0 && emailInputs[0].value) {
+                updatedData.em = emailInputs[0].value.trim().toLowerCase();
+              }
+
+              var phoneInputs = document.querySelectorAll('input[type="tel"], input[name*="phone" i], input[id*="phone" i]');
+              if (phoneInputs.length > 0 && phoneInputs[0].value) {
+                updatedData.ph = phoneInputs[0].value.replace(/\\D/g, '');
+              }
+
+              var fnInputs = document.querySelectorAll('input[name*="firstname" i], input[name*="first_name" i], input[id*="firstname" i]');
+              if (fnInputs.length > 0 && fnInputs[0].value) {
+                updatedData.fn = fnInputs[0].value.trim().toLowerCase();
+              }
+
+              var lnInputs = document.querySelectorAll('input[name*="lastname" i], input[name*="last_name" i], input[id*="lastname" i]');
+              if (lnInputs.length > 0 && lnInputs[0].value) {
+                updatedData.ln = lnInputs[0].value.trim().toLowerCase();
+              }
+
+              var cityInputs = document.querySelectorAll('input[name*="city" i], input[id*="city" i]');
+              if (cityInputs.length > 0 && cityInputs[0].value) {
+                updatedData.ct = cityInputs[0].value.trim().toLowerCase();
+              }
+
+              var zipInputs = document.querySelectorAll('input[name*="zip" i], input[name*="postal" i], input[id*="zip" i]');
+              if (zipInputs.length > 0 && zipInputs[0].value) {
+                updatedData.zp = zipInputs[0].value.trim().toLowerCase();
+              }
+
+              updatedData.country = 'gb';
+
+              if (Object.keys(updatedData).length > 1) {
+                fbq('init', '1085377523538304', updatedData);
+              }
+            }
+
+            // Set up listeners to update matching data when forms are filled
+            setTimeout(function() {
+              var allInputs = document.querySelectorAll('input[type="email"], input[type="tel"], input[name*="name" i], input[name*="city" i], input[name*="zip" i], input[name*="postal" i]');
+              allInputs.forEach(function(input) {
+                input.addEventListener('blur', updateAdvancedMatching);
+              });
+            }, 1000);
           `}
         </Script>
         <noscript>
