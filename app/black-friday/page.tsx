@@ -105,6 +105,13 @@ export default function BlackFriday() {
                       <p className="text-xs sm:text-sm text-white/70">Nov 19 - Dec 5th only</p>
                     </div>
 
+                    <div className="bg-white/5 backdrop-blur-sm rounded-xl sm:rounded-2xl p-4 sm:p-5 text-center text-white border border-white/10">
+                      <p className="text-xs sm:text-sm text-white/70 mb-2">Use Code at Checkout:</p>
+                      <div className="bg-white/10 px-4 py-2 rounded-lg border border-white/30 inline-block">
+                        <code className="text-lg sm:text-xl font-bold text-white tracking-wider">MEM50</code>
+                      </div>
+                    </div>
+
                     <a
                       href="https://euforyc.co.uk/memberships"
                       className="btn-primary bg-white text-[#2a3a21] hover:bg-white/90 w-full text-center flex items-center justify-center gap-2 min-h-[48px] text-sm sm:text-base"
@@ -149,7 +156,7 @@ export default function BlackFriday() {
                   </div>
 
                   <a
-                    href="https://momence.com/m/488100"
+                    href="https://momence.com/m/578884"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="btn-primary inline-flex items-center gap-2 min-h-[48px] text-sm sm:text-base"
@@ -204,7 +211,7 @@ export default function BlackFriday() {
                   </div>
 
                   <a
-                    href="https://momence.com/m/473322"
+                    href="https://momence.com/m/578876"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="btn-primary w-full text-center inline-flex items-center justify-center gap-2 min-h-[52px] text-sm mt-2"
@@ -246,7 +253,7 @@ export default function BlackFriday() {
                   </div>
 
                   <a
-                    href="https://momence.com/m/473323"
+                    href="https://momence.com/m/578877"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="btn-primary bg-white text-[#2a3a21] hover:bg-white/90 w-full text-center inline-flex items-center justify-center gap-2 min-h-[52px] text-sm mt-2"
@@ -282,7 +289,7 @@ export default function BlackFriday() {
                   </div>
 
                   <a
-                    href="https://momence.com/m/473324"
+                    href="https://momence.com/m/578879"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="btn-primary w-full text-center inline-flex items-center justify-center gap-2 min-h-[52px] text-sm mt-2"
@@ -337,7 +344,7 @@ export default function BlackFriday() {
                   </div>
 
                   <a
-                    href="https://momence.com/m/473322"
+                    href="https://momence.com/m/578866"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="btn-primary w-full text-center inline-flex items-center justify-center gap-2 min-h-[52px] text-sm mt-2"
@@ -379,7 +386,7 @@ export default function BlackFriday() {
                   </div>
 
                   <a
-                    href="https://momence.com/m/473323"
+                    href="https://momence.com/m/578867"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="btn-primary bg-white text-[#2a3a21] hover:bg-white/90 w-full text-center inline-flex items-center justify-center gap-2 min-h-[52px] text-sm mt-2"
@@ -415,7 +422,7 @@ export default function BlackFriday() {
                   </div>
 
                   <a
-                    href="https://momence.com/m/473324"
+                    href="https://momence.com/m/578868"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="btn-primary w-full text-center inline-flex items-center justify-center gap-2 min-h-[52px] text-sm mt-2"
@@ -539,7 +546,7 @@ export default function BlackFriday() {
                   </div>
 
                   <a
-                    href="https://momence.com/m/473317"
+                    href="https://momence.com/m/578871"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="btn-primary bg-white text-[#1a260e] hover:bg-white/90 w-full text-center inline-flex items-center justify-center gap-2 min-h-[52px] text-sm mt-2"
@@ -579,7 +586,7 @@ export default function BlackFriday() {
                   </div>
 
                   <a
-                    href="https://momence.com/m/473318"
+                    href="https://momence.com/m/578873"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="btn-primary w-full text-center inline-flex items-center justify-center gap-2 min-h-[52px] text-sm mt-2"
@@ -613,7 +620,7 @@ export default function BlackFriday() {
                   </div>
 
                   <a
-                    href="https://momence.com/m/473321"
+                    href="https://momence.com/m/578874"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="btn-primary bg-white text-[#1a260e] hover:bg-white/90 w-full text-center inline-flex items-center justify-center gap-2 min-h-[52px] text-sm mt-2"
