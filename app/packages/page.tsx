@@ -44,8 +44,8 @@ const servicesSchema = {
       areaServed: 'London',
       offers: {
         '@type': 'AggregateOffer',
-        lowPrice: '75',
-        highPrice: '350',
+        lowPrice: '45',
+        highPrice: '280',
         priceCurrency: 'GBP'
       }
     },
@@ -91,8 +91,8 @@ const packages = {
         momenceUrl: 'https://momence.com/m/488100'
       },
       {
-        name: '3 Hot Pilates Classes for £75',
-        price: '£75',
+        name: '3 Hot Pilates Classes for £45',
+        price: '£45',
         savings: 'First-time offer',
         momenceUrl: 'https://momence.com/m/507852'
       }
@@ -129,31 +129,31 @@ const packages = {
     ]
   },
   hotPilates: {
-    title: 'Hot Pilates (Small Group)',
+    title: 'Hot Pilates',
     subtitle: 'Dynamic heated mat classes',
     packages: [
       {
         name: '4 Classes',
-        price: '£110',
-        savings: 'save £10',
+        price: '£68',
+        savings: 'save £4',
         momenceUrl: 'https://momence.com/m/473314' // 4 Hot Pilates Classes Per Month
       },
       {
         name: '8 Classes',
-        price: '£205',
-        savings: 'save £35',
+        price: '£128',
+        savings: 'save £16',
         momenceUrl: 'https://momence.com/m/473315' // 8 Hot Pilates Classes Per Month
       },
       {
         name: '12 Classes',
-        price: '£290',
-        savings: 'save £70',
+        price: '£180',
+        savings: 'save £36',
         momenceUrl: 'https://momence.com/m/473316' // 12 Hot Pilates Classes Per Month
       },
       {
         name: 'Unlimited',
-        price: '£350',
-        savings: 'save £130+',
+        price: '£280',
+        savings: 'save £8+',
         momenceUrl: 'https://momence.com/m/473319' // Unlimited Hot Pilates Classes Per Month
       }
     ]

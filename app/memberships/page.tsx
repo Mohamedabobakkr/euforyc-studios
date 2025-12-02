@@ -85,9 +85,9 @@ const memberships = {
     memberships: [
       {
         name: '4 Classes/Month',
-        monthlyPrice: '£84',
+        monthlyPrice: '£60',
         description: 'Perfect for heat newcomers',
-        savings: 'Save £26/month vs packages',
+        savings: 'Save £8/month vs packages',
         features: [
           '4 Hot Pilates classes per month',
           'Priority booking access',
@@ -98,9 +98,9 @@ const memberships = {
       },
       {
         name: '8 Classes/Month',
-        monthlyPrice: '£168',
+        monthlyPrice: '£120',
         description: 'Great for heat lovers',
-        savings: 'Save £37/month vs packages',
+        savings: 'Save £8/month vs packages',
         popular: true,
         features: [
           '8 Hot Pilates classes per month',
@@ -112,9 +112,9 @@ const memberships = {
       },
       {
         name: '12 Classes/Month',
-        monthlyPrice: '£252',
+        monthlyPrice: '£170',
         description: 'Perfect for heat lovers',
-        savings: 'Save £38/month vs packages',
+        savings: 'Save £10/month vs packages',
         features: [
           '12 Hot Pilates classes per month',
           'Priority booking access',
@@ -125,9 +125,9 @@ const memberships = {
       },
       {
         name: 'Unlimited Classes',
-        monthlyPrice: '£300',
+        monthlyPrice: '£250',
         description: 'For the heat enthusiast',
-        savings: 'Save £50/month vs packages',
+        savings: 'Save £30/month vs packages',
         features: [
           'Unlimited Hot Pilates classes per month',
           'Priority booking access',

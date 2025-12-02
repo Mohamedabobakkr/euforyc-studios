@@ -86,10 +86,10 @@ export default function Pricing() {
               </div>
             </div>
 
-            {/* Hot Pilates (Small Group) Section */}
+            {/* Hot Pilates Section */}
             <div className="space-y-8 pt-8">
               <div className="text-center space-y-2">
-                <h2 className="heading-secondary">Hot Pilates (Small Group)</h2>
+                <h2 className="heading-secondary">Hot Pilates</h2>
                 <p className="tagline text-[#1a260e]/60">All classes valid for 30 days</p>
               </div>
 
@@ -100,7 +100,7 @@ export default function Pricing() {
                     <h3 className="font-serif text-2xl font-light">Single Class Drop In</h3>
                   </div>
                   <div className="text-right">
-                    <p className="font-serif text-3xl font-light">£30</p>
+                    <p className="font-serif text-3xl font-light">£18</p>
                   </div>
                 </div>
 
@@ -110,8 +110,8 @@ export default function Pricing() {
                     <h3 className="font-serif text-2xl font-light">4 Classes</h3>
                   </div>
                   <div className="text-right">
-                    <p className="font-serif text-3xl font-light">£110</p>
-                    <p className="font-sans text-sm text-green-700 font-medium">save £10</p>
+                    <p className="font-serif text-3xl font-light">£68</p>
+                    <p className="font-sans text-sm text-green-700 font-medium">save £4</p>
                   </div>
                 </div>
 
@@ -121,8 +121,8 @@ export default function Pricing() {
                     <h3 className="font-serif text-2xl font-light">8 Classes</h3>
                   </div>
                   <div className="text-right">
-                    <p className="font-serif text-3xl font-light">£205</p>
-                    <p className="font-sans text-sm text-green-700 font-medium">save £35</p>
+                    <p className="font-serif text-3xl font-light">£128</p>
+                    <p className="font-sans text-sm text-green-700 font-medium">save £16</p>
                   </div>
                 </div>
 
@@ -132,8 +132,8 @@ export default function Pricing() {
                     <h3 className="font-serif text-2xl font-light">12 Classes</h3>
                   </div>
                   <div className="text-right">
-                    <p className="font-serif text-3xl font-light">£290</p>
-                    <p className="font-sans text-sm text-green-700 font-medium">save £70</p>
+                    <p className="font-serif text-3xl font-light">£180</p>
+                    <p className="font-sans text-sm text-green-700 font-medium">save £36</p>
                   </div>
                 </div>
 
@@ -143,8 +143,8 @@ export default function Pricing() {
                     <h3 className="font-serif text-2xl font-light">Unlimited Classes</h3>
                   </div>
                   <div className="text-right">
-                    <p className="font-serif text-3xl font-light">£350</p>
-                    <p className="font-sans text-sm text-green-700 font-medium">save £130+</p>
+                    <p className="font-serif text-3xl font-light">£280</p>
+                    <p className="font-sans text-sm text-green-700 font-medium">save £8+</p>
                   </div>
                 </div>
               </div>

@@ -161,7 +161,7 @@ export default function Book() {
 
                 {/* Hot Pilates */}
                 <div className="border-l-4 border-[#1a260e]/20 pl-6 space-y-2">
-                  <h3 className="font-playfair text-xl font-light">Hot Pilates (Small Group)</h3>
+                  <h3 className="font-playfair text-xl font-light">Hot Pilates</h3>
                   <div className="flex items-center space-x-4 text-sm text-[#1a260e]/80">
                     <div className="flex items-center space-x-1">
                       <Clock className="h-4 w-4" />
