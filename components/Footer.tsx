@@ -21,26 +21,32 @@ const Footer = () => {
               STUDIO
             </h4>
             <div className="space-y-2">
-              <Link 
-                href="/about" 
+              <Link
+                href="/about"
                 className="block font-sans text-sm opacity-80 hover:opacity-100 transition-opacity"
               >
                 About
               </Link>
-              <Link 
-                href="/team" 
+              <Link
+                href="/team"
                 className="block font-sans text-sm opacity-80 hover:opacity-100 transition-opacity"
                 >
                 Our Team
               </Link>
-              <Link 
-                href="/book" 
+              <Link
+                href="/shop"
+                className="block font-sans text-sm opacity-80 hover:opacity-100 transition-opacity"
+              >
+                Shop
+              </Link>
+              <Link
+                href="/book"
                 className="block font-sans text-sm opacity-80 hover:opacity-100 transition-opacity"
               >
                 Book a Class
               </Link>
-              <Link 
-                href="/contact" 
+              <Link
+                href="/contact"
                 className="block font-sans text-sm opacity-80 hover:opacity-100 transition-opacity"
               >
                 Contact

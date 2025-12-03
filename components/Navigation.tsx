@@ -27,6 +27,7 @@ const Navigation = () => {
   const rightNavItems: NavItem[] = [
     { href: '/pricing', label: 'PRICE LIST' },
     { href: '/faq', label: 'FAQ' },
+    { href: '/shop', label: 'MERCHANDISE' },
     { href: '/book', label: 'BOOK' },
     { href: '/contact', label: 'CONTACT' },
   ];
@@ -36,9 +37,9 @@ const Navigation = () => {
       <nav className="fixed top-0 left-0 right-0 z-50 bg-[#1a260e]/95 backdrop-blur-sm">
         <div className="container-width px-8 py-5">
           {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center justify-between">
+        <div className="hidden md:grid grid-cols-[1fr_auto_1fr] items-center gap-8">
           {/* Left Navigation */}
-          <div className="flex items-center space-x-8 flex-1">
+          <div className="flex items-center justify-start space-x-8">
             {leftNavItems.map((item) => (
               item.external ? (
                 <a
@@ -46,7 +47,7 @@ const Navigation = () => {
                   href={item.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="font-sans text-xs tracking-[0.2em] transition-all duration-300 text-[#fffcf2] hover:opacity-70"
+                  className="font-sans text-xs tracking-[0.2em] transition-all duration-300 text-[#fffcf2] hover:opacity-70 whitespace-nowrap"
                 >
                   {item.label}
                 </a>
@@ -55,21 +56,29 @@ const Navigation = () => {
                   key={item.href}
                   href={item.href}
                   className={`font-sans text-xs tracking-[0.2em] transition-all duration-300 ${
+                    item.href === '/packages-memberships' ? 'text-center leading-tight' : 'whitespace-nowrap'
+                  } ${
                     pathname === item.href
                       ? 'text-[#fffcf2] font-medium'
                       : 'text-[#fffcf2] hover:opacity-70'
                   }`}
                 >
-                  {item.label}
+                  {item.href === '/packages-memberships' ? (
+                    <>
+                      PACKAGES &<br />MEMBERSHIPS
+                    </>
+                  ) : (
+                    item.label
+                  )}
                 </Link>
               )
             ))}
           </div>
 
-          {/* Center Logo - Reduced size */}
-          <Link 
-            href="/" 
-            className="flex items-center justify-center group transition-all duration-300 hover:scale-105"
+          {/* Center Logo - Absolutely centered */}
+          <Link
+            href="/"
+            className="flex items-center justify-center group transition-all duration-300 hover:scale-105 ml-11"
           >
             <div className="relative w-[450px] h-[120px]">
               <Image
@@ -84,12 +93,12 @@ const Navigation = () => {
           </Link>
 
           {/* Right Navigation */}
-          <div className="flex items-center justify-end space-x-8 flex-1">
+          <div className="flex items-center justify-end space-x-8">
             {rightNavItems.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
-                className={`font-sans text-xs tracking-[0.2em] transition-all duration-300 ${
+                className={`font-sans text-xs tracking-[0.2em] transition-all duration-300 whitespace-nowrap ${
                   pathname === item.href
                     ? 'text-[#fffcf2] font-medium'
                     : 'text-[#fffcf2] hover:opacity-70'
@@ -108,13 +117,12 @@ const Navigation = () => {
           <button
             onClick={() => setIsOpen(!isOpen)}
             aria-label="Toggle menu"
-              className="p-2"
+              className="p-2 hover:bg-[#fffcf2]/10 rounded-lg transition-all duration-300 active:scale-95"
           >
-            {isOpen ? (
-                <X className="h-5 w-5 text-[#fffcf2]" />
-            ) : (
-                <Menu className="h-5 w-5 text-[#fffcf2]" />
-            )}
+            <div className="relative w-5 h-5">
+              <Menu className={`absolute inset-0 h-5 w-5 text-[#fffcf2] transition-all duration-300 ${isOpen ? 'opacity-0 rotate-90 scale-50' : 'opacity-100 rotate-0 scale-100'}`} />
+              <X className={`absolute inset-0 h-5 w-5 text-[#fffcf2] transition-all duration-300 ${isOpen ? 'opacity-100 rotate-0 scale-100' : 'opacity-0 -rotate-90 scale-50'}`} />
+            </div>
           </button>
         </div>
 
@@ -135,17 +143,24 @@ const Navigation = () => {
           </div>
         </div>
 
-        {/* Mobile Menu */}
-        {isOpen && (
-          <div className="md:hidden mt-6 pb-4 space-y-4">
-            {[...leftNavItems, ...rightNavItems].map((item) => (
+        {/* Mobile Menu - Smooth Dropdown Animation */}
+        <div
+          className={`md:hidden overflow-hidden transition-all duration-500 ease-in-out ${
+            isOpen ? 'max-h-[600px] opacity-100' : 'max-h-0 opacity-0'
+          }`}
+        >
+          <div className="mt-6 pb-6 space-y-1 border-t border-[#fffcf2]/10">
+            {[...leftNavItems, ...rightNavItems].map((item, index) => (
               item.external ? (
                 <a
                   key={item.href}
                   href={item.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="block font-sans text-sm tracking-[0.15em] transition-colors duration-300 text-[#fffcf2] hover:opacity-70"
+                  className={`block font-sans text-sm tracking-[0.15em] transition-all duration-300 text-[#fffcf2] hover:opacity-70 hover:translate-x-2 py-3 px-4 rounded-lg hover:bg-[#fffcf2]/5 ${
+                    isOpen ? 'animate-slideIn' : ''
+                  }`}
+                  style={{ animationDelay: `${index * 50}ms` }}
                   onClick={() => setIsOpen(false)}
                 >
                   {item.label}
@@ -154,19 +169,20 @@ const Navigation = () => {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`block font-sans text-sm tracking-[0.15em] transition-colors duration-300 ${
+                  className={`block font-sans text-sm tracking-[0.15em] transition-all duration-300 py-3 px-4 rounded-lg hover:translate-x-2 ${
                     pathname === item.href
-                    ? 'text-[#fffcf2] font-medium'
-                    : 'text-[#fffcf2] hover:opacity-70'
-                  }`}
+                      ? 'text-[#fffcf2] font-medium bg-[#fffcf2]/10'
+                      : 'text-[#fffcf2] hover:opacity-70 hover:bg-[#fffcf2]/5'
+                  } ${isOpen ? 'animate-slideIn' : ''}`}
+                  style={{ animationDelay: `${index * 50}ms` }}
                   onClick={() => setIsOpen(false)}
                 >
-                  {item.label}
+                  {item.href === '/packages-memberships' ? 'PACKAGES & MEMBERSHIPS' : item.label}
                 </Link>
               )
             ))}
           </div>
-        )}
+        </div>
       </div>
     </nav>
     <div className="fixed top-[90px] md:top-[160px] left-0 right-0 z-40">
