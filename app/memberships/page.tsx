@@ -145,7 +145,7 @@ const memberships = {
     memberships: [
       {
         name: '4 Mixed Classes/Month',
-        monthlyPrice: '£77',
+        monthlyPrice: '£74',
         description: 'Perfect for variety seekers',
         savings: 'Save £23/month vs packages',
         features: [
@@ -158,7 +158,7 @@ const memberships = {
       },
       {
         name: '8 Mixed Classes/Month',
-        monthlyPrice: '£154',
+        monthlyPrice: '£148',
         description: 'Great for regular variety',
         savings: 'Save £33/month vs packages',
         popular: true,
@@ -172,7 +172,7 @@ const memberships = {
       },
       {
         name: '12 Mixed Classes/Month',
-        monthlyPrice: '£231',
+        monthlyPrice: '£212',
         description: 'Perfect balance of variety',
         savings: 'Save £34/month vs packages',
         features: [
@@ -185,7 +185,7 @@ const memberships = {
       },
       {
         name: 'Unlimited Mixed',
-        monthlyPrice: '£275',
+        monthlyPrice: '£265',
         description: 'Ultimate variety and value',
         savings: 'Save £50/month vs packages',
         features: [
