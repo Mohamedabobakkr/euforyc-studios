@@ -3,14 +3,14 @@
  * @license Proprietary and confidential
  * Unauthorized copying of this file, via any medium is strictly prohibited
  */
-import './globals.css';
+import '../globals.css';
 import type { Metadata, Viewport } from 'next';
 import { Inter, Playfair_Display } from 'next/font/google';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import Script from 'next/script';
 
-const inter = Inter({ 
+const inter = Inter({
   subsets: ['latin'],
   weight: ['300', '400', '500', '600'],
   variable: '--font-inter',
@@ -18,7 +18,7 @@ const inter = Inter({
   preload: true,
 });
 
-const playfairDisplay = Playfair_Display({ 
+const playfairDisplay = Playfair_Display({
   subsets: ['latin'],
   weight: ['400', '500', '600', '700', '800', '900'],
   style: ['normal', 'italic'],
@@ -136,7 +136,7 @@ const structuredData = {
   image: `${siteUrl}/logo.png`,
   logo: `${siteUrl}/logo.png`,
   sameAs: [
-    'https://instagram.com/euforyc',
+    'https://www.instagram.com/euforycstudios',
     'https://www.tiktok.com/@euforyc'
   ],
   servedCuisine: null,
@@ -230,16 +230,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${inter.variable} ${playfairDisplay.variable}`}>
+    <html lang="en" suppressHydrationWarning className={`${inter.variable} ${playfairDisplay.variable}`}>
       <head>
         <link rel="icon" href="/logo.png" sizes="any" />
         <link rel="apple-touch-icon" href="/logo.png" />
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#fffcf2" />
-        
+
         {/* Facebook Domain Verification */}
         <meta name="facebook-domain-verification" content="5z3pjrzzsqdozv85orz7txyolnps75" />
-        
+
         {/* Meta Pixel Code */}
         <Script id="facebook-pixel" strategy="afterInteractive">
           {`
@@ -349,16 +349,16 @@ export default function RootLayout({
           `}
         </Script>
         <noscript>
-          <img 
-            height="1" 
-            width="1" 
+          <img
+            height="1"
+            width="1"
             style={{ display: 'none' }}
             src="https://www.facebook.com/tr?id=1085377523538304&ev=PageView&noscript=1"
             alt=""
           />
         </noscript>
         {/* End Meta Pixel Code */}
-        
+
         {/* Google Analytics */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-FGLFB14Q0J"
@@ -372,11 +372,11 @@ export default function RootLayout({
             gtag('config', 'G-FGLFB14Q0J');
           `}
         </Script>
-        
+
         {/* Preconnect to external domains */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        
+
         {/* Structured Data */}
         <script
           type="application/ld+json"
@@ -388,7 +388,7 @@ export default function RootLayout({
         <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-[#1a260e] text-[#fffcf2] px-4 py-2 rounded">
           Skip to content
         </a>
-        
+
         <Navigation />
         <main id="main-content" className="min-h-screen">
           {children}

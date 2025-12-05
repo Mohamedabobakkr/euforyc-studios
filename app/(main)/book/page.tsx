@@ -25,7 +25,7 @@ export default function Book() {
         <div className="container-width text-center">
           <h1 className="heading-primary mb-8">Book Your Session</h1>
           <p className="body-text text-xl max-w-3xl mx-auto">
-            Choose your preferred booking option below. Whether you're looking for a single class, 
+            Choose your preferred booking option below. Whether you're looking for a single class,
             a private session, or a package deal, we have the perfect option for you.
           </p>
         </div>
@@ -124,7 +124,7 @@ export default function Book() {
               Browse our upcoming classes and book directly from the calendar below.
             </p>
           </div>
-          
+
           {/* Add a specific height constraint and styles to ensure the Momence widget renders properly */}
           <div className="border border-[#1a260e]/10 rounded-lg p-4 md:p-8 bg-[#fffcf2] min-h-[600px] relative">
             <MomenceSchedule />
@@ -139,7 +139,7 @@ export default function Book() {
             {/* Class Types */}
             <div className="space-y-8">
               <h2 className="heading-secondary">Our Classes</h2>
-              
+
               <div className="space-y-6">
                 {/* Reformer Pilates */}
                 <div className="border-l-4 border-[#1a260e]/20 pl-6 space-y-2">
@@ -155,7 +155,7 @@ export default function Book() {
                     </div>
                   </div>
                   <p className="body-text">
-                    Equipment-based classes focusing on strength, flexibility, and control. 
+                    Equipment-based classes focusing on strength, flexibility, and control.
                     Perfect for all levels with personalized modifications.
                   </p>
                 </div>
@@ -174,7 +174,7 @@ export default function Book() {
                     </div>
                   </div>
                   <p className="body-text">
-                    Dynamic mat-based Pilates in our heated studio. High energy, 
+                    Dynamic mat-based Pilates in our heated studio. High energy,
                     low impact workout for enhanced flexibility and detoxification.
                   </p>
                 </div>
@@ -193,7 +193,7 @@ export default function Book() {
                     </div>
                   </div>
                   <p className="body-text">
-                    Personalized sessions tailored to your specific goals and needs. 
+                    Personalized sessions tailored to your specific goals and needs.
                     Ideal for beginners, rehabilitation, or advanced practitioners.
                   </p>
                 </div>
@@ -203,7 +203,7 @@ export default function Book() {
             {/* Studio Info & Contact */}
             <div className="space-y-8">
               <h2 className="heading-secondary">Studio Information</h2>
-              
+
               {/* Location */}
               <div className="bg-[#1a260e]/5 p-6 rounded-lg">
                 <div className="flex items-center space-x-2 mb-4">
@@ -236,7 +236,7 @@ export default function Book() {
                     <strong>Email:</strong> euforyc@gmail.com
                   </p>
                   <p className="font-inter text-sm">
-                    <strong>Instagram:</strong> @euforyc
+                    <strong>Instagram:</strong> @euforycstudios
                   </p>
                 </div>
               </div>
@@ -311,7 +311,7 @@ export default function Book() {
           <div className="text-center mb-12">
             <h2 className="heading-secondary mb-4">First Time at Euforyc?</h2>
             <p className="body-text max-w-2xl mx-auto">
-              We're excited to welcome you to our studio! Here's what to expect 
+              We're excited to welcome you to our studio! Here's what to expect
               for your first session.
             </p>
           </div>
@@ -323,7 +323,7 @@ export default function Book() {
               </div>
               <h3 className="font-playfair text-lg font-light">Arrive Early</h3>
               <p className="body-text text-sm">
-                Come 15 minutes before your first class to complete our health 
+                Come 15 minutes before your first class to complete our health
                 questionnaire and get oriented with the studio.
               </p>
             </div>
@@ -334,7 +334,7 @@ export default function Book() {
               </div>
               <h3 className="font-playfair text-lg font-light">What to Bring</h3>
               <p className="body-text text-sm">
-                Just bring yourself! We provide all equipment, mats, and towels. 
+                Just bring yourself! We provide all equipment, mats, and towels.
                 Wear comfortable workout clothes and grip socks if you have them.
               </p>
             </div>
@@ -345,7 +345,7 @@ export default function Book() {
               </div>
               <h3 className="font-playfair text-lg font-light">Meet Your Instructor</h3>
               <p className="body-text text-sm">
-                Let your instructor know it's your first time. They'll provide 
+                Let your instructor know it's your first time. They'll provide
                 modifications and ensure you feel comfortable throughout the class.
               </p>
             </div>

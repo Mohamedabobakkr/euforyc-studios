@@ -38,7 +38,7 @@ export default function Contact() {
         <div className="container-width text-center">
           <h1 className="heading-primary mb-8">Get in Touch</h1>
           <p className="body-text text-xl max-w-3xl mx-auto">
-            Have questions about our classes, membership options, or want to learn more 
+            Have questions about our classes, membership options, or want to learn more
             about the Euforyc experience? We'd love to hear from you.
           </p>
         </div>
@@ -51,7 +51,7 @@ export default function Contact() {
             {/* Contact Form */}
             <div className="space-y-6">
               <h2 className="heading-secondary">Send us a Message</h2>
-              
+
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
@@ -83,7 +83,7 @@ export default function Contact() {
                     />
                   </div>
                 </div>
-                
+
                 <div>
                   <label htmlFor="phone" className="block font-inter text-sm font-medium text-[#1a260e] mb-2">
                     Phone
@@ -97,7 +97,7 @@ export default function Contact() {
                     className="w-full px-4 py-3 border border-[#1a260e]/20 bg-[#fffcf2] focus:border-[#1a260e] focus:outline-none transition-colors"
                   />
                 </div>
-                
+
                 <div>
                   <label htmlFor="message" className="block font-inter text-sm font-medium text-[#1a260e] mb-2">
                     Message *
@@ -113,7 +113,7 @@ export default function Contact() {
                     placeholder="Tell us about your wellness goals or any questions you have..."
                   />
                 </div>
-                
+
                 <button type="submit" className="btn-primary w-full">
                   Send Message
                 </button>
@@ -123,7 +123,7 @@ export default function Contact() {
             {/* Contact Information */}
             <div className="space-y-8">
               <h2 className="heading-secondary">Contact Information</h2>
-              
+
               <div className="space-y-6">
                 {/* Address */}
                 <div className="flex items-start space-x-4">
@@ -145,7 +145,7 @@ export default function Contact() {
                     <h3 className="font-serif text-lg font-light mb-2">Phone</h3>
                     <p className="body-text">
                       <a href="tel:+447375710370" className="hover:text-[#1a260e]/70 transition-colors">
-                      +44 7375 710370 
+                        +44 7375 710370
                       </a>
                     </p>
                   </div>
@@ -182,20 +182,20 @@ export default function Contact() {
                     <h3 className="font-serif text-lg font-light mb-3">Follow Us</h3>
                     <div className="space-y-3">
                       <p>
-                        <a 
-                          href="https://instagram.com/euforyc" 
-                          target="_blank" 
+                        <a
+                          href="https://www.instagram.com/euforycstudios?igsh=b3A0aDNpbXEzczR2&utm_source=qr"
+                          target="_blank"
                           rel="noopener noreferrer"
                           className="flex items-center hover:text-[#1a260e]/70 transition-colors"
                         >
                           <Instagram className="h-5 w-5 text-[#1a260e] mr-2" />
-                          <span>Instagram: @euforyc</span>
+                          <span>Instagram: @euforycstudios</span>
                         </a>
                       </p>
                       <p>
-                        <a 
-                          href="https://www.tiktok.com/@euforyc" 
-                          target="_blank" 
+                        <a
+                          href="https://www.tiktok.com/@euforyc"
+                          target="_blank"
                           rel="noopener noreferrer"
                           className="flex items-center hover:text-[#1a260e]/70 transition-colors"
                         >
@@ -216,19 +216,19 @@ export default function Contact() {
       <section className="relative">
         {/* Decorative transition */}
         <div className="h-24 bg-gradient-to-b from-[#fffcf2] to-[#faf8f3]"></div>
-        
+
         {/* Map Title with elegant styling */}
         <div className="absolute top-0 left-0 right-0 z-30 text-center">
           <div className="inline-block bg-[#fffcf2] px-12 py-4 rounded-full shadow-lg">
             <h2 className="font-serif text-3xl font-light text-[#1a260e] tracking-wider">FIND US</h2>
           </div>
         </div>
-        
+
         {/* Full viewport map with aesthetic presentation */}
         <div className="relative" style={{ height: 'calc(100vh - 200px)', minHeight: '600px' }}>
           <Map />
         </div>
-        
+
         {/* Transportation Info with elegant design */}
         <div className="bg-gradient-to-b from-[#faf8f3] to-[#fffcf2] py-12">
           <div className="container-width text-center space-y-4">
@@ -238,7 +238,7 @@ export default function Contact() {
               <div className="h-px w-16 bg-[#1a260e]/20"></div>
             </div>
             <p className="font-sans text-sm text-[#1a260e]/70 max-w-2xl mx-auto">
-              We're located in Edgware, easily accessible by public transport. 
+              We're located in Edgware, easily accessible by public transport.
               Just a short walk from Edgware Station on the Northern Line.
             </p>
             <p className="font-sans text-xs text-[#1a260e]/50 tracking-wider uppercase">

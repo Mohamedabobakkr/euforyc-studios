@@ -20,6 +20,14 @@ const config: Config = {
           black: '#1A1A1A',       // Soft black
           'black-light': '#2A2A2A', // Lighter black for subtle elements
         },
+        // Skin Studio sub-brand colors
+        skin: {
+          background: '#e7e3dd',  // Warm neutral background
+          text: '#2b3411',        // Deep olive green for text
+          accent: '#3a320c',      // Dark brown accent
+          cream: '#f5f2ed',       // Light cream for sections
+          muted: '#d4cfc7',       // Muted divider color
+        },
         // Existing shadcn colors
         foreground: 'hsl(var(--foreground))',
         card: {
@@ -65,6 +73,8 @@ const config: Config = {
         'serif': ['Playfair Display', 'serif'],
         'sans': ['Inter', 'sans-serif'],
         'playfair': ['Playfair Display', 'serif'],
+        'skin-serif': ['"Times New Roman"', 'Georgia', 'serif'],
+        'skin-sans': ['"Nunito Sans"', 'sans-serif'],
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',

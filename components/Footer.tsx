@@ -30,7 +30,7 @@ const Footer = () => {
               <Link
                 href="/team"
                 className="block font-sans text-sm opacity-80 hover:opacity-100 transition-opacity"
-                >
+              >
                 Our Team
               </Link>
               <Link
@@ -60,7 +60,7 @@ const Footer = () => {
               CONNECT
             </h4>
             <div className="space-y-2">
-              <a 
+              <a
                 href="mailto:euforyc@gmail.com"
                 className="block font-sans text-sm opacity-80 hover:opacity-100 transition-opacity"
               >
@@ -70,18 +70,18 @@ const Footer = () => {
                 London, UK
               </p>
               <div className="space-y-2">
-              <a 
-                href="https://instagram.com/euforyc" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="flex items-center space-x-2 opacity-80 hover:opacity-100 transition-opacity"
-              >
-                <Instagram className="h-4 w-4" />
-                  <span className="font-sans text-sm">@euforyc</span>
+                <a
+                  href="https://www.instagram.com/euforycstudios?igsh=b3A0aDNpbXEzczR2&utm_source=qr"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center space-x-2 opacity-80 hover:opacity-100 transition-opacity"
+                >
+                  <Instagram className="h-4 w-4" />
+                  <span className="font-sans text-sm">@euforycstudios</span>
                 </a>
-                <a 
-                  href="https://www.tiktok.com/@euforyc" 
-                  target="_blank" 
+                <a
+                  href="https://www.tiktok.com/@euforyc"
+                  target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center space-x-2 opacity-80 hover:opacity-100 transition-opacity"
                 >
@@ -97,7 +97,7 @@ const Footer = () => {
             <Mail className="h-5 w-5 text-[#fffcf2] flex-shrink-0 mt-1" />
             <div>
               <h3 className="font-sans text-sm font-medium tracking-wider mb-1">EMAIL</h3>
-              <a 
+              <a
                 href="mailto:euforyc@gmail.com"
                 className="font-sans text-xs text-[#fffcf2]/80 hover:text-[#fffcf2] transition-colors"
               >
@@ -108,19 +108,19 @@ const Footer = () => {
         </div>
 
         <div className="border-t border-[#fffcf2]/20 mt-12 pt-8 text-center space-y-3">
-  <div className="space-y-2">
-    <Link 
-      href="/terms" 
-      className="font-sans text-xs opacity-80 hover:opacity-100 transition-opacity"
-    >
-      Terms of Service
-    </Link>
-  </div>
-  <p className="font-sans text-xs opacity-60 tracking-wider">
-    © 2025 EUFORYC STUDIOS. ALL RIGHTS RESERVED. All content, designs, graphics, and code are protected by copyright.
-    Unauthorized use, copying, or reproduction is strictly prohibited.
-  </p>
-</div>
+          <div className="space-y-2">
+            <Link
+              href="/terms"
+              className="font-sans text-xs opacity-80 hover:opacity-100 transition-opacity"
+            >
+              Terms of Service
+            </Link>
+          </div>
+          <p className="font-sans text-xs opacity-60 tracking-wider">
+            © 2025 EUFORYC STUDIOS. ALL RIGHTS RESERVED. All content, designs, graphics, and code are protected by copyright.
+            Unauthorized use, copying, or reproduction is strictly prohibited.
+          </p>
+        </div>
       </div>
     </footer>
   );
