@@ -5,7 +5,6 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { Menu, X } from 'lucide-react';
-import BlackFridayBanner from './BlackFridayBanner';
 
 type NavItem = {
   href: string;
@@ -36,11 +35,11 @@ const Navigation = () => {
   return (
     <>
       <nav className="fixed top-0 left-0 right-0 z-50 bg-[#1a260e]/95 backdrop-blur-sm">
-        <div className="w-full px-4 md:px-8 py-5">
+        <div className="w-full px-4 md:px-6 lg:px-8 py-5">
           {/* Desktop Navigation */}
-          <div className="hidden md:grid grid-cols-[1fr_auto_1fr] items-center gap-8">
+          <div className="hidden md:grid grid-cols-[1fr_auto_1fr] items-center gap-3 lg:gap-6 xl:gap-8">
             {/* Left Navigation */}
-            <div className="flex items-center justify-end space-x-2 md:space-x-4">
+            <div className="flex items-center justify-end space-x-2 lg:space-x-3 xl:space-x-4">
               {leftNavItems.map((item) => (
                 item.external ? (
                   <a
@@ -48,7 +47,7 @@ const Navigation = () => {
                     href={item.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="font-sans text-[9px] md:text-[10px] lg:text-xs tracking-[0.1em] transition-all duration-300 text-[#fffcf2] hover:opacity-70 whitespace-nowrap"
+                    className="font-sans text-[9px] lg:text-[10px] xl:text-xs tracking-[0.1em] transition-all duration-300 text-[#fffcf2] hover:opacity-70 whitespace-nowrap"
                   >
                     {item.label}
                   </a>
@@ -56,7 +55,7 @@ const Navigation = () => {
                   <Link
                     key={item.href}
                     href={item.href}
-                    className="font-sans text-[9px] md:text-[10px] lg:text-xs tracking-[0.1em] transition-all duration-300 whitespace-nowrap text-[#e7e3dd] hover:text-[#fffcf2] relative group"
+                    className="font-sans text-[9px] lg:text-[10px] xl:text-xs tracking-[0.1em] transition-all duration-300 whitespace-nowrap text-[#e7e3dd] hover:text-[#fffcf2] relative group"
                   >
                     <span className="relative">
                       {item.label}
@@ -67,7 +66,7 @@ const Navigation = () => {
                   <Link
                     key={item.href}
                     href={item.href}
-                    className={`font-sans text-[9px] md:text-[10px] lg:text-xs tracking-[0.1em] transition-all duration-300 ${item.href === '/packages-memberships' ? 'text-center leading-tight' : 'whitespace-nowrap'
+                    className={`font-sans text-[9px] lg:text-[10px] xl:text-xs tracking-[0.1em] transition-all duration-300 ${item.href === '/packages-memberships' ? 'text-center leading-tight' : 'whitespace-nowrap'
                       } ${pathname === item.href
                         ? 'text-[#fffcf2] font-medium'
                         : 'text-[#fffcf2] hover:opacity-70'
@@ -88,27 +87,27 @@ const Navigation = () => {
             {/* Center Logo - Absolutely centered */}
             <Link
               href="/"
-              className="flex items-center justify-center group transition-all duration-300 hover:scale-105 px-4"
+              className="flex items-center justify-center group transition-all duration-300 hover:scale-105 px-2"
             >
-              <div className="relative w-[350px] lg:w-[450px] h-[100px] lg:h-[120px]">
+              <div className="relative w-[320px] lg:w-[380px] xl:w-[450px] h-[90px] lg:h-[110px] xl:h-[120px]">
                 <Image
                   src="/logo.png"
                   alt="Euforyc Studios - Premier Pilates Studio London Edgware"
                   fill
                   className="object-contain"
                   priority
-                  sizes="(max-width: 1024px) 350px, 450px"
+                  sizes="(max-width: 1024px) 320px, (max-width: 1280px) 380px, 450px"
                 />
               </div>
             </Link>
 
             {/* Right Navigation */}
-            <div className="flex items-center justify-start space-x-2 md:space-x-4">
+            <div className="flex items-center justify-start space-x-2 lg:space-x-3 xl:space-x-4">
               {rightNavItems.map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`font-sans text-[9px] md:text-[10px] lg:text-xs tracking-[0.1em] transition-all duration-300 whitespace-nowrap ${pathname === item.href
+                  className={`font-sans text-[9px] lg:text-[10px] xl:text-xs tracking-[0.1em] transition-all duration-300 whitespace-nowrap ${pathname === item.href
                     ? 'text-[#fffcf2] font-medium'
                     : 'text-[#fffcf2] hover:opacity-70'
                     }`}
@@ -191,9 +190,6 @@ const Navigation = () => {
           </div>
         </div>
       </nav>
-      <div className="fixed top-[90px] md:top-[160px] left-0 right-0 z-40">
-        <BlackFridayBanner />
-      </div>
     </>
   );
 };
