@@ -47,7 +47,7 @@ export default function Book() {
               <ul className="space-y-2 text-sm text-[#1a260e]/60">
                 <li>• Reformer Pilates - £25</li>
                 <li>• Hot Pilates - £30</li>
-                <li>• Belly Dancing - £12</li>
+                <li>• Belly Dancing - £15</li>
                 <li>• No commitment required</li>
               </ul>
               <a

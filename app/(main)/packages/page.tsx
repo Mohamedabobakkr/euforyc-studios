@@ -181,6 +181,18 @@ const packages = {
         momenceUrl: 'https://momence.com/m/473321' // 12-Session Pack Private Reformer
       }
     ]
+  },
+  bellyDancing: {
+    title: 'Belly Dancing',
+    subtitle: 'Graceful, expressive movement for body and soul',
+    packages: [
+      {
+        name: '4 Classes',
+        price: '£50',
+        savings: 'save £10',
+        momenceUrl: 'https://momence.com/m/597174'
+      }
+    ]
   }
 };
 
@@ -550,6 +562,38 @@ export default function Packages() {
                   </a>
                 ))}
               </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Belly Dancing Packages */}
+        <section className="section-padding bg-[#fffcf2]">
+          <div className="container-width">
+            <div className="max-w-md mx-auto">
+              <div className="text-center mb-12">
+                <h2 className="heading-secondary mb-2">{packages.bellyDancing.title}</h2>
+                <p className="tagline text-[#1a260e]/60">{packages.bellyDancing.subtitle}</p>
+              </div>
+
+              <a
+                href={packages.bellyDancing.packages[0].momenceUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group relative bg-[#1a260e] text-[#fffcf2] rounded-lg p-8 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 block"
+              >
+                <div className="text-center space-y-4">
+                  <Package className="h-10 w-10 text-[#fffcf2]/60 mx-auto" />
+                  <h3 className="font-serif text-2xl font-light">{packages.bellyDancing.packages[0].name}</h3>
+                  <div>
+                    <p className="font-serif text-3xl font-light">{packages.bellyDancing.packages[0].price}</p>
+                    <p className="font-sans text-sm text-green-400 font-medium mt-1">{packages.bellyDancing.packages[0].savings}</p>
+                  </div>
+                  <div className="flex items-center justify-center text-[#fffcf2] opacity-0 group-hover:opacity-100 transition-opacity">
+                    <span className="font-sans text-sm mr-2">Book Now</span>
+                    <ExternalLink className="h-4 w-4" />
+                  </div>
+                </div>
+              </a>
             </div>
           </div>
         </section>

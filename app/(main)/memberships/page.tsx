@@ -198,6 +198,24 @@ const memberships = {
         momenceUrl: 'https://momence.com/m/498719' // Replace with actual membership URL
       }
     ]
+  },
+  bellyDancing: {
+    title: 'Belly Dancing Membership',
+    subtitle: 'Graceful, expressive movement for body and soul',
+    memberships: [
+      {
+        name: '4 Classes/Month',
+        monthlyPrice: '£45',
+        description: 'Monthly dance commitment',
+        savings: 'Save £15/month vs drop-in',
+        features: [
+          '4 Belly Dancing classes per month',
+          'Priority booking access',
+          'Ongoing monthly commitment'
+        ],
+        momenceUrl: 'https://momence.com/m/597181'
+      }
+    ]
   }
 };
 
@@ -461,6 +479,56 @@ export default function Memberships() {
                 </a>
               ))}
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Belly Dancing Membership */}
+      <section className="section-padding bg-[#fffcf2]">
+        <div className="container-width">
+          <div className="max-w-md mx-auto">
+            <div className="text-center mb-12">
+              <h2 className="heading-secondary mb-2">{memberships.bellyDancing.title}</h2>
+              <p className="tagline text-[#1a260e]/60">{memberships.bellyDancing.subtitle}</p>
+            </div>
+
+            <a
+              href={memberships.bellyDancing.memberships[0].momenceUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group relative rounded-2xl p-8 hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 bg-white border-2 border-[#1a260e]/10 text-[#1a260e] hover:border-[#1a260e]/20 block"
+            >
+              <div className="text-center space-y-6">
+                <div className="space-y-2">
+                  <h3 className="font-serif text-2xl font-light">{memberships.bellyDancing.memberships[0].name}</h3>
+                  <p className="text-sm text-[#1a260e]/60">
+                    {memberships.bellyDancing.memberships[0].description}
+                  </p>
+                </div>
+
+                <div className="space-y-2">
+                  <p className="font-serif text-4xl font-light">{memberships.bellyDancing.memberships[0].monthlyPrice}</p>
+                  <p className="text-sm text-[#1a260e]/60">per month</p>
+                  <p className="font-sans text-sm font-medium text-green-700">
+                    {memberships.bellyDancing.memberships[0].savings}
+                  </p>
+                </div>
+
+                <div className="space-y-3 text-left">
+                  {memberships.bellyDancing.memberships[0].features.map((feature, featureIndex) => (
+                    <div key={featureIndex} className="flex items-start space-x-3">
+                      <CheckCircle className="h-5 w-5 mt-0.5 flex-shrink-0 text-green-600" />
+                      <span className="text-sm text-[#1a260e]/80">{feature}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity pt-4 text-[#1a260e]">
+                  <span className="font-sans text-sm font-medium mr-2">Start Membership</span>
+                  <ExternalLink className="h-4 w-4" />
+                </div>
+              </div>
+            </a>
           </div>
         </div>
       </section>
