@@ -37,7 +37,7 @@ const Navigation = () => {
       <nav className="fixed top-0 left-0 right-0 z-50 bg-[#1a260e]/95 backdrop-blur-sm">
         <div className="w-full px-4 md:px-6 lg:px-8 py-5">
           {/* Desktop Navigation */}
-          <div className="hidden md:grid grid-cols-[1fr_auto_1fr] items-center gap-3 lg:gap-6 xl:gap-8">
+          <div className="hidden xl:grid grid-cols-[1fr_auto_1fr] items-center gap-3 xl:gap-6 2xl:gap-8">
             {/* Left Navigation */}
             <div className="flex items-center justify-end space-x-2 lg:space-x-3 xl:space-x-4">
               {leftNavItems.map((item) => (
@@ -119,7 +119,7 @@ const Navigation = () => {
           </div>
 
           {/* Mobile Navigation - Modified for centered logo */}
-          <div className="md:hidden flex flex-col relative">
+          <div className="xl:hidden flex flex-col relative">
             {/* Hamburger button positioned absolutely */}
             <div className="absolute right-0 top-1/2 -translate-y-1/2 z-10">
               <button
@@ -153,7 +153,7 @@ const Navigation = () => {
 
           {/* Mobile Menu - Smooth Dropdown Animation */}
           <div
-            className={`md:hidden overflow-hidden transition-all duration-500 ease-in-out ${isOpen ? 'max-h-[600px] opacity-100' : 'max-h-0 opacity-0'
+            className={`xl:hidden overflow-hidden transition-all duration-500 ease-in-out ${isOpen ? 'max-h-[600px] opacity-100' : 'max-h-0 opacity-0'
               }`}
           >
             <div className="mt-6 pb-6 space-y-1 border-t border-[#fffcf2]/10">
