@@ -3,6 +3,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { MapPin, Clock } from 'lucide-react';
 import CircularText from '@/components/CircularText';
+import MomenceReviews from '@/components/MomenceReviews';
 import { Analytics } from '@vercel/analytics/next';
 import { SpeedInsights } from "@vercel/speed-insights/next"
 
@@ -160,6 +161,18 @@ export default function Home() {
               VIEW SCHEDULE
             </Link>
           </div>
+        </div>
+      </section>
+
+      {/* Reviews Section */}
+      <section className="section-padding bg-[#fffcf2]">
+        <div className="container-width">
+          <div className="text-center mb-12">
+            <h2 className="heading-secondary mb-4">What Our Community Says</h2>
+            <p className="tagline">REAL REVIEWS FROM OUR CLIENTS</p>
+          </div>
+
+          <MomenceReviews />
         </div>
       </section>
 
