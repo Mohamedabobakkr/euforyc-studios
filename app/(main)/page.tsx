@@ -202,73 +202,75 @@ export default function Home() {
       </section>
 
       {/* Studio Info Section - NEW */}
-      <section className="py-24 bg-[#fffcf2]">
+      <section className="py-12 md:py-24 bg-[#fffcf2]">
         <div className="container-width">
-          <div className="max-w-4xl mx-auto text-center space-y-12">
+          <div className="max-w-4xl mx-auto text-center space-y-6 md:space-y-12">
             {/* Studio Name */}
-            <div className="space-y-4">
-              <h2 className="font-serif text-4xl md:text-5xl font-light text-[#1a260e] tracking-wider">
+            <div className="space-y-3 md:space-y-4">
+              <h2 className="font-serif text-2xl md:text-5xl font-light text-[#1a260e] tracking-wider">
                 EUFORYC STUDIOS
               </h2>
-              <div className="w-32 h-[1px] bg-[#1a260e]/20 mx-auto"></div>
+              <div className="w-20 md:w-32 h-[1px] bg-[#1a260e]/20 mx-auto"></div>
             </div>
 
             {/* Address */}
-            <div className="flex items-center justify-center space-x-3 text-[#1a260e]/70">
-              <MapPin className="h-5 w-5 flex-shrink-0" />
-              <p className="font-sans text-sm tracking-wider">
-                <Link href="/contact" className="hover:underline">
-                  7 Holmstall Ave, Edgware HA8 5HX, London, United Kingdom
-                </Link>
+            <div className="space-y-2">
+              <div className="flex items-center justify-center space-x-2 md:space-x-3 text-[#1a260e]/70">
+                <MapPin className="h-4 w-4 md:h-5 md:w-5 flex-shrink-0" />
+                <p className="font-sans text-xs md:text-sm tracking-wider">
+                  <Link href="/contact" className="hover:underline">
+                    7 Holmstall Ave, Edgware HA8 5HX, London, United Kingdom
+                  </Link>
+                </p>
+              </div>
+              <p className="text-[10px] md:text-xs text-[#1a260e]/60 text-center">
+                Serving North London: Edgware, Barnet, Mill Hill, Finchley & surrounding areas
               </p>
             </div>
-            <p className="text-xs text-[#1a260e]/60 text-center">
-              Serving North London: Edgware, Barnet, Mill Hill, Finchley & surrounding areas
-            </p>
 
             {/* Hours */}
-            <div className="space-y-6">
-              <div className="flex items-center justify-center space-x-3 text-[#1a260e] mb-4">
-                <Clock className="h-5 w-5" />
-                <h3 className="font-serif text-2xl font-light tracking-wider">Hours</h3>
+            <div className="space-y-4 md:space-y-6">
+              <div className="flex items-center justify-center space-x-2 md:space-x-3 text-[#1a260e]">
+                <Clock className="h-4 w-4 md:h-5 md:w-5" />
+                <h3 className="font-serif text-xl md:text-2xl font-light tracking-wider">Hours</h3>
               </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-3 max-w-2xl mx-auto">
+
+              <div className="grid grid-cols-1 gap-y-1 md:grid-cols-2 md:gap-x-16 md:gap-y-3 max-w-2xl mx-auto px-4 md:px-0">
                 {/* Weekdays */}
-                <div className="text-left space-y-2">
+                <div className="text-left">
                   <div className="flex justify-between items-center py-2 border-b border-[#1a260e]/10">
-                    <span className="font-sans text-sm text-[#1a260e]/60">Mon-Fri</span>
-                    <span className="font-sans text-sm text-[#1a260e] tracking-wider">6:45 AM - 8:00 PM</span>
+                    <span className="font-sans text-xs md:text-sm text-[#1a260e]/60">Mon-Fri</span>
+                    <span className="font-sans text-xs md:text-sm text-[#1a260e] tracking-wider">6:45 AM - 8:00 PM</span>
                   </div>
                 </div>
-                
+
                 {/* Weekends */}
-                <div className="text-left space-y-2">
+                <div className="text-left">
                   <div className="flex justify-between items-center py-2 border-b border-[#1a260e]/10">
-                    <span className="font-sans text-sm text-[#1a260e]/60">Sat-Sun</span>
-                    <span className="font-sans text-sm text-[#1a260e] tracking-wider">8:45 AM - 6:00 PM</span>
+                    <span className="font-sans text-xs md:text-sm text-[#1a260e]/60">Sat-Sun</span>
+                    <span className="font-sans text-xs md:text-sm text-[#1a260e] tracking-wider">8:45 AM - 6:00 PM</span>
                   </div>
                 </div>
               </div>
             </div>
 
             {/* Contact Button */}
-            <div className="pt-8 space-y-4">
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="pt-4 md:pt-8 space-y-3 md:space-y-4">
+              <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center">
                 <Link
                   href="/contact"
-                  className="inline-block bg-[#1a260e] text-[#fffcf2] px-12 py-4 font-sans text-sm tracking-[0.2em] uppercase transition-all duration-500 hover:bg-[#1a260e]/90 hover:scale-[1.02]"
+                  className="inline-block bg-[#1a260e] text-[#fffcf2] px-8 md:px-12 py-3 md:py-4 font-sans text-xs md:text-sm tracking-[0.2em] uppercase transition-all duration-500 hover:bg-[#1a260e]/90 hover:scale-[1.02]"
                 >
                   CONTACT US
                 </Link>
                 <Link
                   href="/faq"
-                  className="inline-block border border-[#1a260e] text-[#1a260e] px-12 py-4 font-sans text-sm tracking-[0.2em] uppercase transition-all duration-500 hover:bg-[#1a260e] hover:text-[#fffcf2] hover:scale-[1.02]"
+                  className="inline-block border border-[#1a260e] text-[#1a260e] px-8 md:px-12 py-3 md:py-4 font-sans text-xs md:text-sm tracking-[0.2em] uppercase transition-all duration-500 hover:bg-[#1a260e] hover:text-[#fffcf2] hover:scale-[1.02]"
                 >
                   FAQ
                 </Link>
               </div>
-              <p className="text-xs text-[#1a260e]/60 text-center">
+              <p className="text-[10px] md:text-xs text-[#1a260e]/60 text-center">
                 <Link href="/faq" className="hover:underline">Common questions about pilates classes</Link> |
                 <Link href="/packages" className="hover:underline"> View all packages</Link> |
                 <Link href="/book" className="hover:underline"> Book online</Link>
