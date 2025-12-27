@@ -11,12 +11,16 @@ const services = [
         title: 'Fillers',
         description: 'Restore volume and enhance your natural features with premium dermal fillers for lips, cheeks, and facial contouring.',
         items: [
-            { name: 'Lip Augmentation', price: '£250', duration: '45 mins' },
-            { name: 'Cheek Contour', price: '£300', duration: '45 mins' },
-            { name: 'Jawline Definition', price: '£350', duration: '45 mins' },
-            { name: 'Chin Enhancement', price: '£250', duration: '30 mins' },
-            { name: 'Nasolabial Folds', price: '£250', duration: '30 mins' },
-            { name: 'Tear Trough', price: '£350', duration: '45 mins' },
+            { name: 'Facial Profile Balancing', price: '£600', duration: '60 mins' },
+            { name: 'Russian Lips', price: '£180', duration: '45 mins' },
+            { name: 'Lip Filler', price: '£140', duration: '30 mins' },
+            { name: 'Cheek Filler', price: '£130', duration: '30 mins' },
+            { name: 'Jaw Filler', price: '£130', duration: '30 mins' },
+            { name: 'Chin', price: '£130', duration: '30 mins' },
+            { name: 'Nose Reshape', price: '£220', duration: '30 mins' },
+            { name: 'Tear Troughs', price: '£240', duration: '45 mins' },
+            { name: 'Nasolabial Folds', price: '£130', duration: '30 mins' },
+            { name: 'Marionette Lines', price: '£130', duration: '30 mins' },
         ],
         icon: (
             <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
@@ -30,12 +34,14 @@ const services = [
         title: 'Anti-wrinkle',
         description: 'Smooth fine lines and prevent new wrinkles with expertly administered anti-wrinkle treatments for a refreshed appearance.',
         items: [
-            { name: '1 Area', price: '£180', duration: '30 mins' },
-            { name: '2 Areas', price: '£220', duration: '30 mins' },
-            { name: '3 Areas', price: '£260', duration: '30 mins' },
-            { name: 'Brow Lift', price: '£180', duration: '30 mins' },
-            { name: 'Masseter (Jaw Slimming)', price: '£280', duration: '30 mins' },
-            { name: 'Hyperhidrosis (Sweating)', price: '£350', duration: '45 mins' },
+            { name: '1 Area', price: '£120', duration: '30 mins' },
+            { name: '2 Areas', price: '£150', duration: '30 mins' },
+            { name: '3 Areas', price: '£180', duration: '30 mins' },
+            { name: 'Top Up', price: '£25', duration: '15 mins' },
+            { name: 'Brow Lift', price: '£120', duration: '30 mins' },
+            { name: 'Lip Flip (Gummy Smile)', price: '£150', duration: '30 mins' },
+            { name: 'Masseter (Jaw Slimming)', price: '£220', duration: '30 mins' },
+            { name: 'Hyperhidrosis (Sweating)', price: 'from £150', duration: '45 mins' },
         ],
         icon: (
             <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
@@ -50,11 +56,7 @@ const services = [
         title: 'IV Drips',
         description: 'Revitalize from within with customized IV vitamin therapy designed to boost energy, hydration, and overall wellness.',
         items: [
-            { name: 'Energy Boost', price: '£150', duration: '45 mins' },
-            { name: 'Immunity Support', price: '£150', duration: '45 mins' },
-            { name: 'Skin Glow', price: '£175', duration: '45 mins' },
-            { name: 'Detox', price: '£150', duration: '45 mins' },
-            { name: 'Performance', price: '£175', duration: '45 mins' },
+            { name: 'IV Drips', price: 'from £100', duration: '45 mins' },
         ],
         icon: (
             <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
@@ -69,11 +71,13 @@ const services = [
         title: 'Skin Boosters',
         description: 'Achieve a natural glow with advanced skin boosters that deeply hydrate and improve skin texture from within.',
         items: [
-            { name: 'Profhilo (Face)', price: '£300', duration: '45 mins' },
-            { name: 'Profhilo (Neck)', price: '£300', duration: '45 mins' },
-            { name: 'Seventy Hyal', price: '£150', duration: '30 mins' },
-            { name: 'Lumi Eyes', price: '£150', duration: '30 mins' },
-            { name: 'Microneedling (with Meso)', price: '£150', duration: '60 mins' },
+            { name: 'Skin Booster', price: '£120', duration: '30 mins' },
+            { name: 'Profhilo', price: '£300', duration: '45 mins' },
+            { name: 'Neofound', price: '£200', duration: '30 mins' },
+            { name: 'Lumi Eye', price: '£180', duration: '30 mins' },
+            { name: 'Under Eye Polynucleotides', price: 'from £150', duration: '30 mins' },
+            { name: 'Polynucleotide Face', price: 'from £150', duration: '45 mins' },
+            { name: '3 Polynucleotides', price: 'from £450', duration: '60 mins' },
         ],
         icon: (
             <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
@@ -85,11 +89,15 @@ const services = [
         title: 'Body Contouring',
         description: 'Sculpt and define your silhouette with non-invasive body contouring treatments for natural-looking results.',
         items: [
-            { name: 'Fat Freezing', price: '£150', duration: '60 mins' },
-            { name: 'Cavitation & RF (1 Area)', price: '£80', duration: '45 mins' },
-            { name: 'Cavitation & RF (Course of 6)', price: '£400', duration: '45 mins/session' },
-            { name: 'Muscle Stimulation', price: '£60', duration: '30 mins' },
-            { name: 'Cellulite Treatment', price: '£100', duration: '60 mins' },
+            { name: 'Cavitation & RF (1 Session)', price: '£120', duration: '45 mins' },
+            { name: 'Cavitation & RF (2 Areas)', price: '£300', duration: '60 mins' },
+            { name: 'Ultrasound Cavitation (1 Area)', price: '£150', duration: '45 mins' },
+            { name: 'Ultrasound Cavitation (2 Areas)', price: '£260', duration: '60 mins' },
+            { name: 'RF Skin Tightening (1 Session)', price: '£75', duration: '30 mins' },
+            { name: 'RF Skin Tightening (2 Areas)', price: '£110', duration: '45 mins' },
+            { name: 'EMS Sculpt', price: 'from £150', duration: '30 mins' },
+            { name: 'Cellulite Treatment', price: 'from £140', duration: '60 mins' },
+            { name: 'BBL (1 Session)', price: '£120', duration: '45 mins' },
         ],
         icon: (
             <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
@@ -104,9 +112,9 @@ const services = [
         description: 'Advanced laser hair removal and light therapy treatments for smooth, rejuvenated skin.',
         items: [
             { name: 'Full Body Laser Hair Removal', price: '£180', duration: '1 hr 30 mins' },
-            { name: 'Bikini Laser', price: '£40', duration: '15 mins' },
+            { name: 'Face Laser', price: '£40', duration: '15 mins' },
+            { name: 'Laser Top Up', price: '£25', duration: '15 mins' },
             { name: 'Dermalux Phototherapy', price: '£40', duration: '40 mins' },
-            { name: 'Laser Consultation', price: 'Free', duration: '10 mins' },
         ],
         icon: (
             <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
