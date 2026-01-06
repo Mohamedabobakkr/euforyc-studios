@@ -182,15 +182,21 @@ const packages = {
       }
     ]
   },
-  bellyDancing: {
-    title: 'Belly Dancing',
-    subtitle: 'Graceful, expressive movement for body and soul',
+  dancePackage: {
+    title: 'Dance Package',
+    subtitle: 'Choose from Dabke, Belly Dance, or Afro - your choice!',
     packages: [
       {
         name: '4 Classes',
         price: '£50',
         savings: 'save £10',
         momenceUrl: 'https://momence.com/m/597174'
+      },
+      {
+        name: '8 Classes',
+        price: '£90',
+        savings: 'save £30',
+        momenceUrl: 'https://momence.com/m/609496'
       }
     ]
   }
@@ -566,34 +572,41 @@ export default function Packages() {
           </div>
         </section>
 
-        {/* Belly Dancing Packages */}
+        {/* Dance Package */}
         <section className="section-padding bg-[#fffcf2]">
           <div className="container-width">
-            <div className="max-w-md mx-auto">
+            <div className="max-w-3xl mx-auto">
               <div className="text-center mb-12">
-                <h2 className="heading-secondary mb-2">{packages.bellyDancing.title}</h2>
-                <p className="tagline text-[#1a260e]/60">{packages.bellyDancing.subtitle}</p>
+                <h2 className="heading-secondary mb-2">{packages.dancePackage.title}</h2>
+                <p className="tagline text-[#1a260e]/60">{packages.dancePackage.subtitle}</p>
               </div>
 
-              <a
-                href={packages.bellyDancing.packages[0].momenceUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group relative bg-[#1a260e] text-[#fffcf2] rounded-lg p-8 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 block"
-              >
-                <div className="text-center space-y-4">
-                  <Package className="h-10 w-10 text-[#fffcf2]/60 mx-auto" />
-                  <h3 className="font-serif text-2xl font-light">{packages.bellyDancing.packages[0].name}</h3>
-                  <div>
-                    <p className="font-serif text-3xl font-light">{packages.bellyDancing.packages[0].price}</p>
-                    <p className="font-sans text-sm text-green-400 font-medium mt-1">{packages.bellyDancing.packages[0].savings}</p>
-                  </div>
-                  <div className="flex items-center justify-center text-[#fffcf2] opacity-0 group-hover:opacity-100 transition-opacity">
-                    <span className="font-sans text-sm mr-2">Book Now</span>
-                    <ExternalLink className="h-4 w-4" />
-                  </div>
-                </div>
-              </a>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {packages.dancePackage.packages.map((pkg, index) => (
+                  <a
+                    key={index}
+                    href={pkg.momenceUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group relative bg-[#1a260e] text-[#fffcf2] rounded-lg p-8 hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+                  >
+                    <div className="text-center space-y-4">
+                      <Package className="h-10 w-10 text-[#fffcf2]/60 mx-auto" />
+                      <h3 className="font-serif text-2xl font-light">{pkg.name}</h3>
+                      <div>
+                        <p className="font-serif text-3xl font-light">{pkg.price}</p>
+                        {pkg.savings && (
+                          <p className="font-sans text-sm text-green-400 font-medium mt-1">{pkg.savings}</p>
+                        )}
+                      </div>
+                      <div className="flex items-center justify-center text-[#fffcf2] opacity-0 group-hover:opacity-100 transition-opacity">
+                        <span className="font-sans text-sm mr-2">Book Now</span>
+                        <ExternalLink className="h-4 w-4" />
+                      </div>
+                    </div>
+                  </a>
+                ))}
+              </div>
             </div>
           </div>
         </section>
