@@ -328,7 +328,7 @@ export class MomenceApiClient {
     // Log API response summary for debugging
     if (process.env.NODE_ENV === 'development' && events.length > 0) {
       const dates = events.map((e: any) => new Date(e.dateTime).toISOString().split('T')[0]);
-      const uniqueDates = [...new Set(dates)].sort();
+      const uniqueDates = Array.from(new Set(dates)).sort();
       console.log('[Momence API] Date range:', uniqueDates[0], 'to', uniqueDates[uniqueDates.length - 1]);
       console.log('[Momence API] Sample events:', events.slice(0, 2).map((e: any) => ({
         id: e.id,
