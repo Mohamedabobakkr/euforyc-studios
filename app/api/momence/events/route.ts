@@ -9,7 +9,7 @@ import { momenceClient } from '@/lib/momence-client';
 import { MomenceApiError } from '@/lib/types/momence';
 
 export const dynamic = 'force-dynamic'; // Disable static generation
-export const revalidate = 300; // Revalidate every 5 minutes
+export const revalidate = 0; // Always fetch fresh data - no caching
 
 /**
  * GET /api/momence/events
@@ -47,7 +47,7 @@ export async function GET(request: NextRequest) {
       ? await momenceClient.getEventsGroupedByDate(filters)
       : await momenceClient.getEvents(filters);
 
-    // Return success response with cache headers
+    // Return success response with no-cache headers to ensure fresh data
     return NextResponse.json(
       {
         success: true,
@@ -57,7 +57,9 @@ export async function GET(request: NextRequest) {
       },
       {
         headers: {
-          'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=600',
+          'Cache-Control': 'no-cache, no-store, must-revalidate',
+          'Pragma': 'no-cache',
+          'Expires': '0',
         },
       }
     );

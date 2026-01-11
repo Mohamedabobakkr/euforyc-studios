@@ -28,7 +28,7 @@ const MOMENCE_CONFIG = {
 
 // Cache durations (in seconds)
 const CACHE_DURATION = {
-  events: 300, // 5 minutes - dynamic scheduling
+  events: 0, // No caching - always fetch fresh data for live schedule
   memberships: 3600, // 1 hour - semi-static pricing
   products: 3600, // 1 hour - semi-static pricing
   teachers: 7200, // 2 hours - rarely changes
@@ -214,8 +214,26 @@ export class MomenceApiClient {
       // Transform API response to our MomenceEvent type
       const events: MomenceEvent[] = this.transformEvents(data);
 
+      if (process.env.NODE_ENV === 'development') {
+        console.log(`[Momence] Total events from API: ${events.length}`);
+      }
+
       // Apply client-side filters
       let filteredEvents = events;
+
+      // ALWAYS filter out cancelled events - they shouldn't be displayed
+      const cancelledEvents = filteredEvents.filter((event) => event.isCancelled);
+      filteredEvents = filteredEvents.filter((event) => !event.isCancelled);
+
+      if (process.env.NODE_ENV === 'development' && cancelledEvents.length > 0) {
+        console.log(`[Momence] Filtered out ${cancelledEvents.length} cancelled/unpublished events:`);
+        cancelledEvents.slice(0, 3).forEach((event: MomenceEvent) => {
+          console.log(`  - ${event.title} (${event.startTime}) - ID: ${event.id}`);
+        });
+        if (cancelledEvents.length > 3) {
+          console.log(`  ... and ${cancelledEvents.length - 3} more`);
+        }
+      }
 
       if (filters?.excludeSoldOut) {
         filteredEvents = filteredEvents.filter((event) => !event.isSoldOut);
@@ -307,6 +325,21 @@ export class MomenceApiClient {
   private transformEvents(data: any): MomenceEvent[] {
     const events = Array.isArray(data) ? data : data.events || [];
 
+    // Log API response summary for debugging
+    if (process.env.NODE_ENV === 'development' && events.length > 0) {
+      const dates = events.map((e: any) => new Date(e.dateTime).toISOString().split('T')[0]);
+      const uniqueDates = [...new Set(dates)].sort();
+      console.log('[Momence API] Date range:', uniqueDates[0], 'to', uniqueDates[uniqueDates.length - 1]);
+      console.log('[Momence API] Sample events:', events.slice(0, 2).map((e: any) => ({
+        id: e.id,
+        title: e.title,
+        dateTime: e.dateTime,
+        published: e.published,
+        isCancelled: e.isCancelled,
+        isDeleted: e.isDeleted,
+      })));
+    }
+
     return events.map((event: any) => {
       // Momence API fields: dateTime, capacity, spotsRemaining, ticketsSold, fixedPrice
       const capacity = event.capacity || 0;
@@ -314,6 +347,13 @@ export class MomenceApiClient {
       const spotsBooked = event.ticketsSold || 0;
       const isSoldOut = spotsAvailable === 0;
       const isLowCapacity = spotsAvailable > 0 && spotsAvailable / capacity < 0.25;
+
+      // Only mark as cancelled if explicitly cancelled, deleted, or unpublished
+      // Trust the Momence API - if it's published and not cancelled, show it
+      const isCancelled =
+        event.isCancelled === true ||
+        event.isDeleted === true ||
+        event.published === false;
 
       // Calculate endTime from startTime + duration
       const startTime = event.dateTime;
@@ -367,7 +407,7 @@ export class MomenceApiClient {
         },
 
         bookingUrl: event.link || `https://momence.com/s/${event.id}`,
-        canBook: !isSoldOut && !event.isCancelled,
+        canBook: !isSoldOut && !isCancelled,
         requiresAccount: true,
 
         notes: undefined,
@@ -375,8 +415,8 @@ export class MomenceApiClient {
         equipmentNeeded: undefined,
         imageUrl: event.image1 || undefined,
         isRecurring: false,
-        isCancelled: event.isCancelled || false,
-        cancellationReason: undefined,
+        isCancelled: isCancelled,
+        cancellationReason: event.cancellationReason || undefined,
       } as MomenceEvent;
     });
   }

@@ -51,7 +51,12 @@ export default function ScheduleView({ initialData }: ScheduleViewProps) {
       params.append('startDate', today.toISOString().split('T')[0]);
       params.append('endDate', twoWeeksLater.toISOString().split('T')[0]);
 
-      const response = await fetch(`/api/momence/events?${params.toString()}`);
+      const response = await fetch(`/api/momence/events?${params.toString()}`, {
+        cache: 'no-store', // Disable caching to always get fresh data
+        headers: {
+          'Cache-Control': 'no-cache',
+        },
+      });
 
       if (!response.ok) {
         throw new Error('Failed to fetch events');
@@ -60,6 +65,14 @@ export default function ScheduleView({ initialData }: ScheduleViewProps) {
       const result = await response.json();
 
       if (result.success && result.data) {
+        // Count total events for debugging
+        const totalEvents = result.data.reduce(
+          (sum: number, group: any) => sum + group.events.length,
+          0
+        );
+        console.log(`[Schedule] Received ${totalEvents} events from API`);
+        console.log('[Schedule] API Timestamp:', result.timestamp);
+
         setGroupedEvents(result.data);
       } else {
         throw new Error(result.error?.message || 'Failed to load schedule');
@@ -82,14 +95,36 @@ export default function ScheduleView({ initialData }: ScheduleViewProps) {
   }, []);
 
   /**
+   * Auto-refresh every 5 minutes for real-time accuracy
+   */
+  useEffect(() => {
+    const REFRESH_INTERVAL = 5 * 60 * 1000; // 5 minutes in milliseconds
+
+    const intervalId = setInterval(() => {
+      console.log('[Schedule] Auto-refreshing events...');
+      fetchEvents();
+    }, REFRESH_INTERVAL);
+
+    // Cleanup interval on unmount
+    return () => clearInterval(intervalId);
+  }, []);
+
+  /**
    * Check if event should be excluded from public schedule
+   * Only hide private client-specific events, NOT bookable 1:1 services
    */
   const isPrivateEvent = (event: any): boolean => {
     const title = event.title.toLowerCase();
 
-    // Exclude events that start with "private" but are NOT 1-on-1 sessions
-    // This filters out test events like "Private full body 3"
-    if (title.startsWith('private ') && !title.includes('1:1') && !title.includes('1-1')) {
+    // ONLY exclude events that are private client bookings (not public bookable services)
+    // Private events typically have format like "Private - Client Name" or just "Private"
+    // But keep "Private 1:1" or "1:1 Private Session" as those are bookable services
+    if (
+      title.startsWith('private') &&
+      !title.includes('1:1') &&
+      !title.includes('1-1') &&
+      !title.includes('session')
+    ) {
       return true;
     }
 
@@ -157,18 +192,25 @@ export default function ScheduleView({ initialData }: ScheduleViewProps) {
    */
   const filteredGroupedEvents = useMemo(() => {
     const now = new Date();
+    let privateCount = 0;
+    let pastCount = 0;
+    let totalBeforeFilter = 0;
 
-    return groupedEvents
+    const filtered = groupedEvents
       .map((group) => {
         const filteredEvents = group.events.filter((event) => {
+          totalBeforeFilter++;
+
           // Filter out private test events
           if (isPrivateEvent(event)) {
+            privateCount++;
             return false;
           }
 
           // Filter out classes that have already started
           const classStartTime = new Date(event.startTime);
           if (classStartTime <= now) {
+            pastCount++;
             return false;
           }
 
@@ -209,6 +251,18 @@ export default function ScheduleView({ initialData }: ScheduleViewProps) {
         };
       })
       .filter((group) => group.events.length > 0); // Remove empty date groups
+
+    // Log filtering summary for debugging
+    const totalAfterFilter = filtered.reduce((sum, group) => sum + group.events.length, 0);
+    console.log('[Schedule Filter Summary]', {
+      totalBeforeFilter,
+      privateFiltered: privateCount,
+      pastFiltered: pastCount,
+      categoryFiltered: totalBeforeFilter - privateCount - pastCount - totalAfterFilter,
+      totalAfterFilter,
+    });
+
+    return filtered;
   }, [groupedEvents, selectedCategory, selectedInstructor, searchQuery]);
 
   /**
