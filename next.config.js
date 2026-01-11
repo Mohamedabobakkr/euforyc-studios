@@ -2,32 +2,32 @@
 const nextConfig = {
   // Remove static export for better performance with SSR/ISR
   // output: 'export', // Comment this out for production
-  
+
   // Image optimization
-images: {
-  domains: ['localhost', 'euforyc-studios.vercel.app'],
-  remotePatterns: [
-    {
-      protocol: 'https',
-      hostname: '**',
-    },
-  ],
-  formats: ['image/avif', 'image/webp'],
-  deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
-  imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
-  minimumCacheTTL: 60,
-},
-  
+  images: {
+    domains: ['localhost', 'euforyc-studios.vercel.app'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**',
+      },
+    ],
+    formats: ['image/avif', 'image/webp'],
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+    minimumCacheTTL: 60,
+  },
+
   // Performance optimizations
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
   },
-  
+
   // ESLint configuration - moved to top level
   eslint: {
     ignoreDuringBuilds: true,
   },
-  
+
   // Security headers
   async headers() {
     return [
@@ -37,6 +37,10 @@ images: {
           {
             key: 'X-DNS-Prefetch-Control',
             value: 'on'
+          },
+          {
+            key: 'Strict-Transport-Security',
+            value: 'max-age=63072000; includeSubDomains; preload'
           },
           {
             key: 'X-XSS-Protection',
@@ -52,17 +56,27 @@ images: {
           },
           {
             key: 'Referrer-Policy',
-            value: 'origin-when-cross-origin'
+            value: 'strict-origin-when-cross-origin'
           },
           {
             key: 'Permissions-Policy',
             value: 'camera=(), microphone=(), geolocation=()'
           }
         ]
+      },
+      {
+        // Prevent caching of API responses
+        source: '/api/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'no-store, max-age=0'
+          }
+        ]
       }
     ]
   },
-  
+
   // Redirects for SEO
   async redirects() {
     return [

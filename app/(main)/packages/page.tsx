@@ -4,6 +4,7 @@ import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { ExternalLink, Package, Sparkles, Flame } from 'lucide-react';
 
+
 // Note: Metadata moved to layout or generateMetadata in a server component
 
 // Services Schema for SEO

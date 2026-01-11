@@ -28,10 +28,10 @@ const Footer = () => {
                 About
               </Link>
               <Link
-                href="/team"
+                href="/teachers"
                 className="block font-sans text-sm opacity-80 hover:opacity-100 transition-opacity"
               >
-                Our Team
+                Our Instructors
               </Link>
               <Link
                 href="/shop"

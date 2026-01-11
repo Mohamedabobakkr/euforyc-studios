@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import { Calendar, Clock, Users, MapPin, ExternalLink, User, Package } from 'lucide-react';
-import MomenceSchedule from '@/components/MomenceSchedule';
 
 export default function Book() {
   // Add state to track if the schedule is loaded
@@ -19,115 +18,101 @@ export default function Book() {
   }, []);
 
   return (
-    <div className="pt-32">
-      {/* Hero Section */}
-      <section className="section-padding py-24 bg-[#fffcf2]">
+    <div className="pt-24 md:pt-32">
+      {/* Hero Section - Mobile Optimized */}
+      <section className="px-5 md:section-padding py-12 md:py-20 bg-[#fffcf2]">
         <div className="container-width text-center">
-          <h1 className="heading-primary mb-8">Book Your Session</h1>
-          <p className="body-text text-xl max-w-3xl mx-auto">
-            Choose your preferred booking option below. Whether you're looking for a single class,
-            a private session, or a package deal, we have the perfect option for you.
+          <h1 className="font-serif text-3xl md:text-5xl lg:text-6xl font-light text-[#1a260e] mb-4 md:mb-6">Book Your Session</h1>
+          <p className="text-base md:text-lg text-[#1a260e]/70 max-w-2xl mx-auto font-light leading-relaxed">
+            Choose how you'd like to book your next class
           </p>
         </div>
       </section>
 
-      {/* Booking Options */}
-      <section className="section-padding bg-[#fffcf2]">
+      {/* Simple Booking Options - Mobile Optimized */}
+      <section className="px-5 md:section-padding pb-8 md:pb-16 bg-[#fffcf2]">
         <div className="container-width">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {/* Drop-In Single Classes */}
-            <div className="bg-white border border-[#1a260e]/10 rounded-lg p-8 text-center space-y-6 hover:shadow-lg transition-shadow">
-              <div className="bg-[#1a260e]/10 w-16 h-16 rounded-full flex items-center justify-center mx-auto">
-                <Calendar className="h-8 w-8 text-[#1a260e]" />
-              </div>
-              <h3 className="font-playfair text-2xl font-light">Drop-In Classes</h3>
-              <p className="body-text text-[#1a260e]/70">
-                Perfect for trying out our classes or fitting a session into your busy schedule.
-              </p>
-              <ul className="space-y-2 text-sm text-[#1a260e]/60">
-                <li>• Reformer Pilates - £25</li>
-                <li>• Hot Pilates - £30</li>
-                <li>• Belly Dancing - £15</li>
-                <li>• No commitment required</li>
-              </ul>
-              <a
-                href="https://momence.com/u/euforyc-6ClBZX"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 bg-[#1a260e] text-[#fffcf2] px-6 py-3 font-serif hover:bg-[#1a260e]/90 transition-colors duration-200"
-              >
-                BOOK DROP-IN
-                <ExternalLink className="h-4 w-4" />
-              </a>
-            </div>
+          <div className="max-w-4xl mx-auto">
+            {/* Two Clear Options */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
 
-            {/* 1-1 Private Sessions */}
-            <div className="bg-white border border-[#1a260e]/10 rounded-lg p-8 text-center space-y-6 hover:shadow-lg transition-shadow">
-              <div className="bg-[#1a260e]/10 w-16 h-16 rounded-full flex items-center justify-center mx-auto">
-                <User className="h-8 w-8 text-[#1a260e]" />
-              </div>
-              <h3 className="font-playfair text-2xl font-light">1-1 Private Sessions</h3>
-              <p className="body-text text-[#1a260e]/70">
-                Personalized attention and customized workouts tailored to your specific needs.
-              </p>
-              <ul className="space-y-2 text-sm text-[#1a260e]/60">
-                <li>• Single session - £65</li>
-                <li>• 60-minute sessions</li>
-                <li>• Fully personalized</li>
-              </ul>
+              {/* Primary: Book a Class */}
               <a
-                href="https://momence.com/u/euforyc-6ClBZX"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 bg-[#1a260e] text-[#fffcf2] px-6 py-3 font-serif hover:bg-[#1a260e]/90 transition-colors duration-200"
+                href="/schedule"
+                className="group relative bg-[#1a260e] text-[#fffcf2] rounded-2xl p-8 md:p-10 text-center overflow-hidden
+                  active:scale-[0.98] md:hover:scale-[1.02] md:hover:shadow-[0_20px_60px_rgba(26,38,14,0.3)]
+                  transition-all duration-300 cursor-pointer touch-manipulation"
               >
-                BOOK PRIVATE
-                <ExternalLink className="h-4 w-4" />
-              </a>
-            </div>
+                {/* Decorative elements */}
+                <div className="absolute top-0 right-0 w-32 md:w-40 h-32 md:h-40 bg-white/5 rounded-full blur-2xl -translate-y-1/2 translate-x-1/3" />
 
-            {/* Packages */}
-            <div className="bg-[#1a260e] text-[#fffcf2] rounded-lg p-8 text-center space-y-6 relative overflow-hidden">
-              <div className="absolute top-0 right-0 bg-[#fffcf2] text-[#1a260e] px-4 py-1 text-xs font-medium">
-                BEST VALUE
-              </div>
-              <div className="bg-[#fffcf2]/20 w-16 h-16 rounded-full flex items-center justify-center mx-auto">
-                <Package className="h-8 w-8 text-[#fffcf2]" />
-              </div>
-              <h3 className="font-playfair text-2xl font-light">Class Packages</h3>
-              <p className="body-text text-[#fffcf2]/80">
-                Save more with our class packages. Perfect for committed practitioners.
-              </p>
-              <ul className="space-y-2 text-sm text-[#fffcf2]/70">
-                <li>• 4 to Unlimited classes</li>
-                <li>• Valid for 30 days</li>
-                <li>• Save up to £160</li>
-              </ul>
+                <div className="relative z-10 space-y-4 md:space-y-5">
+                  <div className="w-12 h-12 md:w-14 md:h-14 bg-white/10 backdrop-blur-sm rounded-xl flex items-center justify-center mx-auto
+                    group-active:scale-95 md:group-hover:scale-110 transition-transform duration-300">
+                    <Calendar className="h-6 w-6 md:h-7 md:w-7 text-[#fffcf2]" />
+                  </div>
+
+                  <div>
+                    <h3 className="font-serif text-xl md:text-3xl font-light mb-1 md:mb-2">Book a Class</h3>
+                    <p className="text-[#fffcf2]/70 text-xs md:text-sm font-light">
+                      View schedule & book drop-in or regular classes
+                    </p>
+                  </div>
+
+                  <div className="inline-flex items-center gap-2 text-xs md:text-sm font-medium tracking-wide bg-white/10 px-4 py-2 rounded-full">
+                    <span>VIEW SCHEDULE</span>
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                    </svg>
+                  </div>
+                </div>
+              </a>
+
+              {/* Secondary: View Packages */}
               <a
                 href="/packages"
-                className="inline-flex items-center gap-2 bg-[#fffcf2] text-[#1a260e] px-6 py-3 font-serif hover:bg-[#fffcf2]/90 transition-colors duration-200"
+                className="group relative bg-white border-2 border-[#1a260e]/10 text-[#1a260e] rounded-2xl p-8 md:p-10 text-center overflow-hidden
+                  active:scale-[0.98] md:hover:border-[#1a260e]/30 md:hover:scale-[1.02] md:hover:shadow-[0_20px_60px_rgba(26,38,14,0.1)]
+                  transition-all duration-300 cursor-pointer touch-manipulation"
               >
-                VIEW PACKAGES
-                <ExternalLink className="h-4 w-4" />
+                {/* Best Value Badge */}
+                <div className="absolute top-3 right-3 md:top-4 md:right-4 bg-[#1a260e] text-[#fffcf2] px-2.5 py-1 md:px-3 rounded-full text-[10px] md:text-xs font-medium tracking-wide">
+                  SAVE MORE
+                </div>
+
+                <div className="relative z-10 space-y-4 md:space-y-5">
+                  <div className="w-12 h-12 md:w-14 md:h-14 bg-[#1a260e]/10 rounded-xl flex items-center justify-center mx-auto
+                    group-active:scale-95 md:group-hover:scale-110 transition-transform duration-300">
+                    <Package className="h-6 w-6 md:h-7 md:w-7 text-[#1a260e]" />
+                  </div>
+
+                  <div>
+                    <h3 className="font-serif text-xl md:text-3xl font-light mb-1 md:mb-2">Class Packages</h3>
+                    <p className="text-[#1a260e]/60 text-xs md:text-sm font-light">
+                      Save up to £160 with bundles
+                    </p>
+                  </div>
+
+                  <div className="inline-flex items-center gap-2 text-xs md:text-sm font-medium tracking-wide text-[#1a260e]/70 bg-[#1a260e]/5 px-4 py-2 rounded-full">
+                    <span>VIEW PACKAGES</span>
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                    </svg>
+                  </div>
+                </div>
               </a>
             </div>
-          </div>
-        </div>
-      </section>
 
-      {/* Class Schedule Section - Enhanced for visibility */}
-      <section id="class-schedule" className="section-padding bg-white">
-        <div className="container-width">
-          <div className="text-center mb-12">
-            <h2 className="heading-secondary mb-4">Class Schedule</h2>
-            <p className="body-text max-w-2xl mx-auto">
-              Browse our upcoming classes and book directly from the calendar below.
-            </p>
-          </div>
-
-          {/* Add a specific height constraint and styles to ensure the Momence widget renders properly */}
-          <div className="border border-[#1a260e]/10 rounded-lg p-4 md:p-8 bg-[#fffcf2] min-h-[600px] relative">
-            <MomenceSchedule />
+            {/* Quick Info - Mobile Optimized */}
+            <div className="mt-6 md:mt-10 text-center">
+              <div className="flex flex-col md:flex-row items-center justify-center gap-2 md:gap-0">
+                <span className="text-xs md:text-sm text-[#1a260e]/50 font-light">Drop-in from £15</span>
+                <span className="hidden md:inline text-[#1a260e]/30 mx-2">•</span>
+                <span className="text-xs md:text-sm text-[#1a260e]/50 font-light">Packages from £90</span>
+                <span className="hidden md:inline text-[#1a260e]/30 mx-2">•</span>
+                <span className="text-xs md:text-sm text-[#1a260e]/50 font-light">Private sessions available</span>
+              </div>
+            </div>
           </div>
         </div>
       </section>
