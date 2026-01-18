@@ -333,7 +333,7 @@ function IntroOffersSection() {
                   </div>
 
                   <p className="text-sm text-[#fffcf2]/80 leading-relaxed">
-                    {currentPackage.description}. Valid for 20 days from purchase.
+                    {currentPackage.description}. Valid for {currentPackage.id === 'reformer' ? '20' : '30'} days from purchase.
                   </p>
 
                   <div className="pt-2">
@@ -384,7 +384,7 @@ function IntroOffersSection() {
 
           {/* Validity note - Desktop only */}
           <p className="hidden md:block text-center text-xs text-[#1a260e]/50 mt-8">
-            All intro offers valid for 20 days from purchase. First-time clients only.
+            Intro offers valid for 30 days from purchase (Reformer: 20 days). First-time clients only.
           </p>
         </div>
       </div>
