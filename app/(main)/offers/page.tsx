@@ -1,10 +1,44 @@
 'use client';
 
-import { useState, useEffect, Suspense } from 'react';
+import { useState, useEffect, Suspense, useMemo } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import { ExternalLink, Package, Flame, Zap, Heart, CheckCircle2, Music, ArrowRight, Sparkles, Users, Clock, MapPin } from 'lucide-react';
+import { ExternalLink, Package, Flame, Zap, Heart, CheckCircle2, Music, ArrowRight, Sparkles, Users, Clock, MapPin, Timer } from 'lucide-react';
+
+// Countdown hook for urgency timer
+function useCountdown(targetTimestamp: number) {
+  const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+
+  useEffect(() => {
+    const calculateTimeLeft = () => {
+      const now = Date.now();
+      const difference = targetTimestamp - now;
+
+      if (difference > 0) {
+        setTimeLeft({
+          days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+          hours: Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+          minutes: Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60)),
+          seconds: Math.floor((difference % (1000 * 60)) / 1000),
+        });
+      }
+    };
+
+    calculateTimeLeft();
+    const interval = setInterval(calculateTimeLeft, 1000);
+    return () => clearInterval(interval);
+  }, [targetTimestamp]);
+
+  return timeLeft;
+}
+
 import MomenceReviews from '@/components/MomenceReviews';
+
+// Calculate end of current month for offer deadline
+function getEndOfMonth() {
+  const now = new Date();
+  return new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59);
+}
 
 // Intro Offer data
 const introOffers = {
@@ -123,6 +157,8 @@ const offerIds: OfferId[] = ['reformer', 'hot-pilates', 'red-light', 'barre'];
 function OffersContent() {
   const searchParams = useSearchParams();
   const [selectedOffer, setSelectedOffer] = useState<OfferId>('reformer');
+  const endOfMonthTimestamp = useMemo(() => getEndOfMonth().getTime(), []);
+  const timeLeft = useCountdown(endOfMonthTimestamp);
 
   useEffect(() => {
     const offerParam = searchParams.get('offer') as OfferId | null;
@@ -143,8 +179,16 @@ function OffersContent() {
         </div>
 
         <div className="relative z-10 container-width text-center px-6">
-          {/* Badge */}
-          <div className="inline-flex items-center gap-2 bg-[#fffcf2]/10 backdrop-blur-sm border border-[#fffcf2]/20 rounded-full px-3 py-1.5 md:px-5 md:py-2 mb-6 md:mb-8">
+          {/* Urgency Badge */}
+          <div className="inline-flex items-center gap-2 bg-orange-500/20 backdrop-blur-sm border border-orange-400/30 rounded-full px-3 py-1.5 md:px-5 md:py-2 mb-4 md:mb-5">
+            <Timer className="h-3.5 w-3.5 md:h-4 md:w-4 text-orange-400" />
+            <span className="text-xs md:text-sm text-orange-300 tracking-wider font-medium">
+              OFFER ENDS IN: {timeLeft.days}d {timeLeft.hours}h {timeLeft.minutes}m
+            </span>
+          </div>
+
+          {/* First-time badge */}
+          <div className="inline-flex items-center gap-2 bg-[#fffcf2]/10 backdrop-blur-sm border border-[#fffcf2]/20 rounded-full px-3 py-1.5 md:px-5 md:py-2 mb-6 md:mb-8 ml-2">
             <Sparkles className="h-3.5 w-3.5 md:h-4 md:w-4 text-[#fffcf2]" />
             <span className="text-xs md:text-sm text-[#fffcf2] tracking-wider">FIRST-TIME CLIENTS ONLY</span>
           </div>
@@ -166,7 +210,7 @@ function OffersContent() {
               href="#intro-offers"
               className="group inline-flex items-center gap-2 bg-[#fffcf2] text-[#1a260e] px-8 py-4 font-sans text-sm tracking-[0.15em] uppercase transition-all duration-300 hover:scale-[1.02] hover:shadow-xl"
             >
-              VIEW INTRO OFFERS
+              CLAIM YOUR FIRST 3 CLASSES
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
             </a>
             <Link
@@ -208,6 +252,16 @@ function OffersContent() {
             <p className="body-text max-w-2xl mx-auto mt-4">
               3 classes to discover the transformative power of Pilates. Perfect for beginners or those new to Euforyc.
             </p>
+            {/* Scarcity indicator */}
+            <div className="inline-flex items-center gap-2 bg-green-50 border border-green-200 rounded-full px-4 py-2 mt-6">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+              </span>
+              <span className="text-sm text-green-700 font-medium">
+                Limited spots available this week
+              </span>
+            </div>
           </div>
 
           {/* Offer Selector Pills */}
@@ -288,14 +342,14 @@ function OffersContent() {
               </ul>
 
               {/* CTA */}
-              <div className="mt-6 pt-6 border-t border-[#fffcf2]/10 flex items-center justify-between">
-                <span className="inline-flex items-center gap-2 text-sm font-medium transition-all group-hover:gap-3 text-[#fffcf2]">
-                  Claim Your Intro Offer
-                  <ArrowRight className="h-4 w-4" />
-                </span>
-                <span className="text-xs text-[#fffcf2]/50">
+              <div className="mt-6 pt-6 border-t border-[#fffcf2]/10">
+                <div className="w-full flex items-center justify-center gap-3 bg-white text-[#1a260e] py-5 px-8 rounded-xl font-semibold text-base tracking-wider uppercase transition-all duration-300 group-hover:shadow-xl group-hover:scale-[1.02]">
+                  <span>Claim Your Intro Offer</span>
+                  <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
+                </div>
+                <p className="text-center text-xs text-[#fffcf2]/50 mt-3">
                   First-time clients only
-                </span>
+                </p>
               </div>
             </a>
           </div>
@@ -464,6 +518,13 @@ function OffersContent() {
       <section className="py-16 md:py-20 bg-[#fffcf2]">
         <div className="container-width">
           <div className="text-center space-y-6">
+            {/* Urgency reminder */}
+            <div className="inline-flex items-center gap-2 bg-orange-500/10 border border-orange-400/20 rounded-full px-4 py-2">
+              <Timer className="h-4 w-4 text-orange-500" />
+              <span className="text-sm text-orange-600 font-medium">
+                Only {timeLeft.days} days left — Don&apos;t miss out!
+              </span>
+            </div>
             <h2 className="font-serif text-2xl md:text-3xl lg:text-4xl text-[#1a260e] font-light">
               Ready to Begin Your Journey?
             </h2>
@@ -471,7 +532,7 @@ function OffersContent() {
               href="#intro-offers"
               className="inline-flex items-center gap-2 bg-[#1a260e] text-[#fffcf2] px-8 md:px-10 py-4 md:py-5 font-sans text-sm tracking-[0.15em] uppercase transition-all duration-300 hover:bg-[#1a260e]/90 hover:scale-[1.02]"
             >
-              VIEW INTRO OFFERS
+              CLAIM YOUR FIRST 3 CLASSES
               <ArrowRight className="h-4 w-4" />
             </a>
           </div>
