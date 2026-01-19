@@ -7,6 +7,10 @@ import type { Metadata } from 'next';
 import { Nunito_Sans } from 'next/font/google';
 import Link from 'next/link';
 import Image from 'next/image';
+import Script from 'next/script';
+
+// Skin Studio Facebook Pixel ID - SEPARATE from main Euforyc pixel
+const SKIN_STUDIO_PIXEL_ID = '1210900647179360';
 
 const nunito = Nunito_Sans({
     subsets: ['latin'],
@@ -28,6 +32,84 @@ export default function SkinStudioLayout({
 }) {
     return (
         <html lang="en" className={`${nunito.variable}`} suppressHydrationWarning>
+            <head>
+                {/* Skin Studio Meta Pixel - Separate from main Euforyc tracking */}
+                <Script
+                    id="fb-pixel-skin-studio"
+                    strategy="afterInteractive"
+                    dangerouslySetInnerHTML={{
+                        __html: `
+                            !function(f,b,e,v,n,t,s)
+                            {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+                            n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+                            if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+                            n.queue=[];t=b.createElement(e);t.async=!0;
+                            t.src=v;s=b.getElementsByTagName(e)[0];
+                            s.parentNode.insertBefore(t,s)}(window, document,'script',
+                            'https://connect.facebook.net/en_US/fbevents.js');
+
+                            // Collect advanced matching data from forms
+                            function collectSkinStudioMatchingData() {
+                                var data = { country: 'gb' };
+
+                                // Email
+                                var emailEl = document.querySelector('input[type="email"], input[name*="email"], input[id*="email"]');
+                                if (emailEl && emailEl.value && emailEl.value.includes('@')) {
+                                    data.em = emailEl.value.toLowerCase().trim();
+                                }
+
+                                // Phone
+                                var phoneEl = document.querySelector('input[type="tel"], input[name*="phone"], input[id*="phone"]');
+                                if (phoneEl && phoneEl.value) {
+                                    data.ph = phoneEl.value.replace(/[^0-9]/g, '');
+                                }
+
+                                // First Name
+                                var fnEl = document.querySelector('input[name*="first"], input[id*="first"], input[name*="fname"]');
+                                if (fnEl && fnEl.value) {
+                                    data.fn = fnEl.value.toLowerCase().trim();
+                                }
+
+                                // Last Name
+                                var lnEl = document.querySelector('input[name*="last"], input[id*="last"], input[name*="lname"]');
+                                if (lnEl && lnEl.value) {
+                                    data.ln = lnEl.value.toLowerCase().trim();
+                                }
+
+                                return data;
+                            }
+
+                            // Initialize Skin Studio pixel with advanced matching
+                            var skinStudioMatchingData = collectSkinStudioMatchingData();
+                            fbq('init', '${SKIN_STUDIO_PIXEL_ID}', skinStudioMatchingData);
+                            fbq('track', 'PageView');
+
+                            // Update matching data when form fields change
+                            document.addEventListener('DOMContentLoaded', function() {
+                                var inputs = document.querySelectorAll('input[type="email"], input[type="tel"], input[name*="first"], input[name*="last"]');
+                                inputs.forEach(function(input) {
+                                    input.addEventListener('blur', function() {
+                                        var updatedData = collectSkinStudioMatchingData();
+                                        if (Object.keys(updatedData).length > 1) {
+                                            fbq('init', '${SKIN_STUDIO_PIXEL_ID}', updatedData);
+                                        }
+                                    });
+                                });
+                            });
+                        `,
+                    }}
+                />
+                {/* Skin Studio Meta Pixel Noscript Fallback */}
+                <noscript>
+                    <img
+                        height="1"
+                        width="1"
+                        style={{ display: 'none' }}
+                        src={`https://www.facebook.com/tr?id=${SKIN_STUDIO_PIXEL_ID}&ev=PageView&noscript=1`}
+                        alt=""
+                    />
+                </noscript>
+            </head>
             <body className="font-skin-sans bg-skin-background antialiased" suppressHydrationWarning>
                 <div className="min-h-screen flex flex-col">
                     {/* Elegant Top Navigation */}
