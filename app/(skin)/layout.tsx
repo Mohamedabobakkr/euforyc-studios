@@ -9,9 +9,6 @@ import Link from 'next/link';
 import Image from 'next/image';
 import Script from 'next/script';
 
-// Skin Studio Facebook Pixel ID - SEPARATE from main Euforyc pixel
-const SKIN_STUDIO_PIXEL_ID = '1210900647179360';
-
 const nunito = Nunito_Sans({
     subsets: ['latin'],
     weight: ['200', '300', '400', '600', '700', '800', '900'],
@@ -33,84 +30,137 @@ export default function SkinStudioLayout({
     return (
         <html lang="en" className={`${nunito.variable}`} suppressHydrationWarning>
             <head>
-                {/* Skin Studio Meta Pixel - Separate from main Euforyc tracking */}
-                <Script
-                    id="fb-pixel-skin-studio"
-                    strategy="afterInteractive"
-                    dangerouslySetInnerHTML={{
-                        __html: `
-                            !function(f,b,e,v,n,t,s)
-                            {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-                            n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-                            if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-                            n.queue=[];t=b.createElement(e);t.async=!0;
-                            t.src=v;s=b.getElementsByTagName(e)[0];
-                            s.parentNode.insertBefore(t,s)}(window, document,'script',
-                            'https://connect.facebook.net/en_US/fbevents.js');
+                {/* Google Tag Manager - Skin Studio (GTM-K3496G48) */}
+                <Script id="gtm-head-skin" strategy="afterInteractive">
+                    {`
+                        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+                        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+                        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+                        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+                        })(window,document,'script','dataLayer','GTM-K3496G48');
+                    `}
+                </Script>
 
-                            // Collect advanced matching data from forms
-                            function collectSkinStudioMatchingData() {
-                                var data = { country: 'gb' };
+                {/* DataLayer Initialization with UTM & Page Data */}
+                <Script id="datalayer-init-skin" strategy="afterInteractive">
+                    {`
+                        window.dataLayer = window.dataLayer || [];
 
-                                // Email
-                                var emailEl = document.querySelector('input[type="email"], input[name*="email"], input[id*="email"]');
-                                if (emailEl && emailEl.value && emailEl.value.includes('@')) {
-                                    data.em = emailEl.value.toLowerCase().trim();
-                                }
+                        // Parse UTM parameters from URL
+                        function getUTMParams() {
+                            var params = new URLSearchParams(window.location.search);
+                            return {
+                                utm_source: params.get('utm_source') || '',
+                                utm_medium: params.get('utm_medium') || '',
+                                utm_campaign: params.get('utm_campaign') || '',
+                                utm_content: params.get('utm_content') || '',
+                                utm_term: params.get('utm_term') || '',
+                                fbclid: params.get('fbclid') || '',
+                                gclid: params.get('gclid') || ''
+                            };
+                        }
 
-                                // Phone
-                                var phoneEl = document.querySelector('input[type="tel"], input[name*="phone"], input[id*="phone"]');
-                                if (phoneEl && phoneEl.value) {
-                                    data.ph = phoneEl.value.replace(/[^0-9]/g, '');
-                                }
+                        // Store UTM params in session storage for persistence across pages
+                        var utmParams = getUTMParams();
+                        if (utmParams.utm_source || utmParams.fbclid || utmParams.gclid) {
+                            sessionStorage.setItem('skin_studio_utm_params', JSON.stringify(utmParams));
+                        } else {
+                            var stored = sessionStorage.getItem('skin_studio_utm_params');
+                            if (stored) utmParams = JSON.parse(stored);
+                        }
 
-                                // First Name
-                                var fnEl = document.querySelector('input[name*="first"], input[id*="first"], input[name*="fname"]');
-                                if (fnEl && fnEl.value) {
-                                    data.fn = fnEl.value.toLowerCase().trim();
-                                }
+                        // Push initial page data
+                        window.dataLayer.push({
+                            'event': 'page_data',
+                            'page_type': 'skin_studio',
+                            'page_path': window.location.pathname,
+                            'page_title': document.title,
+                            'page_url': window.location.href,
+                            'user_country': 'gb',
+                            ...utmParams
+                        });
 
-                                // Last Name
-                                var lnEl = document.querySelector('input[name*="last"], input[id*="last"], input[name*="lname"]');
-                                if (lnEl && lnEl.value) {
-                                    data.ln = lnEl.value.toLowerCase().trim();
-                                }
-
-                                return data;
-                            }
-
-                            // Initialize Skin Studio pixel with advanced matching
-                            var skinStudioMatchingData = collectSkinStudioMatchingData();
-                            fbq('init', '${SKIN_STUDIO_PIXEL_ID}', skinStudioMatchingData);
-                            fbq('track', 'PageView');
-
-                            // Update matching data when form fields change
-                            document.addEventListener('DOMContentLoaded', function() {
-                                var inputs = document.querySelectorAll('input[type="email"], input[type="tel"], input[name*="first"], input[name*="last"]');
-                                inputs.forEach(function(input) {
-                                    input.addEventListener('blur', function() {
-                                        var updatedData = collectSkinStudioMatchingData();
-                                        if (Object.keys(updatedData).length > 1) {
-                                            fbq('init', '${SKIN_STUDIO_PIXEL_ID}', updatedData);
-                                        }
-                                    });
-                                });
+                        // Helper function to track events (available globally)
+                        window.trackEvent = function(eventName, eventParams) {
+                            window.dataLayer.push({
+                                'event': eventName,
+                                ...eventParams
                             });
-                        `,
-                    }}
-                />
-                {/* Skin Studio Meta Pixel Noscript Fallback */}
-                <noscript>
-                    <img
-                        height="1"
-                        width="1"
-                        style={{ display: 'none' }}
-                        src={`https://www.facebook.com/tr?id=${SKIN_STUDIO_PIXEL_ID}&ev=PageView&noscript=1`}
-                        alt=""
-                    />
-                </noscript>
+                        };
+
+                        // Track scroll depth
+                        var scrollThresholds = [25, 50, 75, 90];
+                        var scrollTracked = {};
+                        window.addEventListener('scroll', function() {
+                            var scrollPercent = Math.round((window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100);
+                            scrollThresholds.forEach(function(threshold) {
+                                if (scrollPercent >= threshold && !scrollTracked[threshold]) {
+                                    scrollTracked[threshold] = true;
+                                    window.dataLayer.push({
+                                        'event': 'scroll_depth',
+                                        'scroll_percentage': threshold
+                                    });
+                                }
+                            });
+                        });
+
+                        // Track Lead events (Book Now / consultation clicks)
+                        document.addEventListener('click', function(e) {
+                            var target = e.target.closest('a[href*="momence.com"], button[data-booking]');
+                            if (target) {
+                                var href = target.getAttribute('href') || '';
+                                var buttonText = target.innerText || target.textContent || '';
+
+                                window.dataLayer.push({
+                                    'event': 'generate_lead',
+                                    'lead_type': 'consultation_click',
+                                    'button_text': buttonText.trim(),
+                                    'destination_url': href,
+                                    'page_path': window.location.pathname,
+                                    'page_title': document.title
+                                });
+                            }
+                        });
+
+                        // Track phone/WhatsApp clicks
+                        document.addEventListener('click', function(e) {
+                            var target = e.target.closest('a[href^="tel:"], a[href*="wa.me"], a[href*="whatsapp"]');
+                            if (target) {
+                                var href = target.getAttribute('href') || '';
+                                var contactType = href.includes('tel:') ? 'phone' : 'whatsapp';
+
+                                window.dataLayer.push({
+                                    'event': 'contact_click',
+                                    'contact_type': contactType,
+                                    'contact_value': href,
+                                    'page_path': window.location.pathname
+                                });
+                            }
+                        });
+
+                        // Track View Content for Skin Studio
+                        window.dataLayer.push({
+                            'event': 'view_content',
+                            'content_type': 'skin_studio_page',
+                            'content_name': document.title,
+                            'page_path': window.location.pathname
+                        });
+                    `}
+                </Script>
+
+                {/* Preconnect */}
+                <link rel="preconnect" href="https://www.googletagmanager.com" />
             </head>
             <body className="font-skin-sans bg-skin-background antialiased" suppressHydrationWarning>
+                {/* Google Tag Manager (noscript) */}
+                <noscript>
+                    <iframe
+                        src="https://www.googletagmanager.com/ns.html?id=GTM-K3496G48"
+                        height="0"
+                        width="0"
+                        style={{ display: 'none', visibility: 'hidden' }}
+                    />
+                </noscript>
                 <div className="min-h-screen flex flex-col">
                     {/* Elegant Top Navigation */}
                     <nav className="fixed top-0 left-0 right-0 z-50 bg-skin-background/95 backdrop-blur-sm border-b border-skin-muted/30">
