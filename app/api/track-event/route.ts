@@ -169,9 +169,9 @@ export async function POST(request: NextRequest) {
     const result = await sendToFacebookCAPI(pixel, eventData);
 
     if (result.success) {
-      console.log(`${event_name} event sent to ${business_unit} pixel`);
+      console.log('Event sent to pixel:', { event_name, business_unit });
     } else {
-      console.error(`Failed to send ${event_name} to ${business_unit}:`, result.error);
+      console.error('Failed to send event:', { event_name, business_unit, error: result.error });
     }
 
     return NextResponse.json({
