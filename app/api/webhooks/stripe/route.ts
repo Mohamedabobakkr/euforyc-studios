@@ -202,11 +202,27 @@ export async function POST(request: NextRequest) {
     const amount = (session.amount_total || 0) / 100; // Convert from cents
     const currency = session.currency?.toUpperCase() || 'GBP';
 
-    // Determine which pixel to use
+    // Determine which business this purchase belongs to
     const businessUnit = await getBusinessUnit(session);
-    const pixel = PIXELS[businessUnit];
 
-    console.log(`Processing purchase for ${businessUnit}:`, {
+    // IMPORTANT: Skip Pilates purchases - Momence CAPI handles those
+    // This prevents duplicate events and deduplication issues
+    if (businessUnit === 'pilates') {
+      console.log('Pilates purchase - skipping (handled by Momence CAPI):', {
+        session_id: session.id,
+        amount,
+      });
+      return NextResponse.json({
+        received: true,
+        skipped: true,
+        reason: 'Pilates purchases tracked by Momence CAPI',
+      });
+    }
+
+    // Only Skin Studio purchases continue from here
+    const pixel = PIXELS.skin;
+
+    console.log('Processing Skin Studio purchase:', {
       session_id: session.id,
       email: customerEmail ? '***@***' : 'none',
       amount,
@@ -232,38 +248,36 @@ export async function POST(request: NextRequest) {
     const clientIp = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim();
     if (clientIp) userData.client_ip_address = clientIp;
 
-    // Prepare Facebook event data
+    // Prepare Facebook event data for Skin Studio
     const eventData = {
       event_name: 'Purchase',
       event_time: Math.floor(Date.now() / 1000),
-      event_id: `stripe_${session.id}`, // For deduplication
+      event_id: `skin_studio_${session.id}`, // Unique event ID for deduplication
       action_source: 'website',
-      event_source_url: businessUnit === 'skin'
-        ? 'https://euforyc.co.uk/skin-studio'
-        : 'https://euforyc.co.uk',
+      event_source_url: 'https://euforyc.co.uk/skin-studio',
       user_data: userData,
       custom_data: {
         currency: currency,
         value: amount,
         content_type: 'product',
         content_ids: [session.id],
-        content_name: businessUnit === 'skin' ? 'Skin Studio Service' : 'Pilates Class/Package',
+        content_name: 'Skin Studio Service',
         order_id: session.id,
       },
     };
 
-    // Send to correct Facebook pixel
+    // Send to Skin Studio Facebook pixel
     const result = await sendToFacebookCAPI(pixel, eventData);
 
     if (result.success) {
-      console.log(`Purchase event sent to ${businessUnit} pixel (${pixel.pixelId})`);
+      console.log(`Skin Studio Purchase sent to pixel (${pixel.pixelId})`);
     } else {
-      console.error(`Failed to send to ${businessUnit} pixel:`, result.error);
+      console.error('Failed to send Skin Studio purchase:', result.error);
     }
 
     return NextResponse.json({
       received: true,
-      business_unit: businessUnit,
+      business_unit: 'skin_studio',
       pixel_id: pixel.pixelId,
       capi_success: result.success,
     });
