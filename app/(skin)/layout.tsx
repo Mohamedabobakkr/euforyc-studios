@@ -30,21 +30,24 @@ export default function SkinStudioLayout({
     return (
         <html lang="en" className={`${nunito.variable}`} suppressHydrationWarning>
             <head>
-                {/* Google Tag Manager - Skin Studio (GTM-K3496G48) */}
-                <Script id="gtm-head-skin" strategy="afterInteractive">
+                {/* Google Tag Manager - Main Container (routes to correct pixel via Server-Side GTM) */}
+                <Script id="gtm-head" strategy="afterInteractive">
                     {`
                         (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
                         new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
                         j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                         'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-                        })(window,document,'script','dataLayer','GTM-K3496G48');
+                        })(window,document,'script','dataLayer','GTM-P82PDHZ3');
                     `}
                 </Script>
 
-                {/* DataLayer Initialization with UTM & Page Data */}
+                {/* DataLayer Initialization with business_unit for routing */}
                 <Script id="datalayer-init-skin" strategy="afterInteractive">
                     {`
                         window.dataLayer = window.dataLayer || [];
+
+                        // CRITICAL: Set business_unit for server-side routing
+                        var BUSINESS_UNIT = 'skin';
 
                         // Parse UTM parameters from URL
                         function getUTMParams() {
@@ -63,15 +66,16 @@ export default function SkinStudioLayout({
                         // Store UTM params in session storage for persistence across pages
                         var utmParams = getUTMParams();
                         if (utmParams.utm_source || utmParams.fbclid || utmParams.gclid) {
-                            sessionStorage.setItem('skin_studio_utm_params', JSON.stringify(utmParams));
+                            sessionStorage.setItem('euforyc_utm_params', JSON.stringify(utmParams));
                         } else {
-                            var stored = sessionStorage.getItem('skin_studio_utm_params');
+                            var stored = sessionStorage.getItem('euforyc_utm_params');
                             if (stored) utmParams = JSON.parse(stored);
                         }
 
-                        // Push initial page data
+                        // Push initial page data with business_unit
                         window.dataLayer.push({
                             'event': 'page_data',
+                            'business_unit': BUSINESS_UNIT,
                             'page_type': 'skin_studio',
                             'page_path': window.location.pathname,
                             'page_title': document.title,
@@ -80,10 +84,11 @@ export default function SkinStudioLayout({
                             ...utmParams
                         });
 
-                        // Helper function to track events (available globally)
+                        // Helper function to track events with business_unit
                         window.trackEvent = function(eventName, eventParams) {
                             window.dataLayer.push({
                                 'event': eventName,
+                                'business_unit': BUSINESS_UNIT,
                                 ...eventParams
                             });
                         };
@@ -98,6 +103,7 @@ export default function SkinStudioLayout({
                                     scrollTracked[threshold] = true;
                                     window.dataLayer.push({
                                         'event': 'scroll_depth',
+                                        'business_unit': BUSINESS_UNIT,
                                         'scroll_percentage': threshold
                                     });
                                 }
@@ -113,6 +119,7 @@ export default function SkinStudioLayout({
 
                                 window.dataLayer.push({
                                     'event': 'generate_lead',
+                                    'business_unit': BUSINESS_UNIT,
                                     'lead_type': 'consultation_click',
                                     'button_text': buttonText.trim(),
                                     'destination_url': href,
@@ -131,6 +138,7 @@ export default function SkinStudioLayout({
 
                                 window.dataLayer.push({
                                     'event': 'contact_click',
+                                    'business_unit': BUSINESS_UNIT,
                                     'contact_type': contactType,
                                     'contact_value': href,
                                     'page_path': window.location.pathname
@@ -141,6 +149,7 @@ export default function SkinStudioLayout({
                         // Track View Content for Skin Studio
                         window.dataLayer.push({
                             'event': 'view_content',
+                            'business_unit': BUSINESS_UNIT,
                             'content_type': 'skin_studio_page',
                             'content_name': document.title,
                             'page_path': window.location.pathname
@@ -155,7 +164,7 @@ export default function SkinStudioLayout({
                 {/* Google Tag Manager (noscript) */}
                 <noscript>
                     <iframe
-                        src="https://www.googletagmanager.com/ns.html?id=GTM-K3496G48"
+                        src="https://www.googletagmanager.com/ns.html?id=GTM-P82PDHZ3"
                         height="0"
                         width="0"
                         style={{ display: 'none', visibility: 'hidden' }}

@@ -279,9 +279,13 @@ export default function RootLayout({
               if (stored) utmParams = JSON.parse(stored);
             }
 
-            // Push initial page data
+            // CRITICAL: Set business_unit for server-side routing
+            var BUSINESS_UNIT = 'pilates';
+
+            // Push initial page data with business_unit
             window.dataLayer.push({
               'event': 'page_data',
+              'business_unit': BUSINESS_UNIT,
               'page_type': 'euforyc_studios',
               'page_path': window.location.pathname,
               'page_title': document.title,
@@ -290,10 +294,11 @@ export default function RootLayout({
               ...utmParams
             });
 
-            // Helper function to track events (available globally)
+            // Helper function to track events with business_unit (available globally)
             window.trackEvent = function(eventName, eventParams) {
               window.dataLayer.push({
                 'event': eventName,
+                'business_unit': BUSINESS_UNIT,
                 ...eventParams
               });
             };
@@ -308,6 +313,7 @@ export default function RootLayout({
                   scrollTracked[threshold] = true;
                   window.dataLayer.push({
                     'event': 'scroll_depth',
+                    'business_unit': BUSINESS_UNIT,
                     'scroll_percentage': threshold
                   });
                 }
@@ -323,6 +329,7 @@ export default function RootLayout({
 
                 window.dataLayer.push({
                   'event': 'generate_lead',
+                  'business_unit': BUSINESS_UNIT,
                   'lead_type': 'booking_click',
                   'button_text': buttonText.trim(),
                   'destination_url': href,
@@ -341,6 +348,7 @@ export default function RootLayout({
 
                 window.dataLayer.push({
                   'event': 'contact_click',
+                  'business_unit': BUSINESS_UNIT,
                   'contact_type': contactType,
                   'contact_value': href,
                   'page_path': window.location.pathname
@@ -353,6 +361,7 @@ export default function RootLayout({
             if (servicePaths.some(function(path) { return window.location.pathname.includes(path); })) {
               window.dataLayer.push({
                 'event': 'view_content',
+                'business_unit': BUSINESS_UNIT,
                 'content_type': 'service_page',
                 'content_name': document.title,
                 'page_path': window.location.pathname
