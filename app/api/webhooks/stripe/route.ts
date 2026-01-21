@@ -9,10 +9,16 @@ import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import crypto from 'crypto';
 
-// Initialize Stripe
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', {
-  apiVersion: '2025-06-30.basil',
-});
+// Initialize Stripe lazily to avoid build-time errors
+function getStripe(): Stripe {
+  const key = process.env.STRIPE_SECRET_KEY;
+  if (!key) {
+    throw new Error('STRIPE_SECRET_KEY is not configured');
+  }
+  return new Stripe(key, {
+    apiVersion: '2025-06-30.basil',
+  });
+}
 
 // Pixel configurations
 const PIXELS = {
@@ -57,7 +63,7 @@ async function getBusinessUnit(session: Stripe.Checkout.Session): Promise<'skin'
     }
 
     // Get line items to check products
-    const lineItems = await stripe.checkout.sessions.listLineItems(session.id, {
+    const lineItems = await getStripe().checkout.sessions.listLineItems(session.id, {
       expand: ['data.price.product'],
     });
 
@@ -168,7 +174,7 @@ export async function POST(request: NextRequest) {
 
   try {
     rawBody = await getRawBody(request);
-    event = stripe.webhooks.constructEvent(
+    event = getStripe().webhooks.constructEvent(
       rawBody,
       sig,
       process.env.STRIPE_WEBHOOK_SECRET || ''
