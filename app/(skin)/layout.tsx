@@ -41,13 +41,48 @@ export default function SkinStudioLayout({
                     `}
                 </Script>
 
-                {/* DataLayer Initialization with business_unit for routing */}
+                {/* DataLayer + Server-Side CAPI for Quality Event Tracking */}
                 <Script id="datalayer-init-skin" strategy="afterInteractive">
                     {`
                         window.dataLayer = window.dataLayer || [];
 
-                        // CRITICAL: Set business_unit for server-side routing
+                        // CRITICAL: Set business_unit for routing
                         var BUSINESS_UNIT = 'skin';
+
+                        // Generate unique event ID for deduplication
+                        function generateEventId(eventName) {
+                            return eventName.toLowerCase() + '_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+                        }
+
+                        // Get Facebook cookies for matching
+                        function getFBCookies() {
+                            var getCookie = function(name) {
+                                var value = '; ' + document.cookie;
+                                var parts = value.split('; ' + name + '=');
+                                if (parts.length === 2) return parts.pop().split(';').shift();
+                                return '';
+                            };
+                            return { fbc: getCookie('_fbc'), fbp: getCookie('_fbp') };
+                        }
+
+                        // Send event to server CAPI (for quality/deduplication)
+                        function sendToServer(eventName, eventId, customData) {
+                            var cookies = getFBCookies();
+                            fetch('/api/track-event', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({
+                                    event_name: eventName,
+                                    event_id: eventId,
+                                    business_unit: BUSINESS_UNIT,
+                                    page_url: window.location.href,
+                                    page_path: window.location.pathname,
+                                    fbc: cookies.fbc,
+                                    fbp: cookies.fbp,
+                                    ...customData
+                                })
+                            }).catch(function(err) { console.log('CAPI error:', err); });
+                        }
 
                         // Parse UTM parameters from URL
                         function getUTMParams() {
@@ -63,7 +98,7 @@ export default function SkinStudioLayout({
                             };
                         }
 
-                        // Store UTM params in session storage for persistence across pages
+                        // Store UTM params in session storage
                         var utmParams = getUTMParams();
                         if (utmParams.utm_source || utmParams.fbclid || utmParams.gclid) {
                             sessionStorage.setItem('euforyc_utm_params', JSON.stringify(utmParams));
@@ -72,9 +107,11 @@ export default function SkinStudioLayout({
                             if (stored) utmParams = JSON.parse(stored);
                         }
 
-                        // Push initial page data with business_unit
+                        // Track PageView with deduplication
+                        var pageViewId = generateEventId('PageView');
                         window.dataLayer.push({
                             'event': 'page_data',
+                            'event_id': pageViewId,
                             'business_unit': BUSINESS_UNIT,
                             'page_type': 'skin_studio',
                             'page_path': window.location.pathname,
@@ -83,17 +120,36 @@ export default function SkinStudioLayout({
                             'user_country': 'gb',
                             ...utmParams
                         });
+                        sendToServer('PageView', pageViewId, {});
 
-                        // Helper function to track events with business_unit
+                        // Track ViewContent with deduplication
+                        var viewContentId = generateEventId('ViewContent');
+                        window.dataLayer.push({
+                            'event': 'view_content',
+                            'event_id': viewContentId,
+                            'business_unit': BUSINESS_UNIT,
+                            'content_type': 'skin_studio_page',
+                            'content_name': document.title,
+                            'page_path': window.location.pathname
+                        });
+                        sendToServer('ViewContent', viewContentId, {
+                            content_type: 'skin_studio_page',
+                            content_name: document.title
+                        });
+
+                        // Helper function to track events with deduplication
                         window.trackEvent = function(eventName, eventParams) {
+                            var eventId = generateEventId(eventName);
                             window.dataLayer.push({
                                 'event': eventName,
+                                'event_id': eventId,
                                 'business_unit': BUSINESS_UNIT,
                                 ...eventParams
                             });
+                            sendToServer(eventName, eventId, eventParams);
                         };
 
-                        // Track scroll depth
+                        // Track scroll depth (no server needed)
                         var scrollThresholds = [25, 50, 75, 90];
                         var scrollTracked = {};
                         window.addEventListener('scroll', function() {
@@ -110,15 +166,17 @@ export default function SkinStudioLayout({
                             });
                         });
 
-                        // Track Lead events (Book Now / consultation clicks)
+                        // Track Lead events with deduplication
                         document.addEventListener('click', function(e) {
                             var target = e.target.closest('a[href*="momence.com"], button[data-booking]');
                             if (target) {
                                 var href = target.getAttribute('href') || '';
                                 var buttonText = target.innerText || target.textContent || '';
+                                var eventId = generateEventId('Lead');
 
                                 window.dataLayer.push({
                                     'event': 'generate_lead',
+                                    'event_id': eventId,
                                     'business_unit': BUSINESS_UNIT,
                                     'lead_type': 'consultation_click',
                                     'button_text': buttonText.trim(),
@@ -126,33 +184,33 @@ export default function SkinStudioLayout({
                                     'page_path': window.location.pathname,
                                     'page_title': document.title
                                 });
+                                sendToServer('Lead', eventId, {
+                                    content_name: buttonText.trim(),
+                                    content_category: 'consultation_click'
+                                });
                             }
                         });
 
-                        // Track phone/WhatsApp clicks
+                        // Track phone/WhatsApp clicks with deduplication
                         document.addEventListener('click', function(e) {
                             var target = e.target.closest('a[href^="tel:"], a[href*="wa.me"], a[href*="whatsapp"]');
                             if (target) {
                                 var href = target.getAttribute('href') || '';
                                 var contactType = href.includes('tel:') ? 'phone' : 'whatsapp';
+                                var eventId = generateEventId('Contact');
 
                                 window.dataLayer.push({
                                     'event': 'contact_click',
+                                    'event_id': eventId,
                                     'business_unit': BUSINESS_UNIT,
                                     'contact_type': contactType,
                                     'contact_value': href,
                                     'page_path': window.location.pathname
                                 });
+                                sendToServer('Contact', eventId, {
+                                    content_name: contactType
+                                });
                             }
-                        });
-
-                        // Track View Content for Skin Studio
-                        window.dataLayer.push({
-                            'event': 'view_content',
-                            'business_unit': BUSINESS_UNIT,
-                            'content_type': 'skin_studio_page',
-                            'content_name': document.title,
-                            'page_path': window.location.pathname
                         });
                     `}
                 </Script>
