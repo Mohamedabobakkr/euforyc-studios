@@ -30,204 +30,96 @@ export default function SkinStudioLayout({
     return (
         <html lang="en" className={`${nunito.variable}`} suppressHydrationWarning>
             <head>
-                {/* Google Tag Manager - Main Container (routes to correct pixel via Server-Side GTM) */}
-                <Script id="gtm-head" strategy="afterInteractive">
+                {/*
+                    SKIN STUDIO TRACKING - Server-Side CAPI Only
+                    NO GTM or browser pixel to avoid duplicate events
+                    All events go through /api/track-event for accurate Facebook tracking
+                */}
+                <Script id="skin-studio-capi" strategy="afterInteractive">
                     {`
-                        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-                        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-                        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-                        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-                        })(window,document,'script','dataLayer','GTM-P82PDHZ3');
-                    `}
-                </Script>
+                        (function() {
+                            // Prevent duplicate initialization
+                            if (window.__skinStudioTracked) return;
+                            window.__skinStudioTracked = true;
 
-                {/* DataLayer + Server-Side CAPI for Quality Event Tracking */}
-                <Script id="datalayer-init-skin" strategy="afterInteractive">
-                    {`
-                        window.dataLayer = window.dataLayer || [];
+                            // Generate unique event ID for deduplication
+                            function generateEventId(eventName) {
+                                return 'skin_' + eventName.toLowerCase() + '_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+                            }
 
-                        // CRITICAL: Set business_unit for routing
-                        var BUSINESS_UNIT = 'skin';
+                            // Get Facebook cookies for better matching
+                            function getFBCookies() {
+                                var getCookie = function(name) {
+                                    var value = '; ' + document.cookie;
+                                    var parts = value.split('; ' + name + '=');
+                                    if (parts.length === 2) return parts.pop().split(';').shift();
+                                    return '';
+                                };
+                                return { fbc: getCookie('_fbc'), fbp: getCookie('_fbp') };
+                            }
 
-                        // Generate unique event ID for deduplication
-                        function generateEventId(eventName) {
-                            return eventName.toLowerCase() + '_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-                        }
+                            // Send event to server CAPI ONLY (no browser pixel)
+                            function sendEvent(eventName, customData) {
+                                var eventId = generateEventId(eventName);
+                                var cookies = getFBCookies();
 
-                        // Get Facebook cookies for matching
-                        function getFBCookies() {
-                            var getCookie = function(name) {
-                                var value = '; ' + document.cookie;
-                                var parts = value.split('; ' + name + '=');
-                                if (parts.length === 2) return parts.pop().split(';').shift();
-                                return '';
-                            };
-                            return { fbc: getCookie('_fbc'), fbp: getCookie('_fbp') };
-                        }
+                                fetch('/api/track-event', {
+                                    method: 'POST',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify({
+                                        event_name: eventName,
+                                        event_id: eventId,
+                                        business_unit: 'skin',
+                                        page_url: window.location.href,
+                                        page_path: window.location.pathname,
+                                        fbc: cookies.fbc,
+                                        fbp: cookies.fbp,
+                                        ...customData
+                                    })
+                                }).catch(function(err) {
+                                    console.log('Skin Studio CAPI error:', err);
+                                });
+                            }
 
-                        // Send event to server CAPI (for quality/deduplication)
-                        function sendToServer(eventName, eventId, customData) {
-                            var cookies = getFBCookies();
-                            fetch('/api/track-event', {
-                                method: 'POST',
-                                headers: { 'Content-Type': 'application/json' },
-                                body: JSON.stringify({
-                                    event_name: eventName,
-                                    event_id: eventId,
-                                    business_unit: BUSINESS_UNIT,
-                                    page_url: window.location.href,
-                                    page_path: window.location.pathname,
-                                    fbc: cookies.fbc,
-                                    fbp: cookies.fbp,
-                                    ...customData
-                                })
-                            }).catch(function(err) { console.log('CAPI error:', err); });
-                        }
-
-                        // Parse UTM parameters from URL
-                        function getUTMParams() {
-                            var params = new URLSearchParams(window.location.search);
-                            return {
-                                utm_source: params.get('utm_source') || '',
-                                utm_medium: params.get('utm_medium') || '',
-                                utm_campaign: params.get('utm_campaign') || '',
-                                utm_content: params.get('utm_content') || '',
-                                utm_term: params.get('utm_term') || '',
-                                fbclid: params.get('fbclid') || '',
-                                gclid: params.get('gclid') || ''
-                            };
-                        }
-
-                        // Store UTM params in session storage
-                        var utmParams = getUTMParams();
-                        if (utmParams.utm_source || utmParams.fbclid || utmParams.gclid) {
-                            sessionStorage.setItem('euforyc_utm_params', JSON.stringify(utmParams));
-                        } else {
-                            var stored = sessionStorage.getItem('euforyc_utm_params');
-                            if (stored) utmParams = JSON.parse(stored);
-                        }
-
-                        // Track PageView with deduplication
-                        var pageViewId = generateEventId('PageView');
-                        window.dataLayer.push({
-                            'event': 'page_data',
-                            'event_id': pageViewId,
-                            'business_unit': BUSINESS_UNIT,
-                            'page_type': 'skin_studio',
-                            'page_path': window.location.pathname,
-                            'page_title': document.title,
-                            'page_url': window.location.href,
-                            'user_country': 'gb',
-                            ...utmParams
-                        });
-                        sendToServer('PageView', pageViewId, {});
-
-                        // Track ViewContent with deduplication
-                        var viewContentId = generateEventId('ViewContent');
-                        window.dataLayer.push({
-                            'event': 'view_content',
-                            'event_id': viewContentId,
-                            'business_unit': BUSINESS_UNIT,
-                            'content_type': 'skin_studio_page',
-                            'content_name': document.title,
-                            'page_path': window.location.pathname
-                        });
-                        sendToServer('ViewContent', viewContentId, {
-                            content_type: 'skin_studio_page',
-                            content_name: document.title
-                        });
-
-                        // Helper function to track events with deduplication
-                        window.trackEvent = function(eventName, eventParams) {
-                            var eventId = generateEventId(eventName);
-                            window.dataLayer.push({
-                                'event': eventName,
-                                'event_id': eventId,
-                                'business_unit': BUSINESS_UNIT,
-                                ...eventParams
+                            // Track PageView (once per page load)
+                            sendEvent('PageView', {
+                                content_name: document.title
                             });
-                            sendToServer(eventName, eventId, eventParams);
-                        };
 
-                        // Track scroll depth (no server needed)
-                        var scrollThresholds = [25, 50, 75, 90];
-                        var scrollTracked = {};
-                        window.addEventListener('scroll', function() {
-                            var scrollPercent = Math.round((window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100);
-                            scrollThresholds.forEach(function(threshold) {
-                                if (scrollPercent >= threshold && !scrollTracked[threshold]) {
-                                    scrollTracked[threshold] = true;
-                                    window.dataLayer.push({
-                                        'event': 'scroll_depth',
-                                        'business_unit': BUSINESS_UNIT,
-                                        'scroll_percentage': threshold
+                            // Track ViewContent
+                            sendEvent('ViewContent', {
+                                content_type: 'skin_studio_page',
+                                content_name: document.title
+                            });
+
+                            // Track Lead events (booking clicks)
+                            document.addEventListener('click', function(e) {
+                                var target = e.target.closest('a[href*="momence.com"], button[data-booking]');
+                                if (target) {
+                                    var buttonText = (target.innerText || target.textContent || '').trim();
+                                    sendEvent('Lead', {
+                                        content_name: buttonText,
+                                        content_category: 'consultation_click'
                                     });
                                 }
                             });
-                        });
 
-                        // Track Lead events with deduplication
-                        document.addEventListener('click', function(e) {
-                            var target = e.target.closest('a[href*="momence.com"], button[data-booking]');
-                            if (target) {
-                                var href = target.getAttribute('href') || '';
-                                var buttonText = target.innerText || target.textContent || '';
-                                var eventId = generateEventId('Lead');
-
-                                window.dataLayer.push({
-                                    'event': 'generate_lead',
-                                    'event_id': eventId,
-                                    'business_unit': BUSINESS_UNIT,
-                                    'lead_type': 'consultation_click',
-                                    'button_text': buttonText.trim(),
-                                    'destination_url': href,
-                                    'page_path': window.location.pathname,
-                                    'page_title': document.title
-                                });
-                                sendToServer('Lead', eventId, {
-                                    content_name: buttonText.trim(),
-                                    content_category: 'consultation_click'
-                                });
-                            }
-                        });
-
-                        // Track phone/WhatsApp clicks with deduplication
-                        document.addEventListener('click', function(e) {
-                            var target = e.target.closest('a[href^="tel:"], a[href*="wa.me"], a[href*="whatsapp"]');
-                            if (target) {
-                                var href = target.getAttribute('href') || '';
-                                var contactType = href.includes('tel:') ? 'phone' : 'whatsapp';
-                                var eventId = generateEventId('Contact');
-
-                                window.dataLayer.push({
-                                    'event': 'contact_click',
-                                    'event_id': eventId,
-                                    'business_unit': BUSINESS_UNIT,
-                                    'contact_type': contactType,
-                                    'contact_value': href,
-                                    'page_path': window.location.pathname
-                                });
-                                sendToServer('Contact', eventId, {
-                                    content_name: contactType
-                                });
-                            }
-                        });
+                            // Track Contact events (phone/WhatsApp clicks)
+                            document.addEventListener('click', function(e) {
+                                var target = e.target.closest('a[href^="tel:"], a[href*="wa.me"], a[href*="whatsapp"]');
+                                if (target) {
+                                    var href = target.getAttribute('href') || '';
+                                    var contactType = href.includes('tel:') ? 'phone' : 'whatsapp';
+                                    sendEvent('Contact', {
+                                        content_name: contactType
+                                    });
+                                }
+                            });
+                        })();
                     `}
                 </Script>
-
-                {/* Preconnect */}
-                <link rel="preconnect" href="https://www.googletagmanager.com" />
             </head>
             <body className="font-skin-sans bg-skin-background antialiased" suppressHydrationWarning>
-                {/* Google Tag Manager (noscript) */}
-                <noscript>
-                    <iframe
-                        src="https://www.googletagmanager.com/ns.html?id=GTM-P82PDHZ3"
-                        height="0"
-                        width="0"
-                        style={{ display: 'none', visibility: 'hidden' }}
-                    />
-                </noscript>
                 <div className="min-h-screen flex flex-col">
                     {/* Elegant Top Navigation */}
                     <nav className="fixed top-0 left-0 right-0 z-50 bg-skin-background/95 backdrop-blur-sm border-b border-skin-muted/30">
