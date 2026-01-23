@@ -110,13 +110,15 @@ function ThankYouContent() {
     };
 
     // Execute tracking
-    // Only track Skin Studio purchases here - Euforyc is handled by Momence
+    // IMPORTANT: Both Skin Studio and Pilates purchases are tracked elsewhere:
+    // - Skin Studio: Zapier → /api/webhooks/momence → Facebook CAPI
+    // - Pilates: GTM + Momence built-in CAPI
+    // The thank-you page should NOT fire additional Purchase events to avoid duplicates
+
     if (isSkinStudio) {
-      trackPurchase();
-      fireClientPixel();
-      console.log('Skin Studio purchase tracked');
+      console.log('Skin Studio purchase - tracked via Zapier webhook, skipping thank-you page');
     } else {
-      console.log('Euforyc purchase - handled by Momence, skipping duplicate tracking');
+      console.log('Pilates purchase - tracked via GTM + Momence CAPI, skipping thank-you page');
     }
     setTracked(true);
   }, [searchParams, tracked]);

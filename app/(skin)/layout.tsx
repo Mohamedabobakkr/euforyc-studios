@@ -86,16 +86,31 @@ export default function SkinStudioLayout({
                                 content_name: document.title
                             });
 
-                            // Track ViewContent
-                            sendEvent('ViewContent', {
-                                content_type: 'skin_studio_page',
-                                content_name: document.title
+                            // Track ViewContent ONLY on service/content pages (not homepage)
+                            // This prevents duplicate events when PageView is sufficient
+                            var servicePaths = ['/skin-studio/services', '/skin-studio/treatments', '/skin-studio/pricing'];
+                            var isServicePage = servicePaths.some(function(path) {
+                                return window.location.pathname.includes(path);
                             });
 
-                            // Track Lead events (booking clicks)
+                            // Only fire ViewContent if on a specific service page
+                            if (isServicePage || window.location.pathname === '/skin-studio') {
+                                sendEvent('ViewContent', {
+                                    content_type: 'skin_studio_page',
+                                    content_name: document.title
+                                });
+                            }
+
+                            // Track Lead events (booking clicks) - with deduplication
+                            var lastLeadTime = 0;
                             document.addEventListener('click', function(e) {
                                 var target = e.target.closest('a[href*="momence.com"], button[data-booking]');
                                 if (target) {
+                                    // Prevent duplicate Lead events within 2 seconds
+                                    var now = Date.now();
+                                    if (now - lastLeadTime < 2000) return;
+                                    lastLeadTime = now;
+
                                     var buttonText = (target.innerText || target.textContent || '').trim();
                                     sendEvent('Lead', {
                                         content_name: buttonText,
@@ -104,10 +119,16 @@ export default function SkinStudioLayout({
                                 }
                             });
 
-                            // Track Contact events (phone/WhatsApp clicks)
+                            // Track Contact events (phone/WhatsApp clicks) - with deduplication
+                            var lastContactTime = 0;
                             document.addEventListener('click', function(e) {
                                 var target = e.target.closest('a[href^="tel:"], a[href*="wa.me"], a[href*="whatsapp"]');
                                 if (target) {
+                                    // Prevent duplicate Contact events within 2 seconds
+                                    var now = Date.now();
+                                    if (now - lastContactTime < 2000) return;
+                                    lastContactTime = now;
+
                                     var href = target.getAttribute('href') || '';
                                     var contactType = href.includes('tel:') ? 'phone' : 'whatsapp';
                                     sendEvent('Contact', {
