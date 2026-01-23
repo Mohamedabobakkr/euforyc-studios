@@ -9,6 +9,9 @@ import Link from 'next/link';
 import Image from 'next/image';
 import Script from 'next/script';
 
+// Skin Studio Facebook Pixel ID - SEPARATE from main Euforyc pixel
+const SKIN_STUDIO_PIXEL_ID = '1210900647179360';
+
 const nunito = Nunito_Sans({
     subsets: ['latin'],
     weight: ['200', '300', '400', '600', '700', '800', '900'],
@@ -30,122 +33,136 @@ export default function SkinStudioLayout({
     return (
         <html lang="en" className={`${nunito.variable}`} suppressHydrationWarning>
             <head>
-                {/*
-                    SKIN STUDIO TRACKING - Server-Side CAPI Only
-                    NO GTM or browser pixel to avoid duplicate events
-                    All events go through /api/track-event for accurate Facebook tracking
-                */}
-                <Script id="skin-studio-capi" strategy="afterInteractive">
+                {/* Meta Pixel Code - Skin Studio (Browser + Server CAPI) */}
+                <Script id="fb-pixel-skin-studio" strategy="afterInteractive">
                     {`
-                        (function() {
-                            // Prevent duplicate initialization
-                            if (window.__skinStudioTracked) return;
-                            window.__skinStudioTracked = true;
+                        !function(f,b,e,v,n,t,s)
+                        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+                        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+                        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+                        n.queue=[];t=b.createElement(e);t.async=!0;
+                        t.src=v;s=b.getElementsByTagName(e)[0];
+                        s.parentNode.insertBefore(t,s)}(window, document,'script',
+                        'https://connect.facebook.net/en_US/fbevents.js');
 
-                            // Generate unique event ID for deduplication
-                            function generateEventId(eventName) {
-                                return 'skin_' + eventName.toLowerCase() + '_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-                            }
+                        // Generate unique event ID for browser/server deduplication
+                        function generateEventId(eventName) {
+                            return 'skin_' + eventName.toLowerCase() + '_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+                        }
 
-                            // Get Facebook cookies for better matching
-                            function getFBCookies() {
-                                var getCookie = function(name) {
-                                    var value = '; ' + document.cookie;
-                                    var parts = value.split('; ' + name + '=');
-                                    if (parts.length === 2) return parts.pop().split(';').shift();
-                                    return '';
-                                };
-                                return { fbc: getCookie('_fbc'), fbp: getCookie('_fbp') };
-                            }
+                        // Get Facebook cookies for CAPI matching
+                        function getFBCookies() {
+                            var getCookie = function(name) {
+                                var value = '; ' + document.cookie;
+                                var parts = value.split('; ' + name + '=');
+                                if (parts.length === 2) return parts.pop().split(';').shift();
+                                return '';
+                            };
+                            return { fbc: getCookie('_fbc'), fbp: getCookie('_fbp') };
+                        }
 
-                            // Send event to server CAPI ONLY (no browser pixel)
-                            function sendEvent(eventName, customData) {
-                                var eventId = generateEventId(eventName);
-                                var cookies = getFBCookies();
+                        // Send event to server CAPI for better matching quality
+                        function sendToCAPI(eventName, eventId, customData) {
+                            var cookies = getFBCookies();
+                            fetch('/api/track-event', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({
+                                    event_name: eventName,
+                                    event_id: eventId,
+                                    business_unit: 'skin',
+                                    page_url: window.location.href,
+                                    fbc: cookies.fbc,
+                                    fbp: cookies.fbp,
+                                    ...customData
+                                })
+                            }).catch(function(err) {
+                                console.log('CAPI error:', err);
+                            });
+                        }
 
-                                fetch('/api/track-event', {
-                                    method: 'POST',
-                                    headers: { 'Content-Type': 'application/json' },
-                                    body: JSON.stringify({
-                                        event_name: eventName,
-                                        event_id: eventId,
-                                        business_unit: 'skin',
-                                        page_url: window.location.href,
-                                        page_path: window.location.pathname,
-                                        fbc: cookies.fbc,
-                                        fbp: cookies.fbp,
-                                        ...customData
-                                    })
-                                }).catch(function(err) {
-                                    console.log('Skin Studio CAPI error:', err);
+                        // Initialize pixel
+                        fbq('init', '${SKIN_STUDIO_PIXEL_ID}', { country: 'gb' });
+
+                        // Track PageView (browser + CAPI)
+                        var pageViewId = generateEventId('PageView');
+                        fbq('track', 'PageView', {}, { eventID: pageViewId });
+                        sendToCAPI('PageView', pageViewId, { content_name: document.title });
+
+                        // Track ViewContent (browser + CAPI)
+                        var viewContentId = generateEventId('ViewContent');
+                        fbq('track', 'ViewContent', {
+                            content_name: document.title,
+                            content_type: 'skin_studio_page'
+                        }, { eventID: viewContentId });
+                        sendToCAPI('ViewContent', viewContentId, {
+                            content_name: document.title,
+                            content_type: 'skin_studio_page'
+                        });
+
+                        // Track Lead events (booking clicks) - with deduplication
+                        var lastLeadTime = 0;
+                        document.addEventListener('click', function(e) {
+                            var target = e.target.closest('a[href*="momence.com"], button[data-booking]');
+                            if (target) {
+                                var now = Date.now();
+                                if (now - lastLeadTime < 2000) return;
+                                lastLeadTime = now;
+
+                                var buttonText = (target.innerText || target.textContent || '').trim();
+                                var leadId = generateEventId('Lead');
+
+                                fbq('track', 'Lead', {
+                                    content_name: buttonText,
+                                    content_category: 'consultation_click'
+                                }, { eventID: leadId });
+
+                                sendToCAPI('Lead', leadId, {
+                                    content_name: buttonText,
+                                    content_category: 'consultation_click'
                                 });
                             }
+                        });
 
-                            // Track PageView (once per page load)
-                            sendEvent('PageView', {
-                                content_name: document.title
-                            });
+                        // Track Contact events (phone/WhatsApp clicks) - with deduplication
+                        var lastContactTime = 0;
+                        document.addEventListener('click', function(e) {
+                            var target = e.target.closest('a[href^="tel:"], a[href*="wa.me"], a[href*="whatsapp"]');
+                            if (target) {
+                                var now = Date.now();
+                                if (now - lastContactTime < 2000) return;
+                                lastContactTime = now;
 
-                            // Track ViewContent ONLY on service/content pages (not homepage)
-                            // This prevents duplicate events when PageView is sufficient
-                            var servicePaths = ['/skin-studio/services', '/skin-studio/treatments', '/skin-studio/pricing'];
-                            var isServicePage = servicePaths.some(function(path) {
-                                return window.location.pathname.includes(path);
-                            });
+                                var href = target.getAttribute('href') || '';
+                                var contactType = href.includes('tel:') ? 'phone' : 'whatsapp';
+                                var contactId = generateEventId('Contact');
 
-                            // Only fire ViewContent if on a specific service page
-                            if (isServicePage || window.location.pathname === '/skin-studio') {
-                                sendEvent('ViewContent', {
-                                    content_type: 'skin_studio_page',
-                                    content_name: document.title
+                                fbq('track', 'Contact', {
+                                    content_name: contactType
+                                }, { eventID: contactId });
+
+                                sendToCAPI('Contact', contactId, {
+                                    content_name: contactType
                                 });
                             }
-
-                            // Track Lead events (booking clicks) - with deduplication
-                            var lastLeadTime = 0;
-                            document.addEventListener('click', function(e) {
-                                var target = e.target.closest('a[href*="momence.com"], button[data-booking]');
-                                if (target) {
-                                    // Prevent duplicate Lead events within 2 seconds
-                                    var now = Date.now();
-                                    if (now - lastLeadTime < 2000) return;
-                                    lastLeadTime = now;
-
-                                    var buttonText = (target.innerText || target.textContent || '').trim();
-                                    sendEvent('Lead', {
-                                        content_name: buttonText,
-                                        content_category: 'consultation_click'
-                                    });
-                                }
-                            });
-
-                            // Track Contact events (phone/WhatsApp clicks) - with deduplication
-                            var lastContactTime = 0;
-                            document.addEventListener('click', function(e) {
-                                var target = e.target.closest('a[href^="tel:"], a[href*="wa.me"], a[href*="whatsapp"]');
-                                if (target) {
-                                    // Prevent duplicate Contact events within 2 seconds
-                                    var now = Date.now();
-                                    if (now - lastContactTime < 2000) return;
-                                    lastContactTime = now;
-
-                                    var href = target.getAttribute('href') || '';
-                                    var contactType = href.includes('tel:') ? 'phone' : 'whatsapp';
-                                    sendEvent('Contact', {
-                                        content_name: contactType
-                                    });
-                                }
-                            });
-                        })();
+                        });
                     `}
                 </Script>
+                <noscript>
+                    <img
+                        height="1"
+                        width="1"
+                        style={{ display: 'none' }}
+                        src={`https://www.facebook.com/tr?id=${SKIN_STUDIO_PIXEL_ID}&ev=PageView&noscript=1`}
+                        alt=""
+                    />
+                </noscript>
             </head>
             <body className="font-skin-sans bg-skin-background antialiased" suppressHydrationWarning>
                 <div className="min-h-screen flex flex-col">
                     {/* Elegant Top Navigation */}
                     <nav className="fixed top-0 left-0 right-0 z-50 bg-skin-background/95 backdrop-blur-sm border-b border-skin-muted/30">
                         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-                            {/* Back to main site */}
                             {/* Back to main site */}
                             <Link
                                 href="/"
@@ -236,7 +253,7 @@ export default function SkinStudioLayout({
                             </div>
 
                             <div className="border-t border-skin-background/20 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-skin-background/50">
-                                <p>© 2025 Euforyc Skin Studio. All rights reserved.</p>
+                                <p>&copy; 2025 Euforyc Skin Studio. All rights reserved.</p>
                                 <p>Part of Euforyc Studios Wellness Collection</p>
                             </div>
                         </div>
