@@ -125,6 +125,27 @@ const introOffers = {
     momenceUrl: 'https://momence.com/m/621480',
     icon: Heart,
     highlight: false,
+  },
+  'try-all': {
+    id: 'try-all',
+    name: 'Try All',
+    shortName: 'Try All',
+    classes: '3 Classes',
+    price: '£70',
+    perClass: '£23',
+    regularPrice: '£90',
+    savings: 'Save £20',
+    validity: '30 days',
+    description: 'Experience all our class types - Reformer, Hot Pilates, Barre, Dance & more',
+    benefits: [
+      'Try any class type',
+      'Perfect for exploring',
+      'Mix & match freely',
+      'Find your favourite'
+    ],
+    momenceUrl: 'https://momence.com/m/631782',
+    icon: Sparkles,
+    highlight: true,
   }
 };
 
@@ -148,10 +169,10 @@ const dancePackages = [
   }
 ];
 
-const danceStyles = ['Dabke', 'Belly Dance', 'Afro'];
+const danceStyles = ['Dabke', 'Belly Dance', 'Afro', 'Bollywood'];
 
 type OfferId = keyof typeof introOffers;
-const offerIds: OfferId[] = ['reformer', 'hot-pilates', 'red-light', 'barre'];
+const offerIds: OfferId[] = ['reformer', 'hot-pilates', 'red-light', 'barre', 'try-all'];
 
 // Main content component
 function OffersContent() {
@@ -274,11 +295,10 @@ function OffersContent() {
                 <button
                   key={offerId}
                   onClick={() => setSelectedOffer(offerId)}
-                  className={`px-5 py-2.5 md:px-6 md:py-3 rounded-full font-sans text-xs md:text-sm tracking-wider transition-all duration-300 flex items-center gap-2 ${
-                    isSelected
-                      ? 'bg-[#1a260e] text-[#fffcf2]'
-                      : 'bg-transparent border border-[#1a260e]/20 text-[#1a260e]/70 hover:border-[#1a260e]/40 hover:text-[#1a260e]'
-                  }`}
+                  className={`px-5 py-2.5 md:px-6 md:py-3 rounded-full font-sans text-xs md:text-sm tracking-wider transition-all duration-300 flex items-center gap-2 ${isSelected
+                    ? 'bg-[#1a260e] text-[#fffcf2]'
+                    : 'bg-transparent border border-[#1a260e]/20 text-[#1a260e]/70 hover:border-[#1a260e]/40 hover:text-[#1a260e]'
+                    }`}
                 >
                   <Icon className="h-4 w-4" />
                   <span>{offerData.shortName}</span>
@@ -366,7 +386,7 @@ function OffersContent() {
             </h2>
             <p className="body-text max-w-2xl mx-auto mt-4">
               Discover the joy of movement through our diverse dance offerings.
-              Mix and match any style — Dabke, Belly Dance, or Afro.
+              Mix and match any style — Dabke, Belly Dance, Afro, or Bollywood.
             </p>
           </div>
 
@@ -500,7 +520,7 @@ function OffersContent() {
 
               <div className="border-b border-[#1a260e]/10 pb-4 md:pb-6">
                 <h3 className="font-serif text-lg md:text-xl font-light text-[#1a260e] mb-2 md:mb-3">Can I mix dance styles?</h3>
-                <p className="text-xs md:text-sm text-[#1a260e]/70">Yes! Our dance packages let you choose any combination of Dabke, Belly Dance, or Afro classes. Mix and match as you like.</p>
+                <p className="text-xs md:text-sm text-[#1a260e]/70">Yes! Our dance packages let you choose any combination of Dabke, Belly Dance, Afro, or Bollywood classes. Mix and match as you like.</p>
               </div>
             </div>
 

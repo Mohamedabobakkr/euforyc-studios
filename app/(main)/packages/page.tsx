@@ -128,6 +128,17 @@ const packages = {
         momenceUrl: 'https://momence.com/m/621480',
         icon: 'heart',
         theme: 'barre'
+      },
+      {
+        id: 'try-all',
+        name: 'Try All',
+        classes: '3 Classes',
+        price: '£70',
+        savings: 'First-time offer',
+        description: 'Experience all class types - Reformer, Hot Pilates, Barre, Dance & more',
+        momenceUrl: 'https://momence.com/m/631782',
+        icon: 'sparkles',
+        theme: 'try-all'
       }
     ]
   },
@@ -217,7 +228,7 @@ const packages = {
   },
   dancePackage: {
     title: 'Dance Package',
-    subtitle: 'Choose from Dabke, Belly Dance, or Afro - your choice!',
+    subtitle: 'Choose from Dabke, Belly Dance, Afro, or Bollywood - your choice!',
     packages: [
       {
         name: '4 Classes',
@@ -236,7 +247,7 @@ const packages = {
 };
 
 // Intro offer type for selection
-type IntroOfferType = 'reformer' | 'hot-pilates' | 'red-light' | 'barre';
+type IntroOfferType = 'reformer' | 'hot-pilates' | 'red-light' | 'barre' | 'try-all';
 
 // Separate component for the intro offers section that uses useSearchParams
 // This needs to be wrapped in Suspense for static generation
@@ -248,7 +259,7 @@ function IntroOffersSection() {
   // Check URL params on mount to pre-select offer if coming from ad
   useEffect(() => {
     const offer = searchParams.get('offer') as IntroOfferType | null;
-    if (offer && ['reformer', 'hot-pilates', 'red-light', 'barre'].includes(offer)) {
+    if (offer && ['reformer', 'hot-pilates', 'red-light', 'barre', 'try-all'].includes(offer)) {
       setSelectedOffer(offer);
       setFromAd(true);
     }
@@ -263,6 +274,7 @@ function IntroOffersSection() {
       case 'flame': return <Flame className={className} />;
       case 'zap': return <Zap className={className} />;
       case 'heart': return <Heart className={className} />;
+      case 'sparkles': return <Sparkles className={className} />;
       default: return <Package className={className} />;
     }
   };
@@ -278,17 +290,17 @@ function IntroOffersSection() {
 
           {/* Mobile: Tab Switcher + Single Card */}
           <div className="md:hidden">
-            {/* 2x2 Pill Selector */}
-            <div className="grid grid-cols-2 gap-2 mb-6 max-w-sm mx-auto">
-              {introPackages.map((pkg) => (
+            {/* Pill Selector - 2x2 + centered last */}
+            <div className="flex flex-wrap justify-center gap-2 mb-6 max-w-sm mx-auto">
+              {introPackages.map((pkg, index) => (
                 <button
                   key={pkg.id}
                   onClick={() => setSelectedOffer(pkg.id as IntroOfferType)}
-                  className={`py-3 px-3 rounded-full text-sm font-medium transition-all duration-300 flex items-center justify-center gap-2 ${
-                    selectedOffer === pkg.id
+                  className={`py-3 px-4 rounded-full text-sm font-medium transition-all duration-300 flex items-center justify-center gap-2 ${index < 4 ? 'w-[calc(50%-4px)]' : 'w-auto'
+                    } ${selectedOffer === pkg.id
                       ? 'bg-[#1a260e] text-[#fffcf2] shadow-lg'
                       : 'bg-[#1a260e]/10 text-[#1a260e]/70 hover:bg-[#1a260e]/20'
-                  }`}
+                    }`}
                 >
                   {getIcon(pkg.icon, 'h-4 w-4')}
                   <span className="truncate">{pkg.name.replace(' Pilates', '').replace('Red Light Hot', 'Red Light')}</span>
@@ -352,8 +364,8 @@ function IntroOffersSection() {
             </p>
           </div>
 
-          {/* Desktop: 4-Column Row */}
-          <div className="hidden md:grid grid-cols-4 gap-6 max-w-6xl mx-auto">
+          {/* Desktop: 5-Column Row */}
+          <div className="hidden md:grid grid-cols-5 gap-4 max-w-7xl mx-auto">
             {introPackages.map((pkg) => (
               <a
                 key={pkg.id}
