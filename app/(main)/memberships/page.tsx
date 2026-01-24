@@ -199,6 +199,73 @@ const memberships = {
       }
     ]
   },
+  allAccess: {
+    title: 'Euforyc All Access',
+    subtitle: 'The ultimate membership — access every class we offer',
+    memberships: [
+      {
+        name: '4 Classes/Month',
+        monthlyPrice: '£100',
+        description: 'Perfect for exploring everything',
+        savings: 'Access all class types',
+        features: [
+          '4 classes per month (any class)',
+          'Reformer, Hot Pilates, Barre & more',
+          'Red Light Therapy sessions',
+          'All dance styles included',
+          'Priority booking access'
+        ],
+        momenceUrl: 'https://momence.com/m/631785'
+      },
+      {
+        name: '8 Classes/Month',
+        monthlyPrice: '£180',
+        description: 'Great for regular variety',
+        savings: 'Best value for explorers',
+        popular: true,
+        features: [
+          '8 classes per month (any class)',
+          'Reformer, Hot Pilates, Barre & more',
+          'Red Light Therapy sessions',
+          'All dance styles included',
+          'Priority booking access',
+          '2 free grip socks'
+        ],
+        momenceUrl: 'https://momence.com/m/631786'
+      },
+      {
+        name: '12 Classes/Month',
+        monthlyPrice: '£260',
+        description: 'For the dedicated practitioner',
+        savings: 'Maximum flexibility',
+        features: [
+          '12 classes per month (any class)',
+          'Reformer, Hot Pilates, Barre & more',
+          'Red Light Therapy sessions',
+          'All dance styles included',
+          'Priority booking access',
+          '3 free grip socks'
+        ],
+        momenceUrl: 'https://momence.com/m/631788'
+      },
+      {
+        name: 'Unlimited Classes',
+        monthlyPrice: '£360',
+        description: 'The ultimate Euforyc experience',
+        savings: 'Unlimited everything',
+        features: [
+          'Unlimited classes per month',
+          'Reformer, Hot Pilates, Barre & more',
+          'Red Light Therapy sessions',
+          'All dance styles included',
+          'Priority booking access',
+          '4 free grip socks',
+          '1 free Guest Pass'
+        ],
+        momenceUrl: 'https://momence.com/m/631791'
+      }
+    ]
+  },
   bellyDancing: {
     title: 'Dance Membership',
     subtitle: 'Flexible membership for Belly Dance, Afro Dance, Dabke Dance & more',
@@ -446,6 +513,92 @@ export default function Memberships() {
                     </div>
                   )}
                   
+                  <div className="text-center space-y-6">
+                    <div className="space-y-2">
+                      <h3 className="font-serif text-2xl font-light">{membership.name}</h3>
+                      <p className={`text-sm ${membership.popular ? 'text-[#fffcf2]/70' : 'text-[#1a260e]/60'}`}>
+                        {membership.description}
+                      </p>
+                    </div>
+
+                    <div className="space-y-2">
+                      <p className="font-serif text-4xl font-light">{membership.monthlyPrice}</p>
+                      <p className={`text-sm ${membership.popular ? 'text-[#fffcf2]/70' : 'text-[#1a260e]/60'}`}>
+                        per month
+                      </p>
+                      {membership.savings && (
+                        <p className={`font-sans text-sm font-medium ${
+                          membership.popular ? 'text-green-400' : 'text-green-700'
+                        }`}>
+                          {membership.savings}
+                        </p>
+                      )}
+                    </div>
+
+                    <div className="space-y-3 text-left">
+                      {membership.features.map((feature, featureIndex) => (
+                        <div key={featureIndex} className="flex items-start space-x-3">
+                          <CheckCircle className={`h-5 w-5 mt-0.5 flex-shrink-0 ${
+                            membership.popular ? 'text-green-400' : 'text-green-600'
+                          }`} />
+                          <span className={`text-sm ${
+                            membership.popular ? 'text-[#fffcf2]/80' : 'text-[#1a260e]/80'
+                          }`}>
+                            {feature}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+
+                    <div className={`flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity pt-4 ${
+                      membership.popular ? 'text-[#fffcf2]' : 'text-[#1a260e]'
+                    }`}>
+                      <span className="font-sans text-sm font-medium mr-2">Start Membership</span>
+                      <ExternalLink className="h-4 w-4" />
+                    </div>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Euforyc All Access */}
+      <section className="section-padding bg-[#fffcf2]">
+        <div className="container-width">
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-12">
+              <div className="inline-flex items-center bg-gradient-to-r from-yellow-400/20 to-yellow-600/20 text-yellow-700 px-4 py-2 rounded-full text-sm font-medium mb-4">
+                <Crown className="w-4 h-4 mr-2" />
+                PREMIUM MEMBERSHIP
+              </div>
+              <h2 className="heading-secondary mb-2">{memberships.allAccess.title}</h2>
+              <p className="tagline text-[#1a260e]/60">{memberships.allAccess.subtitle}</p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {memberships.allAccess.memberships.map((membership, index) => (
+                <a
+                  key={index}
+                  href={membership.momenceUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`group relative rounded-2xl p-8 hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 ${
+                    membership.popular
+                      ? 'bg-[#1a260e] text-[#fffcf2] border-2 border-[#1a260e]'
+                      : 'bg-white border-2 border-[#1a260e]/10 text-[#1a260e] hover:border-[#1a260e]/20'
+                  }`}
+                >
+                  {membership.popular && (
+                    <div className="absolute -top-4 left-1/2 -translate-x-1/2">
+                      <div className="bg-gradient-to-r from-yellow-400 to-yellow-600 text-white px-4 py-2 rounded-full text-sm font-medium flex items-center">
+                        <Crown className="w-4 h-4 mr-2" />
+                        MOST POPULAR
+                      </div>
+                    </div>
+                  )}
+
                   <div className="text-center space-y-6">
                     <div className="space-y-2">
                       <h3 className="font-serif text-2xl font-light">{membership.name}</h3>
