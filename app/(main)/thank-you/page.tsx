@@ -109,16 +109,15 @@ function ThankYouContent() {
       }
     };
 
-    // Execute tracking
-    // IMPORTANT: Both Skin Studio and Pilates purchases are tracked elsewhere:
-    // - Skin Studio: Zapier → /api/webhooks/momence → Facebook CAPI
-    // - Pilates: GTM + Momence built-in CAPI
-    // The thank-you page should NOT fire additional Purchase events to avoid duplicates
-
+    // Execute tracking - Fire Purchase event for the correct pixel
     if (isSkinStudio) {
-      console.log('Skin Studio purchase - tracked via Zapier webhook, skipping thank-you page');
+      // Skin Studio: Fire Purchase to Skin Studio pixel
+      trackPurchase();
+      fireClientPixel();
+      console.log('Skin Studio purchase tracked via CAPI + browser pixel');
     } else {
-      console.log('Pilates purchase - tracked via GTM + Momence CAPI, skipping thank-you page');
+      // Pilates: Momence handles this, but fire as backup
+      console.log('Pilates purchase - handled by Momence built-in tracking');
     }
     setTracked(true);
   }, [searchParams, tracked]);
