@@ -247,7 +247,9 @@ export default function RootLayout({
             if (servicePaths.some(function(path) { return window.location.pathname.includes(path); })) {
               fbq('track', 'ViewContent', {
                 content_name: document.title,
-                content_type: 'service_page'
+                content_type: 'service_page',
+                value: 0,
+                currency: 'GBP'
               });
             }
 

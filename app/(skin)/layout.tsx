@@ -93,11 +93,15 @@ export default function SkinStudioLayout({
                         var viewContentId = generateEventId('ViewContent');
                         fbq('track', 'ViewContent', {
                             content_name: document.title,
-                            content_type: 'skin_studio_page'
+                            content_type: 'skin_studio_page',
+                            value: 0,
+                            currency: 'GBP'
                         }, { eventID: viewContentId });
                         sendToCAPI('ViewContent', viewContentId, {
                             content_name: document.title,
-                            content_type: 'skin_studio_page'
+                            content_type: 'skin_studio_page',
+                            value: 0,
+                            currency: 'GBP'
                         });
 
                         // Track Lead events (booking clicks) - with deduplication
