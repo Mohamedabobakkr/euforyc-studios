@@ -46,7 +46,7 @@ const allAccessPackages = [
     originalPrice: 140,
     discountedPrice: 84,
     perClass: '£21',
-    validity: '60 days',
+    validity: '30 days',
     description: 'Perfect for trying everything Euforyc offers',
     features: [
       'Access to ALL class types',
@@ -63,7 +63,7 @@ const allAccessPackages = [
     originalPrice: 280,
     discountedPrice: 168,
     perClass: '£21',
-    validity: '90 days',
+    validity: '30 days',
     description: 'Best value for regular explorers',
     features: [
       'Access to ALL class types',
@@ -81,7 +81,7 @@ const allAccessPackages = [
     originalPrice: 420,
     discountedPrice: 252,
     perClass: '£21',
-    validity: '120 days',
+    validity: '30 days',
     description: 'Maximum flexibility for dedicated practitioners',
     features: [
       'Access to ALL class types',
