@@ -226,6 +226,27 @@ const packages = {
       }
     ]
   },
+  allAccess: {
+    title: 'Euforyc All Access',
+    subtitle: 'Access ALL class types - Reformer, Hot Pilates, Barre, Red Light & Dance',
+    packages: [
+      {
+        name: '4 Classes',
+        price: '£140',
+        momenceUrl: 'https://momence.com/m/632399'
+      },
+      {
+        name: '8 Classes',
+        price: '£280',
+        momenceUrl: 'https://momence.com/m/632400'
+      },
+      {
+        name: '12 Classes',
+        price: '£420',
+        momenceUrl: 'https://momence.com/m/632401'
+      }
+    ]
+  },
   dancePackage: {
     title: 'Dance Package',
     subtitle: 'Choose from Dabke, Belly Dance, Afro, or Bollywood - your choice!',
@@ -345,7 +366,7 @@ function IntroOffersSection() {
                   </div>
 
                   <p className="text-sm text-[#fffcf2]/80 leading-relaxed">
-                    {currentPackage.description}. Valid for {currentPackage.id === 'reformer' ? '20' : '30'} days from purchase.
+                    {currentPackage.description}. Valid for {currentPackage.id === 'reformer' || currentPackage.id === 'try-all' ? '20' : '30'} days from purchase.
                   </p>
 
                   <div className="pt-2">
@@ -396,7 +417,7 @@ function IntroOffersSection() {
 
           {/* Validity note - Desktop only */}
           <p className="hidden md:block text-center text-xs text-[#1a260e]/50 mt-8">
-            Intro offers valid for 30 days from purchase (Reformer: 20 days). First-time clients only.
+            Intro offers valid for 30 days from purchase except for (Reformer and try all only valid for 20 days). All intro offers are for first-time clients only.
           </p>
         </div>
       </div>
@@ -556,6 +577,43 @@ export default function Packages() {
                         {pkg.savings && (
                           <p className="font-sans text-sm text-green-400 font-medium mt-1">{pkg.savings}</p>
                         )}
+                      </div>
+                      <div className="flex items-center justify-center text-[#fffcf2] opacity-0 group-hover:opacity-100 transition-opacity">
+                        <span className="font-sans text-sm mr-2">Book Now</span>
+                        <ExternalLink className="h-4 w-4" />
+                      </div>
+                    </div>
+                  </a>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* All Access Packages */}
+        <section className="section-padding bg-[#fffcf2]">
+          <div className="container-width">
+            <div className="max-w-5xl mx-auto">
+              <div className="text-center mb-12">
+                <h2 className="heading-secondary mb-2">{packages.allAccess.title}</h2>
+                <p className="tagline text-[#1a260e]/60">{packages.allAccess.subtitle}</p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {packages.allAccess.packages.map((pkg, index) => (
+                  <a
+                    key={index}
+                    href={pkg.momenceUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group relative bg-[#1a260e] text-[#fffcf2] rounded-lg p-8 hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+                  >
+                    <div className="text-center space-y-4">
+                      <Sparkles className="h-10 w-10 text-[#fffcf2]/60 mx-auto" />
+                      <h3 className="font-serif text-2xl font-light">{pkg.name}</h3>
+                      <div>
+                        <p className="font-serif text-3xl font-light">{pkg.price}</p>
+                        <p className="font-sans text-sm text-green-400 font-medium mt-1">Your all-in-one studio pass</p>
                       </div>
                       <div className="flex items-center justify-center text-[#fffcf2] opacity-0 group-hover:opacity-100 transition-opacity">
                         <span className="font-sans text-sm mr-2">Book Now</span>
