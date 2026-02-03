@@ -5,11 +5,14 @@ const nextConfig = {
 
   // Image optimization
   images: {
-    domains: ['localhost', 'euforyc-studios.vercel.app'],
     remotePatterns: [
       {
         protocol: 'https',
         hostname: '**',
+      },
+      {
+        protocol: 'http',
+        hostname: 'localhost',
       },
     ],
     formats: ['image/avif', 'image/webp'],
@@ -21,11 +24,6 @@ const nextConfig = {
   // Performance optimizations
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
-  },
-
-  // ESLint configuration - moved to top level
-  eslint: {
-    ignoreDuringBuilds: true,
   },
 
   // Security headers
