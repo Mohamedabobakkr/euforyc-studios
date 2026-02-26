@@ -1,0 +1,562 @@
+:root {
+  --green:      #1E3B20;
+  --green-mid:  #27502A;
+  --green-deep: #162D18;
+  --cream:      #EDE8D5;
+  --cream-2:    #DDD8C2;
+  --cream-3:    #C8C1A4;
+  --cream-soft: #F6F2E4;
+  --taupe:      #9C9278;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--green);
+  color: var(--cream);
+  font-family: 'Gaegu', cursive;
+  overflow-x: hidden;
+}
+
+/* ── NAV ── */
+.sips-nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  padding: 16px 52px;
+  display: flex; justify-content: space-between; align-items: center;
+  transition: all 0.4s;
+}
+.sips-nav.scrolled {
+  background: rgba(22,45,24,0.95);
+  backdrop-filter: blur(16px);
+  border-bottom: 2px dashed rgba(237,232,213,0.15);
+}
+.nav-logo {
+  font-family: 'Gaegu', cursive; font-weight: 700; font-size: 28px;
+  color: var(--cream); text-decoration: none; letter-spacing: 0.02em;
+}
+.nav-logo span { color: var(--cream-3); font-weight: 400; }
+.nav-links { display: flex; gap: 36px; list-style: none; }
+.nav-links a {
+  font-family: 'Gaegu', cursive; font-size: 22px; font-weight: 400;
+  color: var(--cream-3); text-decoration: none; transition: color 0.3s;
+}
+.nav-links a:hover { color: var(--cream); }
+
+/* ── HERO ── */
+.hero {
+  min-height: 100vh;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center;
+  padding: 120px 40px 60px;
+  position: relative; overflow: hidden;
+}
+
+/* ambient rings */
+.ring {
+  position: absolute; border-radius: 50%; pointer-events: none;
+  top: 50%; left: 50%; transform: translate(-50%,-50%);
+  border: 1.5px solid rgba(237,232,213,0.06);
+}
+.ring-1 { width: 750px; height: 750px; }
+.ring-2 { width: 520px; height: 520px; border-style: dashed; border-color: rgba(237,232,213,0.08); animation: spinSlow 55s linear infinite; }
+.ring-3 { width: 300px; height: 300px; border-color: rgba(237,232,213,0.05); }
+
+/* secret menu stamp */
+.secret-stamp {
+  position: relative; margin-bottom: 36px;
+  opacity: 0; animation: fadeUp 0.8s ease forwards 0.1s;
+}
+.stamp-inner {
+  display: inline-flex; align-items: center; gap: 12px;
+  border: 3px dashed rgba(237,232,213,0.35);
+  border-radius: 999px; padding: 10px 28px;
+  font-family: 'Gaegu', cursive; font-size: 22px; font-weight: 700;
+  color: var(--cream-2); letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.stamp-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--cream-3); animation: pulse 2s ease infinite; display: inline-block; }
+
+/* BIG SECRET MENU TEXT */
+.secret-label {
+  font-family: 'Gaegu', cursive; font-weight: 700;
+  font-size: clamp(22px, 4vw, 44px);
+  letter-spacing: 0.35em; text-transform: uppercase;
+  color: var(--cream-3);
+  margin-bottom: 8px;
+  opacity: 0; animation: fadeUp 0.8s ease forwards 0.2s;
+}
+
+.hero-h1 {
+  font-family: 'Gaegu', cursive; font-weight: 700;
+  font-size: clamp(80px, 14vw, 160px);
+  line-height: 0.92; color: var(--cream);
+  margin-bottom: 6px;
+  opacity: 0; animation: fadeUp 0.8s ease forwards 0.35s;
+}
+.hero-h1 .sips { color: var(--cream-3); font-weight: 400; }
+
+.hero-byline {
+  font-family: 'Gaegu', cursive; font-size: 24px;
+  color: var(--taupe); letter-spacing: 0.1em;
+  margin-bottom: 44px;
+  opacity: 0; animation: fadeUp 0.8s ease forwards 0.5s;
+}
+
+.hero-desc {
+  font-family: 'Gaegu', cursive; font-size: 24px; font-weight: 400;
+  color: var(--cream-2); max-width: 420px; line-height: 1.7;
+  opacity: 0; animation: fadeUp 0.8s ease forwards 0.65s;
+}
+
+/* hero side characters */
+.hero-char-r {
+  position: absolute; bottom: 0; right: 60px; width: 240px;
+  opacity: 0; animation: fadeUp 1s ease forwards 0.9s;
+}
+.hero-char-l {
+  position: absolute; bottom: 0; left: 50px; width: 170px;
+  opacity: 0; animation: fadeUp 1s ease forwards 1.05s;
+}
+
+.scroll-cue {
+  position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  opacity: 0; animation: fadeUp 0.8s ease forwards 1.2s;
+}
+.scroll-cue span { font-family: 'Gaegu', cursive; font-size: 20px; color: var(--taupe); }
+.scroll-line { width: 1px; height: 44px; background: linear-gradient(to bottom, var(--taupe), transparent); animation: scrollPulse 2.5s ease infinite; }
+
+/* ── SECRET MENU BANNER ── */
+.secret-banner {
+  background: var(--cream);
+  padding: 32px 0;
+  overflow: hidden;
+  border-top: 3px dashed rgba(30,59,32,0.2);
+  border-bottom: 3px dashed rgba(30,59,32,0.2);
+}
+.marquee-track {
+  display: flex; gap: 0;
+  animation: marquee 18s linear infinite;
+  white-space: nowrap;
+}
+.marquee-item {
+  font-family: 'Gaegu', cursive; font-size: 32px; font-weight: 700;
+  color: var(--green); padding: 0 40px; flex-shrink: 0;
+  display: flex; align-items: center; gap: 20px;
+}
+.marquee-item span { color: var(--green-mid); font-weight: 400; }
+.marquee-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--green); display: inline-block; flex-shrink: 0; }
+
+/* ── CAT NAV ── */
+.cat-nav {
+  position: sticky; top: 60px; z-index: 150;
+  background: var(--green-mid);
+  border-bottom: 2px dashed rgba(237,232,213,0.12);
+  display: flex; justify-content: center; overflow-x: auto;
+}
+.cat-nav a {
+  font-family: 'Gaegu', cursive; font-size: 22px; font-weight: 700;
+  color: var(--cream-3); text-decoration: none;
+  padding: 16px 32px; border-bottom: 3px solid transparent;
+  transition: all 0.3s; white-space: nowrap;
+}
+.cat-nav a:hover { color: var(--cream); border-bottom-color: var(--cream); }
+
+/* ── LAYOUT ── */
+.wrap { max-width: 1200px; margin: 0 auto; padding: 0 52px; }
+.menu-sec { padding: 100px 0; position: relative; }
+
+.sec-header {
+  display: flex; align-items: flex-end; gap: 20px;
+  margin-bottom: 56px; padding-bottom: 20px;
+  border-bottom: 2px dashed rgba(237,232,213,0.15);
+}
+.sec-title {
+  font-family: 'Gaegu', cursive; font-weight: 700;
+  font-size: clamp(60px, 10vw, 108px);
+  color: var(--cream); line-height: 1;
+}
+.sec-note {
+  font-family: 'Gaegu', cursive; font-size: 20px;
+  color: var(--taupe); padding-bottom: 12px; line-height: 1.5;
+}
+
+/* ── CARDS ── */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.grid-1 { display: grid; grid-template-columns: 1fr; }
+
+.card {
+  background: rgba(237,232,213,0.055);
+  border: 2px solid rgba(237,232,213,0.1);
+  border-radius: 28px;
+  padding: 0;
+  position: relative; overflow: hidden;
+  transition: all 0.45s ease;
+  display: flex; flex-direction: column;
+}
+.card:hover {
+  background: rgba(237,232,213,0.1);
+  border-color: rgba(237,232,213,0.26);
+  transform: translateY(-7px) rotate(-0.4deg);
+  box-shadow: 0 32px 80px rgba(0,0,0,0.28);
+}
+
+/* illustration panel */
+.card-illo-panel {
+  width: 100%; padding: 36px 36px 20px;
+  display: flex; justify-content: center; align-items: center;
+  border-bottom: 1.5px dashed rgba(237,232,213,0.12);
+  min-height: 180px;
+  transition: transform 0.45s ease;
+}
+.card:hover .card-illo-panel { transform: scale(1.02); }
+
+.card-body { padding: 32px 36px 36px; flex: 1; }
+
+.card-name {
+  font-family: 'Gaegu', cursive; font-weight: 700;
+  font-size: 32px; color: var(--cream); line-height: 1.1; margin-bottom: 6px;
+}
+.card-tagline {
+  font-family: 'Gaegu', cursive; font-size: 19px;
+  color: var(--taupe); margin-bottom: 20px; line-height: 1.5;
+}
+.card-rule {
+  width: 40px; height: 2px; background: rgba(237,232,213,0.22);
+  margin-bottom: 18px; border-radius: 999px;
+  transition: width 0.4s ease;
+}
+.card:hover .card-rule { width: 72px; }
+.card-desc { font-family: 'Gaegu', cursive; font-size: 19px; color: var(--cream-2); line-height: 1.7; margin-bottom: 20px; }
+.ing-lbl { font-family: 'Gaegu', cursive; font-size: 15px; letter-spacing: 0.1em; color: var(--taupe); margin-bottom: 6px; text-transform: lowercase; }
+.ings { font-family: 'Gaegu', cursive; font-size: 17px; color: rgba(237,232,213,0.5); line-height: 1.7; }
+
+/* coffee card horizontal */
+.card-horizontal {
+  flex-direction: row; align-items: stretch;
+}
+.card-horizontal .card-illo-panel {
+  width: 260px; flex-shrink: 0;
+  min-height: 260px;
+  border-bottom: none;
+  border-right: 1.5px dashed rgba(237,232,213,0.12);
+  padding: 40px 28px;
+}
+.card-horizontal .card-body { padding: 44px 44px; }
+
+/* ── WAVE BREAKERS ── */
+.breaker { text-align: center; padding: 6px 0; opacity: 0.18; }
+
+/* ── RAMADAN ── */
+.ramadan {
+  background: var(--cream-soft); color: var(--green);
+  padding: 120px 0; position: relative; overflow: hidden;
+}
+.r-bg { position: absolute; pointer-events: none; opacity: 0.06; }
+
+.r-header { text-align: center; margin-bottom: 88px; }
+.r-moon { font-size: 64px; display: block; margin-bottom: 18px; animation: moonFloat 4s ease-in-out infinite; }
+.r-eyebrow { font-family: 'Gaegu', cursive; font-size: 21px; color: var(--green-mid); letter-spacing: 0.12em; margin-bottom: 14px; }
+.r-title {
+  font-family: 'Gaegu', cursive; font-weight: 700;
+  font-size: clamp(52px, 8vw, 96px);
+  color: var(--green); line-height: 1.0; margin-bottom: 18px;
+}
+.r-title em { font-style: normal; font-weight: 400; color: var(--green-mid); }
+.r-desc { font-family: 'Gaegu', cursive; font-size: 22px; color: var(--taupe); max-width: 400px; margin: 0 auto; line-height: 1.75; }
+
+.r-cat { margin-bottom: 60px; }
+.r-cat-label {
+  font-family: 'Gaegu', cursive; font-size: 30px; font-weight: 700;
+  color: var(--green); margin-bottom: 26px;
+  display: flex; align-items: center; gap: 16px;
+}
+.r-cat-label::after { content: ''; flex: 1; height: 2px; background: rgba(30,59,32,0.15); border-radius: 999px; }
+
+.r-card {
+  background: rgba(30,59,32,0.07);
+  border: 2px solid rgba(30,59,32,0.12);
+  border-radius: 28px; overflow: hidden;
+  transition: all 0.4s ease; display: flex; flex-direction: column;
+}
+.r-card:hover {
+  background: rgba(30,59,32,0.12);
+  border-color: rgba(30,59,32,0.28);
+  transform: translateY(-6px) rotate(0.3deg);
+  box-shadow: 0 24px 60px rgba(30,59,32,0.12);
+}
+.r-card .card-illo-panel { border-bottom: 1.5px dashed rgba(30,59,32,0.12); }
+.r-card .card-name { color: var(--green); }
+.r-card .card-tagline { color: var(--green-mid); }
+.r-card .card-rule { background: rgba(30,59,32,0.2); }
+.r-card:hover .card-rule { width: 72px; }
+.r-card .card-desc { color: rgba(30,59,32,0.72); }
+.r-card .ing-lbl { color: var(--green-mid); }
+.r-card .ings { color: rgba(30,59,32,0.45); }
+.r-card.r-horizontal {
+  flex-direction: row; align-items: center;
+}
+.r-card.r-horizontal .card-illo-panel {
+  width: 200px; flex-shrink: 0; min-height: 100%; border-bottom: none;
+  border-right: 1.5px dashed rgba(30,59,32,0.12);
+}
+.r-card.r-horizontal .card-body { padding: 36px 36px; }
+
+/* ── FOOTER ── */
+.sips-footer {
+  background: var(--green-deep); padding: 80px 40px 52px; text-align: center;
+  border-top: 2px dashed rgba(237,232,213,0.1);
+}
+.footer-logo { font-family: 'Gaegu', cursive; font-weight: 700; font-size: 56px; color: var(--cream); margin-bottom: 4px; }
+.footer-logo span { color: var(--cream-3); font-weight: 400; }
+.footer-sub { font-family: 'Gaegu', cursive; font-size: 21px; color: var(--taupe); margin-bottom: 44px; }
+.footer-links { display: flex; justify-content: center; flex-wrap: wrap; gap: 36px; margin-bottom: 40px; }
+.footer-links a { font-family: 'Gaegu', cursive; font-size: 22px; font-weight: 700; color: var(--cream-2); text-decoration: none; transition: color 0.3s; }
+.footer-links a:hover { color: var(--cream); }
+.footer-copy { font-family: 'Gaegu', cursive; font-size: 18px; color: var(--taupe); opacity: 0.5; }
+
+/* ── CHOOSE YOUR PATH ── */
+.choose-wrap {
+  background: var(--cream-soft);
+  padding: 80px 52px 72px;
+  position: relative;
+  overflow: hidden;
+  border-bottom: 2px dashed rgba(30,59,32,0.12);
+}
+
+.choose-doodle { position: absolute; pointer-events: none; }
+.cd-1 { width: 70px; top: 20px; left: 32px; opacity: 0.08; animation: float 8s ease-in-out infinite; }
+.cd-2 { width: 60px; bottom: 20px; right: 48px; opacity: 0.08; animation: float 10s ease-in-out 1s infinite; }
+.cd-3 { width: 52px; top: 24px; right: 120px; opacity: 0.07; animation: wobble 7s ease-in-out infinite; }
+.cd-4 { width: 90px; bottom: 28px; left: 120px; opacity: 0.07; }
+
+.choose-inner {
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+}
+
+.choose-label {
+  font-family: 'Gaegu', cursive;
+  font-size: 22px;
+  color: var(--taupe);
+  letter-spacing: 0.08em;
+  margin-bottom: 44px;
+}
+
+.choose-cards {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  flex-wrap: wrap;
+}
+
+.choose-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 44px 52px;
+  border-radius: 28px;
+  border: 2px solid transparent;
+  text-decoration: none;
+  transition: all 0.4s ease;
+  width: 320px;
+  position: relative;
+}
+
+.choose-card--menu {
+  color: var(--green);
+  background: rgba(30,59,32,0.06);
+  border-color: rgba(30,59,32,0.12);
+}
+.choose-card--menu:hover {
+  background: rgba(30,59,32,0.11);
+  border-color: rgba(30,59,32,0.28);
+  transform: translateY(-8px) rotate(-1deg);
+  box-shadow: 0 24px 60px rgba(30,59,32,0.12);
+}
+
+.choose-card--gift {
+  color: var(--green);
+  background: var(--green);
+  border-color: var(--green);
+}
+.choose-card--gift .choose-card-illo { color: var(--cream); }
+.choose-card--gift .choose-card-text h3,
+.choose-card--gift .choose-card-text p,
+.choose-card--gift .choose-arrow { color: var(--cream); }
+.choose-card--gift:hover {
+  background: var(--green-mid);
+  border-color: var(--green-mid);
+  transform: translateY(-8px) rotate(1deg);
+  box-shadow: 0 24px 60px rgba(30,59,32,0.25);
+}
+
+.choose-card-illo {
+  width: 110px;
+  height: 130px;
+  flex-shrink: 0;
+  transition: transform 0.4s ease;
+}
+.choose-card:hover .choose-card-illo { transform: scale(1.06); }
+
+.choose-card-text h3 {
+  font-family: 'Gaegu', cursive;
+  font-weight: 700;
+  font-size: 28px;
+  line-height: 1.1;
+  margin-bottom: 6px;
+}
+.choose-card-text p {
+  font-family: 'Gaegu', cursive;
+  font-size: 19px;
+  opacity: 0.7;
+  line-height: 1.4;
+}
+
+.choose-arrow {
+  font-family: 'Gaegu', cursive;
+  font-size: 28px;
+  display: block;
+  transition: transform 0.3s ease;
+}
+.choose-card:hover .choose-arrow { transform: translateY(5px); }
+
+.choose-or {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 0 32px;
+  color: var(--green);
+}
+.choose-or span {
+  font-family: 'Gaegu', cursive;
+  font-size: 20px;
+  color: var(--taupe);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+
+/* ── SHARE CTA ── */
+.share-cta {
+  background: var(--cream-soft);
+  padding: 80px 52px;
+  position: relative;
+  overflow: hidden;
+  border-top: 2px dashed rgba(30,59,32,0.12);
+  border-bottom: 2px dashed rgba(30,59,32,0.12);
+}
+.cta-doodle { position: absolute; pointer-events: none; opacity: 0.1; }
+.cta-doodle-l  { width: 90px; left: 28px; top: 50%; transform: translateY(-50%); }
+.cta-doodle-r  { width: 80px; right: 120px; bottom: 18px; animation: wobble 6s ease-in-out infinite; }
+.cta-doodle-tr { width: 52px; right: 36px; top: 20px; animation: float 8s ease-in-out infinite; }
+.cta-doodle-bl { width: 80px; left: 140px; bottom: 16px; animation: float 9s ease-in-out 2s infinite; }
+
+.cta-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  position: relative;
+  z-index: 2;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.cta-ig-icon {
+  width: 72px; height: 72px; flex-shrink: 0;
+  opacity: 0.85;
+  animation: float 5s ease-in-out infinite;
+}
+
+.cta-text-block { flex: 1; min-width: 260px; }
+
+.cta-eyebrow {
+  font-family: 'Gaegu', cursive; font-size: 21px;
+  color: var(--green-mid); letter-spacing: 0.06em; margin-bottom: 8px;
+}
+
+.cta-heading {
+  font-family: 'Gaegu', cursive; font-weight: 700;
+  font-size: clamp(32px, 5vw, 56px);
+  color: var(--green); line-height: 1.1; margin-bottom: 14px;
+}
+.cta-heading span {
+  color: var(--green-mid); font-weight: 400;
+  position: relative; display: inline-block;
+}
+.cta-heading span::after {
+  content: '';
+  position: absolute; left: 0; right: 0; bottom: -4px; height: 3px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='8'%3E%3Cpath d='M0 5 Q50 1 100 5 Q150 9 200 5' stroke='%2327502A' stroke-width='2.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E") repeat-x center;
+  background-size: 120px 6px;
+}
+
+.cta-sub {
+  font-family: 'Gaegu', cursive; font-size: 21px;
+  color: var(--taupe); line-height: 1.6;
+}
+.cta-sub strong { color: var(--green); font-weight: 700; }
+
+.cta-btn {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: var(--green); color: var(--cream);
+  font-family: 'Gaegu', cursive; font-weight: 700; font-size: 22px;
+  padding: 16px 36px; border-radius: 999px;
+  text-decoration: none; border: 2px solid var(--green);
+  transition: all 0.35s ease; white-space: nowrap;
+  flex-shrink: 0;
+  box-shadow: 5px 5px 0px rgba(30,59,32,0.2);
+}
+.cta-btn:hover {
+  background: transparent; color: var(--green);
+  transform: translate(-3px, -3px);
+  box-shadow: 8px 8px 0px rgba(30,59,32,0.15);
+}
+
+.cta-wink-char {
+  width: 92px; height: 92px; flex-shrink: 0;
+  opacity: 0.75;
+  animation: float 6s ease-in-out 1s infinite;
+}
+
+/* ── KEYFRAMES ── */
+@keyframes fadeUp { from{opacity:0;transform:translateY(28px);} to{opacity:1;transform:translateY(0);} }
+@keyframes scrollPulse { 0%,100%{opacity:0.4;} 50%{opacity:1;} }
+@keyframes spinSlow { from{transform:translate(-50%,-50%) rotate(0deg);} to{transform:translate(-50%,-50%) rotate(360deg);} }
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1);} 50%{opacity:0.5;transform:scale(0.7);} }
+@keyframes moonFloat { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-12px);} }
+@keyframes float { 0%,100%{transform:translateY(0) rotate(0deg);} 50%{transform:translateY(-10px) rotate(2deg);} }
+@keyframes wobble { 0%,100%{transform:rotate(-2deg);} 50%{transform:rotate(2deg);} }
+@keyframes marquee { from{transform:translateX(0);} to{transform:translateX(-50%);} }
+
+.reveal { opacity:0; transform:translateY(30px); transition: opacity 0.72s ease, transform 0.72s ease; }
+.reveal.visible { opacity:1; transform:translateY(0); }
+
+/* ── RESPONSIVE ── */
+@media(max-width:768px){
+  .sips-nav{padding:14px 20px;} .nav-links{display:none;}
+  .wrap{padding:0 20px;}
+  .grid-2{grid-template-columns:1fr;}
+  .card-horizontal, .r-card.r-horizontal{flex-direction:column;}
+  .card-horizontal .card-illo-panel, .r-card.r-horizontal .card-illo-panel{width:100%;min-height:200px;border-right:none;border-bottom:1.5px dashed rgba(237,232,213,0.12);padding:32px 24px;}
+  .hero-char-r,.hero-char-l{display:none;}
+  .choose-wrap { padding: 56px 20px; }
+  .choose-cards { flex-direction: column; gap: 16px; }
+  .choose-card { width: 100%; }
+  .choose-or { flex-direction: row; padding: 8px 0; }
+  .choose-or svg { width: 60px; height: 2px; }
+  .cd-1, .cd-2, .cd-3, .cd-4 { display: none; }
+  .share-cta { padding: 56px 20px; }
+  .cta-doodle-l, .cta-doodle-bl { display: none; }
+  .cta-inner { gap: 28px; }
+  .cta-btn { width: 100%; justify-content: center; }
+}
