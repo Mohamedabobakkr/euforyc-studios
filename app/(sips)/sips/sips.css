@@ -13,9 +13,9 @@
 html { scroll-behavior: smooth; }
 
 body {
-  background: var(--green) !important;
-  color: var(--cream) !important;
-  font-family: 'Gaegu', cursive !important;
+  background: var(--green);
+  color: var(--cream);
+  font-family: 'Gaegu', cursive;
   overflow-x: hidden;
 }
 
