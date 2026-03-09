@@ -232,17 +232,17 @@ const packages = {
     packages: [
       {
         name: '4 Classes',
-        price: '£140',
+        price: '£115',
         momenceUrl: 'https://momence.com/m/632399'
       },
       {
         name: '8 Classes',
-        price: '£280',
+        price: '£220',
         momenceUrl: 'https://momence.com/m/632400'
       },
       {
         name: '12 Classes',
-        price: '£420',
+        price: '£320',
         momenceUrl: 'https://momence.com/m/632401'
       }
     ]
