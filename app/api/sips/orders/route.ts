@@ -76,7 +76,7 @@ export async function GET(request: NextRequest) {
               fulfillment_types: ['PICKUP'],
             },
             state_filter: {
-              states: ['COMPLETED'],
+              states: ['OPEN', 'COMPLETED'],
             },
           },
           sort: {
@@ -87,9 +87,9 @@ export async function GET(request: NextRequest) {
       },
     });
 
-    // Parse raw Square orders into our format
+    // Parse raw Square orders into our format — only include paid orders with PICKUP fulfillments
     const orders: SipsOrder[] = (data.orders || [])
-      .filter((o) => o.fulfillments?.some((f) => f.type === 'PICKUP'))
+      .filter((o) => o.tenders?.length && o.fulfillments?.some((f) => f.type === 'PICKUP'))
       .map((o) => {
         const fulfillment = o.fulfillments!.find((f) => f.type === 'PICKUP')!;
         const items: SipsOrderItem[] = (o.line_items || []).map((li) => ({
