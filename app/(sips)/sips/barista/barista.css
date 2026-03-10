@@ -1,0 +1,539 @@
+/* ── Euforyc Sips — Barista Dashboard ── */
+
+:root {
+    --green: #1E3B20;
+    --green-mid: #27502A;
+    --green-deep: #162D18;
+    --cream: #EDE8D5;
+    --cream-2: #DDD8C2;
+    --cream-3: #C8C1A4;
+    --cream-soft: #F6F2E4;
+    --taupe: #9C9278;
+    --amber: #D4A853;
+    --red-soft: #C45B4A;
+    --green-bright: #6FCF6A;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background: var(--green-deep);
+    color: var(--cream);
+    font-family: 'Gaegu', cursive;
+    overflow-x: hidden;
+}
+
+/* ── KEYFRAMES ── */
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideIn {
+    from { opacity: 0; transform: translateX(-16px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+}
+
+@keyframes newOrderFlash {
+    0% { background: rgba(111, 207, 106, 0.2); }
+    50% { background: rgba(111, 207, 106, 0.08); }
+    100% { background: rgba(237, 232, 213, 0.06); }
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* ── PASSWORD GATE ── */
+
+.pw-gate {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 24px;
+    animation: fadeIn 0.5s ease;
+}
+
+.pw-card {
+    max-width: 380px;
+    width: 100%;
+    background: rgba(237, 232, 213, 0.04);
+    border: 2px dashed rgba(237, 232, 213, 0.15);
+    border-radius: 28px;
+    padding: 48px 36px;
+    text-align: center;
+}
+
+.pw-icon {
+    opacity: 0.3;
+    margin-bottom: 20px;
+}
+
+.pw-title {
+    font-family: 'Gaegu', cursive;
+    font-weight: 700;
+    font-size: 32px;
+    color: var(--cream);
+    margin-bottom: 6px;
+}
+
+.pw-sub {
+    font-family: 'Gaegu', cursive;
+    font-size: 18px;
+    color: var(--cream-3);
+    margin-bottom: 28px;
+}
+
+.pw-input {
+    width: 100%;
+    background: rgba(237, 232, 213, 0.06);
+    border: 1.5px solid rgba(237, 232, 213, 0.15);
+    border-radius: 14px;
+    padding: 14px 18px;
+    font-family: 'Gaegu', cursive;
+    font-size: 22px;
+    color: var(--cream);
+    text-align: center;
+    letter-spacing: 0.2em;
+    outline: none;
+    transition: border-color 0.3s;
+    margin-bottom: 16px;
+}
+
+.pw-input::placeholder {
+    color: var(--taupe);
+    letter-spacing: 0.05em;
+}
+
+.pw-input:focus {
+    border-color: rgba(237, 232, 213, 0.4);
+}
+
+.pw-btn {
+    width: 100%;
+    padding: 14px;
+    background: var(--cream);
+    color: var(--green);
+    border: none;
+    border-radius: 999px;
+    font-family: 'Gaegu', cursive;
+    font-size: 22px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.pw-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 4px 4px 0px rgba(237, 232, 213, 0.1);
+}
+
+.pw-error {
+    font-family: 'Gaegu', cursive;
+    font-size: 18px;
+    color: var(--red-soft);
+    margin-top: 12px;
+}
+
+/* ── DASHBOARD HEADER ── */
+
+.dash-header {
+    padding: 20px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 2px dashed rgba(237, 232, 213, 0.1);
+    background: rgba(22, 45, 24, 0.6);
+    backdrop-filter: blur(12px);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.dash-logo {
+    font-family: 'Gaegu', cursive;
+    font-weight: 700;
+    font-size: 26px;
+    color: var(--cream);
+}
+
+.dash-logo span {
+    color: var(--cream-3);
+    font-weight: 400;
+}
+
+.dash-info {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+.dash-clock {
+    font-family: 'Gaegu', cursive;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--cream);
+}
+
+.dash-order-count {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(237, 232, 213, 0.06);
+    border: 1.5px dashed rgba(237, 232, 213, 0.15);
+    border-radius: 999px;
+    padding: 6px 18px;
+}
+
+.dash-count-dot {
+    width: 8px;
+    height: 8px;
+    background: var(--green-bright);
+    border-radius: 50%;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+.dash-count-text {
+    font-family: 'Gaegu', cursive;
+    font-size: 20px;
+    color: var(--cream);
+    font-weight: 700;
+}
+
+.dash-logout {
+    background: transparent;
+    border: 1.5px solid rgba(237, 232, 213, 0.15);
+    border-radius: 999px;
+    padding: 6px 18px;
+    font-family: 'Gaegu', cursive;
+    font-size: 18px;
+    color: var(--cream-3);
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.dash-logout:hover {
+    border-color: rgba(237, 232, 213, 0.4);
+    color: var(--cream);
+}
+
+/* ── KANBAN COLUMNS ── */
+
+.dash-board {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    padding: 24px 32px;
+    min-height: calc(100vh - 80px);
+    align-items: start;
+    animation: fadeIn 0.4s ease;
+}
+
+.dash-col {
+    background: rgba(237, 232, 213, 0.03);
+    border: 1.5px solid rgba(237, 232, 213, 0.08);
+    border-radius: 22px;
+    padding: 20px;
+    min-height: 300px;
+}
+
+.dash-col-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    padding-bottom: 14px;
+    border-bottom: 1.5px dashed rgba(237, 232, 213, 0.1);
+}
+
+.dash-col-title {
+    font-family: 'Gaegu', cursive;
+    font-weight: 700;
+    font-size: 26px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.col-new .dash-col-title { color: var(--green-bright); }
+.col-prep .dash-col-title { color: var(--amber); }
+.col-ready .dash-col-title { color: var(--cream); }
+
+.dash-col-count {
+    font-family: 'Gaegu', cursive;
+    font-size: 18px;
+    color: var(--cream-3);
+    background: rgba(237, 232, 213, 0.06);
+    border-radius: 999px;
+    padding: 2px 12px;
+}
+
+.dash-col-empty {
+    text-align: center;
+    padding: 40px 16px;
+}
+
+.dash-col-empty-text {
+    font-family: 'Gaegu', cursive;
+    font-size: 20px;
+    color: var(--taupe);
+}
+
+/* ── ORDER CARD ── */
+
+.order-card {
+    background: rgba(237, 232, 213, 0.06);
+    border: 1.5px solid rgba(237, 232, 213, 0.1);
+    border-radius: 18px;
+    padding: 20px;
+    margin-bottom: 14px;
+    transition: all 0.35s ease;
+    animation: slideIn 0.4s ease;
+}
+
+.order-card:hover {
+    border-color: rgba(237, 232, 213, 0.2);
+    background: rgba(237, 232, 213, 0.08);
+}
+
+.order-card.new-flash {
+    animation: newOrderFlash 2s ease;
+}
+
+.order-card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 12px;
+}
+
+.order-card-name {
+    font-family: 'Gaegu', cursive;
+    font-weight: 700;
+    font-size: 26px;
+    color: var(--cream);
+    line-height: 1.1;
+}
+
+.order-card-time-ago {
+    font-family: 'Gaegu', cursive;
+    font-size: 17px;
+    color: var(--cream-3);
+    white-space: nowrap;
+}
+
+.order-card-time-ago.urgent {
+    color: var(--amber);
+    font-weight: 700;
+}
+
+.order-card-time-ago.overdue {
+    color: var(--red-soft);
+    font-weight: 700;
+}
+
+.order-card-items {
+    list-style: none;
+    margin-bottom: 14px;
+    padding-left: 0;
+}
+
+.order-card-items li {
+    font-family: 'Gaegu', cursive;
+    font-size: 20px;
+    color: var(--cream-2);
+    padding: 3px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.order-card-items li::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    background: rgba(237, 232, 213, 0.2);
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.order-card-qty {
+    color: var(--cream-3);
+    font-weight: 700;
+}
+
+.order-card-pickup {
+    font-family: 'Gaegu', cursive;
+    font-size: 18px;
+    color: var(--cream-3);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.order-card-pickup svg {
+    flex-shrink: 0;
+}
+
+.order-card-action {
+    width: 100%;
+    padding: 12px;
+    border-radius: 999px;
+    font-family: 'Gaegu', cursive;
+    font-size: 20px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+    min-height: 48px;
+}
+
+.order-card-action:active {
+    transform: scale(0.97);
+}
+
+.action-start {
+    background: var(--green-bright);
+    color: var(--green-deep);
+}
+
+.action-start:hover {
+    background: #82DB7E;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(111, 207, 106, 0.3);
+}
+
+.action-ready {
+    background: var(--amber);
+    color: var(--green-deep);
+}
+
+.action-ready:hover {
+    background: #DEB45E;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(212, 168, 83, 0.3);
+}
+
+.action-collect {
+    background: var(--cream);
+    color: var(--green-deep);
+}
+
+.action-collect:hover {
+    background: var(--cream-2);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(237, 232, 213, 0.2);
+}
+
+.action-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.action-spinner {
+    width: 18px;
+    height: 18px;
+    border: 2.5px solid transparent;
+    border-top-color: currentColor;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+}
+
+/* ── LOADING STATE ── */
+
+.dash-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: calc(100vh - 80px);
+    animation: fadeIn 0.3s ease;
+}
+
+.dash-loading-text {
+    font-family: 'Gaegu', cursive;
+    font-size: 24px;
+    color: var(--cream-3);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.dash-loading-spinner {
+    width: 24px;
+    height: 24px;
+    border: 3px solid rgba(237, 232, 213, 0.1);
+    border-top-color: var(--cream-3);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+/* ── RESPONSIVE ── */
+
+@media (max-width: 1024px) {
+    .dash-board {
+        grid-template-columns: 1fr;
+        gap: 16px;
+        padding: 16px;
+    }
+
+    .dash-col {
+        min-height: auto;
+    }
+
+    .dash-header {
+        padding: 16px 20px;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    .dash-info {
+        gap: 12px;
+    }
+}
+
+@media (max-width: 600px) {
+    .dash-header {
+        padding: 12px 16px;
+    }
+
+    .dash-board {
+        padding: 12px;
+    }
+
+    .order-card {
+        padding: 16px;
+    }
+
+    .order-card-name {
+        font-size: 22px;
+    }
+
+    .dash-clock {
+        display: none;
+    }
+}

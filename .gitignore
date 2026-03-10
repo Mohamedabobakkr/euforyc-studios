@@ -37,3 +37,4 @@ next-env.d.ts
 next.config.js.save
 next.config.js.bak
 .DS_Store
+.SIPS-SETUP.md

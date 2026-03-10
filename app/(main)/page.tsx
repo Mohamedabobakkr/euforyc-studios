@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { MapPin, Clock } from 'lucide-react';
 import CircularText from '@/components/CircularText';
 import MomenceReviews from '@/components/MomenceReviews';
+import HeroSlideshow from '@/components/HeroSlideshow';
 import { Analytics } from '@vercel/analytics/next';
 import { SpeedInsights } from "@vercel/speed-insights/next"
 
@@ -17,19 +18,8 @@ export default function Home() {
     <div>
       {/* Hero Section - Full Screen with Background Image */}
       <section className="min-h-screen flex items-center justify-center relative overflow-hidden">
-        {/* Background Image - Updated to background3.jpg */}
-        <div className="absolute inset-0 z-0">
-          <Image
-            src="/background3.jpg"
-            alt="Euforyc Studios pilates studio London interior with reformer equipment"
-            fill
-            className="object-cover"
-            priority
-            quality={100}
-          />
-          {/* Dark overlay to ensure text readability */}
-          <div className="absolute inset-0 bg-black/40"></div>
-        </div>
+        {/* Background Slideshow */}
+        <HeroSlideshow />
         
         {/* Content */}
         <div className="container-width text-center z-10 relative">
@@ -89,74 +79,135 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Services Section */}
+      {/* Services Section - Editorial Grid */}
       <section className="section-padding bg-[#fffcf2]">
         <div className="container-width">
-          <div className="text-center mb-16">
+          <div className="text-center mb-16 md:mb-20">
             <h2 className="heading-secondary mb-4">Our Classes</h2>
-            <p className="tagline">REFORMER • MAT • PRIVATE SESSIONS</p>
+            <p className="tagline">REFORMER • HOT PILATES • REDLIGHT • BARRE • DANCE</p>
           </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {/* Reformer Pilates - Updated with image */}
-            <div className="text-center space-y-6 group cursor-pointer">
-              <div className="aspect-square relative overflow-hidden">
+
+          {/* Horizontal scroll on mobile, 5-col grid on desktop */}
+          <div className="flex md:grid md:grid-cols-5 gap-5 overflow-x-auto md:overflow-visible snap-x snap-mandatory pb-6 md:pb-0 -mx-8 px-8 md:mx-0 md:px-0 scrollbar-hide">
+
+            {/* Reformer Pilates */}
+            <Link href="/packages" className="group block min-w-[70vw] md:min-w-0 snap-center">
+              <div className="relative overflow-hidden aspect-[3/4]">
                 <Image
                   src="/reformerp.jpg"
-                  alt="Reformer pilates classes London Euforyc Studios equipment"
+                  alt="Reformer pilates classes London Euforyc Studios"
                   fill
-                  className="object-cover transition-all duration-500 group-hover:scale-105"
+                  className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                  sizes="(max-width: 768px) 50vw, 20vw"
                 />
+                <div className="absolute inset-0 bg-[#1a260e]/0 transition-all duration-500 group-hover:bg-[#1a260e]/10"></div>
               </div>
-              <h3 className="font-serif text-2xl font-light" style={{color: '#1a260e'}}>
-                <Link href="/packages" className="hover:underline">Reformer Pilates</Link>
-              </h3>
-              <p className="body-text text-sm">
-                Dynamic, equipment-based sessions that challenge your strength,
-                flexibility, and coordination. <Link href="/packages" className="text-[#1a260e] hover:underline font-medium">View packages</Link>
-              </p>
-            </div>
+              <div className="mt-5 space-y-2">
+                <div className="w-8 h-[1px] bg-[#1a260e]/20 group-hover:w-12 transition-all duration-500"></div>
+                <h3 className="font-serif text-lg md:text-xl font-light tracking-wide text-[#1a260e]">
+                  Reformer Pilates
+                </h3>
+                <p className="font-sans text-xs text-[#1a260e]/50 font-light leading-relaxed">
+                  Dynamic, equipment-based sessions that sculpt strength and flexibility.
+                </p>
+              </div>
+            </Link>
 
-            {/* Mat Pilates - Updated with image */}
-            <div className="text-center space-y-6 group cursor-pointer">
-              <div className="aspect-square relative overflow-hidden">
+            {/* Hot Infrared Mat Pilates */}
+            <Link href="/packages" className="group block min-w-[70vw] md:min-w-0 snap-center">
+              <div className="relative overflow-hidden aspect-[3/4]">
                 <Image
                   src="/hotp.jpg"
-                  alt="Hot pilates classes London heated studio infrared Euforyc"
+                  alt="Hot infrared heated mat pilates London Euforyc Studios"
                   fill
-                  className="object-cover transition-all duration-500 group-hover:scale-105"
+                  className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                  sizes="(max-width: 768px) 50vw, 20vw"
                 />
+                <div className="absolute inset-0 bg-[#1a260e]/0 transition-all duration-500 group-hover:bg-[#1a260e]/10"></div>
               </div>
-              <h3 className="font-serif text-2xl font-light" style={{color: '#1a260e'}}>
-                <Link href="/packages" className="hover:underline">Hot Pilates</Link>
-              </h3>
-              <p className="body-text text-sm">
-              Elevate your practice in our infrared-heated hot pilates room where deep heat energizes muscles, enhances flexibility, and maximizes calorie burn while detoxifying the body.
-              <Link href="/packages" className="text-[#1a260e] hover:underline font-medium"> Book hot pilates</Link>
-              </p>
-            </div>
+              <div className="mt-5 space-y-2">
+                <div className="w-8 h-[1px] bg-[#1a260e]/20 group-hover:w-12 transition-all duration-500"></div>
+                <h3 className="font-serif text-lg md:text-xl font-light tracking-wide text-[#1a260e]">
+                  Hot Mat Pilates
+                </h3>
+                <p className="font-sans text-xs text-[#1a260e]/50 font-light leading-relaxed">
+                  Infrared-heated sessions that energize muscles and maximize burn.
+                </p>
+              </div>
+            </Link>
 
-            {/* Private Sessions - Updated with image */}
-            <div className="text-center space-y-6 group cursor-pointer">
-              <div className="aspect-square relative overflow-hidden">
+            {/* Redlight Mat Pilates */}
+            <Link href="/packages" className="group block min-w-[70vw] md:min-w-0 snap-center">
+              <div className="relative overflow-hidden aspect-[3/4]">
                 <Image
-                  src="/privates.jpg"
-                  alt="Private pilates sessions London one-on-one training Euforyc Studios"
+                  src="/redlight.jpg"
+                  alt="Redlight mat pilates London Euforyc Studios"
                   fill
-                  className="object-cover transition-all duration-500 group-hover:scale-105"
+                  className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                  sizes="(max-width: 768px) 50vw, 20vw"
                 />
+                <div className="absolute inset-0 bg-[#1a260e]/0 transition-all duration-500 group-hover:bg-[#1a260e]/10"></div>
               </div>
-              <h3 className="font-serif text-2xl font-light" style={{color: '#1a260e'}}>
-                <Link href="/packages" className="hover:underline">Private Sessions</Link>
-              </h3>
-              <p className="body-text text-sm">
-                One-on-one training tailored to your specific goals and needs
-                with our expert instructors. <Link href="/packages" className="text-[#1a260e] hover:underline font-medium">Book private session</Link>
-              </p>
-            </div>
+              <div className="mt-5 space-y-2">
+                <div className="w-8 h-[1px] bg-[#1a260e]/20 group-hover:w-12 transition-all duration-500"></div>
+                <h3 className="font-serif text-lg md:text-xl font-light tracking-wide text-[#1a260e]">
+                  Redlight Pilates
+                </h3>
+                <p className="font-sans text-xs text-[#1a260e]/50 font-light leading-relaxed">
+                  Red light therapy meets mindful mat pilates for total rejuvenation.
+                </p>
+              </div>
+            </Link>
+
+            {/* Barre */}
+            <Link href="/packages" className="group block min-w-[70vw] md:min-w-0 snap-center">
+              <div className="relative overflow-hidden aspect-[3/4]">
+                <Image
+                  src="/hero/IMG_8698.JPG"
+                  alt="Barre classes London Euforyc Studios"
+                  fill
+                  className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                  sizes="(max-width: 768px) 50vw, 20vw"
+                />
+                <div className="absolute inset-0 bg-[#1a260e]/0 transition-all duration-500 group-hover:bg-[#1a260e]/10"></div>
+              </div>
+              <div className="mt-5 space-y-2">
+                <div className="w-8 h-[1px] bg-[#1a260e]/20 group-hover:w-12 transition-all duration-500"></div>
+                <h3 className="font-serif text-lg md:text-xl font-light tracking-wide text-[#1a260e]">
+                  Barre
+                </h3>
+                <p className="font-sans text-xs text-[#1a260e]/50 font-light leading-relaxed">
+                  Ballet-inspired movements that lengthen, tone, and define.
+                </p>
+              </div>
+            </Link>
+
+            {/* Dance */}
+            <Link href="/packages" className="group block min-w-[70vw] md:min-w-0 snap-center">
+              <div className="relative overflow-hidden aspect-[3/4]">
+                <Image
+                  src="/hero/IMG_8688.JPG"
+                  alt="Dance classes London Euforyc Studios"
+                  fill
+                  className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                  sizes="(max-width: 768px) 50vw, 20vw"
+                />
+                <div className="absolute inset-0 bg-[#1a260e]/0 transition-all duration-500 group-hover:bg-[#1a260e]/10"></div>
+              </div>
+              <div className="mt-5 space-y-2">
+                <div className="w-8 h-[1px] bg-[#1a260e]/20 group-hover:w-12 transition-all duration-500"></div>
+                <h3 className="font-serif text-lg md:text-xl font-light tracking-wide text-[#1a260e]">
+                  Dance
+                </h3>
+                <p className="font-sans text-xs text-[#1a260e]/50 font-light leading-relaxed">
+                  Express yourself through rhythm and movement.
+                </p>
+              </div>
+            </Link>
+
           </div>
 
-          <div className="text-center mt-12">
+          <div className="text-center mt-16 md:mt-24">
             <Link href="/book" className="btn-primary">
               VIEW SCHEDULE
             </Link>

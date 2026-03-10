@@ -1,11 +1,11 @@
 import type { Metadata, Viewport } from 'next';
 
 export const metadata: Metadata = {
-  title: 'euforyc sips — secret menu',
-  description: 'The secret menu at euforyc sips. Wellness smoothies, ceremonial matcha, specialty coffee, and Ramadan exclusives. Ask for it by name.',
+  title: 'euforyc sips — wellness drinks',
+  description: 'Hand-crafted wellness smoothies, ceremonial matcha, and specialty coffee at euforyc sips. Click & collect or explore our secret menu.',
   openGraph: {
-    title: 'euforyc sips — secret menu',
-    description: 'The secret menu at euforyc sips. Wellness smoothies, ceremonial matcha, specialty coffee, and Ramadan exclusives.',
+    title: 'euforyc sips — wellness drinks',
+    description: 'Hand-crafted wellness smoothies, ceremonial matcha, and specialty coffee at euforyc sips. Click & collect or explore our secret menu.',
     type: 'website',
   },
 };
