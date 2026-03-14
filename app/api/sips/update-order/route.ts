@@ -21,9 +21,11 @@ export async function PATCH(request: NextRequest) {
   try {
     const body: UpdateOrderPayload = await request.json();
 
-    // Validate password
+    // Validate password from Authorization header
     const expected = process.env.BARISTA_PASSWORD;
-    if (!expected || body.password !== expected) {
+    const authHeader = request.headers.get('authorization');
+    const token = authHeader?.startsWith('Bearer ') ? authHeader.slice(7) : null;
+    if (!expected || token !== expected) {
       return NextResponse.json(
         { success: false, error: 'Unauthorized' },
         { status: 401 },

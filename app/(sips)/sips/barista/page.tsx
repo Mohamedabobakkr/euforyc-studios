@@ -299,13 +299,15 @@ function Dashboard({ password }: { password: string }) {
     try {
       const res = await fetch('/api/sips/update-order', {
         method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${password}`,
+        },
         body: JSON.stringify({
           orderId: order.id,
           fulfillmentUid: order.fulfillmentUid,
           newState: nextState,
           version: order.version,
-          password,
         }),
       });
 

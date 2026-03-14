@@ -35,9 +35,13 @@ function hashSHA256(value: string | null | undefined): string | null {
 
 // Verify webhook signature (if Momence provides one)
 function verifySignature(payload: string, signature: string | null): boolean {
-  if (!MOMENCE_WEBHOOK_SECRET || !signature) {
-    // Skip verification if no secret configured
-    return true;
+  if (!MOMENCE_WEBHOOK_SECRET) {
+    // Fail closed — reject requests if webhook secret is not configured
+    console.error('Momence Webhook: MOMENCE_WEBHOOK_SECRET is not configured');
+    return false;
+  }
+  if (!signature) {
+    return false;
   }
 
   const expectedSignature = crypto
@@ -46,8 +50,8 @@ function verifySignature(payload: string, signature: string | null): boolean {
     .digest('hex');
 
   return crypto.timingSafeEqual(
-    Buffer.from(signature),
-    Buffer.from(expectedSignature)
+    new Uint8Array(Buffer.from(signature)),
+    new Uint8Array(Buffer.from(expectedSignature))
   );
 }
 

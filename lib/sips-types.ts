@@ -93,5 +93,4 @@ export interface UpdateOrderPayload {
   fulfillmentUid: string;
   newState: FulfillmentState;
   version: number;
-  password: string;
 }
