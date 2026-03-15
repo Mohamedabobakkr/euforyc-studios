@@ -11,7 +11,7 @@ import ScheduleView from '@/components/momence/ScheduleView';
 export const metadata: Metadata = {
   title: 'Live Class Schedule | Book Reformer Pilates & Hot Pilates Edgware',
   description:
-    'View our live class schedule with real-time availability. Book reformer pilates, hot infrared pilates, barre, dance & private sessions at Euforyc Studios Edgware. Small classes, max 6. Secure your spot today.',
+    'View our live class schedule with real-time availability. Book reformer pilates, hot infrared pilates, barre, dance & private sessions at Euforyc Studios Edgware. Small intimate classes. Secure your spot today.',
   keywords: [
     'pilates schedule edgware',
     'reformer pilates classes london',

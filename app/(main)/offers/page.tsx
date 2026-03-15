@@ -55,7 +55,7 @@ const introOffers = {
     description: 'Equipment-based pilates on professional reformer machines',
     benefits: [
       'Professional reformer machines',
-      'Max 6 people per class',
+      'Max 8 people per class',
       '45-minute sessions',
       'All fitness levels welcome'
     ],
@@ -76,7 +76,7 @@ const introOffers = {
     description: 'Dynamic mat-based pilates in our infrared-heated studio',
     benefits: [
       'Infrared heated studio',
-      'Max 4 people per class',
+      'Max 7 people per class',
       'Deep stretch & detox',
       'Stress relief focused'
     ],

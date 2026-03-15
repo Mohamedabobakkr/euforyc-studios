@@ -38,8 +38,21 @@ export const metadata: Metadata = {
     default: 'EUFORYC STUDIOS • Pilates • Wellness • Strength',
     template: '%s | EUFORYC STUDIOS'
   },
-  description: 'London\'s premier women-only pilates studio in Edgware. Reformer pilates, hot infrared pilates, red light therapy, barre, dance & private 1:1 sessions. Small classes, max 6. Book your intro offer from £45. Near Edgware Station.',
-  keywords: ['pilates london', 'reformer pilates london', 'pilates studio london', 'pilates edgware', 'pilates classes london', 'hot pilates london', 'pilates near me', 'pilates studio near me', 'reformer pilates edgware', 'pilates classes edgware', 'women only pilates london', 'boutique pilates studio', 'private pilates london', 'pilates booking london', 'pilates reserve london', 'pilates studio uk', 'best pilates london', 'pilates classes uk', 'reformer pilates near me', 'women only gym london', 'hot pilates uk', 'infrared pilates london', 'best pilates classes london', 'boutique fitness london', 'barre classes london', 'red light therapy pilates', 'private pilates instructor london', 'pilates for women london', 'cadillac reformer pilates', 'wellness studio london', 'fitness classes edgware', 'pilates north london'],
+  description: 'The best women-only pilates studio in North West London. Reformer pilates, hot infrared pilates, red light therapy, barre, dance & private 1:1 sessions in Edgware. Small intimate classes, max 8. Intro offers from £45. Near Edgware Station.',
+  keywords: [
+    // North West London — primary target
+    'pilates north west london', 'pilates nw london', 'pilates studio north west london', 'reformer pilates north west london', 'best pilates north west london', 'hot pilates north west london', 'women only pilates north west london', 'pilates classes north west london', 'barre classes north west london', 'pilates studio nw london',
+    // London — general
+    'pilates london', 'reformer pilates london', 'pilates studio london', 'pilates classes london', 'hot pilates london', 'best pilates london', 'best pilates classes london', 'women only pilates london', 'boutique pilates studio', 'private pilates london', 'pilates booking london', 'pilates studio uk', 'pilates classes uk', 'boutique fitness london', 'barre classes london', 'red light therapy pilates', 'private pilates instructor london', 'pilates for women london', 'cadillac reformer pilates', 'wellness studio london', 'infrared pilates london', 'hot pilates uk', 'women only gym london',
+    // Edgware & local
+    'pilates edgware', 'reformer pilates edgware', 'pilates classes edgware', 'fitness classes edgware',
+    // North London
+    'pilates north london', 'reformer pilates north london', 'pilates studio north london',
+    // Near me
+    'pilates near me', 'pilates studio near me', 'reformer pilates near me',
+    // NW London boroughs
+    'pilates barnet', 'pilates mill hill', 'pilates finchley', 'pilates burnt oak', 'pilates colindale', 'pilates stanmore', 'pilates harrow', 'pilates hendon', 'pilates kingsbury', 'pilates wembley', 'pilates canons park', 'pilates queensbury',
+  ],
   authors: [{ name: 'Euforyc Studios', url: siteUrl }],
   creator: 'Euforyc Studios',
   publisher: 'Euforyc Studios',
@@ -49,8 +62,8 @@ export const metadata: Metadata = {
     telephone: false,
   },
   openGraph: {
-    title: 'EUFORYC STUDIOS | Best Women\'s Pilates Studio in London',
-    description: 'London\'s premier women-only pilates studio in Edgware. Reformer pilates, hot infrared pilates, red light therapy, barre, dance & private 1:1 sessions. Small classes, max 6. Book your intro offer from £45.',
+    title: 'EUFORYC STUDIOS | Best Women\'s Pilates Studio in North West London',
+    description: 'The best women-only pilates studio in North West London. Reformer pilates, hot infrared pilates, red light therapy, barre, dance & private 1:1 sessions in Edgware. Small intimate classes, max 8. Intro offers from £45.',
     url: siteUrl,
     siteName: 'Euforyc Studios',
     locale: 'en_GB',
@@ -66,8 +79,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'EUFORYC STUDIOS | Best Women\'s Pilates Studio in London',
-    description: 'London\'s premier women-only pilates studio. Reformer pilates, hot infrared pilates, barre, dance & private sessions in Edgware. Intro offers from £45.',
+    title: 'EUFORYC STUDIOS | Best Women\'s Pilates Studio in North West London',
+    description: 'The best women-only pilates studio in North West London. Reformer pilates, hot infrared pilates, barre, dance & private sessions in Edgware. Intro offers from £45.',
     site: '@euforycstudios',
     images: [`${siteUrl}/logo.png`],
   },
@@ -227,10 +240,20 @@ const structuredData = {
   },
   areaServed: [
     { '@type': 'City', name: 'London' },
+    { '@type': 'City', name: 'North West London' },
     { '@type': 'City', name: 'Edgware' },
     { '@type': 'City', name: 'Barnet' },
     { '@type': 'City', name: 'Mill Hill' },
-    { '@type': 'City', name: 'Finchley' }
+    { '@type': 'City', name: 'Finchley' },
+    { '@type': 'City', name: 'Burnt Oak' },
+    { '@type': 'City', name: 'Colindale' },
+    { '@type': 'City', name: 'Stanmore' },
+    { '@type': 'City', name: 'Harrow' },
+    { '@type': 'City', name: 'Hendon' },
+    { '@type': 'City', name: 'Kingsbury' },
+    { '@type': 'City', name: 'Wembley' },
+    { '@type': 'City', name: 'Canons Park' },
+    { '@type': 'City', name: 'Queensbury' }
   ],
   knowsAbout: [
     'Pilates',

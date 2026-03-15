@@ -136,7 +136,7 @@ export default function Book() {
                     </div>
                     <div className="flex items-center space-x-1">
                       <Users className="h-4 w-4" />
-                      <span>Max 6 people</span>
+                      <span>Max 8 people</span>
                     </div>
                   </div>
                   <p className="body-text">
@@ -155,7 +155,7 @@ export default function Book() {
                     </div>
                     <div className="flex items-center space-x-1">
                       <Users className="h-4 w-4" />
-                      <span>Max 4 people</span>
+                      <span>Max 7 people</span>
                     </div>
                   </div>
                   <p className="body-text">

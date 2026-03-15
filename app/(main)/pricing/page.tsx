@@ -32,7 +32,7 @@ export default function Pricing() {
             <div className="space-y-8">
               <div className="text-center space-y-2">
                 <h2 className="heading-secondary">Reformer Pilates (Group)</h2>
-                <p className="tagline text-[#1a260e]/60">EQUIPMENT-BASED • MAX 6 PER CLASS • 45 MIN</p>
+                <p className="tagline text-[#1a260e]/60">EQUIPMENT-BASED • MAX 8 PER CLASS • 45 MIN</p>
               </div>
 
               <div className="space-y-0">
@@ -101,7 +101,7 @@ export default function Pricing() {
             <div className="space-y-8">
               <div className="text-center space-y-2">
                 <h2 className="heading-secondary">Hot Pilates</h2>
-                <p className="tagline text-[#1a260e]/60">INFRARED HEATED • MAX 4 PER CLASS • 45 MIN</p>
+                <p className="tagline text-[#1a260e]/60">INFRARED HEATED • MAX 7 PER CLASS • 45 MIN</p>
               </div>
 
               <div className="space-y-0">

@@ -10,7 +10,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next"
 
 export const metadata: Metadata = {
   title: 'EUFORYC STUDIOS | Women\'s Pilates Studio London | Reformer & Hot Pilates Edgware',
-  description: 'London\'s premier women-only pilates studio in Edgware. Reformer pilates, hot infrared pilates, red light therapy, barre, dance & private 1:1 sessions. Small classes, max 6. Intro offers from £45. Book now.',
+  description: 'London\'s premier women-only pilates studio in Edgware. Reformer pilates, hot infrared pilates, red light therapy, barre, dance & private 1:1 sessions. Small intimate classes. Intro offers from £45. Book now.',
   alternates: { canonical: 'https://euforyc.co.uk' },
 };
 
