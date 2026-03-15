@@ -19,7 +19,7 @@ const faqs = [
   },
   {
     question: "What should I wear to pilates classes?",
-    answer: "Wear comfortable, stretchy clothing that allows for full range of movement. Avoid loose clothing that might get caught in equipment. We recommend leggings and a fitted top. Grip socks are required for reformer classes (available for purchase at the studio). Remove jewelry before class."
+    answer: "Wear comfortable, stretchy clothing that allows for full range of movement. Avoid loose clothing that might get caught in equipment. We recommend leggings and a fitted top. Grip socks are required for all classes — if you don't have a pair, they are available for purchase at the studio. For hot pilates classes, you must also bring your own towel; towels are available for purchase at the studio if needed. Both items are mandatory to attend. Remove jewelry before class."
   },
   {
     question: "How often should I do pilates for best results?",
@@ -27,7 +27,7 @@ const faqs = [
   },
   {
     question: "What is hot pilates and what are the benefits?",
-    answer: "Hot pilates is performed in our infrared-heated room (around 32-35°C). The heat helps warm muscles quickly, increases flexibility, enhances detoxification through sweating, and can boost calorie burn. It's perfect for those who enjoy a more intense, sweat-inducing workout while still maintaining pilates' focus on controlled movement."
+    answer: "Hot pilates is performed in our infrared-heated room (around 32-35°C). The heat helps warm muscles quickly, increases flexibility, enhances detoxification through sweating, and can boost calorie burn. It's perfect for those who enjoy a more intense, sweat-inducing workout while still maintaining pilates' focus on controlled movement. Please note: you must bring your own towel to hot pilates classes. Towels and grip socks are both required and available for purchase at the studio if needed."
   },
   {
     question: "Is pilates suitable for pregnant women?",
