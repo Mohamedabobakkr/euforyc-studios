@@ -1,21 +1,49 @@
 {
-  "name": "Euforyc Studios",
+  "name": "Euforyc Studios — Pilates, Wellness & Strength",
   "short_name": "Euforyc",
-  "description": "Boutique Pilates Studio in London",
+  "description": "London's premier women-only pilates studio. Reformer pilates, hot pilates, barre, dance & private sessions in Edgware. Plus Euforyc Sips wellness cafe & Euforyc Skin Studio.",
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
+  "orientation": "portrait",
   "background_color": "#fffcf2",
   "theme_color": "#1a260e",
+  "lang": "en-GB",
+  "dir": "ltr",
+  "categories": ["health", "fitness", "lifestyle", "food"],
   "icons": [
     {
       "src": "/logo.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     },
     {
       "src": "/logo.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Book a Class",
+      "short_name": "Book",
+      "description": "Book your next pilates class",
+      "url": "/book",
+      "icons": [{ "src": "/logo.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Class Schedule",
+      "short_name": "Schedule",
+      "description": "View the weekly class timetable",
+      "url": "/schedule"
+    },
+    {
+      "name": "Euforyc Sips",
+      "short_name": "Sips",
+      "description": "Order from our wellness cafe",
+      "url": "/sips/order"
     }
   ]
-} 
+}

@@ -9,24 +9,26 @@ import { MapPin } from 'lucide-react';
 import ScheduleView from '@/components/momence/ScheduleView';
 
 export const metadata: Metadata = {
-  title: 'Live Class Schedule | Euforyc Studios - Reformer Pilates & Hot Yoga in Edgware',
+  title: 'Live Class Schedule | Book Reformer Pilates & Hot Pilates Edgware',
   description:
-    'View our live class schedule with real-time availability. Book Reformer Pilates, Hot Pilates, Yoga, and Dance classes at Euforyc Studios in Edgware. Check instructor schedules and secure your spot today.',
+    'View our live class schedule with real-time availability. Book reformer pilates, hot infrared pilates, barre, dance & private sessions at Euforyc Studios Edgware. Small classes, max 6. Secure your spot today.',
   keywords: [
-    'pilates schedule Edgware',
-    'reformer pilates classes',
-    'hot yoga timetable',
-    'book pilates class',
-    'Edgware fitness schedule',
-    'yoga class times',
-    'pilates instructors',
+    'pilates schedule edgware',
+    'reformer pilates classes london',
+    'hot pilates timetable',
+    'book pilates class edgware',
+    'edgware fitness schedule',
+    'barre class times london',
+    'pilates class schedule near me',
+    'pilates timetable north london',
   ],
   openGraph: {
-    title: 'Live Class Schedule - Euforyc Studios',
+    title: 'Live Class Schedule | Euforyc Studios Edgware',
     description:
-      'Browse our live class schedule and book your spot at Euforyc Studios. Real-time availability for Reformer Pilates, Hot Yoga, and more.',
+      'Browse our live class schedule and book your spot. Real-time availability for reformer pilates, hot pilates, barre & dance at Euforyc Studios Edgware.',
     type: 'website',
   },
+  alternates: { canonical: 'https://euforyc.co.uk/schedule' },
 };
 
 export default function SchedulePage() {

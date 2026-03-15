@@ -3,8 +3,10 @@ import Image from 'next/image';
 import { ShoppingBag, Sparkles, ExternalLink } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'Shop - Euforyc Studios',
-  description: 'Shop premium pilates grip socks and tote bags at Euforyc Studios London. Essential studio gear for your pilates practice.',
+  title: 'Shop | Pilates Accessories & Merchandise',
+  description: 'Shop Euforyc Studios merchandise. Premium grip socks, tote bags, and pilates accessories in Edgware, London. Perfect for your studio practice or as gifts.',
+  keywords: ['pilates grip socks', 'pilates accessories london', 'euforyc merchandise', 'pilates tote bag', 'studio accessories uk'],
+  alternates: { canonical: 'https://euforyc.co.uk/shop' },
 };
 
 interface Product {

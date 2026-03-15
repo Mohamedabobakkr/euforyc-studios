@@ -38,8 +38,8 @@ export const metadata: Metadata = {
     default: 'EUFORYC STUDIOS • Pilates • Wellness • Strength',
     template: '%s | EUFORYC STUDIOS'
   },
-  description: 'Premier pilates studio in London offering reformer pilates, hot pilates & private sessions in Edgware. Book pilates classes near you. Women-only boutique studio with expert instructors.',
-  keywords: ['pilates london', 'reformer pilates london', 'pilates studio london', 'pilates edgware', 'pilates classes london', 'hot pilates london', 'pilates near me', 'pilates studio near me', 'reformer pilates edgware', 'pilates classes edgware', 'women only pilates london', 'boutique pilates studio', 'private pilates london', 'pilates booking london', 'pilates reserve london', 'pilates studio uk', 'best pilates london', 'pilates classes uk'],
+  description: 'London\'s premier women-only pilates studio in Edgware. Reformer pilates, hot infrared pilates, red light therapy, barre, dance & private 1:1 sessions. Small classes, max 6. Book your intro offer from £45. Near Edgware Station.',
+  keywords: ['pilates london', 'reformer pilates london', 'pilates studio london', 'pilates edgware', 'pilates classes london', 'hot pilates london', 'pilates near me', 'pilates studio near me', 'reformer pilates edgware', 'pilates classes edgware', 'women only pilates london', 'boutique pilates studio', 'private pilates london', 'pilates booking london', 'pilates reserve london', 'pilates studio uk', 'best pilates london', 'pilates classes uk', 'reformer pilates near me', 'women only gym london', 'hot pilates uk', 'infrared pilates london', 'best pilates classes london', 'boutique fitness london', 'barre classes london', 'red light therapy pilates', 'private pilates instructor london', 'pilates for women london', 'cadillac reformer pilates', 'wellness studio london', 'fitness classes edgware', 'pilates north london'],
   authors: [{ name: 'Euforyc Studios', url: siteUrl }],
   creator: 'Euforyc Studios',
   publisher: 'Euforyc Studios',
@@ -49,26 +49,27 @@ export const metadata: Metadata = {
     telephone: false,
   },
   openGraph: {
-    title: 'EUFORYC STUDIOS • Pilates • Wellness • Strength',
-    description: 'Premier pilates studio in London offering reformer pilates, hot pilates & private sessions in Edgware. Book pilates classes near you.',
+    title: 'EUFORYC STUDIOS | Best Women\'s Pilates Studio in London',
+    description: 'London\'s premier women-only pilates studio in Edgware. Reformer pilates, hot infrared pilates, red light therapy, barre, dance & private 1:1 sessions. Small classes, max 6. Book your intro offer from £45.',
     url: siteUrl,
     siteName: 'Euforyc Studios',
     locale: 'en_GB',
     type: 'website',
     images: [
       {
-        url: '/logo.png',
+        url: `${siteUrl}/logo.png`,
         width: 600,
         height: 600,
-        alt: 'Euforyc Studios - Pilates Studio in London',
+        alt: 'Euforyc Studios - Women\'s Only Pilates Studio in London, Edgware',
       }
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'EUFORYC STUDIOS • Pilates • Wellness • Strength',
-    description: 'Premier pilates studio in London - reformer pilates, hot pilates & private sessions in Edgware',
-    images: ['/logo.png'],
+    title: 'EUFORYC STUDIOS | Best Women\'s Pilates Studio in London',
+    description: 'London\'s premier women-only pilates studio. Reformer pilates, hot infrared pilates, barre, dance & private sessions in Edgware. Intro offers from £45.',
+    site: '@euforycstudios',
+    images: [`${siteUrl}/logo.png`],
   },
   robots: {
     index: true,
@@ -97,10 +98,10 @@ export const viewport: Viewport = {
 const structuredData = {
   '@context': 'https://schema.org',
   '@type': ['HealthAndBeautyBusiness', 'LocalBusiness', 'SportsActivityLocation'],
-  '@id': siteUrl,
+  '@id': `${siteUrl}/#organization`,
   name: 'Euforyc Studios',
   alternateName: 'Euforyc Pilates Studio',
-  description: 'Premier pilates studio in London offering reformer pilates, hot pilates and private sessions in Edgware. Women-only boutique studio with expert instructors.',
+  description: 'London\'s premier women-only pilates studio in Edgware offering reformer pilates, hot infrared pilates, red light therapy, barre, dance and private 1:1 sessions. Small intimate classes with expert instructors.',
   url: siteUrl,
   telephone: '+447375710370',
   email: 'euforyc@gmail.com',
@@ -138,7 +139,8 @@ const structuredData = {
     'https://www.instagram.com/euforycstudios',
     'https://www.tiktok.com/@euforyc'
   ],
-  servedCuisine: null,
+  paymentAccepted: ['Cash', 'Credit Card', 'Debit Card', 'Apple Pay', 'Google Pay'],
+  currenciesAccepted: 'GBP',
   amenityFeature: [
     {
       '@type': 'LocationFeatureSpecification',
@@ -186,7 +188,39 @@ const structuredData = {
         itemOffered: {
           '@type': 'Service',
           name: 'Private Pilates Sessions',
-          description: 'One-on-one personalized pilates training'
+          description: 'One-on-one personalised pilates training with expert instructors, 60 min sessions'
+        }
+      },
+      {
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: 'Red Light Hot Pilates',
+          description: 'Hot pilates combined with red light therapy for enhanced recovery and skin rejuvenation'
+        }
+      },
+      {
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: 'Barre Classes',
+          description: 'Ballet-inspired movement classes that lengthen, tone, and define muscles'
+        }
+      },
+      {
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: 'Dance Classes',
+          description: 'Dabke, Belly Dance, and Afro dance classes for self-expression through rhythm'
+        }
+      },
+      {
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: 'Sculpt Mat Pilates',
+          description: 'Strength-focused mat work for toning and sculpting'
         }
       }
     ]
@@ -202,10 +236,29 @@ const structuredData = {
     'Pilates',
     'Reformer Pilates',
     'Hot Pilates',
+    'Infrared Pilates',
+    'Red Light Therapy',
+    'Barre',
+    'Dance Fitness',
     'Fitness',
     'Wellness',
-    'Women\'s Health'
-  ]
+    'Women\'s Health',
+    'Core Strength',
+    'Flexibility Training'
+  ],
+  hasMap: 'https://maps.app.goo.gl/zZfyhD3X2BuS6SnL6',
+};
+
+const websiteSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  '@id': `${siteUrl}/#website`,
+  name: 'Euforyc Studios',
+  url: siteUrl,
+  publisher: {
+    '@id': `${siteUrl}/#organization`
+  },
+  inLanguage: 'en-GB',
 };
 
 export default function RootLayout({
@@ -317,10 +370,15 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://connect.facebook.net" />
 
-        {/* Structured Data */}
+        {/* Structured Data - Organization */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+        />
+        {/* Structured Data - WebSite */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
         />
       </head>
       <body className="font-sans bg-[#fffcf2] text-[#1a260e] antialiased">

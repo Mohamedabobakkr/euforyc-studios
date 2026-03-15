@@ -19,10 +19,84 @@ const nunito = Nunito_Sans({
     display: 'swap',
 });
 
+const skinSiteUrl = 'https://euforyc.co.uk';
+
 export const metadata: Metadata = {
-    title: 'Euforyc Skin Studio | Aesthetic Clinic',
-    description: 'THE FEELING OF BEING HAPPY IN YOUR SKIN. Premium aesthetic treatments including Fillers, Anti-wrinkle, IV Drips, Skin Boosters, and Body Contouring.',
-    keywords: ['aesthetic clinic', 'fillers', 'anti-wrinkle', 'iv drips', 'skin boosters', 'body contouring', 'euforyc skin studio'],
+    metadataBase: new URL(skinSiteUrl),
+    title: {
+        default: 'Euforyc Skin Studio | Aesthetic Clinic & Skin Treatments London',
+        template: '%s | Euforyc Skin Studio',
+    },
+    description: 'Women-only aesthetic clinic in Edgware, London. Expert dermal fillers, anti-wrinkle treatments, IV drips, skin boosters, Profhilo, body contouring, laser hair removal & Dermalux phototherapy. Book your consultation today.',
+    keywords: ['aesthetic clinic london', 'dermal fillers london', 'lip fillers edgware', 'anti wrinkle treatment london', 'iv drip london', 'skin boosters london', 'profhilo london', 'body contouring london', 'laser hair removal edgware', 'aesthetic treatments near me', 'women only clinic london', 'skin clinic edgware', 'fillers near me', 'iv therapy london', 'polynucleotides london', 'skin rejuvenation london', 'aesthetic clinic north london', 'best fillers london', 'jaw slimming london', 'ems sculpt london', 'dermalux phototherapy london', 'skin clinic north london', 'euforyc skin studio'],
+    openGraph: {
+        title: 'Euforyc Skin Studio | Aesthetic Clinic London',
+        description: 'Women-only aesthetic clinic in Edgware. Expert dermal fillers, anti-wrinkle treatments, IV drips, Profhilo, body contouring & laser hair removal. Book your consultation.',
+        url: `${skinSiteUrl}/skin-studio`,
+        siteName: 'Euforyc Skin Studio',
+        locale: 'en_GB',
+        type: 'website',
+        images: [{ url: `${skinSiteUrl}/skin-studio-logo.png`, width: 600, height: 200, alt: 'Euforyc Skin Studio - Aesthetic Clinic in Edgware, London' }],
+    },
+    twitter: {
+        card: 'summary_large_image',
+        title: 'Euforyc Skin Studio | Aesthetic Clinic London',
+        description: 'Women-only aesthetic clinic in Edgware. Fillers, anti-wrinkle, IV drips, skin boosters, body contouring & laser treatments.',
+        site: '@euforycstudios',
+        images: [`${skinSiteUrl}/skin-studio-logo.png`],
+    },
+    robots: {
+        index: true,
+        follow: true,
+        googleBot: {
+            index: true,
+            follow: true,
+            'max-image-preview': 'large' as const,
+            'max-snippet': -1,
+        },
+    },
+    alternates: {
+        canonical: `${skinSiteUrl}/skin-studio`,
+    },
+};
+
+const skinStudioSchema = {
+    '@context': 'https://schema.org',
+    '@type': ['HealthAndBeautyBusiness', 'MedicalBusiness'],
+    '@id': `${skinSiteUrl}/skin-studio/#business`,
+    name: 'Euforyc Skin Studio',
+    alternateName: 'Euforyc Aesthetic Clinic',
+    description: 'Women-only aesthetic clinic in Edgware, North London. Expert practitioners offering dermal fillers, anti-wrinkle treatments, IV drips, skin boosters, body contouring, and laser treatments in a premium boutique environment.',
+    url: `${skinSiteUrl}/skin-studio`,
+    telephone: '+447375710370',
+    email: 'euforyc@gmail.com',
+    address: { '@type': 'PostalAddress', streetAddress: '7 Holmstall Ave', addressLocality: 'Edgware', addressRegion: 'London', postalCode: 'HA8 5HX', addressCountry: 'GB' },
+    geo: { '@type': 'GeoCoordinates', latitude: 51.6142, longitude: -0.2756 },
+    openingHoursSpecification: [
+        { '@type': 'OpeningHoursSpecification', dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'], opens: '06:45', closes: '20:00' },
+        { '@type': 'OpeningHoursSpecification', dayOfWeek: ['Saturday', 'Sunday'], opens: '08:45', closes: '18:00' },
+    ],
+    priceRange: '££',
+    image: `${skinSiteUrl}/skin-studio-logo.png`,
+    sameAs: ['https://www.instagram.com/euforycstudios', 'https://www.tiktok.com/@euforyc'],
+    parentOrganization: { '@id': `${skinSiteUrl}/#organization` },
+    areaServed: { '@type': 'City', name: 'London' },
+    hasOfferCatalog: {
+        '@type': 'OfferCatalog',
+        name: 'Aesthetic Treatments',
+        itemListElement: [
+            { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Dermal Fillers', description: 'Expert facial profile balancing including lip fillers, cheek fillers, jaw fillers, chin enhancement, nose reshape, tear troughs. From £130.' } },
+            { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Anti-Wrinkle Treatments', description: 'Precision anti-wrinkle injections for forehead, crow\'s feet, brow lift, lip flip, jaw slimming. From £25.' } },
+            { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'IV Drips', description: 'Customised vitamin IV therapy for energy, immunity, skin glow, and overall wellness. From £100.' } },
+            { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Skin Boosters', description: 'Profhilo, Neofound, Lumi Eye, and Polynucleotides for deep skin hydration and rejuvenation. From £120.' } },
+            { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Body Contouring', description: 'Non-surgical body sculpting including cavitation, RF skin tightening, EMS sculpt, and cellulite treatment. From £75.' } },
+            { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Laser Hair Removal', description: 'Full body and face laser hair removal with professional-grade equipment. From £25.' } },
+            { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Dermalux Phototherapy', description: 'LED light therapy for skin rejuvenation, acne treatment, and anti-ageing.' } },
+        ],
+    },
+    paymentAccepted: ['Cash', 'Credit Card', 'Debit Card', 'Apple Pay', 'Google Pay'],
+    currenciesAccepted: 'GBP',
+    hasMap: 'https://maps.app.goo.gl/zZfyhD3X2BuS6SnL6',
 };
 
 export default function SkinStudioLayout({
@@ -163,6 +237,10 @@ export default function SkinStudioLayout({
                 </noscript>
             </head>
             <body className="font-skin-sans bg-skin-background antialiased" suppressHydrationWarning>
+                <script
+                    type="application/ld+json"
+                    dangerouslySetInnerHTML={{ __html: JSON.stringify(skinStudioSchema) }}
+                />
                 <div className="min-h-screen flex flex-col">
                     {/* Elegant Top Navigation */}
                     <nav className="fixed top-0 left-0 right-0 z-50 bg-skin-background/95 backdrop-blur-sm border-b border-skin-muted/30">

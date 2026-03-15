@@ -12,21 +12,22 @@ import ErrorState, { EmptyState } from '@/components/momence/ErrorState';
 import { momenceClient } from '@/lib/momence-client';
 
 export const metadata: Metadata = {
-  title: 'Meet Our Instructors | Euforyc Studios - Expert Pilates & Yoga Teachers in Edgware',
+  title: 'Meet Our Instructors | Expert Pilates & Barre Teachers',
   description:
-    'Meet our certified Reformer Pilates, Hot Yoga, and Dance instructors at Euforyc Studios in Edgware. Experienced, passionate teachers dedicated to your wellness journey.',
+    'Meet our certified reformer pilates, hot pilates, barre, and dance instructors at Euforyc Studios Edgware. Experienced, passionate women\'s fitness experts dedicated to your wellness journey in North London.',
   keywords: [
-    'pilates instructors Edgware',
-    'yoga teachers London',
-    'certified pilates trainers',
+    'pilates instructors edgware',
+    'pilates teachers london',
+    'certified pilates trainers north london',
     'reformer pilates experts',
-    'hot yoga instructors',
-    'fitness coaches Edgware',
+    'barre instructors london',
+    'fitness coaches edgware',
+    'women pilates instructors',
   ],
   openGraph: {
-    title: 'Meet Our Expert Instructors - Euforyc Studios',
+    title: 'Meet Our Expert Instructors | Euforyc Studios',
     description:
-      'Get to know our team of certified Pilates and Yoga instructors at Euforyc Studios. Experience, expertise, and passion for your wellness.',
+      'Our certified pilates, barre and dance instructors at Euforyc Studios Edgware. Experience, expertise, and passion for women\'s wellness.',
     type: 'website',
   },
 };

@@ -3,8 +3,10 @@ import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'Price List - Euforyc Studios',
-  description: 'Transparent pricing for all our Pilates, Barre, and Dance classes. Choose from drop-in sessions, class packages, or monthly memberships.',
+  title: 'Pricing | Pilates Classes & Packages',
+  description: 'Transparent pricing for all classes at Euforyc Studios Edgware. Reformer pilates from £25, hot pilates from £20, barre from £28, private sessions from £65. Packages & memberships available.',
+  keywords: ['pilates prices london', 'reformer pilates cost london', 'hot pilates price edgware', 'pilates class cost near me', 'pilates membership london', 'pilates pricing uk'],
+  alternates: { canonical: 'https://euforyc.co.uk/pricing' },
 };
 
 export default function Pricing() {

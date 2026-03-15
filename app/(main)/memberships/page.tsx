@@ -2,8 +2,10 @@ import type { Metadata } from 'next';
 import { ExternalLink, Crown, Calendar, Star, CheckCircle } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'Contract Memberships - Euforyc Studios',
-  description: 'Monthly pilates memberships at Euforyc Studios London. Best value reformer pilates, hot pilates contracts in Edgware with priority booking.',
+  title: 'Memberships | Unlimited Pilates',
+  description: 'Monthly pilates memberships at Euforyc Studios Edgware. Unlimited reformer pilates from £300/month, hot pilates from £280/month. Priority booking & exclusive perks. 6-month commitment.',
+  keywords: ['pilates membership london', 'unlimited pilates london', 'monthly pilates membership edgware', 'reformer pilates membership', 'pilates unlimited classes uk'],
+  alternates: { canonical: 'https://euforyc.co.uk/memberships' },
 };
 
 // Membership types
