@@ -96,6 +96,28 @@ async function verifySquareSignature(
   return mismatch === 0;
 }
 
+// ── Deduplication cache ──
+// Square can deliver the same event multiple times. We track processed
+// event_ids in memory to ensure each event is handled exactly once.
+// Cache auto-prunes entries older than 10 minutes.
+const processedEvents = new Map<string, number>(); // event_id → timestamp
+const DEDUP_TTL_MS = 10 * 60 * 1000; // 10 minutes
+
+function isDuplicate(eventId: string): boolean {
+  const now = Date.now();
+
+  // Prune stale entries (keep cache bounded)
+  if (processedEvents.size > 500) {
+    processedEvents.forEach((ts, id) => {
+      if (now - ts > DEDUP_TTL_MS) processedEvents.delete(id);
+    });
+  }
+
+  if (processedEvents.has(eventId)) return true;
+  processedEvents.set(eventId, now);
+  return false;
+}
+
 // ── Route handler ──
 
 export async function POST(request: NextRequest) {
@@ -132,6 +154,12 @@ export async function POST(request: NextRequest) {
   }
 
   console.log(`[Webhook] Received event: ${event.type} (${event.event_id})`);
+
+  // ── Deduplicate: skip if we've already processed this event_id ──
+  if (isDuplicate(event.event_id)) {
+    console.log(`[Webhook] Duplicate event ${event.event_id} — skipping`);
+    return NextResponse.json({ received: true, duplicate: true });
+  }
 
   // ── Only process payment.updated events where status is COMPLETED ──
   if (event.type !== 'payment.updated') {

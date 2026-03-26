@@ -11,7 +11,7 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 
-const COOKIE_NAME = '__Host-barista-session';
+const COOKIE_NAME = '__Secure-barista-session';
 const SESSION_DURATION_MS = 12 * 60 * 60 * 1000; // 12 hours
 
 /**
@@ -112,17 +112,8 @@ export function setSessionCookie(response: NextResponse, token: string): void {
     httpOnly: true,          // JavaScript cannot access this cookie
     secure: process.env.NODE_ENV === 'production', // HTTPS only in prod
     sameSite: 'lax',         // Prevents CSRF
-    path: '/api/sips',       // Only sent to sips API routes
+    path: '/',               // Available to all routes (auth check + API)
     maxAge: SESSION_DURATION_MS / 1000, // 12 hours in seconds
-  });
-
-  // Also set for the barista page route to allow server-side checks
-  response.cookies.set(`${COOKIE_NAME}-page`, token, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'lax',
-    path: '/sips/barista',
-    maxAge: SESSION_DURATION_MS / 1000,
   });
 }
 
@@ -134,14 +125,7 @@ export function clearSessionCookie(response: NextResponse): void {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'lax',
-    path: '/api/sips',
-    maxAge: 0,
-  });
-  response.cookies.set(`${COOKIE_NAME}-page`, '', {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'lax',
-    path: '/sips/barista',
+    path: '/',
     maxAge: 0,
   });
 }
