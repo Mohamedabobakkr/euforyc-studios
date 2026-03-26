@@ -200,8 +200,8 @@ const structuredData = {
         '@type': 'Offer',
         itemOffered: {
           '@type': 'Service',
-          name: 'Private Pilates Sessions',
-          description: 'One-on-one personalised pilates training with expert instructors, 60 min sessions'
+          name: '1-1 Private Cadillac Reformer Sessions',
+          description: 'One-on-one personalised pilates training on Cadillac Reformer with expert instructors, 60 min sessions'
         }
       },
       {

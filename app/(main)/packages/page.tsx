@@ -28,7 +28,7 @@ const servicesSchema = {
       offers: {
         '@type': 'AggregateOffer',
         lowPrice: '60',
-        highPrice: '300',
+        highPrice: '340',
         priceCurrency: 'GBP'
       }
     },
@@ -45,8 +45,8 @@ const servicesSchema = {
       areaServed: 'London',
       offers: {
         '@type': 'AggregateOffer',
-        lowPrice: '45',
-        highPrice: '280',
+        lowPrice: '50',
+        highPrice: '300',
         priceCurrency: 'GBP'
       }
     },
@@ -63,8 +63,8 @@ const servicesSchema = {
       areaServed: 'London',
       offers: {
         '@type': 'AggregateOffer',
-        lowPrice: '235',
-        highPrice: '620',
+        lowPrice: '250',
+        highPrice: '700',
         priceCurrency: 'GBP'
       }
     }
@@ -100,7 +100,7 @@ const packages = {
         id: 'hot-pilates',
         name: 'Hot Pilates',
         classes: '3 Classes',
-        price: '£45',
+        price: '£50',
         savings: 'First-time offer',
         description: 'Dynamic mat-based pilates with infrared heat',
         momenceUrl: 'https://momence.com/m/507852',
@@ -111,7 +111,7 @@ const packages = {
         id: 'red-light',
         name: 'Red Light Hot Pilates',
         classes: '3 Classes',
-        price: '£75',
+        price: '£65',
         savings: 'First-time offer',
         description: 'Enhanced hot pilates with red light therapy benefits',
         momenceUrl: 'https://momence.com/m/624096',
@@ -122,7 +122,7 @@ const packages = {
         id: 'barre',
         name: 'Barre',
         classes: '3 Classes',
-        price: '£69',
+        price: '£60',
         savings: 'First-time offer',
         description: 'Ballet-inspired workout for strength and flexibility',
         momenceUrl: 'https://momence.com/m/621480',
@@ -148,25 +148,25 @@ const packages = {
     packages: [
       {
         name: '4 Classes',
-        price: '£90',
-        savings: 'save £10',
+        price: '£100',
+        savings: 'save £12',
         momenceUrl: 'https://momence.com/m/473322' // 4-Class Pack (Group Reformer)
       },
       {
         name: '8 Classes',
-        price: '£170',
-        savings: 'save £30',
+        price: '£190',
+        savings: 'save £34',
         momenceUrl: 'https://momence.com/m/473323' // 8-Class Pack (Group Reformer)
       },
       {
         name: '12 Classes',
-        price: '£240',
-        savings: 'save £60',
+        price: '£270',
+        savings: 'save £66',
         momenceUrl: 'https://momence.com/m/473324' // 12-Class Pack (Group Reformer)
       },
       {
         name: 'Unlimited',
-        price: '£300',
+        price: '£340',
         savings: 'save £100+',
         momenceUrl: 'https://momence.com/m/473325' // Unlimited Class Pack (Group Reformer)
       }
@@ -178,51 +178,51 @@ const packages = {
     packages: [
       {
         name: '4 Classes',
-        price: '£68',
-        savings: 'save £4',
+        price: '£75',
+        savings: 'save £13',
         momenceUrl: 'https://momence.com/m/473314' // 4 Hot Pilates Classes Per Month
       },
       {
         name: '8 Classes',
-        price: '£128',
-        savings: 'save £16',
+        price: '£140',
+        savings: 'save £36',
         momenceUrl: 'https://momence.com/m/473315' // 8 Hot Pilates Classes Per Month
       },
       {
         name: '12 Classes',
-        price: '£180',
-        savings: 'save £36',
+        price: '£200',
+        savings: 'save £64',
         momenceUrl: 'https://momence.com/m/473316' // 12 Hot Pilates Classes Per Month
       },
       {
         name: 'Unlimited',
-        price: '£280',
-        savings: 'save £8+',
+        price: '£300',
+        savings: 'save £60+',
         momenceUrl: 'https://momence.com/m/473319' // Unlimited Hot Pilates Classes Per Month
       }
     ]
   },
   private: {
-    title: '1-1 Private Sessions',
-    subtitle: 'Personalized individual training',
+    title: '1-1 Private Cadillac Reformer',
+    subtitle: 'Personalized training on our Cadillac Reformer • Valid 90 days',
     packages: [
       {
         name: '4 Sessions',
-        price: '£235',
-        savings: 'save £25',
-        momenceUrl: 'https://momence.com/m/473317' // 4-Session Pack Private Reformer
+        price: '£250',
+        savings: 'save £50',
+        momenceUrl: 'https://momence.com/m/473317' // 4-Session Pack Private Cadillac Reformer
       },
       {
         name: '8 Sessions',
-        price: '£440',
-        savings: 'save £80',
-        momenceUrl: 'https://momence.com/m/473318' // 8-Session Pack Private Reformer
+        price: '£490',
+        savings: 'save £110',
+        momenceUrl: 'https://momence.com/m/473318' // 8-Session Pack Private Cadillac Reformer
       },
       {
         name: '12 Sessions',
-        price: '£620',
-        savings: 'save £160',
-        momenceUrl: 'https://momence.com/m/473321' // 12-Session Pack Private Reformer
+        price: '£700',
+        savings: 'save £200',
+        momenceUrl: 'https://momence.com/m/473321' // 12-Session Pack Private Cadillac Reformer
       }
     ]
   },
@@ -237,12 +237,12 @@ const packages = {
       },
       {
         name: '8 Classes',
-        price: '£220',
+        price: '£200',
         momenceUrl: 'https://momence.com/m/632400'
       },
       {
         name: '12 Classes',
-        price: '£320',
+        price: '£280',
         momenceUrl: 'https://momence.com/m/632401'
       }
     ]
