@@ -3,12 +3,35 @@ const nextConfig = {
   // Remove static export for better performance with SSR/ISR
   // output: 'export', // Comment this out for production
 
-  // Image optimization
+  // Disable X-Powered-By header
+  poweredByHeader: false,
+
+  // Image optimization — restrict to known trusted domains only
   images: {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: '**',
+        hostname: '*.squarecdn.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'squarecdn.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'items-images-production.s3.us-west-2.amazonaws.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'euforyc.co.uk',
+      },
+      {
+        protocol: 'https',
+        hostname: 'www.euforyc.co.uk',
+      },
+      {
+        protocol: 'https',
+        hostname: '*.momence.com',
       },
       {
         protocol: 'http',
@@ -59,6 +82,22 @@ const nextConfig = {
           {
             key: 'Permissions-Policy',
             value: 'camera=(), microphone=(), geolocation=()'
+          },
+          {
+            key: 'Content-Security-Policy',
+            value: [
+              "default-src 'self'",
+              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://connect.facebook.net https://www.googletagmanager.com https://www.google-analytics.com https://cdn.vercel-insights.com https://va.vercel-scripts.com",
+              "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+              "img-src 'self' data: blob: https: http://localhost:3000",
+              "font-src 'self' https://fonts.gstatic.com",
+              "connect-src 'self' https://euforyc.co.uk https://www.euforyc.co.uk https://connect.squareup.com https://web.squarecdn.com https://prd-collector-gtmss-rzfbf7dhlq-uc.a.run.app https://momence.com https://graph.facebook.com https://www.google-analytics.com https://cdn.vercel-insights.com https://va.vercel-scripts.com https://vitals.vercel-insights.com",
+              "frame-src 'self' https://connect.squareup.com https://web.squarecdn.com https://momence.com",
+              "object-src 'none'",
+              "base-uri 'self'",
+              "form-action 'self'",
+              "frame-ancestors 'self'",
+            ].join('; ')
           }
         ]
       },

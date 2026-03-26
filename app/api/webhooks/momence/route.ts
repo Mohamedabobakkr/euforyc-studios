@@ -12,7 +12,7 @@ import crypto from 'crypto';
 
 // Skin Studio pixel configuration
 const SKIN_STUDIO_PIXEL = {
-  pixelId: process.env.FB_SKIN_PIXEL_ID || process.env.META_SKIN_STUDIO_PIXEL_ID || '1210900647179360',
+  pixelId: process.env.FB_SKIN_PIXEL_ID || process.env.META_SKIN_STUDIO_PIXEL_ID || '',
   accessToken: process.env.FB_SKIN_ACCESS_TOKEN || process.env.META_SKIN_STUDIO_ACCESS_TOKEN || '',
 };
 
@@ -98,9 +98,9 @@ async function sendPurchaseToFacebook(bookingData: {
   clientIp?: string;
   userAgent?: string;
 }): Promise<{ success: boolean; error?: string }> {
-  if (!SKIN_STUDIO_PIXEL.accessToken) {
-    console.error('Momence Webhook: No Facebook access token configured');
-    return { success: false, error: 'No access token configured' };
+  if (!SKIN_STUDIO_PIXEL.accessToken || !SKIN_STUDIO_PIXEL.pixelId) {
+    console.error('Momence Webhook: Facebook pixel not fully configured');
+    return { success: false, error: 'Pixel not configured' };
   }
 
   // Build user data with hashed values
@@ -301,20 +301,13 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error('Momence Webhook error:', error);
     return NextResponse.json(
-      { error: 'Internal server error', details: String(error) },
+      { error: 'Internal server error' },
       { status: 500 }
     );
   }
 }
 
-// Health check endpoint
+// Health check endpoint — no sensitive info exposed
 export async function GET() {
-  return NextResponse.json({
-    status: 'ok',
-    message: 'Momence webhook endpoint is running',
-    purpose: 'Receives Skin Studio appointment bookings and fires Facebook Purchase events',
-    pixel_id: SKIN_STUDIO_PIXEL.pixelId,
-    has_access_token: !!SKIN_STUDIO_PIXEL.accessToken,
-    webhook_url: 'https://euforyc.co.uk/api/webhooks/momence',
-  });
+  return NextResponse.json({ status: 'ok' });
 }

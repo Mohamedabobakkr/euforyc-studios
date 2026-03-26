@@ -116,7 +116,7 @@ function PasswordGate({ onAuth }: { onAuth: (password: string) => void }) {
         return;
       }
       // Password works — store and proceed
-      localStorage.setItem('sips-barista-auth', password.trim());
+      sessionStorage.setItem('sips-barista-auth', password.trim());
       onAuth(password.trim());
     } catch {
       setError('Connection failed');
@@ -327,7 +327,7 @@ function Dashboard({ password }: { password: string }) {
 
   // Logout
   const handleLogout = () => {
-    localStorage.removeItem('sips-barista-auth');
+    sessionStorage.removeItem('sips-barista-auth');
     window.location.reload();
   };
 
@@ -465,7 +465,7 @@ export default function BaristaPage() {
 
   // Check for stored auth on mount
   useEffect(() => {
-    const stored = localStorage.getItem('sips-barista-auth');
+    const stored = sessionStorage.getItem('sips-barista-auth');
     if (stored) {
       // Validate stored password still works
       fetch('/api/sips/orders', {
@@ -475,7 +475,7 @@ export default function BaristaPage() {
           if (res.ok) {
             setPassword(stored);
           } else {
-            localStorage.removeItem('sips-barista-auth');
+            sessionStorage.removeItem('sips-barista-auth');
           }
           setChecking(false);
         })

@@ -39,6 +39,15 @@ export async function PATCH(request: NextRequest) {
       );
     }
 
+    // Validate orderId and fulfillmentUid format (alphanumeric + hyphens only)
+    const safeIdPattern = /^[a-zA-Z0-9_-]+$/;
+    if (!safeIdPattern.test(body.orderId) || !safeIdPattern.test(body.fulfillmentUid)) {
+      return NextResponse.json(
+        { success: false, error: 'Invalid ID format' },
+        { status: 400 },
+      );
+    }
+
     // Validate state transition
     const validNext = Object.values(VALID_TRANSITIONS);
     if (!validNext.includes(body.newState)) {

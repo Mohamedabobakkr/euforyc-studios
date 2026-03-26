@@ -13,7 +13,7 @@ import crypto from 'crypto';
 // We only need to track Skin Studio purchases separately
 const PIXELS = {
   skin_studio: {
-    pixelId: process.env.META_SKIN_STUDIO_PIXEL_ID || '1210900647179360',
+    pixelId: process.env.META_SKIN_STUDIO_PIXEL_ID || '',
     accessToken: process.env.META_SKIN_STUDIO_ACCESS_TOKEN || '',
   },
 };
@@ -169,12 +169,7 @@ export async function POST(request: NextRequest) {
   }
 }
 
-// Handle GET for testing
+// Health check — no sensitive info exposed
 export async function GET() {
-  return NextResponse.json({
-    status: 'ok',
-    message: 'Skin Studio purchase tracking API is running',
-    note: 'Euforyc purchases are tracked by Momence CAPI',
-    skin_studio_pixel: PIXELS.skin_studio.pixelId,
-  });
+  return NextResponse.json({ status: 'ok' });
 }

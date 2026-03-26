@@ -32,6 +32,27 @@ function getHeaders(idempotencyKey?: string): Record<string, string> {
   return headers;
 }
 
+/**
+ * Validates that a Square API path is safe (no traversal or injection).
+ * Only allows paths starting with '/' followed by alphanumeric segments,
+ * hyphens, underscores, and query strings.
+ */
+function validateSquarePath(path: string): void {
+  // Must start with /
+  if (!path.startsWith('/')) {
+    throw new SquareApiError('Invalid API path', 400);
+  }
+  // Block path traversal attempts
+  if (path.includes('..') || path.includes('//') || path.includes('\\')) {
+    throw new SquareApiError('Invalid API path', 400);
+  }
+  // Only allow safe characters: alphanumeric, /, -, _, ., ?, =, &
+  const safePath = path.split('?')[0]; // validate path portion only
+  if (!/^\/[a-zA-Z0-9/_-]+$/.test(safePath)) {
+    throw new SquareApiError('Invalid API path', 400);
+  }
+}
+
 export async function squareFetch<T = unknown>(
   path: string,
   options: {
@@ -40,6 +61,9 @@ export async function squareFetch<T = unknown>(
     idempotencyKey?: string;
   } = {},
 ): Promise<T> {
+  // Validate path to prevent SSRF via path traversal
+  validateSquarePath(path);
+
   const { method = 'GET', body, idempotencyKey } = options;
 
   const jsonBody = body ? JSON.stringify(body) : undefined;

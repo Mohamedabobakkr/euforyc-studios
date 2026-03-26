@@ -12,11 +12,11 @@ import crypto from 'crypto';
 // Pixel configurations
 const PIXELS = {
   pilates: {
-    pixelId: process.env.FB_PILATES_PIXEL_ID || '1085377523538304',
+    pixelId: process.env.FB_PILATES_PIXEL_ID || '',
     accessToken: process.env.FB_PILATES_ACCESS_TOKEN || '',
   },
   skin: {
-    pixelId: process.env.FB_SKIN_PIXEL_ID || process.env.META_SKIN_STUDIO_PIXEL_ID || '1210900647179360',
+    pixelId: process.env.FB_SKIN_PIXEL_ID || process.env.META_SKIN_STUDIO_PIXEL_ID || '',
     accessToken: process.env.FB_SKIN_ACCESS_TOKEN || process.env.META_SKIN_STUDIO_ACCESS_TOKEN || '',
   },
 };
@@ -185,11 +185,7 @@ export async function POST(request: NextRequest) {
   }
 }
 
-// Health check
+// Health check — no sensitive info exposed
 export async function GET() {
-  return NextResponse.json({
-    status: 'ok',
-    message: 'Event tracking API is running',
-    supported_events: ['PageView', 'ViewContent', 'Lead', 'Contact', 'AddToCart', 'InitiateCheckout'],
-  });
+  return NextResponse.json({ status: 'ok' });
 }
