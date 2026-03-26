@@ -1,11 +1,12 @@
 /**
  * GET /api/sips/orders
  * Fetches today's pickup orders for the barista dashboard.
- * Protected by BARISTA_PASSWORD via Authorization header.
+ * Protected by HttpOnly session cookie (set via /api/sips/auth).
  */
 
 import { NextRequest, NextResponse } from 'next/server';
 import { squareFetch, getLocationId, SquareApiError } from '@/lib/square';
+import { authenticateBarista } from '@/lib/barista-auth';
 import type { SipsOrder, SipsOrderItem, FulfillmentState } from '@/lib/sips-types';
 
 export const dynamic = 'force-dynamic';
@@ -41,12 +42,9 @@ interface SquareRawOrder {
 
 export async function GET(request: NextRequest) {
   try {
-    // Validate barista password via Authorization header
-    const authHeader = request.headers.get('authorization') || '';
-    const password = authHeader.replace(/^Bearer\s+/i, '');
-    const expected = process.env.BARISTA_PASSWORD;
-
-    if (!expected || password !== expected) {
+    // Validate barista session via HttpOnly cookie
+    const isAuthenticated = await authenticateBarista(request);
+    if (!isAuthenticated) {
       return NextResponse.json(
         { success: false, error: 'Unauthorized' },
         { status: 401 },

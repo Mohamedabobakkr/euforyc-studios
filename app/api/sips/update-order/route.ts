@@ -1,11 +1,12 @@
 /**
  * PATCH /api/sips/update-order
  * Updates order fulfillment status (barista dashboard).
- * Protected by BARISTA_PASSWORD in body.
+ * Protected by HttpOnly session cookie (set via /api/sips/auth).
  */
 
 import { NextRequest, NextResponse } from 'next/server';
 import { squareFetch, getLocationId, newIdempotencyKey, SquareApiError } from '@/lib/square';
+import { authenticateBarista } from '@/lib/barista-auth';
 import type { UpdateOrderPayload, FulfillmentState } from '@/lib/sips-types';
 
 export const dynamic = 'force-dynamic';
@@ -19,18 +20,16 @@ const VALID_TRANSITIONS: Record<FulfillmentState, FulfillmentState | null> = {
 
 export async function PATCH(request: NextRequest) {
   try {
-    const body: UpdateOrderPayload = await request.json();
-
-    // Validate password from Authorization header
-    const expected = process.env.BARISTA_PASSWORD;
-    const authHeader = request.headers.get('authorization');
-    const token = authHeader?.startsWith('Bearer ') ? authHeader.slice(7) : null;
-    if (!expected || token !== expected) {
+    // Validate barista session via HttpOnly cookie
+    const isAuthenticated = await authenticateBarista(request);
+    if (!isAuthenticated) {
       return NextResponse.json(
         { success: false, error: 'Unauthorized' },
         { status: 401 },
       );
     }
+
+    const body: UpdateOrderPayload = await request.json();
 
     if (!body.orderId || !body.fulfillmentUid || !body.newState) {
       return NextResponse.json(

@@ -90,7 +90,7 @@ function playNotificationBeep() {
 
 /* ─────────────── PASSWORD GATE ─────────────── */
 
-function PasswordGate({ onAuth }: { onAuth: (password: string) => void }) {
+function PasswordGate({ onAuth }: { onAuth: () => void }) {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -102,22 +102,30 @@ function PasswordGate({ onAuth }: { onAuth: (password: string) => void }) {
     setError('');
 
     try {
-      const res = await fetch('/api/sips/orders', {
-        headers: { 'Authorization': `Bearer ${password.trim()}` },
+      // Send password to auth endpoint — it sets an HttpOnly cookie on success
+      const res = await fetch('/api/sips/auth', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password: password.trim() }),
       });
-      if (res.status === 401) {
+
+      const data = await res.json();
+
+      if (res.status === 429) {
+        setError('Too many attempts. Try again in 15 minutes.');
+        setLoading(false);
+        return;
+      }
+      if (!res.ok || !data.success) {
         setError('Incorrect password');
         setLoading(false);
         return;
       }
-      if (!res.ok) {
-        setError('Something went wrong');
-        setLoading(false);
-        return;
-      }
-      // Password works — store and proceed
-      sessionStorage.setItem('sips-barista-auth', password.trim());
-      onAuth(password.trim());
+
+      // Auth successful — cookie is set by the server (HttpOnly, invisible to JS)
+      // Clear password from component state immediately
+      setPassword('');
+      onAuth();
     } catch {
       setError('Connection failed');
       setLoading(false);
@@ -224,7 +232,7 @@ function OrderCard({
 
 /* ─────────────── DASHBOARD ─────────────── */
 
-function Dashboard({ password }: { password: string }) {
+function Dashboard({ onLogout }: { onLogout: () => void }) {
   const [orders, setOrders] = useState<SipsOrder[]>([]);
   const [loading, setLoading] = useState(true);
   const [clock, setClock] = useState('');
@@ -246,12 +254,15 @@ function Dashboard({ password }: { password: string }) {
     return () => clearInterval(interval);
   }, []);
 
-  // Fetch orders
+  // Fetch orders — cookie is sent automatically by the browser
   const fetchOrders = useCallback(async () => {
     try {
-      const res = await fetch('/api/sips/orders', {
-        headers: { 'Authorization': `Bearer ${password}` },
-      });
+      const res = await fetch('/api/sips/orders');
+      if (res.status === 401) {
+        // Session expired — redirect to login
+        onLogout();
+        return;
+      }
       if (!res.ok) return;
       const data = await res.json();
       if (!data.success) return;
@@ -283,7 +294,7 @@ function Dashboard({ password }: { password: string }) {
     } catch {
       setLoading(false);
     }
-  }, [password]);
+  }, [onLogout]);
 
   useEffect(() => {
     fetchOrders();
@@ -291,7 +302,7 @@ function Dashboard({ password }: { password: string }) {
     return () => clearInterval(interval);
   }, [fetchOrders]);
 
-  // Advance order status
+  // Advance order status — cookie sent automatically
   const handleAdvance = async (order: SipsOrder) => {
     const nextState = getNextState(order.state);
     if (!nextState) return;
@@ -299,10 +310,7 @@ function Dashboard({ password }: { password: string }) {
     try {
       const res = await fetch('/api/sips/update-order', {
         method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${password}`,
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           orderId: order.id,
           fulfillmentUid: order.fulfillmentUid,
@@ -325,10 +333,10 @@ function Dashboard({ password }: { password: string }) {
     }
   };
 
-  // Logout
-  const handleLogout = () => {
-    sessionStorage.removeItem('sips-barista-auth');
-    window.location.reload();
+  // Logout — clear server-side session cookie
+  const handleLogout = async () => {
+    await fetch('/api/sips/auth/logout', { method: 'POST' });
+    onLogout();
   };
 
   // Group orders by state
@@ -460,31 +468,24 @@ function Dashboard({ password }: { password: string }) {
 /* ─────────────── MAIN PAGE ─────────────── */
 
 export default function BaristaPage() {
-  const [password, setPassword] = useState<string | null>(null);
+  const [authenticated, setAuthenticated] = useState(false);
   const [checking, setChecking] = useState(true);
 
-  // Check for stored auth on mount
+  // Check for existing session cookie on mount
   useEffect(() => {
-    const stored = sessionStorage.getItem('sips-barista-auth');
-    if (stored) {
-      // Validate stored password still works
-      fetch('/api/sips/orders', {
-        headers: { 'Authorization': `Bearer ${stored}` },
+    fetch('/api/sips/auth')
+      .then((res) => res.json())
+      .then((data) => {
+        setAuthenticated(data.authenticated === true);
+        setChecking(false);
       })
-        .then((res) => {
-          if (res.ok) {
-            setPassword(stored);
-          } else {
-            sessionStorage.removeItem('sips-barista-auth');
-          }
-          setChecking(false);
-        })
-        .catch(() => {
-          setChecking(false);
-        });
-    } else {
-      setChecking(false);
-    }
+      .catch(() => {
+        setChecking(false);
+      });
+  }, []);
+
+  const handleLogout = useCallback(() => {
+    setAuthenticated(false);
   }, []);
 
   if (checking) {
@@ -497,9 +498,9 @@ export default function BaristaPage() {
     );
   }
 
-  if (!password) {
-    return <PasswordGate onAuth={setPassword} />;
+  if (!authenticated) {
+    return <PasswordGate onAuth={() => setAuthenticated(true)} />;
   }
 
-  return <Dashboard password={password} />;
+  return <Dashboard onLogout={handleLogout} />;
 }
