@@ -26,6 +26,7 @@ const Navigation = () => {
 
   const rightNavItems: NavItem[] = [
     { href: '/book', label: 'BOOK' },
+    { href: '/studio-hire', label: 'STUDIO HIRE' },
     { href: '/faq', label: 'FAQ' },
     { href: '/shop', label: 'MERCHANDISE' },
     { href: '/pricing', label: 'PRICE LIST' },
