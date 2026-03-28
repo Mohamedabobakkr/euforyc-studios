@@ -142,7 +142,7 @@ export async function POST(request: NextRequest) {
     if (!response.ok) {
       console.error('Meta CAPI Error:', result);
       return NextResponse.json(
-        { error: 'Failed to send event to Meta', details: result },
+        { error: 'Failed to send event to Meta' },
         { status: 500 }
       );
     }
