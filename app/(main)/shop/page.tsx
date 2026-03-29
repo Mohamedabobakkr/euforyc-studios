@@ -50,6 +50,21 @@ const products: Product[] = [
       'Spacious main compartment',
       'Neutral versatile design'
     ]
+  },
+  {
+    name: 'Euforyc Mat',
+    tagline: 'Your foundation for every flow',
+    description: 'A premium mat designed for comfort and stability. Whether it\'s Pilates, yoga or stretching, this mat supports your practice from the ground up.',
+    price: '£38.00',
+    image: '/euforyc-mat.jpg',
+    momenceUrl: 'https://momence.com/euforyc/product/Euforyc-Mats/416935',
+    badge: 'NEW',
+    features: [
+      'High-density cushioning',
+      'Non-slip textured surface',
+      'Lightweight and portable',
+      'Ideal for Pilates, yoga & stretching'
+    ]
   }
 ];
 
@@ -84,7 +99,7 @@ export default function Shop() {
       <section className="py-10 md:py-16 lg:py-20 bg-[#fffcf2]">
         <div className="container-width px-6 md:px-6">
           <div className="max-w-sm md:max-w-5xl mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-8 lg:gap-12">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-8 lg:gap-10">
               {products.map((product, index) => (
                 <div
                   key={index}

@@ -342,6 +342,92 @@ const categories: Category[] = [
     ]
   },
   {
+    id: 'sculpt-mat',
+    label: 'Sculpt Mat Pilates',
+    shortLabel: 'Sculpt Mat',
+    tagline: 'TONE & SCULPT',
+    subtitle: 'Strengthen, tone and sculpt with mat-based pilates',
+    icon: <Dumbbell className="h-4 w-4" />,
+    memberships: [
+      {
+        name: '4 Classes',
+        monthlyPrice: '£60',
+        perClass: '£15 per class',
+        description: 'Once a week',
+        features: [
+          '4 Sculpt Mat classes per month',
+          'Mat-based toning & strengthening',
+          'Priority booking access',
+          'Ongoing monthly commitment'
+        ],
+        momenceUrl: 'https://momence.com/m/707775'
+      },
+      {
+        name: '8 Classes',
+        monthlyPrice: '£120',
+        perClass: '£15 per class',
+        description: 'Twice a week',
+        features: [
+          '8 Sculpt Mat classes per month',
+          'Mat-based toning & strengthening',
+          'Priority booking access',
+          'Ongoing monthly commitment'
+        ],
+        momenceUrl: 'https://momence.com/m/707776'
+      },
+      {
+        name: '12 Classes',
+        monthlyPrice: '£180',
+        perClass: '£15 per class',
+        description: 'Three times a week',
+        popular: true,
+        features: [
+          '12 Sculpt Mat classes per month',
+          'Mat-based toning & strengthening',
+          'Priority booking access',
+          'Ongoing monthly commitment'
+        ],
+        momenceUrl: 'https://momence.com/m/707777'
+      },
+      {
+        name: 'Unlimited',
+        monthlyPrice: '£200',
+        description: 'Unlimited everything',
+        savings: 'Best value',
+        features: [
+          'Unlimited Sculpt Mat classes per month',
+          'Mat-based toning & strengthening',
+          'Priority booking access',
+          'Ongoing monthly commitment'
+        ],
+        momenceUrl: 'https://momence.com/m/707780'
+      }
+    ]
+  },
+  {
+    id: 'barre',
+    label: 'Barre',
+    shortLabel: 'Barre',
+    tagline: 'STRENGTH & GRACE',
+    subtitle: 'Ballet-inspired workout combining strength, flexibility and grace',
+    icon: <Flame className="h-4 w-4" />,
+    memberships: [
+      {
+        name: '4 Classes',
+        monthlyPrice: '£80',
+        perClass: '£20 per class',
+        description: 'Once a week',
+        features: [
+          '4 Barre classes per month',
+          'Ballet-inspired strength training',
+          'Priority booking access',
+          'Ongoing monthly commitment'
+        ],
+        momenceUrl: 'https://momence.com/m/707782'
+      }
+    ]
+  },
+  {
     id: 'dance',
     label: 'Dance',
     shortLabel: 'Dance',
@@ -392,6 +478,10 @@ export default function Memberships() {
   const carouselRef = useRef<HTMLDivElement>(null);
   const [activeSlide, setActiveSlide] = useState(0);
 
+  // Scroll-aware edge fades for tabs
+  const [tabsCanScrollLeft, setTabsCanScrollLeft] = useState(false);
+  const [tabsCanScrollRight, setTabsCanScrollRight] = useState(true);
+
   const current = categories.find(c => c.id === activeCategory)!;
 
   // Sort memberships: popular first on mobile
@@ -413,6 +503,26 @@ export default function Memberships() {
     return () => observer.disconnect();
   }, []);
 
+  // Track tabs scroll position for edge fades
+  const updateTabsScroll = () => {
+    const el = tabsRef.current;
+    if (!el) return;
+    setTabsCanScrollLeft(el.scrollLeft > 8);
+    setTabsCanScrollRight(el.scrollLeft < el.scrollWidth - el.clientWidth - 8);
+  };
+
+  useEffect(() => {
+    const el = tabsRef.current;
+    if (!el) return;
+    updateTabsScroll();
+    el.addEventListener('scroll', updateTabsScroll, { passive: true });
+    window.addEventListener('resize', updateTabsScroll);
+    return () => {
+      el.removeEventListener('scroll', updateTabsScroll);
+      window.removeEventListener('resize', updateTabsScroll);
+    };
+  }, []);
+
   // Scroll active tab into view on mobile
   useEffect(() => {
     if (!tabsRef.current) return;
@@ -420,6 +530,7 @@ export default function Memberships() {
     if (activeBtn) {
       activeBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
     }
+    setTimeout(updateTabsScroll, 350);
   }, [activeCategory]);
 
   // Reset carousel position when category changes
@@ -430,7 +541,7 @@ export default function Memberships() {
     }
   }, [activeCategory]);
 
-  // Track carousel scroll position for dot indicators
+  // Track carousel scroll position for dot indicators + edge fades
   useEffect(() => {
     const carousel = carouselRef.current;
     if (!carousel) return;
@@ -588,10 +699,26 @@ export default function Memberships() {
             : 'bg-[#fffcf2]'
         }`}
       >
-        {/* Gradient edge fades for scroll hint on mobile */}
+        {/* Gradient edge fades for scroll hint on mobile — scroll-aware */}
         <div className="relative md:static">
-          <div className="absolute left-0 top-0 bottom-0 w-6 bg-gradient-to-r from-[#fffcf2] to-transparent z-10 pointer-events-none md:hidden" />
-          <div className="absolute right-0 top-0 bottom-0 w-6 bg-gradient-to-l from-[#fffcf2] to-transparent z-10 pointer-events-none md:hidden" />
+          <div
+            className={`absolute left-0 top-0 bottom-0 w-10 z-10 pointer-events-none md:hidden transition-opacity duration-300 ${
+              tabsCanScrollLeft ? 'opacity-100' : 'opacity-0'
+            }`}
+            style={{ background: isSticky
+              ? 'linear-gradient(to right, rgba(255,252,242,0.95) 20%, transparent)'
+              : 'linear-gradient(to right, #fffcf2 20%, transparent)'
+            }}
+          />
+          <div
+            className={`absolute right-0 top-0 bottom-0 w-10 z-10 pointer-events-none md:hidden transition-opacity duration-300 ${
+              tabsCanScrollRight ? 'opacity-100' : 'opacity-0'
+            }`}
+            style={{ background: isSticky
+              ? 'linear-gradient(to left, rgba(255,252,242,0.95) 20%, transparent)'
+              : 'linear-gradient(to left, #fffcf2 20%, transparent)'
+            }}
+          />
 
           <div className="container-width">
             <div

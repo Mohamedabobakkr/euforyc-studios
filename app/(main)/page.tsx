@@ -118,7 +118,7 @@ export default function Home() {
             <Link href="/packages" className="group block min-w-[70vw] md:min-w-0 snap-center">
               <div className="relative overflow-hidden aspect-[3/4]">
                 <Image
-                  src="/hotp.jpg"
+                  src="/hotpilates-new.jpg"
                   alt="Hot infrared heated mat pilates London Euforyc Studios"
                   fill
                   className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
@@ -141,7 +141,7 @@ export default function Home() {
             <Link href="/packages" className="group block min-w-[70vw] md:min-w-0 snap-center">
               <div className="relative overflow-hidden aspect-[3/4]">
                 <Image
-                  src="/redlight.jpg"
+                  src="/redlight-new.jpg"
                   alt="Redlight mat pilates London Euforyc Studios"
                   fill
                   className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
@@ -187,7 +187,7 @@ export default function Home() {
             <Link href="/packages" className="group block min-w-[70vw] md:min-w-0 snap-center">
               <div className="relative overflow-hidden aspect-[3/4]">
                 <Image
-                  src="/hero/IMG_8688.JPG"
+                  src="/dance-new.jpg"
                   alt="Dance classes London Euforyc Studios"
                   fill
                   className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
