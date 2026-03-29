@@ -95,7 +95,7 @@ export default function Home() {
             <Link href="/packages" className="group block min-w-[70vw] md:min-w-0 snap-center">
               <div className="relative overflow-hidden aspect-[3/4]">
                 <Image
-                  src="/reformerp.jpg"
+                  src="/reformer-new.jpg"
                   alt="Reformer pilates classes London Euforyc Studios"
                   fill
                   className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
