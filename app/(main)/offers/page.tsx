@@ -3,7 +3,7 @@
 import { useState, useEffect, Suspense, useMemo } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import { ExternalLink, Package, Flame, Zap, Heart, CheckCircle2, Music, ArrowRight, Sparkles, Users, Clock, MapPin, Timer } from 'lucide-react';
+import { ExternalLink, Package, Flame, Zap, Heart, CheckCircle2, Music, ArrowRight, Sparkles, Users, Clock, MapPin, Timer, Crown } from 'lucide-react';
 
 // Countdown hook for urgency timer
 function useCountdown(targetTimestamp: number) {
@@ -146,6 +146,27 @@ const introOffers = {
     momenceUrl: 'https://momence.com/m/631782',
     icon: Sparkles,
     highlight: true,
+  },
+  'cadillac': {
+    id: 'cadillac',
+    name: 'Cadillac 1-1',
+    shortName: 'Cadillac 1-1',
+    classes: '3 Classes',
+    price: '£180',
+    perClass: '£60',
+    regularPrice: '£225',
+    savings: 'Save £45',
+    validity: '30 days',
+    description: 'Private one-on-one sessions on our Cadillac Reformer for personalised training',
+    benefits: [
+      'Private 1-on-1 sessions',
+      'Cadillac Reformer machine',
+      'Fully personalised program',
+      'Expert instructor guidance'
+    ],
+    momenceUrl: 'https://momence.com/m/708119',
+    icon: Crown,
+    highlight: false,
   }
 };
 
@@ -172,7 +193,7 @@ const dancePackages = [
 const danceStyles = ['Dabke', 'Belly Dance', 'Afro', 'Bollywood'];
 
 type OfferId = keyof typeof introOffers;
-const offerIds: OfferId[] = ['reformer', 'hot-pilates', 'red-light', 'barre', 'try-all'];
+const offerIds: OfferId[] = ['reformer', 'hot-pilates', 'red-light', 'barre', 'try-all', 'cadillac'];
 
 // Main content component
 function OffersContent() {

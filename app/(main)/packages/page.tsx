@@ -51,7 +51,8 @@ const packages = {
       { id: 'hot-pilates', name: 'Hot Pilates', classes: '3 Classes', price: '£50', savings: 'First-time offer', description: 'Dynamic mat-based pilates with infrared heat', momenceUrl: 'https://momence.com/m/507852', icon: 'flame', validity: '30 days' },
       { id: 'red-light', name: 'Red Light Hot Pilates', classes: '3 Classes', price: '£65', savings: 'First-time offer', description: 'Enhanced hot pilates with red light therapy benefits', momenceUrl: 'https://momence.com/m/624096', icon: 'zap', validity: '30 days' },
       { id: 'barre', name: 'Barre', classes: '3 Classes', price: '£60', savings: 'First-time offer', description: 'Ballet-inspired workout for strength and flexibility', momenceUrl: 'https://momence.com/m/621480', icon: 'heart', validity: '30 days' },
-      { id: 'try-all', name: 'Try All', classes: '3 Classes', price: '£70', savings: 'First-time offer', description: 'Experience all class types - Reformer, Hot Pilates, Barre, Dance & more', momenceUrl: 'https://momence.com/m/631782', icon: 'sparkles', validity: '20 days' }
+      { id: 'try-all', name: 'Try All', classes: '3 Classes', price: '£70', savings: 'First-time offer', description: 'Experience all class types - Reformer, Hot Pilates, Barre, Dance & more', momenceUrl: 'https://momence.com/m/631782', icon: 'sparkles', validity: '20 days' },
+      { id: 'cadillac', name: 'Cadillac 1-1', classes: '3 Classes', price: '£180', savings: 'First-time offer', description: 'Private one-on-one sessions on our Cadillac Reformer', momenceUrl: 'https://momence.com/m/708119', icon: 'crown', validity: '30 days' }
     ]
   },
   reformer: {
@@ -133,7 +134,7 @@ const categories: { key: CategoryKey; label: string }[] = [
   { key: 'dancePackage', label: 'Dance' },
 ];
 
-type IntroOfferType = 'reformer' | 'hot-pilates' | 'red-light' | 'barre' | 'try-all';
+type IntroOfferType = 'reformer' | 'hot-pilates' | 'red-light' | 'barre' | 'try-all' | 'cadillac';
 
 const getIcon = (icon: string, className?: string) => {
   switch (icon) {
@@ -141,6 +142,7 @@ const getIcon = (icon: string, className?: string) => {
     case 'zap': return <Zap className={className} />;
     case 'heart': return <Heart className={className} />;
     case 'sparkles': return <Sparkles className={className} />;
+    case 'crown': return <Crown className={className} />;
     default: return <Sparkles className={className} />;
   }
 };
@@ -153,7 +155,7 @@ function IntroOffersSection() {
 
   useEffect(() => {
     const offer = searchParams.get('offer') as IntroOfferType | null;
-    if (offer && ['reformer', 'hot-pilates', 'red-light', 'barre', 'try-all'].includes(offer)) {
+    if (offer && ['reformer', 'hot-pilates', 'red-light', 'barre', 'try-all', 'cadillac'].includes(offer)) {
       setSelectedOffer(offer);
       setFromAd(true);
     }
@@ -237,7 +239,7 @@ function IntroOffersSection() {
           </div>
 
           {/* Desktop: Row of cards */}
-          <div className="hidden md:grid grid-cols-5 gap-4">
+          <div className="hidden md:grid grid-cols-3 gap-4">
             {introPackages.map((pkg) => (
               <a
                 key={pkg.id}
