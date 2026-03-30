@@ -146,7 +146,7 @@ async function sendPurchaseToFacebook(bookingData: {
 
     if (!response.ok) {
       console.error('Momence Webhook: Facebook CAPI Error:', result);
-      return { success: false, error: JSON.stringify(result) };
+      return { success: false, error: 'Facebook API request failed' };
     }
 
     console.log('Momence Webhook: Purchase event sent to Facebook:', {
@@ -159,7 +159,7 @@ async function sendPurchaseToFacebook(bookingData: {
     return { success: true };
   } catch (error) {
     console.error('Momence Webhook: Error sending to Facebook:', error);
-    return { success: false, error: String(error) };
+    return { success: false, error: 'Facebook API request failed' };
   }
 }
 
@@ -291,11 +291,6 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({
       received: true,
       processed: true,
-      booking_id: bookingData.bookingId,
-      service: bookingData.serviceName,
-      amount: bookingData.amount,
-      facebook_capi: result.success,
-      error: result.error,
     });
 
   } catch (error) {
