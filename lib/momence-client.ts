@@ -43,10 +43,11 @@ const CACHE_DURATION = {
  */
 function validateConfig(): void {
   if (!MOMENCE_CONFIG.apiToken || MOMENCE_CONFIG.apiToken === 'your_momence_api_token_here') {
+    console.error('Momence API token is not configured. Please add MOMENCE_API_TOKEN to .env.local');
     throw new MomenceApiError({
       code: 'CONFIG_ERROR',
-      message: 'Momence API token is not configured. Please add MOMENCE_API_TOKEN to .env.local',
-      statusCode: 500,
+      message: 'Service temporarily unavailable',
+      statusCode: 503,
       timestamp: new Date().toISOString(),
     });
   }
@@ -168,9 +169,10 @@ export class MomenceApiClient {
 
       if (!response.ok) {
         const errorText = await response.text();
+        console.error(`[Momence API] HTTP ${response.status}: ${response.statusText}`, errorText);
         throw new MomenceApiError({
           code: 'HTTP_ERROR',
-          message: `HTTP ${response.status}: ${response.statusText}`,
+          message: 'Failed to fetch data from external service',
           details: process.env.NODE_ENV === 'development' ? errorText : undefined,
           statusCode: response.status,
           timestamp: new Date().toISOString(),
