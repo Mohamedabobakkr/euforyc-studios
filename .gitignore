@@ -38,3 +38,12 @@ next.config.js.save
 next.config.js.bak
 .DS_Store
 .SIPS-SETUP.md
+# Deliveroo menu
+/deliveroo-menu
+DELIVEROO_SETUP.md
+app/(sips)/sips/deliveroo-menu/
+
+# Sips — local-only
+/sips-item-images/
+/scripts/
+
