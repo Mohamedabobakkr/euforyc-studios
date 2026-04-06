@@ -10,16 +10,16 @@
 - Low: 0
 
 ## Code Security Checks
-1. SSRF Protection: PASS — validateSquarePath() blocks `..`, `//`, `\`; regex allows only safe chars
-2. API Auth: PASS — /api/sips/orders and /api/sips/update-order both call authenticateBarista() via HttpOnly cookie
-3. Webhook Signatures: PASS — Square webhook uses HMAC-SHA256 with constant-time compare; Momence webhook uses crypto.timingSafeEqual; both fail closed when keys missing
-4. Input Validation: PASS — orderId and fulfillmentUid validated with `/^[a-zA-Z0-9_-]+$/`; state transitions whitelisted; quantities capped; input lengths truncated
-5. Security Headers: PASS — HSTS (2yr + preload), CSP, X-Frame-Options SAMEORIGIN, X-Content-Type-Options nosniff, Referrer-Policy, Permissions-Policy all set
-6. Image Hostnames: PASS — no wildcard `**`; restricted to squarecdn.com, euforyc.co.uk, momence.com, S3, localhost
-7. No Hardcoded Secrets: PASS — no `sk-`, `pk_live`, or hardcoded passwords found in app/lib/components
-8. No localStorage Credentials: PASS — no credential storage in localStorage; no localStorage usage at all
-9. No Error Leaks: PASS — Momence routes gate `error.details` behind `NODE_ENV === 'development'`; Square/Sips routes return static error strings
-10. Safe Health Checks: PASS — webhook GET endpoints return only `{ status: 'ok' }`; no internals exposed
+1. SSRF Protection: PASS — `validateSquarePath()` blocks `../`, `//`, `\\` and enforces safe character regex
+2. API Auth: PASS — `/api/sips/orders` and `/api/sips/update-order` both call `authenticateBarista()` via HttpOnly cookie
+3. Webhook Signatures: PASS — Square webhook verifies HMAC-SHA256, fails closed when key missing; Momence webhook also fails closed with `crypto.timingSafeEqual`
+4. Input Validation: PASS — Order IDs validated with `^[a-zA-Z0-9_-]+$`, quantities capped at 99, string lengths sliced
+5. Security Headers: PASS — HSTS (2yr + preload), CSP, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy all configured
+6. Image Hostnames: PASS — No `hostname: '**'` wildcard; only specific trusted domains listed
+7. No Hardcoded Secrets: PASS — No `sk-`, `pk_live`, or hardcoded passwords found in source
+8. No localStorage Credentials: PASS — No tokens/passwords/secrets stored in localStorage
+9. No Error Leaks: PASS — All API routes return generic error messages; internal errors logged server-side only; Momence routes only expose details in `development` mode
+10. Safe Health Checks: PASS — Health endpoints return only `{ status: 'ok' }`
 
 ## Fixes Applied
 - None needed
