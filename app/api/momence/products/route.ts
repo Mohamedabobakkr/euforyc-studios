@@ -45,7 +45,7 @@ export async function GET(request: NextRequest) {
           success: false,
           error: {
             code: error.code,
-            message: process.env.NODE_ENV === 'development' ? error.message : 'Service temporarily unavailable',
+            message: 'Failed to fetch products',
             details: process.env.NODE_ENV === 'development' ? error.details : undefined,
           },
           timestamp: new Date().toISOString(),
