@@ -1,6 +1,6 @@
 # Security Scan Report
 
-**Date:** 2026-04-14 19:29 UTC
+**Date:** 2026-04-15 03:32 UTC
 **Status:** CLEAN
 
 ## npm audit
@@ -24,7 +24,7 @@ All 551 packages audited — no known vulnerabilities.
 10. Safe Health Checks: PASS — `GET /api/webhooks/momence`, `GET /api/track-event`, `GET /api/track-purchase` return only `{ status: 'ok' }`; no tokens, environment data, or internal configuration leaked
 
 ## Fixes Applied
-- None needed — repository state is clean. Prior fixes remain in force: unused `recharts` removal eliminating `lodash@4.17.23` CVEs (7a47af6), error-message leak suppression (7a47af6), Next.js 16.2.1→16.2.3 DoS patch (d8388a4).
+- None needed — repository state is clean. Prior hardening remains in force: unused `recharts` removal eliminating `lodash@4.17.23` CVEs (7a47af6), error-message leak suppression (7a47af6), Next.js 16.2.1→16.2.3 DoS patch (d8388a4).
 
 ## Manual Action Required
 - None
