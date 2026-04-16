@@ -3,7 +3,7 @@
 import { useState, useEffect, Suspense, useMemo } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import { ExternalLink, Package, Flame, Zap, Heart, CheckCircle2, Music, ArrowRight, Sparkles, Users, Clock, MapPin, Timer, Crown } from 'lucide-react';
+import { ExternalLink, Package, Flame, Zap, Heart, CheckCircle2, Music, ArrowRight, Sparkles, Users, Clock, MapPin, Timer, Crown, Dumbbell } from 'lucide-react';
 
 // Countdown hook for urgency timer
 function useCountdown(targetTimestamp: number) {
@@ -72,7 +72,7 @@ const introOffers = {
     perClass: '£16.67',
     regularPrice: '£66',
     savings: 'Save £16',
-    validity: '30 days',
+    validity: '20 days',
     description: 'Dynamic mat-based pilates in our infrared-heated studio',
     benefits: [
       'Infrared heated studio',
@@ -93,7 +93,7 @@ const introOffers = {
     perClass: '£21.67',
     regularPrice: '£90',
     savings: 'Save £25',
-    validity: '30 days',
+    validity: '20 days',
     description: 'Hot pilates enhanced with red light therapy benefits',
     benefits: [
       'Red light therapy included',
@@ -135,7 +135,7 @@ const introOffers = {
     perClass: '£23',
     regularPrice: '£90',
     savings: 'Save £20',
-    validity: '30 days',
+    validity: '20 days',
     description: 'Experience all our class types - Reformer, Hot Pilates, Barre, Dance & more',
     benefits: [
       'Try any class type',
@@ -156,7 +156,7 @@ const introOffers = {
     perClass: '£60',
     regularPrice: '£225',
     savings: 'Save £45',
-    validity: '30 days',
+    validity: '20 days',
     description: 'Private one-on-one sessions on our Cadillac Reformer for personalised training',
     benefits: [
       'Private 1-on-1 sessions',
@@ -166,6 +166,27 @@ const introOffers = {
     ],
     momenceUrl: 'https://momence.com/m/708119',
     icon: Crown,
+    highlight: false,
+  },
+  'ems-sculpt': {
+    id: 'ems-sculpt',
+    name: 'EMS Sculpt',
+    shortName: 'EMS Sculpt',
+    classes: '3 Classes',
+    price: '£180',
+    perClass: '£60',
+    regularPrice: '£225',
+    savings: 'Save £45',
+    validity: '30 days',
+    description: 'Electrical Muscle Stimulation training for accelerated sculpting and toning',
+    benefits: [
+      'EMS technology training',
+      'Accelerated muscle activation',
+      'Time-efficient sessions',
+      'Targeted body sculpting'
+    ],
+    momenceUrl: 'https://momence.com/m/718403',
+    icon: Dumbbell,
     highlight: false,
   }
 };
@@ -193,7 +214,7 @@ const dancePackages = [
 const danceStyles = ['Dabke', 'Belly Dance', 'Afro', 'Bollywood'];
 
 type OfferId = keyof typeof introOffers;
-const offerIds: OfferId[] = ['reformer', 'hot-pilates', 'red-light', 'barre', 'try-all', 'cadillac'];
+const offerIds: OfferId[] = ['reformer', 'hot-pilates', 'red-light', 'barre', 'try-all', 'cadillac', 'ems-sculpt'];
 
 // Main content component
 function OffersContent() {
