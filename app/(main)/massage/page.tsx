@@ -286,13 +286,59 @@ const trust = [
 // ═══════════════════════════════════════════════════════════════
 export default function MassagePage() {
   const [selected, setSelected] = useState<PackageId>('60');
+  const [copied, setCopied] = useState(false);
   const endOfMonth = useMemo(() => getEndOfMonth(), []);
   const timeLeft = useCountdown(endOfMonth);
 
   const pkg = PACKAGES[selected];
 
+  const copyCode = async () => {
+    try {
+      await navigator.clipboard.writeText('MASSAGE10');
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      setCopied(false);
+    }
+  };
+
   return (
     <div className="pt-24 pb-24 md:pb-0 bg-[#fffcf2]">
+
+      {/* ════════════════════════════════════════════════════════
+          PROMO BANNER — today-only discount code
+         ════════════════════════════════════════════════════════ */}
+      <div className="relative overflow-hidden bg-[#1a260e] text-[#fffcf2] border-b border-[#fffcf2]/10">
+        {/* subtle warm glow */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(244,194,194,0.12)_0%,_transparent_65%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_right,_rgba(217,181,148,0.10)_0%,_transparent_55%)]" />
+
+        <div className="relative max-w-6xl mx-auto px-4 py-3 md:py-3.5 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-5 text-center">
+          <div className="flex items-center gap-2 text-[11px] sm:text-xs uppercase tracking-[0.18em] text-[#f4c2c2]">
+            <Sparkles className="w-3.5 h-3.5" />
+            <span className="font-medium">Today Only</span>
+            <Sparkles className="w-3.5 h-3.5" />
+          </div>
+
+          <p className="text-sm sm:text-[15px] leading-snug font-light">
+            Apply at checkout for an <span className="font-medium text-[#f4c2c2]">additional 10% off</span> —
+          </p>
+
+          <button
+            type="button"
+            onClick={copyCode}
+            aria-label="Copy discount code MASSAGE10"
+            className="group relative inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-dashed border-[#f4c2c2]/70 bg-[#fffcf2]/5 hover:bg-[#fffcf2]/10 transition-colors"
+          >
+            <span className="font-mono text-sm sm:text-[15px] font-semibold tracking-[0.25em] text-[#fffcf2]">
+              MASSAGE10
+            </span>
+            <span className="text-[10px] uppercase tracking-widest text-[#f4c2c2] group-hover:text-[#fffcf2] transition-colors">
+              {copied ? 'Copied ✓' : 'Tap to copy'}
+            </span>
+          </button>
+        </div>
+      </div>
 
       {/* ════════════════════════════════════════════════════════
           HERO
