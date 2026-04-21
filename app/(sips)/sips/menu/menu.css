@@ -1,0 +1,397 @@
+:root {
+    --green: #1E3B20;
+    --green-mid: #27502A;
+    --green-deep: #162D18;
+    --cream: #EDE8D5;
+    --cream-2: #DDD8C2;
+    --cream-3: #C8C1A4;
+    --cream-soft: #F6F2E4;
+    --taupe: #9C9278;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background: var(--green);
+    color: var(--cream);
+    font-family: 'Gaegu', cursive;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* ── MENU WRAPPER ── */
+.menu-page {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 60px 40px 80px;
+}
+
+/* ── HEADER ── */
+.menu-header {
+    text-align: center;
+    padding: 48px 0 56px;
+    border-bottom: 3px dashed rgba(237, 232, 213, 0.15);
+    margin-bottom: 56px;
+    position: relative;
+}
+
+.menu-brand {
+    font-family: 'Gaegu', cursive;
+    font-weight: 700;
+    font-size: 72px;
+    color: var(--cream);
+    line-height: 0.9;
+    letter-spacing: 0.02em;
+    margin-bottom: 4px;
+}
+
+.menu-brand span {
+    font-weight: 400;
+    color: var(--cream-3);
+}
+
+.menu-tagline {
+    font-family: 'Gaegu', cursive;
+    font-size: 22px;
+    color: var(--taupe);
+    letter-spacing: 0.14em;
+    margin-bottom: 20px;
+}
+
+.menu-subtitle {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    border: 2px dashed rgba(237, 232, 213, 0.25);
+    border-radius: 999px;
+    padding: 8px 28px;
+    font-family: 'Gaegu', cursive;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--cream-2);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.menu-subtitle .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--cream-3);
+    display: inline-block;
+}
+
+/* ── SECTION NUMBERS ── */
+.section-number {
+    font-family: 'Gaegu', cursive;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--taupe);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    opacity: 0.7;
+}
+
+/* ── CATEGORY ── */
+.menu-section {
+    margin-bottom: 56px;
+}
+
+.menu-section-title {
+    font-family: 'Gaegu', cursive;
+    font-weight: 700;
+    font-size: 48px;
+    color: var(--cream);
+    line-height: 1;
+    margin-bottom: 8px;
+    text-transform: lowercase;
+}
+
+.menu-section-desc {
+    font-family: 'Gaegu', cursive;
+    font-size: 19px;
+    color: var(--taupe);
+    margin-bottom: 28px;
+    letter-spacing: 0.04em;
+}
+
+/* ── CATEGORY GROUP (sub-categories like MATCHAS, LATTES) ── */
+.menu-category {
+    margin-bottom: 44px;
+}
+
+.menu-category-title {
+    font-family: 'Gaegu', cursive;
+    font-weight: 700;
+    font-size: 32px;
+    color: var(--cream);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    padding-bottom: 10px;
+    border-bottom: 2px dashed rgba(237, 232, 213, 0.12);
+}
+
+/* ── ITEM ROW ── */
+.menu-item {
+    padding: 16px 0;
+    border-bottom: 1px solid rgba(237, 232, 213, 0.06);
+}
+
+.menu-item:last-child {
+    border-bottom: none;
+}
+
+.menu-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 16px;
+}
+
+.menu-item-name {
+    font-family: 'Gaegu', cursive;
+    font-weight: 700;
+    font-size: 26px;
+    color: var(--cream);
+    line-height: 1.2;
+}
+
+.menu-item-price {
+    font-family: 'Gaegu', cursive;
+    font-weight: 700;
+    font-size: 24px;
+    color: var(--cream-2);
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.menu-item-dots {
+    flex: 1;
+    border-bottom: 1.5px dotted rgba(237, 232, 213, 0.15);
+    min-width: 40px;
+    align-self: center;
+    margin-bottom: 4px;
+}
+
+/* ── ADDONS ── */
+.menu-item-addons {
+    margin-top: 6px;
+    font-family: 'Gaegu', cursive;
+    font-size: 18px;
+    color: var(--taupe);
+    line-height: 1.6;
+}
+
+.menu-item-addons .addon-label {
+    font-weight: 700;
+    color: var(--cream-3);
+    font-size: 17px;
+    letter-spacing: 0.04em;
+}
+
+.menu-item-addons .addon-list {
+    display: inline;
+}
+
+.menu-item-addons .addon-sep {
+    opacity: 0.4;
+    margin: 0 4px;
+}
+
+/* ── SECTION DIVIDER ── */
+.menu-divider {
+    text-align: center;
+    padding: 36px 0;
+    opacity: 0.18;
+}
+
+.menu-divider svg {
+    display: inline-block;
+}
+
+/* ── FOOTER ── */
+.menu-footer {
+    text-align: center;
+    padding-top: 48px;
+    border-top: 3px dashed rgba(237, 232, 213, 0.15);
+}
+
+.menu-footer-brand {
+    font-family: 'Gaegu', cursive;
+    font-weight: 700;
+    font-size: 36px;
+    color: var(--cream);
+    margin-bottom: 4px;
+}
+
+.menu-footer-brand span {
+    font-weight: 400;
+    color: var(--cream-3);
+}
+
+.menu-footer-address {
+    font-family: 'Gaegu', cursive;
+    font-size: 19px;
+    color: var(--taupe);
+    margin-bottom: 16px;
+    line-height: 1.5;
+    font-style: normal;
+}
+
+.menu-footer-note {
+    font-family: 'Gaegu', cursive;
+    font-size: 17px;
+    color: var(--taupe);
+    opacity: 0.6;
+    line-height: 1.6;
+}
+
+/* ── ADDONS LEGEND (collapsible) ── */
+.addons-legend {
+    background: rgba(237, 232, 213, 0.04);
+    border: 2px dashed rgba(237, 232, 213, 0.12);
+    border-radius: 24px;
+    padding: 0;
+    margin-bottom: 56px;
+    overflow: hidden;
+}
+
+.addons-legend-toggle {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 20px 32px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: 'Gaegu', cursive;
+    font-weight: 700;
+    font-size: 24px;
+    color: var(--cream);
+    letter-spacing: 0.06em;
+    transition: background 0.3s ease;
+}
+
+.addons-legend-toggle:hover {
+    background: rgba(237, 232, 213, 0.06);
+}
+
+.addons-chevron {
+    color: var(--cream-3);
+    transition: transform 0.35s ease;
+    flex-shrink: 0;
+}
+
+.addons-chevron-open {
+    transform: rotate(180deg);
+}
+
+.addons-legend-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease, padding 0.4s ease;
+    padding: 0 32px;
+}
+
+.addons-body-open {
+    max-height: 600px;
+    padding: 0 32px 28px;
+}
+
+.addons-legend-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px 40px;
+}
+
+.addons-legend-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-family: 'Gaegu', cursive;
+    font-size: 19px;
+}
+
+.addons-legend-item .al-name {
+    color: var(--cream-2);
+}
+
+.addons-legend-item .al-price {
+    color: var(--taupe);
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.addons-legend-category {
+    font-family: 'Gaegu', cursive;
+    font-weight: 700;
+    font-size: 20px;
+    color: var(--cream-3);
+    letter-spacing: 0.06em;
+    margin-top: 12px;
+    margin-bottom: 4px;
+    grid-column: 1 / -1;
+}
+
+.addons-legend-category:first-child {
+    margin-top: 0;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 640px) {
+    .menu-page {
+        padding: 40px 20px 60px;
+    }
+
+    .menu-brand {
+        font-size: 52px;
+    }
+
+    .menu-section-title {
+        font-size: 38px;
+    }
+
+    .menu-category-title {
+        font-size: 26px;
+    }
+
+    .menu-item-name {
+        font-size: 22px;
+    }
+
+    .menu-item-price {
+        font-size: 20px;
+    }
+
+    .addons-legend-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .menu-header {
+        padding: 32px 0 40px;
+        margin-bottom: 40px;
+    }
+
+    .menu-tagline {
+        font-size: 18px;
+    }
+
+    .menu-subtitle {
+        font-size: 16px;
+        padding: 6px 20px;
+    }
+}
