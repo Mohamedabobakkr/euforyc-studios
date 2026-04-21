@@ -1,6 +1,6 @@
 # Security Scan Report
 
-**Date:** 2026-04-21 03:30 UTC
+**Date:** 2026-04-21 11:25 UTC
 **Status:** CLEAN
 
 ## npm audit
@@ -9,7 +9,7 @@
 - Medium: 0
 - Low: 0
 
-All 578 dependencies audited — no known vulnerabilities.
+All 578 dependencies audited (542 prod, 37 optional) — no known vulnerabilities.
 
 ## Code Security Checks
 1. SSRF Protection: PASS — `validateSquarePath()` in `lib/square.ts:40-54` rejects `..`, `//`, `\\`, requires a leading `/`, and enforces `/^\/[a-zA-Z0-9/_-]+$/` on the path portion; all outbound calls gated through this before reaching `https://connect.squareup.com/v2`
