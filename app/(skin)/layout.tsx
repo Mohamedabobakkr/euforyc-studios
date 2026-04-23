@@ -7,10 +7,6 @@ import type { Metadata } from 'next';
 import { Nunito_Sans } from 'next/font/google';
 import Link from 'next/link';
 import Image from 'next/image';
-import Script from 'next/script';
-
-// Skin Studio Facebook Pixel ID - SEPARATE from main Euforyc pixel
-const SKIN_STUDIO_PIXEL_ID = '1210900647179360';
 
 const nunito = Nunito_Sans({
     subsets: ['latin'],
@@ -106,136 +102,7 @@ export default function SkinStudioLayout({
 }) {
     return (
         <html lang="en" className={`${nunito.variable}`} suppressHydrationWarning>
-            <head>
-                {/* Meta Pixel Code - Skin Studio (Browser + Server CAPI) */}
-                <Script id="fb-pixel-skin-studio" strategy="afterInteractive">
-                    {`
-                        !function(f,b,e,v,n,t,s)
-                        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-                        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-                        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-                        n.queue=[];t=b.createElement(e);t.async=!0;
-                        t.src=v;s=b.getElementsByTagName(e)[0];
-                        s.parentNode.insertBefore(t,s)}(window, document,'script',
-                        'https://connect.facebook.net/en_US/fbevents.js');
-
-                        // Generate unique event ID for browser/server deduplication
-                        function generateEventId(eventName) {
-                            return 'skin_' + eventName.toLowerCase() + '_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-                        }
-
-                        // Get Facebook cookies for CAPI matching
-                        function getFBCookies() {
-                            var getCookie = function(name) {
-                                var value = '; ' + document.cookie;
-                                var parts = value.split('; ' + name + '=');
-                                if (parts.length === 2) return parts.pop().split(';').shift();
-                                return '';
-                            };
-                            return { fbc: getCookie('_fbc'), fbp: getCookie('_fbp') };
-                        }
-
-                        // Send event to server CAPI for better matching quality
-                        function sendToCAPI(eventName, eventId, customData) {
-                            var cookies = getFBCookies();
-                            fetch('/api/track-event', {
-                                method: 'POST',
-                                headers: { 'Content-Type': 'application/json' },
-                                body: JSON.stringify({
-                                    event_name: eventName,
-                                    event_id: eventId,
-                                    business_unit: 'skin',
-                                    page_url: window.location.href,
-                                    fbc: cookies.fbc,
-                                    fbp: cookies.fbp,
-                                    ...customData
-                                })
-                            }).catch(function(err) {
-                                console.log('CAPI error:', err);
-                            });
-                        }
-
-                        // Initialize pixel
-                        fbq('init', '${SKIN_STUDIO_PIXEL_ID}', { country: 'gb' });
-
-                        // Track PageView (browser + CAPI)
-                        var pageViewId = generateEventId('PageView');
-                        fbq('track', 'PageView', {}, { eventID: pageViewId });
-                        sendToCAPI('PageView', pageViewId, { content_name: document.title });
-
-                        // Track ViewContent (browser + CAPI)
-                        var viewContentId = generateEventId('ViewContent');
-                        fbq('track', 'ViewContent', {
-                            content_name: document.title,
-                            content_type: 'skin_studio_page',
-                            value: 0,
-                            currency: 'GBP'
-                        }, { eventID: viewContentId });
-                        sendToCAPI('ViewContent', viewContentId, {
-                            content_name: document.title,
-                            content_type: 'skin_studio_page',
-                            value: 0,
-                            currency: 'GBP'
-                        });
-
-                        // Track Lead events (booking clicks) - with deduplication
-                        var lastLeadTime = 0;
-                        document.addEventListener('click', function(e) {
-                            var target = e.target.closest('a[href*="momence.com"], button[data-booking]');
-                            if (target) {
-                                var now = Date.now();
-                                if (now - lastLeadTime < 2000) return;
-                                lastLeadTime = now;
-
-                                var buttonText = (target.innerText || target.textContent || '').trim();
-                                var leadId = generateEventId('Lead');
-
-                                fbq('track', 'Lead', {
-                                    content_name: buttonText,
-                                    content_category: 'consultation_click'
-                                }, { eventID: leadId });
-
-                                sendToCAPI('Lead', leadId, {
-                                    content_name: buttonText,
-                                    content_category: 'consultation_click'
-                                });
-                            }
-                        });
-
-                        // Track Contact events (phone/WhatsApp clicks) - with deduplication
-                        var lastContactTime = 0;
-                        document.addEventListener('click', function(e) {
-                            var target = e.target.closest('a[href^="tel:"], a[href*="wa.me"], a[href*="whatsapp"]');
-                            if (target) {
-                                var now = Date.now();
-                                if (now - lastContactTime < 2000) return;
-                                lastContactTime = now;
-
-                                var href = target.getAttribute('href') || '';
-                                var contactType = href.includes('tel:') ? 'phone' : 'whatsapp';
-                                var contactId = generateEventId('Contact');
-
-                                fbq('track', 'Contact', {
-                                    content_name: contactType
-                                }, { eventID: contactId });
-
-                                sendToCAPI('Contact', contactId, {
-                                    content_name: contactType
-                                });
-                            }
-                        });
-                    `}
-                </Script>
-                <noscript>
-                    <img
-                        height="1"
-                        width="1"
-                        style={{ display: 'none' }}
-                        src={`https://www.facebook.com/tr?id=${SKIN_STUDIO_PIXEL_ID}&ev=PageView&noscript=1`}
-                        alt=""
-                    />
-                </noscript>
-            </head>
+            <head />
             <body className="font-skin-sans bg-skin-background antialiased" suppressHydrationWarning>
                 <script
                     type="application/ld+json"

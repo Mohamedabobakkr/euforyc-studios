@@ -8,6 +8,7 @@ import type { Metadata, Viewport } from 'next';
 import { Inter, Playfair_Display } from 'next/font/google';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
+import PixelTracker from '@/components/PixelTracker';
 import Script from 'next/script';
 
 // Euforyc Pilates Facebook Pixel ID
@@ -312,55 +313,122 @@ export default function RootLayout({
             s.parentNode.insertBefore(t,s)}(window, document,'script',
             'https://connect.facebook.net/en_US/fbevents.js');
 
-            // Initialize pixel with country for better matching
-            fbq('init', '${EUFORYC_PIXEL_ID}', { country: 'gb' });
-
-            // Track PageView
-            fbq('track', 'PageView');
-
-            // Track ViewContent on service pages
-            var servicePaths = ['/schedule', '/packages', '/memberships', '/pricing', '/offers'];
-            if (servicePaths.some(function(path) { return window.location.pathname.includes(path); })) {
-              fbq('track', 'ViewContent', {
-                content_name: document.title,
-                content_type: 'service_page',
-                value: 0,
-                currency: 'GBP'
-              });
+            function euforycEventId(name) {
+              return name.toLowerCase() + '_' + Date.now() + '_' + Math.random().toString(36).substring(2, 10);
             }
 
-            // Track Lead events (booking clicks) - with deduplication
-            var lastLeadTime = 0;
+            // Rebuild _fbc from fbclid URL param when cookie is missing (ITP/privacy browsers)
+            // Strict allowlist prevents cookie-injection via crafted fbclid values.
+            try {
+              var fbclid = new URLSearchParams(window.location.search).get('fbclid');
+              if (fbclid && fbclid.length <= 256 && /^[A-Za-z0-9_\\-.]+$/.test(fbclid) && document.cookie.indexOf('_fbc=') === -1) {
+                document.cookie = '_fbc=fb.1.' + Date.now() + '.' + fbclid + '; path=/; max-age=7776000; SameSite=Lax; Secure';
+              }
+            } catch (e) {}
+
+            // Best-effort Advanced Matching from any form fields present at init.
+            // Meta's fbevents.js hashes these client-side before network transmission.
+            function euforycAdvancedMatching() {
+              var data = { country: 'gb' };
+              try {
+                var emailEl = document.querySelector('input[type="email"], input[name*="email" i]');
+                if (emailEl && emailEl.value) {
+                  var em = emailEl.value.trim().toLowerCase();
+                  if (/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(em)) data.em = em;
+                }
+                var phoneEl = document.querySelector('input[type="tel"], input[name*="phone" i]');
+                if (phoneEl && phoneEl.value) {
+                  var ph = phoneEl.value.replace(/\\D/g, '');
+                  if (ph && ph.length >= 10) {
+                    if (ph.charAt(0) === '0') ph = '44' + ph.substring(1);
+                    data.ph = ph;
+                  }
+                }
+                var firstEl = document.querySelector('input[name*="first" i], input[id*="first" i]');
+                if (firstEl && firstEl.value) data.fn = firstEl.value.trim().toLowerCase().substring(0, 100);
+                var lastEl = document.querySelector('input[name*="last" i], input[id*="last" i]');
+                if (lastEl && lastEl.value) data.ln = lastEl.value.trim().toLowerCase().substring(0, 100);
+              } catch (e) {}
+              return data;
+            }
+
+            fbq('init', '${EUFORYC_PIXEL_ID}', euforycAdvancedMatching());
+
+            // Initial PageView (subsequent SPA navigations handled by PixelTracker component)
+            var initialPv = euforycEventId('PageView');
+            fbq('track', 'PageView', {}, { eventID: initialPv });
+
+            // Initial ViewContent with per-path value (SPA navigations handled in PixelTracker)
+            var euforycPathValues = {
+              '/offers': { v: 50, t: 'intro_offer' },
+              '/_all-access-offer': { v: 150, t: 'all_access' },
+              '/packages': { v: 100, t: 'package' },
+              '/packages-memberships': { v: 100, t: 'package' },
+              '/memberships': { v: 150, t: 'membership' },
+              '/pricing': { v: 50, t: 'pricing' },
+              '/schedule': { v: 25, t: 'class_schedule' },
+              '/book': { v: 50, t: 'booking' },
+              '/massage': { v: 60, t: 'service' },
+              '/ems-sculpt': { v: 75, t: 'service' },
+              '/summer-challenge': { v: 50, t: 'challenge' },
+              '/gift-cards': { v: 50, t: 'gift_card' }
+            };
+            var euforycPath = window.location.pathname;
+            var matched = null;
+            for (var p in euforycPathValues) {
+              if (euforycPath === p || euforycPath.indexOf(p + '/') === 0) { matched = euforycPathValues[p]; break; }
+            }
+            if (matched) {
+              var vcId = euforycEventId('ViewContent');
+              fbq('track', 'ViewContent', {
+                content_name: (document.title || '').substring(0, 200),
+                content_type: matched.t,
+                content_category: euforycPath,
+                value: matched.v,
+                currency: 'GBP'
+              }, { eventID: vcId });
+            }
+
+            // InitiateCheckout on Momence booking clicks (replaces misused Lead)
+            var lastCheckoutTime = 0;
             document.addEventListener('click', function(e) {
               var target = e.target.closest('a[href*="momence.com"], button[data-booking]');
-              if (target) {
-                var now = Date.now();
-                if (now - lastLeadTime < 2000) return;
-                lastLeadTime = now;
+              if (!target) return;
+              var now = Date.now();
+              if (now - lastCheckoutTime < 2000) return;
+              lastCheckoutTime = now;
 
-                var buttonText = (target.innerText || target.textContent || '').trim();
-                fbq('track', 'Lead', {
-                  content_name: buttonText,
-                  content_category: 'booking_click'
-                });
-              }
+              var buttonText = ((target.innerText || target.textContent || '').trim()).substring(0, 200);
+              var href = target.getAttribute ? (target.getAttribute('href') || '') : '';
+              var decoded = href;
+              try { decoded = decodeURIComponent(href); } catch (err) {}
+              var m = decoded.match(/£\\s*(\\d+(?:\\.\\d+)?)/);
+              var value = m ? parseFloat(m[1]) : 0;
+
+              var icId = euforycEventId('InitiateCheckout');
+              fbq('track', 'InitiateCheckout', {
+                content_name: buttonText,
+                content_category: 'booking_click',
+                value: value,
+                currency: 'GBP'
+              }, { eventID: icId });
             });
 
-            // Track Contact events (phone/WhatsApp clicks) - with deduplication
+            // Contact events (phone/WhatsApp clicks)
             var lastContactTime = 0;
             document.addEventListener('click', function(e) {
               var target = e.target.closest('a[href^="tel:"], a[href*="wa.me"], a[href*="whatsapp"]');
-              if (target) {
-                var now = Date.now();
-                if (now - lastContactTime < 2000) return;
-                lastContactTime = now;
+              if (!target) return;
+              var now = Date.now();
+              if (now - lastContactTime < 2000) return;
+              lastContactTime = now;
 
-                var href = target.getAttribute('href') || '';
-                var contactType = href.includes('tel:') ? 'phone' : 'whatsapp';
-                fbq('track', 'Contact', {
-                  content_name: contactType
-                });
-              }
+              var href = target.getAttribute('href') || '';
+              var contactType = href.indexOf('tel:') === 0 ? 'phone' : 'whatsapp';
+              var contactId = euforycEventId('Contact');
+              fbq('track', 'Contact', {
+                content_name: contactType
+              }, { eventID: contactId });
             });
           `}
         </Script>
@@ -410,6 +478,7 @@ export default function RootLayout({
           Skip to content
         </a>
 
+        <PixelTracker />
         <Navigation />
         <main id="main-content" className="min-h-screen">
           {children}
