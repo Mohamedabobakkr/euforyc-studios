@@ -46,6 +46,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'weekly',
       priority: 0.8,
     },
+    
     {
       url: `${baseUrl}/contact`,
       lastModified: new Date(),
@@ -81,12 +82,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: new Date(),
       changeFrequency: 'daily',
       priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/teachers`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.7,
     },
     {
       url: `${baseUrl}/gift-cards`,

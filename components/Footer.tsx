@@ -28,12 +28,6 @@ const Footer = () => {
                 About
               </Link>
               <Link
-                href="/teachers"
-                className="block font-sans text-sm opacity-80 hover:opacity-100 transition-opacity"
-              >
-                Our Instructors
-              </Link>
-              <Link
                 href="/shop"
                 className="block font-sans text-sm opacity-80 hover:opacity-100 transition-opacity"
               >
