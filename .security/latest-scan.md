@@ -1,6 +1,6 @@
 # Security Scan Report
 
-**Date:** 2026-04-23 19:30 UTC
+**Date:** 2026-04-24 03:30 UTC
 **Status:** CLEAN
 
 ## npm audit
@@ -20,7 +20,7 @@ All 578 dependencies audited — no known vulnerabilities.
 6. Image Hostnames: PASS — Only whitelisted domains (`*.squarecdn.com`, `squarecdn.com`, S3 bucket, `euforyc.co.uk`, `www.euforyc.co.uk`, `*.momence.com`, `localhost`); no `hostname: '**'` wildcard
 7. No Hardcoded Secrets: PASS — Grep for `sk-`, `pk_live_`, `sk_live_`, `sk_test_`, hardcoded password patterns across `app/`, `lib/`, `components/` yields zero hits; all secrets sourced from `process.env`
 8. No localStorage Credentials: PASS — No `localStorage` or `sessionStorage` references in any TS/TSX/JS/JSX files; barista auth uses HttpOnly + Secure + SameSite cookies exclusively
-9. No Error Leaks: PASS — All client-visible API responses return generic error strings (`Failed to fetch orders`, `Failed to update order`, `Internal server error`); Momence routes gate `details:` on `NODE_ENV === 'development'` only; internal `sendToFacebookCAPI` uses `String(error)` but this is only logged server-side, never returned in HTTP responses
+9. No Error Leaks: PASS — All client-visible API responses return generic error strings (`Failed to fetch orders`, `Failed to update order`, `Internal server error`); internal `String(error)` in `track-event/route.ts:68` is only logged server-side, never returned in HTTP responses; Momence routes gate `details:` on `NODE_ENV === 'development'` only
 10. Safe Health Checks: PASS — `GET /api/webhooks/momence`, `GET /api/track-event`, and `GET /api/track-purchase` return only `{ status: 'ok' }`; `GET /api/sips/auth` returns only `{ authenticated: boolean }`; no tokens or internal config leaked
 
 ## Additional Checks
