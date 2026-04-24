@@ -776,29 +776,6 @@ function OrderPageInner() {
         </div>
       </header>
 
-      {/* ── LIMITED TIME PROMO ── */}
-      <div className="promo-banner">
-        <div className="promo-glow" />
-        <div className="promo-inner">
-          <div className="promo-badge">
-            <span className="promo-badge-dot" />
-            limited time
-          </div>
-          <h2 className="promo-headline">
-            <span className="promo-percent">50%</span> off
-          </h2>
-          <p className="promo-items">all coffees &amp; matcha</p>
-          <div className="promo-details">
-            <div className="promo-date">
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="3" width="12" height="11" rx="2" stroke="currentColor" strokeWidth="1.2"/><line x1="2" y1="6" x2="14" y2="6" stroke="currentColor" strokeWidth="1.2"/><line x1="5" y1="1" x2="5" y2="4" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/><line x1="11" y1="1" x2="11" y2="4" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/></svg>
-              <span>Sat &amp; Sun, 25–26 April</span>
-            </div>
-            <div className="promo-sep">·</div>
-            <div className="promo-where">pre-order online or in-store</div>
-          </div>
-        </div>
-      </div>
-
       <div className="store-divider"><div className="store-divider-line" /></div>
 
       {/* CATEGORY NAV */}
