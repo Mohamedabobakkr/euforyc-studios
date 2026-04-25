@@ -1,27 +1,25 @@
 # Security Scan Report
 
-**Date:** 2026-04-25 11:30 UTC
-**Status:** CLEAN
+**Date:** 2026-04-25 19:25 UTC
+**Status:** FIXES_APPLIED
 
 ## npm audit
 - Critical: 0
 - High: 0
-- Medium: 0
+- Medium: 0 (was 2, now fixed)
 - Low: 0
 
-All dependencies audited — no known vulnerabilities. postcss XSS (GHSA-qx2v-qp2m-jg93) patched in prior scan; next updated to 16.2.4; postcss override confirmed active.
-
 ## Code Security Checks
-1. SSRF Protection: PASS — `validateSquarePath()` in `lib/square.ts:40-54` rejects `..`, `//`, `\\`, requires a leading `/`, and enforces `/^\/[a-zA-Z0-9/_-]+$/` on the path portion; all outbound calls gated through this before reaching `https://connect.squareup.com/v2`
-2. API Auth: PASS — `app/api/sips/orders/route.ts:46-52` and `app/api/sips/update-order/route.ts:24-30` both call `authenticateBarista()` (HttpOnly HMAC-SHA256 signed session cookie, 12h expiry, derived from `BARISTA_PASSWORD`); login rate-limited to 5 attempts/15 min per IP; unauthorized requests return generic 401
-3. Webhook Signatures: PASS — Square webhook (`app/api/sips/webhook/route.ts:124-145`) uses HMAC-SHA256 with constant-time comparison and fails closed (HTTP 500) when `SQUARE_WEBHOOK_SIGNATURE_KEY` is missing; Momence webhook (`app/api/webhooks/momence/route.ts:37-56`) also fails closed when `MOMENCE_WEBHOOK_SECRET` is absent and uses `crypto.timingSafeEqual`
-4. Input Validation: PASS — `orderId` and `fulfillmentUid` validated against `/^[a-zA-Z0-9_-]+$/`; state transitions restricted to `VALID_TRANSITIONS` whitelist (PROPOSED->RESERVED->PREPARED->COMPLETED); `create-order` caps item count at 50, modifier count at 20, string lengths at 100/500, quantity at 1-99, and validates `pickupAt` as a reasonable ISO date
-5. Security Headers: PASS — HSTS (max-age=63072000; includeSubDomains; preload), comprehensive CSP, X-Frame-Options: SAMEORIGIN, X-Content-Type-Options: nosniff, Referrer-Policy: strict-origin-when-cross-origin, Permissions-Policy (camera/mic/geo disabled), `poweredByHeader: false`, API routes set `Cache-Control: no-store, max-age=0`
-6. Image Hostnames: PASS — Only whitelisted domains (`*.squarecdn.com`, `squarecdn.com`, S3 bucket, `euforyc.co.uk`, `www.euforyc.co.uk`, `*.momence.com`, `localhost`); no `hostname: '**'` wildcard
-7. No Hardcoded Secrets: PASS — Grep for `sk-`, `pk_live_`, `sk_live_`, hardcoded password patterns across `app/`, `lib/`, `components/` yields zero hits; all secrets sourced from `process.env`
-8. No localStorage Credentials: PASS — No `localStorage` or `sessionStorage` references in any TS/TSX/JS/JSX files; barista auth uses HttpOnly + Secure + SameSite cookies exclusively
-9. No Error Leaks: PASS — All client-visible API responses return generic error strings; internal `String(error)` in track-event helper is server-side only; Momence routes gate `details:` on `NODE_ENV === 'development'` only
-10. Safe Health Checks: PASS — `GET /api/webhooks/momence`, `GET /api/track-event`, and `GET /api/track-purchase` return only `{ status: 'ok' }`; `GET /api/sips/auth` returns only `{ authenticated: boolean }`; no tokens or internal config leaked
+1. SSRF Protection: PASS — `validateSquarePath()` in `lib/square.ts:40-54` rejects `..`, `//`, `\\`, requires leading `/`, enforces `/^\/[a-zA-Z0-9/_-]+$/` on path portion
+2. API Auth: PASS — `orders/route.ts` and `update-order/route.ts` call `authenticateBarista()` (HttpOnly HMAC-SHA256 signed session cookie, 12h expiry); login rate-limited to 5 attempts/15 min per IP
+3. Webhook Signatures: PASS — Square webhook uses HMAC-SHA256 with constant-time comparison, fails closed (500) when key missing; Momence webhook uses `crypto.timingSafeEqual`, fails closed when secret absent
+4. Input Validation: PASS — `orderId`/`fulfillmentUid` validated with `/^[a-zA-Z0-9_-]+$/`; state transitions whitelisted; create-order caps items at 50, modifiers at 20, strings at 100/500 chars, quantity 1-99
+5. Security Headers: PASS — HSTS (max-age=63072000; includeSubDomains; preload), CSP, X-Frame-Options: SAMEORIGIN, X-Content-Type-Options: nosniff, Referrer-Policy, Permissions-Policy, `poweredByHeader: false`
+6. Image Hostnames: PASS — Only whitelisted domains in `remotePatterns`; no `hostname: '**'` wildcard
+7. No Hardcoded Secrets: PASS — No `sk-`, `pk_live_`, or hardcoded passwords in `app/`, `lib/`, `components/`; all secrets from `process.env`
+8. No localStorage Credentials: PASS — Zero `localStorage`/`sessionStorage` references; auth uses HttpOnly + Secure + SameSite cookies
+9. No Error Leaks: PASS — All API routes return generic error strings; no `details: String(error)` or stack traces in responses
+10. Safe Health Checks: PASS — Health endpoints return only `{ status: 'ok' }`; auth check returns only `{ authenticated: boolean }`
 
 ## Additional Checks
 - `dangerouslySetInnerHTML` usage: SAFE — All instances are for JSON-LD structured data via `JSON.stringify()` on hardcoded schema objects (no user input)
@@ -29,7 +27,9 @@ All dependencies audited — no known vulnerabilities. postcss XSS (GHSA-qx2v-qp
 - Deduplication: Square webhook deduplicates events via in-memory cache with 10-min TTL and 500-entry cap
 
 ## Fixes Applied
-- None needed — postcss vulnerability already resolved in prior scan; next updated to 16.2.4
+- Cleaned dead `lodash` override (lodash not in dependency tree)
+- Removed unused `@next/swc-wasm-nodejs@13.5.1` (Next 13 era leftover, not imported anywhere)
+- postcss vulnerability (GHSA-qx2v-qp2m-jg93) previously patched; override confirmed active at ^8.5.10
 
 ## Manual Action Required
 - None
