@@ -1,13 +1,15 @@
 # Security Scan Report
 
-**Date:** 2026-04-24 19:28 UTC
-**Status:** FIXES_APPLIED
+**Date:** 2026-04-25 03:30 UTC
+**Status:** CLEAN
 
 ## npm audit
 - Critical: 0
 - High: 0
-- Medium: 0 (was 2, now resolved)
+- Medium: 0
 - Low: 0
+
+All dependencies audited — no known vulnerabilities. postcss XSS (GHSA-qx2v-qp2m-jg93) was patched in prior scan (commit `0120f4d`, 2026-04-24).
 
 ## Code Security Checks
 1. SSRF Protection: PASS — `validateSquarePath()` in `lib/square.ts:40-54` rejects `..`, `//`, `\\`, requires a leading `/`, and enforces `/^\/[a-zA-Z0-9/_-]+$/` on the path portion; all outbound calls gated through this before reaching `https://connect.squareup.com/v2`
@@ -27,7 +29,7 @@
 - Deduplication: Square webhook deduplicates events via in-memory cache with 10-min TTL and 500-entry cap
 
 ## Fixes Applied
-- `0120f4d` fix(security): patch postcss XSS vulnerability (GHSA-qx2v-qp2m-jg93) — upgraded postcss 8.5.6 to 8.5.10, next 16.2.3 to 16.2.4, added npm override (`"postcss": "$postcss"`) to force patched postcss into next's bundled copy. Resolves 2 moderate severity vulnerabilities.
+- None needed — all prior vulnerabilities already resolved
 
 ## Manual Action Required
 - None
