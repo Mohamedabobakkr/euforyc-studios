@@ -1,6 +1,6 @@
 # Security Scan Report
 
-**Date:** 2026-04-26 11:25 UTC
+**Date:** 2026-04-26 19:30 UTC
 **Status:** CLEAN
 
 ## npm audit
@@ -18,11 +18,11 @@
 6. Image Hostnames: PASS — Only whitelisted domains in `remotePatterns`; no `hostname: '**'` wildcard
 7. No Hardcoded Secrets: PASS — No `sk-`, `pk_live_`, or hardcoded passwords in `app/`, `lib/`, `components/`; all secrets from `process.env`
 8. No localStorage Credentials: PASS — Zero `localStorage`/`sessionStorage` references; auth uses HttpOnly + Secure + SameSite cookies
-9. No Error Leaks: PASS — All API routes return generic error strings; Momence routes gate `error.details` behind `NODE_ENV === 'development'` only
-10. Safe Health Checks: PASS — No dedicated health/status endpoints; auth check returns only `{ authenticated: boolean }`
+9. No Error Leaks: PASS — Momence routes guard error details behind `NODE_ENV === 'development'`; Sips routes return generic error strings only; no stack traces in responses
+10. Safe Health Checks: PASS — No health endpoints expose tokens or internal config; auth check returns only `{ authenticated: boolean }`
 
 ## Additional Checks
-- `npm audit --json`: 549 packages audited, 0 vulnerabilities across all severity levels
+- `npm audit --json`: 576 packages audited, 0 vulnerabilities across all severity levels
 - Open redirect protection: PASS — `create-order` validates redirect origin against `ALLOWED_ORIGINS` whitelist
 - Deduplication: Square webhook deduplicates events via in-memory cache with 10-min TTL and 500-entry cap
 - Password cleared from React state immediately after successful auth (barista page line 127)
