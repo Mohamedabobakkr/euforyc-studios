@@ -1,6 +1,6 @@
 # Security Scan Report
 
-**Date:** 2026-04-27 03:30 UTC
+**Date:** 2026-04-27 11:30 UTC
 **Status:** CLEAN
 
 ## npm audit
@@ -25,7 +25,10 @@
 - Open redirect protection: PASS — `create-order/route.ts` validates redirect origin against `ALLOWED_ORIGINS` whitelist
 - Telegram notification: PASS — HTML-escaped via `escapeHtml()` before sending to Telegram API; fails silently (no user-facing leak)
 - Momence client: PASS — API token sent server-side only; error sanitization strips internal details in production
-- `dangerouslySetInnerHTML`: Not found in API routes or security-sensitive paths
+- Webhook deduplication: Square webhook deduplicates events via in-memory cache with 10-min TTL and 500-entry cap
+- `.env` files: Not committed; `.gitignore` correctly excludes `.env` and `.env*.local`
+- Dependabot: Configured for weekly npm and GitHub Actions dependency updates
+- postcss override: Active at `^8.5.10`, resolving prior GHSA-qx2v-qp2m-jg93
 
 ## Fixes Applied
 - None needed
