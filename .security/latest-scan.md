@@ -1,6 +1,6 @@
 # Security Scan Report
 
-**Date:** 2026-04-29 12:00 UTC
+**Date:** 2026-04-30 03:30 UTC
 **Status:** CLEAN
 
 ## npm audit
@@ -22,7 +22,6 @@
 10. Safe Health Checks: PASS — No health check endpoints exist; auth check endpoint (`GET /api/sips/auth`) returns only `{ authenticated: boolean }`
 
 ## Additional Checks
-- `dangerouslySetInnerHTML` usage: SAFE — All instances are for JSON-LD structured data via `JSON.stringify()` on hardcoded schema objects (no user input)
 - Open redirect protection: PASS — `create-order/route.ts` validates redirect origin against `ALLOWED_ORIGINS` whitelist
 - Deduplication: Square webhook deduplicates events via in-memory cache with 10-min TTL and 500-entry cap
 - No `eval()` or `new Function()` usage found
