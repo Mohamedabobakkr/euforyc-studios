@@ -1,6 +1,6 @@
 # Security Scan Report
 
-**Date:** 2026-04-30 19:25 UTC
+**Date:** 2026-05-01 03:30 UTC
 **Status:** CLEAN
 
 ## npm audit
@@ -28,7 +28,6 @@
 - Constant-time password comparison: PASS — `barista-auth.ts:89-104` uses XOR-based byte comparison to prevent timing attacks
 - Cookie security: PASS — `__Secure-` prefix, HttpOnly, Secure (in prod), SameSite=lax, 12h maxAge
 - `.env` files: PASS — No `.env` files committed; `.gitignore` correctly excludes `.env` and `.env*.local`
-- Dependabot: ACTIVE — `.github/dependabot.yml` configured for automated dependency updates
 - No `eval()` or `new Function()` usage found
 - 576 total dependencies scanned, 0 npm vulnerabilities
 
