@@ -1,6 +1,6 @@
 # Security Scan Report
 
-**Date:** 2026-05-02 11:30 UTC
+**Date:** 2026-05-02 19:30 UTC
 **Status:** CLEAN
 
 ## npm audit
@@ -29,7 +29,7 @@
 - Constant-time password comparison: PASS — `barista-auth.ts:89-104` uses XOR-based byte comparison to prevent timing attacks
 - Cookie security: PASS — `__Secure-` prefix, HttpOnly, Secure (in prod), SameSite=lax, 12h maxAge
 - No `eval()` or `new Function()` usage found
-- 549 total dependencies scanned, 0 npm vulnerabilities
+- 576 total dependencies scanned, 0 npm vulnerabilities
 
 ## Fixes Applied
 - None needed — all checks pass, 0 npm vulnerabilities
