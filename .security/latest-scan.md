@@ -1,6 +1,6 @@
 # Security Scan Report
 
-**Date:** 2026-05-03 03:30 UTC
+**Date:** 2026-05-03 14:00 UTC
 **Status:** CLEAN
 
 ## npm audit
@@ -22,7 +22,7 @@
 10. Safe Health Checks: PASS — No health check endpoints exist; auth check endpoint (`GET /api/sips/auth`) returns only `{ authenticated: boolean }`
 
 ## Additional Checks
-- `dangerouslySetInnerHTML` usage: SAFE — All instances are for JSON-LD structured data via `JSON.stringify()` on hardcoded schema objects (no user input)
+- `dangerouslySetInnerHTML` usage: SAFE — All 9 instances are for JSON-LD structured data via `JSON.stringify()` on hardcoded schema objects (no user input)
 - Open redirect protection: PASS — `create-order/route.ts` validates redirect origin against `ALLOWED_ORIGINS` whitelist
 - Telegram notification: SAFE — `escapeHtml()` in `lib/notify.ts` sanitizes user-supplied `customerName` and `note` before HTML rendering
 - Deduplication: Square webhook deduplicates events via in-memory cache with 10-min TTL and 500-entry cap
