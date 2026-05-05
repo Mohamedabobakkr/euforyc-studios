@@ -1,6 +1,6 @@
 # Security Scan Report
 
-**Date:** 2026-05-05 11:30 UTC
+**Date:** 2026-05-05 19:25 UTC
 **Status:** CLEAN
 
 ## npm audit
@@ -22,14 +22,14 @@
 10. Safe Health Checks: PASS — No health check endpoints exist; auth check endpoint (`GET /api/sips/auth`) returns only `{ authenticated: boolean }`
 
 ## Additional Checks
-- `dangerouslySetInnerHTML` usage: SAFE — All instances are for JSON-LD structured data via `JSON.stringify()` on hardcoded schema objects (no user input)
+- `dangerouslySetInnerHTML` usage: SAFE — All 9 instances are for JSON-LD structured data via `JSON.stringify()` on hardcoded schema objects (no user input)
 - Open redirect protection: PASS — `create-order/route.ts` validates redirect origin against `ALLOWED_ORIGINS` whitelist
 - Telegram notification: SAFE — `escapeHtml()` in `lib/notify.ts` sanitizes user-supplied `customerName` and `note` before HTML rendering
 - Deduplication: Square webhook deduplicates events via in-memory cache with 10-min TTL and 500-entry cap
 - Constant-time password comparison: PASS — `barista-auth.ts:89-104` uses XOR-based byte comparison to prevent timing attacks
 - Cookie security: PASS — `__Secure-` prefix, HttpOnly, Secure (in prod), SameSite=lax, 12h maxAge
 - No `eval()` or `new Function()` usage found
-- 576 total dependencies scanned, 0 npm vulnerabilities
+- 549 total dependencies scanned, 0 npm vulnerabilities
 
 ## Fixes Applied
 - None needed — all checks pass, 0 npm vulnerabilities
