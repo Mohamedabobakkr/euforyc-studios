@@ -472,7 +472,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
         />
       </head>
-      <body className="font-sans bg-[#fffcf2] text-[#1a260e] antialiased">
+      <body className="font-sans bg-[#fffcf2] text-[#1a260e] antialiased" suppressHydrationWarning>
         {/* Skip to content for accessibility */}
         <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-[#1a260e] text-[#fffcf2] px-4 py-2 rounded">
           Skip to content
