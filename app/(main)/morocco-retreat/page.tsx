@@ -26,12 +26,16 @@ import {
 } from 'lucide-react';
 
 // ═══════════════════════════════════════════════════════════════
-// EDITABLE CONSTANTS — Stripe checkout link (single package)
-// Early-bird discount is applied via Stripe promo code at checkout.
+// EDITABLE CONSTANTS — bank transfer booking
+// Booking is confirmed by 50% deposit to the account below.
 // ═══════════════════════════════════════════════════════════════
-const STRIPE_URL = 'https://book.stripe.com/dRm7sKbzLgl42yC6Ac63K04';
+const BANK_DETAILS = {
+  name: 'EUFORYC STUDIOS LTD',
+  accountNumber: '23704295',
+  sortCode: '04-00-03',
+} as const;
 
-// Promo code (Stripe-side) — first 3 guests get 10% off.
+// Early-bird code — first 3 guests get 10% off. Mention when you transfer.
 const EARLY_BIRD_CODE = 'MOROCCO10';
 
 // Retreat opens for booking — countdown ends here
@@ -69,7 +73,6 @@ const PACKAGE = {
     'Welcome gift bag · full retreat itinerary',
     'Hosted support from the Euforyc team',
   ],
-  stripeUrl: STRIPE_URL,
 } as const;
 
 // ═══════════════════════════════════════════════════════════════
@@ -270,7 +273,7 @@ const faqs = [
   },
   {
     q: 'Can I pay in instalments?',
-    a: 'Yes — you can pay in full, or split it 50% now and 50% before the retreat. Klarna and Clearpay are also available at checkout, depending on your eligibility.',
+    a: 'Yes — pay 50% now to confirm your space, and the remaining 50% before the retreat. Both payments are made by UK bank transfer to EUFORYC STUDIOS LTD (account 23704295, sort code 04-00-03). You can also pay the full amount up front if you prefer.',
   },
   {
     q: 'What\'s included in the package?',
@@ -624,10 +627,10 @@ export default function MoroccoRetreatPage() {
                       </div>
                       <div>
                         <p className="text-[10px] md:text-xs tracking-[0.28em] uppercase text-amber-200/90 font-semibold mb-1">
-                          Flexible Payment Plans
+                          50% Deposit · UK Bank Transfer
                         </p>
                         <p className="font-serif text-base md:text-xl text-[#fffcf2] font-light leading-tight italic">
-                          Spread the cost. Lock the spot.
+                          Lock your spot. Pay the rest later.
                         </p>
                       </div>
                     </div>
@@ -635,19 +638,15 @@ export default function MoroccoRetreatPage() {
                     <div className="flex flex-wrap gap-2 md:justify-end">
                       <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#fffcf2]/10 border border-[#fffcf2]/15 text-[11px] md:text-xs text-[#fffcf2]/85 tracking-wide font-medium">
                         <CheckCircle2 className="h-3 w-3 text-amber-200" />
-                        Pay in full
+                        50% to confirm
                       </span>
                       <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#fffcf2]/10 border border-[#fffcf2]/15 text-[11px] md:text-xs text-[#fffcf2]/85 tracking-wide font-medium">
                         <CheckCircle2 className="h-3 w-3 text-amber-200" />
-                        50% now / 50% later
+                        50% before retreat
                       </span>
                       <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#fffcf2]/10 border border-[#fffcf2]/15 text-[11px] md:text-xs text-[#fffcf2]/85 tracking-wide font-medium">
                         <CheckCircle2 className="h-3 w-3 text-amber-200" />
-                        Klarna
-                      </span>
-                      <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#fffcf2]/10 border border-[#fffcf2]/15 text-[11px] md:text-xs text-[#fffcf2]/85 tracking-wide font-medium">
-                        <CheckCircle2 className="h-3 w-3 text-amber-200" />
-                        Clearpay
+                        Or pay in full
                       </span>
                     </div>
                   </div>
@@ -659,11 +658,8 @@ export default function MoroccoRetreatPage() {
           {/* Single package card */}
           <Reveal delay={0.1}>
             <div className="max-w-3xl mx-auto">
-              <a
-                href={pkg.stripeUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group block relative rounded-2xl overflow-hidden transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_25px_60px_rgba(0,0,0,0.4)]"
+              <div
+                className="relative rounded-2xl overflow-hidden shadow-[0_18px_50px_rgba(0,0,0,0.35)]"
               >
                 <div className="absolute inset-0 bg-gradient-to-br from-[#fffcf2] via-[#fdf6e8] to-[#f8eed8]" />
                 <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_rgba(244,194,140,0.18)_0%,_transparent_60%)]" />
@@ -769,26 +765,53 @@ export default function MoroccoRetreatPage() {
                     ))}
                   </ul>
 
-                  {/* CTA */}
-                  <div className="flex items-center justify-center gap-3 bg-[#1a260e] text-[#fffcf2] py-5 px-8 rounded-xl font-semibold text-sm md:text-base tracking-[0.15em] uppercase transition-all duration-500 group-hover:bg-[#243516] group-hover:shadow-[0_8px_30px_rgba(26,38,14,0.3)]">
-                    <span>Reserve your space &mdash; {pkg.priceLabel}</span>
-                    <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
-                  </div>
-
-                  <div className="mt-5 pt-4 border-t border-[#1a260e]/10">
-                    <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3 text-center">
-                      <span className="inline-flex items-center gap-1.5 text-[11px] tracking-[0.18em] uppercase text-amber-800 font-semibold">
-                        <Sparkles className="h-3.5 w-3.5" />
-                        Flexible Payment
-                      </span>
-                      <span className="hidden sm:inline-block w-px h-3 bg-[#1a260e]/20" />
-                      <span className="text-xs md:text-sm text-[#1a260e]/75 font-medium">
-                        Pay in full · 50% now / 50% later · Klarna · Clearpay
-                      </span>
+                  {/* Bank transfer — booking instructions */}
+                  <div className="rounded-xl bg-[#1a260e] text-[#fffcf2] p-6 md:p-7">
+                    <div className="flex items-center gap-2 mb-4">
+                      <Sparkles className="h-3.5 w-3.5 text-amber-200" />
+                      <p className="text-[10px] md:text-xs tracking-[0.28em] uppercase text-amber-200 font-semibold">
+                        How to book — Bank transfer
+                      </p>
                     </div>
+
+                    <p className="text-sm md:text-base text-[#fffcf2]/80 leading-relaxed mb-5">
+                      To confirm your space, send a <span className="font-semibold text-[#fffcf2]">50% deposit</span> by UK bank transfer to the account below. The remaining 50% is due before the retreat.
+                    </p>
+
+                    <dl className="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4 mb-5">
+                      <div className="rounded-lg border border-[#fffcf2]/15 bg-[#fffcf2]/[0.04] px-4 py-3">
+                        <dt className="text-[10px] tracking-[0.22em] uppercase text-[#fffcf2]/45 mb-1">
+                          Account name
+                        </dt>
+                        <dd className="font-mono text-sm md:text-[15px] font-semibold text-[#fffcf2] tracking-wide break-words">
+                          {BANK_DETAILS.name}
+                        </dd>
+                      </div>
+                      <div className="rounded-lg border border-[#fffcf2]/15 bg-[#fffcf2]/[0.04] px-4 py-3">
+                        <dt className="text-[10px] tracking-[0.22em] uppercase text-[#fffcf2]/45 mb-1">
+                          Account number
+                        </dt>
+                        <dd className="font-mono text-sm md:text-[15px] font-semibold text-[#fffcf2] tracking-wide">
+                          {BANK_DETAILS.accountNumber}
+                        </dd>
+                      </div>
+                      <div className="rounded-lg border border-[#fffcf2]/15 bg-[#fffcf2]/[0.04] px-4 py-3">
+                        <dt className="text-[10px] tracking-[0.22em] uppercase text-[#fffcf2]/45 mb-1">
+                          Sort code
+                        </dt>
+                        <dd className="font-mono text-sm md:text-[15px] font-semibold text-[#fffcf2] tracking-wide">
+                          {BANK_DETAILS.sortCode}
+                        </dd>
+                      </div>
+                    </dl>
+
+                    <p className="text-xs md:text-sm text-[#fffcf2]/55 leading-relaxed">
+                      Use your full name as the payment reference. Once your transfer lands, we&apos;ll
+                      email confirmation along with your full retreat itinerary and flight guidance.
+                    </p>
                   </div>
                 </div>
-              </a>
+              </div>
             </div>
           </Reveal>
         </div>
@@ -803,32 +826,31 @@ export default function MoroccoRetreatPage() {
         <div className="relative container-width">
           <Reveal>
             <div className="text-center mb-10 md:mb-14">
-              <p className="text-[#fffcf2]/40 text-xs tracking-[0.3em] uppercase mb-4">FLEXIBLE PAYMENT</p>
+              <p className="text-[#fffcf2]/40 text-xs tracking-[0.3em] uppercase mb-4">HOW TO BOOK</p>
               <h2 className="font-serif text-2xl md:text-3xl lg:text-5xl font-light">
-                Three ways <span className="italic">to pay</span>
+                Two ways <span className="italic">to pay</span>
               </h2>
+              <p className="text-[#fffcf2]/55 text-sm md:text-base max-w-xl mx-auto mt-4">
+                All bookings are confirmed by UK bank transfer to{' '}
+                <span className="font-semibold text-[#fffcf2]">{BANK_DETAILS.name}</span> —
+                account {BANK_DETAILS.accountNumber}, sort code {BANK_DETAILS.sortCode}.
+              </p>
             </div>
           </Reveal>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-5 max-w-5xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5 max-w-3xl mx-auto">
             {[
-              {
-                icon: CheckCircle2,
-                title: 'Pay in Full',
-                desc: 'Settle the whole package at checkout. Done. Off your mind.',
-                tag: 'EASIEST',
-              },
               {
                 icon: CalendarDays,
                 title: '50% Now, 50% Later',
-                desc: 'Pay 50% to lock in your space. Remaining 50% due before the retreat.',
+                desc: 'Transfer 50% to lock in your space. Remaining 50% due before the retreat.',
                 tag: 'MOST POPULAR',
               },
               {
-                icon: Sparkles,
-                title: 'Klarna or Clearpay',
-                desc: 'Split into smaller payments — subject to checkout eligibility.',
-                tag: 'FLEXIBLE',
+                icon: CheckCircle2,
+                title: 'Pay in Full',
+                desc: 'Transfer the whole package up front. Done. Off your mind.',
+                tag: 'EASIEST',
               },
             ].map((p, i) => (
               <Reveal key={p.title} delay={i * 0.06}>
@@ -1406,12 +1428,10 @@ export default function MoroccoRetreatPage() {
         style={{ paddingBottom: 'calc(0.75rem + env(safe-area-inset-bottom))' }}
       >
         <a
-          href={pkg.stripeUrl}
-          target="_blank"
-          rel="noopener noreferrer"
+          href="#packages"
           className="flex items-center justify-center gap-2 bg-gradient-to-r from-amber-200 via-rose-200 to-amber-200 text-[#1a260e] w-full py-4 text-sm tracking-[0.12em] uppercase rounded-lg active:scale-[0.98] transition-transform font-semibold shadow-[0_4px_20px_-4px_rgba(244,194,140,0.4)]"
         >
-          RESERVE {pkg.short.toUpperCase()} — {pkg.priceLabel}
+          BOOK {pkg.short.toUpperCase()} — {pkg.priceLabel}
           <ArrowRight className="h-4 w-4" />
         </a>
       </div>
