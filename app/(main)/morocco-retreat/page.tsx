@@ -35,9 +35,6 @@ const BANK_DETAILS = {
   sortCode: '04-00-03',
 } as const;
 
-// Early-bird code — first 3 guests get 10% off. Mention when you transfer.
-const EARLY_BIRD_CODE = 'MOROCCO10';
-
 // Retreat opens for booking — countdown ends here
 const RETREAT_START = new Date(2026, 6, 17); // 17 July 2026
 
@@ -399,20 +396,8 @@ function FaqItem({ q, a }: { q: string; a: string }) {
 // MAIN PAGE
 // ═══════════════════════════════════════════════════════════════
 export default function MoroccoRetreatPage() {
-  const [codeCopied, setCodeCopied] = useState(false);
   const startCountdown = useCountdown(useMemo(() => RETREAT_START, []));
 
-  const copyEarlyBirdCode = async (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    try {
-      await navigator.clipboard.writeText(EARLY_BIRD_CODE);
-      setCodeCopied(true);
-      setTimeout(() => setCodeCopied(false), 1800);
-    } catch {
-      setCodeCopied(false);
-    }
-  };
   const spacesLeft = TOTAL_GUEST_SPACES - SPACES_TAKEN;
 
   const pkg = PACKAGE;
@@ -666,35 +651,18 @@ export default function MoroccoRetreatPage() {
 
                 {/* Birthday Early Bird ribbon */}
                 <div className="relative bg-gradient-to-r from-amber-200 via-amber-100 to-rose-100 border-b border-amber-300/50 px-6 md:px-10 py-3.5 md:py-4">
-                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
-                    <div className="flex items-center gap-2.5 md:gap-3">
-                      <div className="w-8 h-8 md:w-9 md:h-9 rounded-full bg-[#1a260e]/10 flex items-center justify-center flex-shrink-0">
-                        <Sparkles className="h-4 w-4 text-amber-800" />
-                      </div>
-                      <div>
-                        <p className="text-[10px] md:text-[11px] tracking-[0.22em] uppercase text-amber-900 font-bold mb-0.5">
-                          Birthday Early Bird
-                        </p>
-                        <p className="text-sm md:text-[15px] font-semibold text-[#1a260e] leading-tight">
-                          First 3 guests <span className="italic font-medium">save 10%</span> with code
-                        </p>
-                      </div>
+                  <div className="flex items-center gap-2.5 md:gap-3">
+                    <div className="w-8 h-8 md:w-9 md:h-9 rounded-full bg-[#1a260e]/10 flex items-center justify-center flex-shrink-0">
+                      <Sparkles className="h-4 w-4 text-amber-800" />
                     </div>
-
-                    {/* Tap-to-copy promo chip */}
-                    <button
-                      type="button"
-                      onClick={copyEarlyBirdCode}
-                      aria-label={`Copy promo code ${EARLY_BIRD_CODE}`}
-                      className="group/code relative inline-flex items-center gap-2 md:gap-2.5 px-3 py-1.5 md:px-3.5 md:py-2 rounded-full border border-dashed border-[#1a260e]/40 bg-[#fffcf2]/70 hover:bg-[#fffcf2] hover:border-[#1a260e]/60 active:scale-[0.97] transition-all self-start sm:self-auto flex-shrink-0"
-                    >
-                      <span className="font-mono text-sm md:text-[15px] font-bold tracking-[0.22em] text-[#1a260e]">
-                        {EARLY_BIRD_CODE}
-                      </span>
-                      <span className="text-[9px] md:text-[10px] uppercase tracking-[0.2em] text-amber-900 font-semibold whitespace-nowrap">
-                        {codeCopied ? 'Copied ✓' : 'Tap to copy'}
-                      </span>
-                    </button>
+                    <div>
+                      <p className="text-[10px] md:text-[11px] tracking-[0.22em] uppercase text-amber-900 font-bold mb-0.5">
+                        Birthday Early Bird
+                      </p>
+                      <p className="text-sm md:text-[15px] font-semibold text-[#1a260e] leading-tight">
+                        First 3 guests <span className="italic font-medium">save 10%</span>
+                      </p>
+                    </div>
                   </div>
                 </div>
 
