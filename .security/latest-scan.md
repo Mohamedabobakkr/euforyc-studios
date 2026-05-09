@@ -1,6 +1,6 @@
 # Security Scan Report
 
-**Date:** 2026-05-09 12:00 UTC
+**Date:** 2026-05-09 11:30 UTC
 **Status:** CLEAN
 
 ## npm audit
@@ -17,7 +17,7 @@
 5. Security Headers: PASS — HSTS (max-age=63072000; includeSubDomains; preload), CSP with strict directives, X-Frame-Options: SAMEORIGIN, X-Content-Type-Options: nosniff, Referrer-Policy: strict-origin-when-cross-origin, Permissions-Policy (camera/mic/geo denied), `poweredByHeader: false`, API routes set `Cache-Control: no-store`
 6. Image Hostnames: PASS — Only whitelisted domains in `remotePatterns` (squarecdn.com, euforyc.co.uk, momence.com, S3 bucket, localhost); no `hostname: '**'` wildcard
 7. No Hardcoded Secrets: PASS — No `sk-`, `pk_live_`, or hardcoded passwords in `app/`, `lib/`, `components/`; all secrets via `process.env`; `.env` and `.env*.local` properly gitignored
-8. No localStorage Credentials: PASS — Zero `localStorage`/`sessionStorage` usage in codebase; auth uses HttpOnly + Secure + SameSite cookies exclusively
+8. No localStorage Credentials: PASS — Zero `localStorage`/`sessionStorage` credential storage; auth uses HttpOnly + Secure + SameSite cookies exclusively
 9. No Error Leaks: PASS — All API routes return generic error strings; Momence client only exposes `details` when `NODE_ENV === 'development'`; no `String(error)` or stack traces in responses
 10. Safe Health Checks: PASS — No health check endpoints exist; auth check endpoint (`GET /api/sips/auth`) returns only `{ authenticated: boolean }`
 
@@ -30,7 +30,7 @@
 - Cookie security: PASS — `__Secure-` prefix, HttpOnly, Secure (in prod), SameSite=lax, 12h maxAge
 - No `eval()` or `new Function()` usage found
 - No `NEXT_PUBLIC_` env vars exposing secrets
-- 549 packages audited, 0 npm vulnerabilities
+- 576 total dependencies scanned, 0 npm vulnerabilities
 
 ## Fixes Applied
 - None needed — all checks pass, 0 npm vulnerabilities
