@@ -6,12 +6,8 @@ import Image from 'next/image';
 import {
   ArrowRight,
   CheckCircle2,
-  Clock,
-  MapPin,
   Timer,
   Sparkles,
-  Star,
-  Shield,
   ChevronDown,
   Heart,
   Sun,
@@ -19,135 +15,71 @@ import {
   Utensils,
   Plane,
   Gift,
-  Users,
-  Crown,
-  Home,
-  BedDouble,
-  Wind,
   Flower2,
-  CupSoda,
   CalendarDays,
+  MapPin,
+  ChefHat,
+  Hand,
+  Cookie,
+  BedDouble,
   Quote,
 } from 'lucide-react';
 
 // ═══════════════════════════════════════════════════════════════
-// EDITABLE CONSTANTS — Stripe checkout links (one per package)
+// EDITABLE CONSTANTS — Stripe checkout link (single package)
 // Early-bird discount is applied via Stripe promo code at checkout.
 // ═══════════════════════════════════════════════════════════════
-const STRIPE_URLS = {
-  house: 'https://book.stripe.com/4gM00idHT1qaehk3o063K01',
-  shared: 'https://book.stripe.com/cNiaEW1Zb9WG6OSe2E63K02',
-  private: 'https://book.stripe.com/dRm4gycDPfh0c9c0bO63K03',
-};
+const STRIPE_URL = 'https://book.stripe.com/dRm7sKbzLgl42yC6Ac63K04';
 
-// Promo code (Stripe-side) — first 5 guests get 10% off any package.
-const EARLY_BIRD_CODE = 'SPAIN10';
+// Promo code (Stripe-side) — first 3 guests get 10% off.
+const EARLY_BIRD_CODE = 'MOROCCO10';
 
 // Retreat opens for booking — countdown ends here
-const RETREAT_START = new Date(2026, 6, 16); // 16 July 2026
+const RETREAT_START = new Date(2026, 6, 17); // 17 July 2026
 
 // Capacity — kept intentionally small for an intimate, properly-hosted retreat
-const TOTAL_GUEST_SPACES = 15;
-const SPACES_TAKEN = 8; // update as bookings come in
+const TOTAL_GUEST_SPACES = 9;
+const SPACES_TAKEN = 0; // update as bookings come in
 
 // ═══════════════════════════════════════════════════════════════
-// PACKAGES
+// PACKAGE — one all-inclusive retreat
 // ═══════════════════════════════════════════════════════════════
-const PACKAGES = {
-  shared: {
-    id: 'shared' as const,
-    label: 'Signature Shared Suite',
-    short: 'Signature',
-    tagline: 'The most-loved package',
-    price: 1595,
-    earlyPrice: 1435,
-    priceLabel: '£1,595',
-    earlyPriceLabel: '£1,435',
-    perNight: '£228 / night',
-    description:
-      'A shared suite with a premium villa feel — designed for the woman who wants every part of the retreat experience without paying for a private room.',
-    bestFor: 'Comfort · Connection · The full retreat',
-    icon: Flower2,
-    highlight: true,
-    includes: [
-      '7 nights shared suite accommodation',
-      'Premium villa feel · private bathroom where available',
-      'Daily Pilates and movement sessions',
-      'All meals by private chef',
-      'Airport transfers within set windows',
-      'Welcome gift bag · full retreat itinerary',
-      'Pool access, group dinners, workshops',
-      'Hosted support from the Euforyc team',
-    ],
-    stripeUrl: STRIPE_URLS.shared,
-  },
-  private: {
-    id: 'private' as const,
-    label: 'Private Suite',
-    short: 'Private',
-    tagline: 'The most premium experience',
-    price: 1995,
-    earlyPrice: 1795,
-    priceLabel: '£1,995',
-    earlyPriceLabel: '£1,795',
-    perNight: '£285 / night',
-    description:
-      'For the woman who wants total privacy. Your own room. Priority selection. The most elevated version of the retreat — the full ceremony of slow living, in your own space.',
-    bestFor: 'Privacy · Comfort · The most elevated stay',
-    icon: Crown,
-    highlight: false,
-    includes: [
-      '7 nights accommodation · private room',
-      'Priority room selection',
-      'Daily Pilates and movement sessions',
-      'All meals by private chef',
-      'Airport transfers within set windows',
-      'Welcome gift bag · full retreat itinerary',
-      'Pool access, group dinners, workshops',
-      'Hosted support from the Euforyc team',
-    ],
-    stripeUrl: STRIPE_URLS.private,
-  },
-  house: {
-    id: 'house' as const,
-    label: 'House Experience',
-    short: 'House',
-    tagline: 'The most accessible package',
-    price: 1250,
-    earlyPrice: 1125,
-    priceLabel: '£1,250',
-    earlyPriceLabel: '£1,125',
-    perNight: '£178 / night',
-    description:
-      'A more intimate, social, community-style stay in the Original House. The full Euforyc retreat experience at our best-value price — designed for guests who want connection over square footage.',
-    bestFor: 'Best value · Community · Full experience',
-    icon: Home,
-    highlight: false,
-    includes: [
-      '7 nights in the Original House',
-      'Shared room · social, community-style stay',
-      'Daily Pilates and movement sessions',
-      'All meals by private chef',
-      'Airport transfers within set windows',
-      'Welcome gift bag · full retreat itinerary',
-      'Pool access, group dinners, workshops',
-      'Hosted support from the Euforyc team',
-    ],
-    stripeUrl: STRIPE_URLS.house,
-  },
+const PACKAGE = {
+  label: 'Marrakesh Wellness Retreat',
+  short: 'Marrakesh',
+  tagline: 'One retreat · only 9 spaces',
+  price: 900,
+  earlyPrice: 810,
+  priceLabel: '£900',
+  earlyPriceLabel: '£810',
+  perNight: '£129 / night',
+  description:
+    'Seven nights at a private villa just outside Marrakesh — every detail handled, every meal cooked for you, every day designed to reset your nervous system. One package, one rhythm, one small group of women.',
+  bestFor: 'Intimate · All-inclusive · Properly hosted',
+  icon: Flower2,
+  includes: [
+    '7 nights at a private Marrakesh villa',
+    'Airport transfers — Marrakesh Menara (RAK)',
+    'Full-course private chef meals, every day',
+    'Daily Pilates and movement sessions',
+    'Moroccan cooking workshop with the chef',
+    'In-villa massage experience',
+    'Moroccan dessert tasting experience',
+    'Pool access, group dinners, workshops',
+    'Welcome gift bag · full retreat itinerary',
+    'Hosted support from the Euforyc team',
+  ],
+  stripeUrl: STRIPE_URL,
 } as const;
-
-type PackageId = keyof typeof PACKAGES;
-const PACKAGE_IDS: PackageId[] = ['house', 'shared', 'private'];
 
 // ═══════════════════════════════════════════════════════════════
 // CONTENT — facts, includes, itinerary, faqs
 // ═══════════════════════════════════════════════════════════════
 const facts = [
   { label: '7 Nights', icon: Moon },
-  { label: '16–23 July 2026', icon: CalendarDays },
-  { label: 'Cortijo Banana, Spain', icon: MapPin },
-  { label: 'Women Only', icon: Heart },
+  { label: '17–24 July 2026', icon: CalendarDays },
+  { label: 'Marrakesh, Morocco', icon: MapPin },
+  { label: 'Women Only · 9 Spaces', icon: Heart },
 ];
 
 const included = [
@@ -157,19 +89,29 @@ const included = [
     desc: 'Morning flows, sunset stretches, signature Euforyc sessions — outdoor by the pool, indoor in the villa.',
   },
   {
+    icon: ChefHat,
+    title: 'Full-Course Private Chef',
+    desc: 'A private chef, every meal, every day. Full courses cooked for each guest — Moroccan flavours, slow long-table dinners.',
+  },
+  {
     icon: Utensils,
-    title: 'Private Chef Meals',
-    desc: 'Every meal handled. Long-table breakfasts, sunset dinners, rosé-and-rocket lunches — all of it.',
+    title: 'Moroccan Cooking Workshop',
+    desc: 'Hands-on with the chef. Tagines, spice blends, the real way bread is made here. You leave knowing how to cook it at home.',
+  },
+  {
+    icon: Hand,
+    title: 'In-Villa Massage',
+    desc: 'A proper Moroccan massage at the villa — no rushing, no scheduling stress. Built into the rhythm of the week.',
+  },
+  {
+    icon: Cookie,
+    title: 'Moroccan Dessert Experience',
+    desc: 'Mint tea, almond pastries, orange-blossom sweets — a tasting evening built around the things Morocco does best.',
   },
   {
     icon: Plane,
     title: 'Airport Transfers',
-    desc: 'Pickup and drop-off included within scheduled transfer windows. You arrive, you exhale, you forget logistics.',
-  },
-  {
-    icon: Gift,
-    title: 'Welcome Gift Bag',
-    desc: 'Curated arrival gifts. Small things that say: this week, you\'re looked after.',
+    desc: 'Pickup from Marrakesh Menara airport (RAK) and drop-off included. You arrive, you exhale, you forget logistics.',
   },
   {
     icon: Sun,
@@ -179,12 +121,17 @@ const included = [
   {
     icon: BedDouble,
     title: 'Beautiful Accommodation',
-    desc: 'Whitewashed rooms, terracotta floors, mountain light — every space designed to make you exhale.',
+    desc: 'A whitewashed Marrakesh villa with a private pool, palm groves, and the kind of golden-hour light you can\'t fake.',
   },
   {
     icon: Sparkles,
     title: 'Workshops & Experiences',
-    desc: 'Confidence workshops, breathwork, journaling, beach day, photoshoot moments — content and connection.',
+    desc: 'Confidence workshops, breathwork, journaling, photoshoot moments — content and connection, woven through the week.',
+  },
+  {
+    icon: Gift,
+    title: 'Welcome Gift Bag',
+    desc: 'Curated arrival gifts. Small things that say: this week, you\'re looked after.',
   },
   {
     icon: Heart,
@@ -197,12 +144,12 @@ const included = [
 const itinerary = [
   {
     day: 'Day 1',
-    date: '16 July',
+    date: '17 July',
     title: 'Arrival & Welcome',
     theme: 'Soft landing, connection, arrival',
     items: [
-      'Airport pickup during scheduled transfer windows',
-      'Arrival at the villa · welcome drinks by the pool',
+      'Airport pickup from Marrakesh Menara (RAK)',
+      'Arrival at the villa · welcome mint tea by the pool',
       'Room check-in and settling in',
       'Light stretch or grounding session',
       'Welcome dinner with the group',
@@ -211,14 +158,14 @@ const itinerary = [
   },
   {
     day: 'Day 2',
-    date: '17 July',
+    date: '18 July',
     title: 'Align & Reset',
     theme: 'Grounding into the retreat',
     items: [
       'Morning Pilates · alignment, breath and core',
-      'Breakfast by the villa',
+      'Full-course breakfast by the villa',
       'Pool time and slow morning',
-      'Lunch',
+      'Long-table lunch by the chef',
       'Journaling: setting your retreat intention',
       'Sunset stretch and mobility',
       'Private chef dinner',
@@ -226,7 +173,7 @@ const itinerary = [
   },
   {
     day: 'Day 3',
-    date: '18 July',
+    date: '19 July',
     title: 'Strength & Confidence',
     theme: 'Energy, confidence, body connection',
     items: [
@@ -242,37 +189,38 @@ const itinerary = [
   },
   {
     day: 'Day 4',
-    date: '19 July',
-    title: 'Slow Luxury Pool Day',
-    theme: 'Rest, softness, feminine wellness',
+    date: '20 July',
+    title: 'The Cooking Workshop',
+    theme: 'Hands-on with the chef',
     items: [
       'Later morning stretch or optional Pilates',
       'Brunch-style breakfast',
-      'Full pool day',
-      'Matcha, journaling, reading, sunbathing',
-      'Optional mini photoshoot around the villa',
+      'Moroccan cooking workshop with the chef',
+      'Cook the lunch you just learned to make',
+      'Pool time, journaling and rest',
       'Breathwork and deep stretch at sunset',
-      'Dinner',
+      'Dinner — the chef\'s signature menu',
     ],
   },
   {
     day: 'Day 5',
-    date: '20 July',
-    title: 'Beach & Exploration',
-    theme: 'Adventure, memories, summer',
+    date: '21 July',
+    title: 'Massage & Slow Day',
+    theme: 'Rest, softness, feminine wellness',
     items: [
       'Light morning Pilates',
       'Breakfast',
-      'Group trip to the beach or nearby town',
-      'Lunch out or picnic-style meal',
-      'Photos, swimming, exploring and free time',
-      'Return to the villa',
+      'In-villa Moroccan massage rotations',
+      'Mint tea on the loungers between sessions',
+      'Full-course lunch by the pool',
+      'Optional mini photoshoot around the villa',
+      'Sunset breathwork',
       'Relaxed dinner',
     ],
   },
   {
     day: 'Day 6',
-    date: '21 July',
+    date: '22 July',
     title: 'Euforyc Signature Day',
     theme: 'The main content and celebration day',
     items: [
@@ -282,12 +230,13 @@ const itinerary = [
       'Lunch',
       'Matching neutral Pilates set moment for content',
       'Sunset Euforyc signature flow',
+      'Moroccan dessert tasting experience',
       'Dress-up dinner — candles, music, long-table dining',
     ],
   },
   {
     day: 'Day 7',
-    date: '22 July',
+    date: '23 July',
     title: 'Integration & Closing',
     theme: 'Reflection, gratitude, connection',
     items: [
@@ -302,13 +251,13 @@ const itinerary = [
   },
   {
     day: 'Day 8',
-    date: '23 July',
+    date: '24 July',
     title: 'Departure',
     theme: 'Goodbye and onwards',
     items: [
       'Breakfast',
       'Check-out',
-      'Airport transfers during scheduled windows',
+      'Airport transfers to Marrakesh Menara (RAK)',
       'Goodbye hugs and post-retreat content moments',
     ],
   },
@@ -317,19 +266,23 @@ const itinerary = [
 const faqs = [
   {
     q: 'Are flights included?',
-    a: 'Flights are not included. We\'ll send recommended flight options once you book — guests just need to arrive within the scheduled transfer windows so we can include the airport pickup. We\'ll handle the transfer once you land.',
+    a: 'Flights are not included. We\'ll send recommended flight options once you book — guests just need to arrive into Marrakesh Menara (RAK) within the scheduled transfer windows so we can include the airport pickup. We\'ll handle the transfer once you land.',
   },
   {
     q: 'Can I pay in instalments?',
     a: 'Yes — you can pay in full, or split it 50% now and 50% before the retreat. Klarna and Clearpay are also available at checkout, depending on your eligibility.',
   },
   {
-    q: 'What\'s the difference between the packages?',
-    a: 'House Experience is shared room in the Original House — the most social, best-value option. Signature Shared Suite is shared accommodation in the Courtyard Suites with a more premium villa feel and (where available) a private bathroom. Private Suite is your own room with priority selection — the most elevated experience.',
+    q: 'What\'s included in the package?',
+    a: 'Everything: 7 nights at the villa, airport transfers from Marrakesh Menara (RAK), full-course private chef meals every day, daily Pilates, a Moroccan cooking workshop, an in-villa massage, a Moroccan dessert tasting experience, all workshops, the welcome gift bag and full hosted support. The only thing not included is your flight.',
   },
   {
     q: 'How does the early bird offer work?',
-    a: 'The first 5 guests get 10% off any package, plus priority room selection and an exclusive birthday gift upgrade on arrival. Once 5 spots are claimed, prices return to standard.',
+    a: 'The first 3 guests get 10% off, plus priority room selection and an exclusive birthday gift upgrade on arrival. Once those spots are claimed, prices return to standard.',
+  },
+  {
+    q: 'How many spaces are there?',
+    a: 'Nine. That\'s it. The retreat is intentionally tiny so it can be properly hosted — every guest knows every other guest by Day 2, and every detail of your week is held by us.',
   },
   {
     q: 'Who is this retreat for?',
@@ -337,7 +290,7 @@ const faqs = [
   },
   {
     q: 'What if I\'m travelling alone?',
-    a: 'Most of our guests come solo. The shared and house packages are designed for women who want to make new friends. You\'ll be matched thoughtfully if you\'re sharing a room, and the small group format means by Day 2 it won\'t feel like you arrived alone at all.',
+    a: 'Most of our guests come solo. The retreat is designed for women who want to make new friends — you\'ll be matched thoughtfully if you\'re sharing a room, and the small group format means by Day 2 it won\'t feel like you arrived alone at all.',
   },
   {
     q: 'What\'s the cancellation policy?',
@@ -442,8 +395,7 @@ function FaqItem({ q, a }: { q: string; a: string }) {
 // ═══════════════════════════════════════════════════════════════
 // MAIN PAGE
 // ═══════════════════════════════════════════════════════════════
-export default function SpainRetreatPage() {
-  const [selected, setSelected] = useState<PackageId>('shared');
+export default function MoroccoRetreatPage() {
   const [codeCopied, setCodeCopied] = useState(false);
   const startCountdown = useCountdown(useMemo(() => RETREAT_START, []));
 
@@ -460,7 +412,7 @@ export default function SpainRetreatPage() {
   };
   const spacesLeft = TOTAL_GUEST_SPACES - SPACES_TAKEN;
 
-  const pkg = PACKAGES[selected];
+  const pkg = PACKAGE;
 
   return (
     <div className="pt-24 pb-24 md:pb-0 bg-[#fffcf2]">
@@ -473,7 +425,7 @@ export default function SpainRetreatPage() {
         <div className="absolute inset-0">
           <Image
             src="/retreat/hero-villa.jpg"
-            alt="Cortijo Banana — a whitewashed Spanish villa nestled in the hills of Andalusia"
+            alt="A private Marrakesh villa at sunset — pool, palm trees and golden Moroccan light"
             fill
             priority
             className="object-cover object-center scale-105"
@@ -481,7 +433,7 @@ export default function SpainRetreatPage() {
           />
           {/* Deep gradient overlay */}
           <div className="absolute inset-0 bg-gradient-to-b from-[#1a260e]/85 via-[#1a260e]/55 to-[#1a260e]/90" />
-          {/* Warm Spanish sun glow */}
+          {/* Warm Moroccan sun glow */}
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_rgba(244,194,140,0.18)_0%,_transparent_55%)]" />
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,_rgba(201,123,90,0.14)_0%,_transparent_50%)]" />
           {/* Fine grain */}
@@ -522,7 +474,7 @@ export default function SpainRetreatPage() {
           {/* Overline */}
           <Reveal delay={0.06}>
             <p className="text-[#fffcf2]/55 text-xs md:text-sm tracking-[0.4em] uppercase mb-4 md:mb-6 font-light">
-              16 — 23 July 2026 &nbsp;·&nbsp; Cortijo Banana, Andalusia
+              17 — 24 July 2026 &nbsp;·&nbsp; Marrakesh, Morocco
             </p>
           </Reveal>
 
@@ -530,7 +482,7 @@ export default function SpainRetreatPage() {
           <Reveal delay={0.12}>
             <h1 className="font-serif text-[3.5rem] leading-[0.95] md:text-[6rem] lg:text-[8.5rem] text-[#fffcf2] tracking-tight mb-2 md:mb-3">
               <span className="italic font-light bg-gradient-to-br from-amber-100 via-rose-100 to-amber-200 bg-clip-text text-transparent">
-                Spain
+                Marrakesh
               </span>
             </h1>
           </Reveal>
@@ -547,9 +499,9 @@ export default function SpainRetreatPage() {
 
           <Reveal delay={0.28}>
             <p className="text-[#fffcf2]/80 text-base md:text-xl max-w-2xl mx-auto mb-9 md:mb-12 font-light leading-relaxed">
-              Seven nights of movement, sunshine, private chef meals,
-              connection and slow living &mdash;<br className="hidden md:block" />
-              the full Euforyc experience, in the hills of Andalusia.
+              Seven nights of movement, sunshine, full-course private chef meals,
+              cooking workshops, massage and slow living &mdash;<br className="hidden md:block" />
+              the full Euforyc experience, in a private Marrakesh villa.
             </p>
           </Reveal>
 
@@ -611,12 +563,12 @@ export default function SpainRetreatPage() {
                 <p>
                   We&apos;re a year old. So we&apos;re doing what feels right &mdash;
                   taking the women who built this with us, and disappearing
-                  into the hills of Andalusia for a week.
+                  into the palm groves of Marrakesh for a week.
                 </p>
                 <p>
                   No gym lighting. No phone notifications. No deadlines.
-                  Just movement, sunshine, real food made by a private chef,
-                  conversations that go past midnight, and pool days that bleed into sunset dinners.
+                  Just movement, Moroccan sunshine, full-course meals cooked for you,
+                  conversations that go past midnight, and pool days that bleed into mint-tea sunsets.
                 </p>
                 <p className="text-[#1a260e]/90 font-normal italic">
                   This is the part where you stop earning rest, and start letting yourself have it.
@@ -628,7 +580,7 @@ export default function SpainRetreatPage() {
               <div className="mt-9 md:mt-12 inline-flex items-center gap-3 bg-[#1a260e]/[0.04] rounded-full px-5 py-2.5">
                 <Sparkles className="h-4 w-4 text-amber-600" />
                 <span className="text-sm text-[#1a260e]/65 tracking-wide">
-                  Only <strong className="text-[#1a260e] font-medium">{TOTAL_GUEST_SPACES} spots available</strong>. That&apos;s it.
+                  Only <strong className="text-[#1a260e] font-medium">{TOTAL_GUEST_SPACES} spaces</strong>. That&apos;s it.
                 </span>
               </div>
             </Reveal>
@@ -637,7 +589,7 @@ export default function SpainRetreatPage() {
       </section>
 
       {/* ════════════════════════════════════════════════════════
-          PACKAGES — the conversion section
+          PACKAGE — the conversion section (single package)
          ════════════════════════════════════════════════════════ */}
       <section id="packages" className="px-5 py-14 md:section-padding bg-[#1a260e] text-[#fffcf2] relative overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_rgba(244,194,140,0.08)_0%,_transparent_55%)]" />
@@ -646,13 +598,13 @@ export default function SpainRetreatPage() {
         <div className="relative container-width">
           <Reveal>
             <div className="text-center mb-10 md:mb-14">
-              <p className="text-[#fffcf2]/40 text-xs tracking-[0.3em] uppercase mb-4">CHOOSE YOUR ROOM</p>
+              <p className="text-[#fffcf2]/40 text-xs tracking-[0.3em] uppercase mb-4">RESERVE YOUR SPACE</p>
               <h2 className="font-serif text-2xl md:text-3xl lg:text-5xl font-light mb-5">
-                Three packages.<br className="md:hidden" /> <span className="italic">One retreat.</span>
+                One retreat. <span className="italic">Nine spaces.</span>
               </h2>
               <p className="text-[#fffcf2]/55 text-sm md:text-base max-w-xl mx-auto">
-                Same daily experience &mdash; same Pilates, chef, transfers, gifts.
-                The only thing that changes is where you wake up.
+                One all-inclusive package. Same daily experience for every guest &mdash;
+                Pilates, chef, transfers, cooking workshop, massage, dessert experience.
               </p>
             </div>
           </Reveal>
@@ -704,38 +656,7 @@ export default function SpainRetreatPage() {
             </div>
           </Reveal>
 
-          {/* Pill selector */}
-          <Reveal delay={0.05}>
-            <div className="flex flex-wrap justify-center gap-3 mb-8 md:mb-12">
-              {PACKAGE_IDS.map((id) => {
-                const p = PACKAGES[id];
-                const isActive = selected === id;
-                return (
-                  <button
-                    key={id}
-                    onClick={() => setSelected(id)}
-                    className={`px-5 py-2.5 md:px-6 md:py-3 rounded-full font-sans text-xs md:text-sm tracking-wider transition-all duration-300 flex items-center gap-2 ${
-                      isActive
-                        ? 'bg-gradient-to-r from-amber-100 to-rose-100 text-[#1a260e] scale-[1.02]'
-                        : 'bg-transparent border border-[#fffcf2]/20 text-[#fffcf2]/70 hover:border-[#fffcf2]/40 hover:text-[#fffcf2]'
-                    }`}
-                  >
-                    <p.icon className="h-3.5 w-3.5" />
-                    <span>{p.label}</span>
-                    {p.highlight && (
-                      <span className={`text-[10px] px-2 py-0.5 rounded-full tracking-wider ${
-                        isActive ? 'bg-[#1a260e]/15 text-[#1a260e]' : 'bg-amber-200/15 text-amber-200'
-                      }`}>
-                        MOST LOVED
-                      </span>
-                    )}
-                  </button>
-                );
-              })}
-            </div>
-          </Reveal>
-
-          {/* Selected package card */}
+          {/* Single package card */}
           <Reveal delay={0.1}>
             <div className="max-w-3xl mx-auto">
               <a
@@ -759,7 +680,7 @@ export default function SpainRetreatPage() {
                           Birthday Early Bird
                         </p>
                         <p className="text-sm md:text-[15px] font-semibold text-[#1a260e] leading-tight">
-                          First 5 guests <span className="italic font-medium">save 10%</span> with code
+                          First 3 guests <span className="italic font-medium">save 10%</span> with code
                         </p>
                       </div>
                     </div>
@@ -850,7 +771,7 @@ export default function SpainRetreatPage() {
 
                   {/* CTA */}
                   <div className="flex items-center justify-center gap-3 bg-[#1a260e] text-[#fffcf2] py-5 px-8 rounded-xl font-semibold text-sm md:text-base tracking-[0.15em] uppercase transition-all duration-500 group-hover:bg-[#243516] group-hover:shadow-[0_8px_30px_rgba(26,38,14,0.3)]">
-                    <span>Reserve {pkg.label} &mdash; {pkg.priceLabel}</span>
+                    <span>Reserve your space &mdash; {pkg.priceLabel}</span>
                     <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
                   </div>
 
@@ -868,44 +789,6 @@ export default function SpainRetreatPage() {
                   </div>
                 </div>
               </a>
-
-              {/* Other packages teaser */}
-              <div className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-3">
-                {PACKAGE_IDS.filter((id) => id !== selected).map((id) => {
-                  const p = PACKAGES[id];
-                  return (
-                    <button
-                      key={id}
-                      onClick={() => setSelected(id)}
-                      className="group text-left p-5 rounded-xl border border-[#fffcf2]/12 bg-[#fffcf2]/[0.03] hover:bg-[#fffcf2]/[0.07] transition-all"
-                    >
-                      <div className="flex items-center justify-between gap-4">
-                        <div className="flex items-center gap-3 min-w-0">
-                          <div className="w-10 h-10 rounded-lg bg-[#fffcf2]/8 flex items-center justify-center flex-shrink-0">
-                            <p.icon className="h-4.5 w-4.5 text-amber-200" />
-                          </div>
-                          <div className="min-w-0">
-                            <p className="text-[10px] tracking-[0.25em] uppercase text-[#fffcf2]/45 mb-0.5">
-                              {p.tagline}
-                            </p>
-                            <p className="font-serif text-base md:text-lg text-[#fffcf2] font-light truncate">
-                              {p.label}
-                            </p>
-                          </div>
-                        </div>
-                        <div className="text-right flex-shrink-0">
-                          <p className="font-serif text-lg md:text-xl text-[#fffcf2] font-light">
-                            {p.priceLabel}
-                          </p>
-                          <p className="text-[10px] text-amber-200/70 tracking-wider group-hover:text-amber-200 transition-colors">
-                            VIEW →
-                          </p>
-                        </div>
-                      </div>
-                    </button>
-                  );
-                })}
-              </div>
             </div>
           </Reveal>
         </div>
@@ -936,7 +819,7 @@ export default function SpainRetreatPage() {
                 tag: 'EASIEST',
               },
               {
-                icon: Wind,
+                icon: CalendarDays,
                 title: '50% Now, 50% Later',
                 desc: 'Pay 50% to lock in your space. Remaining 50% due before the retreat.',
                 tag: 'MOST POPULAR',
@@ -967,8 +850,9 @@ export default function SpainRetreatPage() {
 
           <Reveal delay={0.18}>
             <p className="text-center text-xs md:text-sm text-[#fffcf2]/45 max-w-2xl mx-auto mt-10 md:mt-12">
-              Flights are not included. Once you book, we&apos;ll send recommended flights — guests
-              just need to arrive within the scheduled transfer windows to use the included airport pickup.
+              Flights are not included. Once you book, we&apos;ll send recommended flights into Marrakesh
+              Menara (RAK) — guests just need to arrive within the scheduled transfer windows so we
+              can include the airport pickup.
             </p>
           </Reveal>
         </div>
@@ -992,13 +876,13 @@ export default function SpainRetreatPage() {
           <Reveal>
             <div className="mb-12 md:mb-16 max-w-4xl mx-auto text-center">
               <p className="text-[#1a260e]/45 text-[10px] md:text-[11px] tracking-[0.45em] uppercase mb-5 md:mb-7 font-medium">
-                A Whitewashed Cortijo &middot; 1 Hour from Almería
+                A Private Villa &middot; Just outside Marrakesh
               </p>
 
               <h2 className="font-serif text-[2.75rem] md:text-6xl lg:text-7xl font-light text-[#1a260e] leading-[0.95] mb-5 md:mb-7 tracking-tight">
-                Cortijo{' '}
+                The{' '}
                 <span className="italic bg-gradient-to-br from-amber-700 via-rose-700 to-amber-800 bg-clip-text text-transparent">
-                  Banana
+                  Villa
                 </span>
               </h2>
 
@@ -1010,9 +894,9 @@ export default function SpainRetreatPage() {
               </div>
 
               <p className="text-[#1a260e]/65 text-base md:text-lg font-light leading-relaxed max-w-2xl mx-auto">
-                Tucked into the dry hills of southern Spain &mdash; terracotta floors, mountain light,
-                an infinity-edge pool, and the kind of{' '}
-                <span className="italic text-[#1a260e]/90">silence only the countryside can hold</span>.
+                A private villa in the palm groves outside Marrakesh &mdash; whitewashed walls,
+                a long pool, an outdoor firepit, and the kind of{' '}
+                <span className="italic text-[#1a260e]/90">golden-hour silence Morocco does best</span>.
               </p>
             </div>
           </Reveal>
@@ -1023,7 +907,7 @@ export default function SpainRetreatPage() {
               <figure className="group relative aspect-[16/10] md:aspect-[16/8] rounded-[20px] overflow-hidden bg-[#1a260e]/5 shadow-[0_30px_80px_-20px_rgba(26,38,14,0.25)]">
                 <Image
                   src="/retreat/pool-aerial.jpg"
-                  alt="Aerial view of Cortijo Banana's pool surrounded by terracotta gardens"
+                  alt="Aerial view of the Marrakesh villa pool surrounded by gardens and palm trees"
                   fill
                   className="object-cover [transition:transform_1.6s_cubic-bezier(.22,1,.36,1)] group-hover:scale-[1.035]"
                   sizes="(max-width: 1280px) 100vw, 1280px"
@@ -1037,7 +921,7 @@ export default function SpainRetreatPage() {
                 <div className="absolute top-5 right-5 md:top-8 md:right-10 flex items-center gap-2.5 md:gap-3 text-[#fffcf2]/90">
                   <span aria-hidden className="hidden md:inline-block h-px w-10 bg-[#fffcf2]/35" />
                   <p className="font-serif italic text-xs md:text-sm tracking-[0.32em]">
-                    Almería &middot; Andalusia
+                    Marrakesh &middot; Morocco
                   </p>
                 </div>
 
@@ -1050,7 +934,7 @@ export default function SpainRetreatPage() {
                     <span aria-hidden className="h-px w-10 md:w-16 bg-gradient-to-r from-amber-200/70 to-transparent" />
                   </div>
                   <p className="font-serif text-2xl md:text-4xl lg:text-5xl font-light leading-[1] tracking-tight">
-                    The <span className="italic">Cortijo</span>
+                    The <span className="italic">Villa</span>
                   </p>
                   <p className="font-serif italic text-[#fffcf2]/70 text-xs md:text-sm leading-tight mt-1.5 md:mt-2">
                     seen from the sky
@@ -1059,11 +943,11 @@ export default function SpainRetreatPage() {
 
                 {/* Quiet bottom-right meta strip */}
                 <div className="hidden md:flex absolute bottom-10 right-10 items-center gap-6 text-[10px] tracking-[0.3em] uppercase text-[#fffcf2]/55">
-                  <span>35 Beds</span>
+                  <span>9 Guests</span>
                   <span aria-hidden className="w-1 h-1 rounded-full bg-[#fffcf2]/40" />
-                  <span>4 Courtyards</span>
+                  <span>Private Pool</span>
                   <span aria-hidden className="w-1 h-1 rounded-full bg-[#fffcf2]/40" />
-                  <span>One Pool</span>
+                  <span>Palm Groves</span>
                 </div>
               </figure>
             </Reveal>
@@ -1074,30 +958,30 @@ export default function SpainRetreatPage() {
                 {
                   src: '/retreat/suite.jpg',
                   no: '02',
-                  label: 'The Suites',
-                  italic: 'mustard linen, terracotta tile',
-                  alt: 'Whitewashed bedroom with mustard accents and terracotta tiled floor',
+                  label: 'The Lounge',
+                  italic: 'terracotta velvet, soft light',
+                  alt: 'Bright Marrakesh villa lounge with a long terracotta sectional sofa and Moroccan tapestry',
                 },
                 {
                   src: '/retreat/courtyard.jpg',
                   no: '03',
-                  label: 'Courtyards',
-                  italic: 'red steps, jasmine, sky',
-                  alt: 'Whitewashed courtyard with a terracotta staircase climbing into the sun',
+                  label: 'The Pool',
+                  italic: 'columns, palms, blue water',
+                  alt: 'Long pool at the Marrakesh villa with white columns and palm trees',
                 },
                 {
                   src: '/retreat/outdoor-dining.jpg',
                   no: '04',
                   label: 'Long Lunches',
-                  italic: 'a table with a view',
-                  alt: 'Outdoor dining table set with wine, glasses, and a view of the Andalusian mountains',
+                  italic: 'a table, a chef, the day',
+                  alt: 'Round dining table set with placemats and ceramics inside the Marrakesh villa',
                 },
                 {
                   src: '/retreat/evening.jpg',
                   no: '05',
                   label: 'The Evenings',
                   italic: 'firepits, music, slow nights',
-                  alt: 'Tables and firepit lit at dusk in front of the villa',
+                  alt: 'Firepit lit at dusk in the Marrakesh villa garden',
                 },
               ].map((shot, i) => (
                 <Reveal key={shot.no} delay={0.08 + i * 0.05}>
@@ -1150,7 +1034,7 @@ export default function SpainRetreatPage() {
               <div className="flex items-center justify-center gap-4 md:gap-6 mt-12 md:mt-16">
                 <span aria-hidden className="h-px w-12 md:w-20 bg-gradient-to-r from-transparent to-[#1a260e]/20" />
                 <p className="font-serif italic text-[#1a260e]/55 text-sm md:text-base tracking-wide">
-                  five frames, one week, one cortijo
+                  five frames, one week, one villa
                 </p>
                 <span aria-hidden className="h-px w-12 md:w-20 bg-gradient-to-l from-transparent to-[#1a260e]/20" />
               </div>
@@ -1181,9 +1065,9 @@ export default function SpainRetreatPage() {
             </Reveal>
             <Reveal delay={0.06}>
               <p className="font-serif text-xl md:text-3xl lg:text-4xl text-[#fffcf2] font-light leading-[1.35] italic">
-                A 7-night women-only luxury Pilates retreat in Spain &mdash; created
-                to celebrate Euforyc&apos;s birthday with movement, sunshine, private chef meals,
-                connection and slow living.
+                A 7-night women-only luxury Pilates retreat in Marrakesh &mdash; created
+                to celebrate Euforyc&apos;s birthday with movement, sunshine, full-course private
+                chef meals, a cooking workshop, massage, and slow living.
               </p>
             </Reveal>
             <Reveal delay={0.14}>
@@ -1207,8 +1091,8 @@ export default function SpainRetreatPage() {
                 What&apos;s <span className="italic">included</span>
               </h2>
               <p className="body-text max-w-2xl mx-auto mt-4 md:mt-5 text-sm md:text-base">
-                You arrive. We do the rest. Every package includes the same full retreat experience
-                &mdash; the only thing that changes is where you sleep at night.
+                You arrive. We do the rest. One package, every part of the week
+                already taken care of &mdash; just bring yourself.
               </p>
             </div>
           </Reveal>
@@ -1491,8 +1375,9 @@ export default function SpainRetreatPage() {
               </h2>
 
               <p className="text-[#fffcf2]/65 text-sm md:text-lg max-w-lg mx-auto leading-relaxed">
-                Seven nights at Cortijo Banana &mdash; movement, sunshine, private chef meals,
-                connection, and the kind of slow that changes how you feel about your own life.
+                Seven nights at a private Marrakesh villa &mdash; movement, Moroccan
+                sunshine, full-course private chef meals, cooking, massage, and the kind of
+                slow that changes how you feel about your own life.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-2">
@@ -1506,7 +1391,7 @@ export default function SpainRetreatPage() {
               </div>
 
               <p className="text-[#fffcf2]/40 text-xs tracking-[0.25em] uppercase pt-2">
-                Only {spacesLeft} of {TOTAL_GUEST_SPACES} spots left &nbsp;·&nbsp; 16 — 23 July 2026
+                Only {spacesLeft} of {TOTAL_GUEST_SPACES} spots left &nbsp;·&nbsp; 17 — 24 July 2026
               </p>
             </div>
           </Reveal>

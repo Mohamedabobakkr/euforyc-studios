@@ -138,7 +138,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.9,
     },
     {
-      url: `${baseUrl}/spain-retreat`,
+      url: `${baseUrl}/morocco-retreat`,
       lastModified: new Date(),
       changeFrequency: 'weekly',
       priority: 0.9,
