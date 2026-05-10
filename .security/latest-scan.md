@@ -30,7 +30,7 @@
 - Cookie security: PASS — `__Secure-` prefix, HttpOnly, Secure (in prod), SameSite=lax, 12h maxAge
 - No `eval()` or `new Function()` usage found
 - No `NEXT_PUBLIC_` env vars exposing secrets
-- 576 dependency tree entries scanned, 0 npm vulnerabilities
+- 549 packages audited (dependency tree), 0 npm vulnerabilities
 
 ## Fixes Applied
 - None needed — all checks pass, 0 npm vulnerabilities
