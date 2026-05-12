@@ -1,6 +1,6 @@
 # Security Scan Report
 
-**Date:** 2026-05-12 03:30 UTC
+**Date:** 2026-05-12 11:30 UTC
 **Status:** FIXES_APPLIED
 
 ## npm audit
@@ -39,7 +39,7 @@
 10. Safe Health Checks: PASS — no health endpoints exposing tokens or config
 
 ## Fixes Applied
-- `1787726` — fix(security): upgrade next.js 16.2.4 → 16.2.6 to patch 13 CVEs
+- `7c5089b` — fix(security): upgrade next.js 16.2.4 → 16.2.6 to patch 13 CVEs
 
 ## Manual Action Required
-- Run `npm install` after pulling to regenerate package-lock.json with next@16.2.6
+- None — all vulnerabilities resolved, all code security checks pass
