@@ -1,45 +1,43 @@
 # Security Scan Report
 
-**Date:** 2026-05-12 11:30 UTC
-**Status:** FIXES_APPLIED
+**Date:** 2026-05-12 19:30 UTC
+**Status:** CLEAN
 
 ## npm audit
 - Critical: 0
-- High: 1 (FIXED — next.js 16.2.4 → 16.2.6)
+- High: 0
 - Medium: 0
 - Low: 0
 
-### next.js 16.2.4 — 13 CVEs patched by upgrading to 16.2.6
-| Severity | Advisory | Title |
-|----------|----------|-------|
-| High | GHSA-8h8q-6873-q5fj | DoS with Server Components |
-| High | GHSA-mg66-mrh9-m8jx | DoS via connection exhaustion (Cache Components) |
-| High | GHSA-c4j6-fc7j-m34r | SSRF via WebSocket upgrades |
-| High | GHSA-492v-c6pp-mqqv | Middleware/Proxy bypass via dynamic route parameter injection |
-| High | GHSA-267c-6grr-h53f | Middleware/Proxy bypass via segment-prefetch routes |
-| High | GHSA-36qx-fr4f-26g5 | Middleware/Proxy bypass (Pages Router i18n) |
-| High | GHSA-26hh-7cqf-hhc6 | Middleware/Proxy bypass (segment-prefetch, follow-up) |
-| Moderate | GHSA-ffhc-5mcf-pf4q | XSS in App Router with CSP nonces |
-| Moderate | GHSA-gx5p-jg67-6x7h | XSS in beforeInteractive scripts |
-| Moderate | GHSA-h64f-5h5j-jqjh | DoS in Image Optimization API |
-| Moderate | GHSA-wfc6-r584-vfw7 | Cache poisoning in RSC responses |
-| Low | GHSA-vfv6-92ff-j949 | Cache poisoning via RSC cache-busting collisions |
-| Low | GHSA-3g8h-86w9-wvmq | Middleware/Proxy redirect cache poisoning |
+### Prior fix (earlier today): next.js 16.2.4 → 16.2.6 patched 13 CVEs
+All previously reported vulnerabilities were resolved in commit `7c5089b`. Current audit is fully clean.
 
 ## Code Security Checks
-1. SSRF Protection: PASS — validateSquarePath() blocks `..`, `//`, `\\`; regex enforces safe chars
-2. API Auth: PASS — orders/ and update-order/ both call authenticateBarista() with HttpOnly cookie; rate-limited login (5 attempts/15 min/IP); constant-time password comparison
-3. Webhook Signatures: PASS — HMAC-SHA256 verified with constant-time comparison; fails closed (500) when key missing; rejects invalid with 403
-4. Input Validation: PASS — orderId/fulfillmentUid validated with `/^[a-zA-Z0-9_-]+$/`; state transitions whitelisted; create-order caps items at 50, modifiers at 20, strings at 100/500 chars
-5. Security Headers: PASS — HSTS (preload), CSP, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy, poweredByHeader: false
-6. Image Hostnames: PASS — only specific trusted domains; no wildcard `**` hostname
-7. No Hardcoded Secrets: PASS — all secrets via process.env; no sk-/pk_live found
-8. No localStorage Credentials: PASS — auth uses HttpOnly + Secure + SameSite cookies exclusively
-9. No Error Leaks: PASS — generic messages in production; details only in dev mode
-10. Safe Health Checks: PASS — no health endpoints exposing tokens or config
+1. SSRF Protection: PASS — `validateSquarePath()` in `lib/square.ts:40-54` rejects `..`, `//`, `\\`, requires leading `/`, enforces `/^\/[a-zA-Z0-9/_-]+$/` on path portion
+2. API Auth: PASS — `orders/route.ts` and `update-order/route.ts` call `authenticateBarista()` (HttpOnly HMAC-SHA256 signed session cookie, 12h expiry); login rate-limited to 5 attempts/15 min per IP with constant-time password comparison
+3. Webhook Signatures: PASS — Square webhook uses HMAC-SHA256 with constant-time comparison; fails closed (500) when `SQUARE_WEBHOOK_SIGNATURE_KEY` missing; rejects invalid signatures with 403
+4. Input Validation: PASS — `orderId`/`fulfillmentUid` validated with `/^[a-zA-Z0-9_-]+$/`; state transitions whitelisted via `VALID_TRANSITIONS`; create-order caps items at 50, modifiers at 20, strings at 100/500 chars, quantity 1-99
+5. Security Headers: PASS — HSTS (max-age=63072000; includeSubDomains; preload), CSP with strict directives, X-Frame-Options: SAMEORIGIN, X-Content-Type-Options: nosniff, Referrer-Policy: strict-origin-when-cross-origin, Permissions-Policy (camera/mic/geo denied), `poweredByHeader: false`, API routes set `Cache-Control: no-store`
+6. Image Hostnames: PASS — Only whitelisted domains in `remotePatterns` (squarecdn.com, euforyc.co.uk, momence.com, S3 bucket, localhost); no `hostname: '**'` wildcard
+7. No Hardcoded Secrets: PASS — No `sk-`, `pk_live_`, or hardcoded passwords in `app/`, `lib/`, `components/`; all secrets via `process.env`; `.env` and `.env*.local` properly gitignored
+8. No localStorage Credentials: PASS — Zero `localStorage`/`sessionStorage` credential storage; auth uses HttpOnly + Secure + SameSite cookies exclusively
+9. No Error Leaks: PASS — All API routes return generic error strings; Momence client only exposes `details` when `NODE_ENV === 'development'`; no `String(error)` or stack traces in responses
+10. Safe Health Checks: PASS — No health check endpoints exist; auth check endpoint (`GET /api/sips/auth`) returns only `{ authenticated: boolean }`
+
+## Additional Checks
+- `dangerouslySetInnerHTML` usage: SAFE — All instances are for JSON-LD structured data via `JSON.stringify()` on hardcoded schema objects (no user input)
+- Open redirect protection: PASS — `create-order/route.ts` validates redirect origin against `ALLOWED_ORIGINS` whitelist
+- Telegram notification: SAFE — `escapeHtml()` in `lib/notify.ts` sanitizes user-supplied `customerName` and `note` before HTML rendering
+- Deduplication: Square webhook deduplicates events via in-memory cache with 10-min TTL and 500-entry cap
+- Constant-time password comparison: PASS — `barista-auth.ts:89-104` uses XOR-based byte comparison to prevent timing attacks
+- Cookie security: PASS — `__Secure-` prefix, HttpOnly, Secure (in prod), SameSite=lax, 12h maxAge
+- No `eval()` or `new Function()` usage found
+- No `NEXT_PUBLIC_` env vars exposing secrets
+- 465 packages audited, 0 npm vulnerabilities
 
 ## Fixes Applied
-- `7c5089b` — fix(security): upgrade next.js 16.2.4 → 16.2.6 to patch 13 CVEs
+- `7c5089b` — fix(security): upgrade next.js 16.2.4 → 16.2.6 to patch 13 CVEs (applied earlier today)
+- No new fixes needed this scan
 
 ## Manual Action Required
-- None — all vulnerabilities resolved, all code security checks pass
+- None
