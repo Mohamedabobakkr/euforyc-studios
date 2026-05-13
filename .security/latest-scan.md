@@ -1,6 +1,6 @@
 # Security Scan Report
 
-**Date:** 2026-05-13 11:39 UTC
+**Date:** 2026-05-13 19:45 UTC
 **Status:** FIXES_APPLIED
 
 ## npm audit
@@ -34,7 +34,7 @@
 - No `NEXT_PUBLIC_` env vars exposing secrets
 
 ## Fixes Applied
-- `9a43205` — fix(security): upgrade Next.js 16.2.4 → 16.2.6 (patches 13 CVEs: DoS via Server Components, SSRF via WebSocket upgrades, middleware/proxy bypass, XSS in CSP nonces, cache poisoning)
+- fix(security): upgrade Next.js 16.2.4 → 16.2.6 (patches 13 CVEs: DoS via Server Components, SSRF via WebSocket upgrades, middleware/proxy bypass, XSS in CSP nonces, cache poisoning)
 
 ## Manual Action Required
-- Vercel should auto-regenerate package-lock.json on next deploy from updated package.json (^16.2.6). If your deployment uses `npm ci`, run `npm install next@16.2.6` locally and commit the updated lock file.
+- Run `npm install` locally to regenerate package-lock.json with Next.js 16.2.6, then commit the updated lockfile. Vercel will resolve the correct version from `^16.2.6` in package.json on deploy.
