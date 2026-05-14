@@ -1,6 +1,6 @@
 # Security Scan Report
 
-**Date:** 2026-05-14 11:30 UTC
+**Date:** 2026-05-14 19:30 UTC
 **Status:** CLEAN
 
 ## npm audit
@@ -9,7 +9,8 @@
 - Medium: 0
 - Low: 0
 
-465 packages audited. 0 vulnerabilities found.
+548 packages audited. 0 vulnerabilities found.
+Next.js 16.2.6 — all 13 CVEs from 16.2.4 resolved (upgraded in commit e41d9b1).
 
 ## Code Security Checks
 1. SSRF Protection: PASS — `validateSquarePath()` in `lib/square.ts:40-54` rejects `..`, `//`, `\\`, requires leading `/`, enforces `/^\/[a-zA-Z0-9/_-]+$/` on path portion
@@ -34,7 +35,7 @@
 - No `NEXT_PUBLIC_` env vars exposing secrets
 
 ## Fixes Applied
-- None needed
+- None needed — all prior fixes (Next.js 16.2.6 upgrade) already applied
 
 ## Manual Action Required
 - None
