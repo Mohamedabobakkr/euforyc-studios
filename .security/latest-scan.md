@@ -1,15 +1,15 @@
 # Security Scan Report
 
-**Date:** 2026-05-13 19:45 UTC
-**Status:** FIXES_APPLIED
+**Date:** 2026-05-14 11:30 UTC
+**Status:** CLEAN
 
 ## npm audit
 - Critical: 0
-- High: 1 (Next.js 16.2.4 — 13 CVEs, FIXED by upgrading to 16.2.6)
+- High: 0
 - Medium: 0
 - Low: 0
 
-548 packages audited. Post-fix: 0 vulnerabilities.
+465 packages audited. 0 vulnerabilities found.
 
 ## Code Security Checks
 1. SSRF Protection: PASS — `validateSquarePath()` in `lib/square.ts:40-54` rejects `..`, `//`, `\\`, requires leading `/`, enforces `/^\/[a-zA-Z0-9/_-]+$/` on path portion
@@ -34,7 +34,7 @@
 - No `NEXT_PUBLIC_` env vars exposing secrets
 
 ## Fixes Applied
-- fix(security): upgrade Next.js 16.2.4 → 16.2.6 (patches 13 CVEs: DoS via Server Components, SSRF via WebSocket upgrades, middleware/proxy bypass, XSS in CSP nonces, cache poisoning)
+- None needed
 
 ## Manual Action Required
-- Run `npm install` locally to regenerate package-lock.json with Next.js 16.2.6, then commit the updated lockfile. Vercel will resolve the correct version from `^16.2.6` in package.json on deploy.
+- None
