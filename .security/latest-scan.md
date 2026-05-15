@@ -1,6 +1,6 @@
 # Security Scan Report
 
-**Date:** 2026-05-15 11:30 UTC
+**Date:** 2026-05-15 19:30 UTC
 **Status:** CLEAN
 
 ## npm audit
@@ -21,7 +21,7 @@ Next.js 16.2.6 — no known CVEs.
 6. Image Hostnames: PASS — Only whitelisted domains in `remotePatterns` (squarecdn.com, euforyc.co.uk, momence.com, S3 bucket, localhost); no `hostname: '**'` wildcard
 7. No Hardcoded Secrets: PASS — No `sk-`, `pk_live_`, or hardcoded passwords in `app/`, `lib/`, `components/`; all secrets via `process.env`; `.env` and `.env*.local` properly gitignored
 8. No localStorage Credentials: PASS — Zero `localStorage`/`sessionStorage` credential storage; auth uses HttpOnly + Secure + SameSite cookies exclusively
-9. No Error Leaks: PASS — All API routes return generic error strings; Momence client only exposes `details` when `NODE_ENV === 'development'`; no `String(error)` or stack traces in responses
+9. No Error Leaks: PASS — All API routes return generic error strings; Momence client only exposes `details` when `NODE_ENV === 'development'`; ErrorState component also gated behind dev-only check; no `String(error)` or stack traces in production responses
 10. Safe Health Checks: PASS — No health check endpoints exist; auth check endpoint (`GET /api/sips/auth`) returns only `{ authenticated: boolean }`
 
 ## Additional Checks
@@ -32,7 +32,7 @@ Next.js 16.2.6 — no known CVEs.
 - Constant-time password comparison: PASS — `barista-auth.ts:89-104` uses XOR-based byte comparison to prevent timing attacks
 - Cookie security: PASS — `__Secure-` prefix, HttpOnly, Secure (in prod), SameSite=lax, 12h maxAge
 - No `eval()` or `new Function()` usage found
-- No `NEXT_PUBLIC_` env vars exposing secrets
+- No `NEXT_PUBLIC_` env vars exposing secrets (only `NEXT_PUBLIC_SITE_URL` containing the public domain)
 
 ## Fixes Applied
 - None needed — all checks pass
