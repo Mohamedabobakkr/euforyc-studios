@@ -1,6 +1,6 @@
 # Security Scan Report
 
-**Date:** 2026-05-16 03:30 UTC
+**Date:** 2026-05-16 12:00 UTC
 **Status:** CLEAN
 
 ## npm audit
@@ -9,7 +9,7 @@
 - Medium: 0
 - Low: 0
 
-548 packages audited. 0 vulnerabilities found.
+549 packages audited. 0 vulnerabilities found.
 
 ## Code Security Checks
 1. SSRF Protection: PASS — `validateSquarePath()` in `lib/square.ts:40-54` rejects `..`, `//`, `\\`, requires leading `/`, enforces `/^\/[a-zA-Z0-9/_-]+$/` on path portion
@@ -24,12 +24,14 @@
 10. Safe Health Checks: PASS — No health check endpoints exist; auth check endpoint (`GET /api/sips/auth`) returns only `{ authenticated: boolean }`
 
 ## Additional Checks
+- `dangerouslySetInnerHTML` usage: SAFE — JSON-LD structured data via `JSON.stringify()` on hardcoded schema objects (no user input)
 - Open redirect protection: PASS — `create-order/route.ts` validates redirect origin against `ALLOWED_ORIGINS` whitelist
 - Telegram notification: SAFE — `escapeHtml()` in `lib/notify.ts` sanitizes user-supplied `customerName` and `note` before HTML rendering
 - Deduplication: Square webhook deduplicates events via in-memory cache with 10-min TTL and 500-entry cap
 - Constant-time password comparison: PASS — `barista-auth.ts:89-104` uses XOR-based byte comparison to prevent timing attacks
 - Cookie security: PASS — `__Secure-` prefix, HttpOnly, Secure (in prod), SameSite=lax, 12h maxAge
 - No `eval()` or `new Function()` usage found
+- No `NEXT_PUBLIC_` env vars exposing secrets
 
 ## Fixes Applied
 - None needed — all checks pass
