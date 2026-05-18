@@ -1,15 +1,18 @@
 # Security Scan Report
 
-**Date:** 2026-05-18 11:30 UTC
-**Status:** CLEAN
+**Date:** 2026-05-18 19:30 UTC
+**Status:** FIXES_APPLIED
 
 ## npm audit
 - Critical: 0
 - High: 0
-- Medium: 0
+- Medium: 0 (was 1 — fixed)
 - Low: 0
 
-549 packages audited. 0 vulnerabilities found.
+549 packages audited. 0 vulnerabilities remaining after fix.
+
+### Fixed
+- **brace-expansion** 5.0.5 → 5.0.6 — moderate DoS (GHSA-jxxr-4gwj-5jf2). Transitive dep via eslint-config-next → @typescript-eslint/typescript-estree → minimatch. Fixed with `npm audit fix`.
 
 ## Code Security Checks
 1. SSRF Protection: PASS — `validateSquarePath()` in `lib/square.ts:40-54` rejects `..`, `//`, `\\`, requires leading `/`, enforces `/^\/[a-zA-Z0-9/_-]+$/` on path portion
@@ -34,7 +37,7 @@
 - No `NEXT_PUBLIC_` env vars exposing secrets
 
 ## Fixes Applied
-- None needed — all checks pass
+- `ac9b7e7` fix(security): upgrade brace-expansion 5.0.5 → 5.0.6 (GHSA-jxxr-4gwj-5jf2)
 
 ## Manual Action Required
 - None
