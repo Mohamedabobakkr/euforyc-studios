@@ -1,6 +1,6 @@
 # Security Scan Report
 
-**Date:** 2026-05-19 03:30 UTC
+**Date:** 2026-05-19 14:35 UTC
 **Status:** FIXES_APPLIED
 
 ## npm audit
@@ -34,7 +34,7 @@
 - No `NEXT_PUBLIC_` env vars exposing secrets
 
 ## Fixes Applied
-- `ff1bc86` fix(security): upgrade brace-expansion 5.0.5 → 5.0.6 (GHSA-jxxr-4gwj-5jf2) — moderate DoS via large numeric range bypassing max protection
+- `ca157cd` fix(security): upgrade brace-expansion 5.0.5 → 5.0.6 (GHSA-jxxr-4gwj-5jf2) — moderate DoS via large numeric range bypassing max protection. Transitive dep via eslint-config-next → @typescript-eslint/parser → minimatch.
 
 ## Manual Action Required
 - None
