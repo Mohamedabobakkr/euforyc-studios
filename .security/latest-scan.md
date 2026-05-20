@@ -1,16 +1,19 @@
 # Security Scan Report
 
-**Date:** 2026-05-19 19:30 UTC
+**Date:** 2026-05-20 03:30 UTC
 **Status:** FIXES_APPLIED
 
 ## npm audit
 - Critical: 0
 - High: 0
-- Medium: 0 (was 1 — fixed in prior commit)
+- Medium: 0 (was 1 — fixed)
 - Low: 0
 
 549 packages audited. 0 vulnerabilities remaining.
-Fixed: brace-expansion 5.0.5 → 5.0.6 (GHSA-jxxr-4gwj-5jf2, moderate DoS via large numeric ranges bypassing `max` protection). Transitive dep of eslint-config-next → @typescript-eslint/parser → @typescript-eslint/typescript-estree → minimatch.
+Next.js 16.2.6 — no known CVEs.
+
+### Fixed
+- **brace-expansion 5.0.5 → 5.0.6** (GHSA-jxxr-4gwj-5jf2, moderate): Large numeric range defeats documented `max` DoS protection. Transitive dep via eslint-config-next → @typescript-eslint/parser → minimatch. Fixed via `npm audit fix`.
 
 ## Code Security Checks
 1. SSRF Protection: PASS — `validateSquarePath()` in `lib/square.ts:40-54` blocks `..`, `//`, `\\`; requires leading `/`; enforces `/^\/[a-zA-Z0-9/_-]+$/` on path portion before query string
@@ -34,7 +37,7 @@ Fixed: brace-expansion 5.0.5 → 5.0.6 (GHSA-jxxr-4gwj-5jf2, moderate DoS via la
 - Logout endpoint: PASS — properly clears session cookie with maxAge=0
 
 ## Fixes Applied
-- `ca157cd` fix(security): upgrade brace-expansion 5.0.5 → 5.0.6 (GHSA-jxxr-4gwj-5jf2) — moderate DoS via large numeric range bypassing max protection (applied in prior scan run)
+- `npm audit fix` — brace-expansion 5.0.5 → 5.0.6 (GHSA-jxxr-4gwj-5jf2, moderate DoS)
 
 ## Manual Action Required
-- None — all vulnerabilities resolved, all code checks pass
+- **Build environment**: `npm run build` fails in CI due to missing `MOMENCE_API_TOKEN` env var. The MomenceApiClient singleton throws at import time when the token is absent. This is a pre-existing issue unrelated to security — ensure the env var is set in all build/deploy environments.
