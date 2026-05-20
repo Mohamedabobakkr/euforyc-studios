@@ -1,6 +1,6 @@
 # Security Scan Report
 
-**Date:** 2026-05-20 11:30 UTC
+**Date:** 2026-05-20 19:30 UTC
 **Status:** CLEAN
 
 ## npm audit
@@ -20,7 +20,7 @@
 6. Image Hostnames: PASS — Only whitelisted domains in `remotePatterns` (squarecdn.com, euforyc.co.uk, momence.com, S3 bucket, localhost); no `hostname: '**'` wildcard
 7. No Hardcoded Secrets: PASS — No `sk-`, `pk_live_`, or hardcoded passwords found in `app/`, `lib/`, `components/`; all secrets sourced from `process.env`; `.env` and `.env*.local` properly gitignored
 8. No localStorage Credentials: PASS — Zero `localStorage`/`sessionStorage` credential usage found; auth uses HttpOnly + Secure + SameSite cookies exclusively
-9. No Error Leaks: PASS — All API routes return generic error strings to clients; Momence client only includes `details` when `NODE_ENV === 'development'`; no `String(error)` or stack traces in API responses
+9. No Error Leaks: PASS — All API routes return generic error strings to clients; Momence routes only include `details` when `NODE_ENV === 'development'`; no `String(error)` or stack traces in API responses
 10. Safe Health Checks: PASS — No health check endpoints exist; auth check endpoint (`GET /api/sips/auth`) returns only `{ authenticated: boolean }` with no internal config
 
 ## Additional Checks
@@ -33,7 +33,7 @@
 - Logout endpoint: PASS — properly clears session cookie with maxAge=0
 
 ## Fixes Applied
-- None needed — all checks pass (brace-expansion was fixed in prior scan 2026-05-20 03:30 UTC)
+- None needed — all checks pass (brace-expansion 5.0.5→5.0.6 was fixed in prior scan)
 
 ## Manual Action Required
-- None
+- **Build environment**: `npm run build` fails at `/api/momence/events` because Momence API env vars are not present at build time. Not a security issue — recommend setting env vars in CI/build environment or making `momence-client.ts` fail gracefully when token is missing during static analysis.
