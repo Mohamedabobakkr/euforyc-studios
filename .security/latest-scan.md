@@ -1,6 +1,6 @@
 # Security Scan Report
 
-**Date:** 2026-05-21 11:28 UTC
+**Date:** 2026-05-21 19:30 UTC
 **Status:** CLEAN
 
 ## npm audit
@@ -9,7 +9,7 @@
 - Medium: 0
 - Low: 0
 
-549 packages audited. 0 vulnerabilities found. (brace-expansion 5.0.5 → 5.0.6 was fixed in prior scan)
+549 packages audited. 0 vulnerabilities found.
 
 ## Code Security Checks
 1. SSRF Protection: PASS — `validateSquarePath()` in `lib/square.ts:40-54` blocks `..`, `//`, `\\`; requires leading `/`; enforces `/^\/[a-zA-Z0-9/_-]+$/` on path portion before query string
@@ -33,7 +33,7 @@
 - Logout endpoint: PASS — properly clears session cookie with maxAge=0
 
 ## Fixes Applied
-- None needed — all checks pass (brace-expansion 5.0.5→5.0.6 was fixed in prior scan)
+- None needed — all checks pass
 
 ## Manual Action Required
 - None
