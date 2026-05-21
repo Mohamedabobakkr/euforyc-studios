@@ -1,6 +1,6 @@
 # Security Scan Report
 
-**Date:** 2026-05-20 19:30 UTC
+**Date:** 2026-05-21 03:30 UTC
 **Status:** CLEAN
 
 ## npm audit
@@ -9,7 +9,7 @@
 - Medium: 0
 - Low: 0
 
-549 packages audited. 0 vulnerabilities found.
+549 packages audited. 0 vulnerabilities found. (brace-expansion 5.0.5 → 5.0.6 was fixed in prior scan)
 
 ## Code Security Checks
 1. SSRF Protection: PASS — `validateSquarePath()` in `lib/square.ts:40-54` blocks `..`, `//`, `\\`; requires leading `/`; enforces `/^\/[a-zA-Z0-9/_-]+$/` on path portion before query string
@@ -36,4 +36,4 @@
 - None needed — all checks pass (brace-expansion 5.0.5→5.0.6 was fixed in prior scan)
 
 ## Manual Action Required
-- **Build environment**: `npm run build` fails at `/api/momence/events` because Momence API env vars are not present at build time. Not a security issue — recommend setting env vars in CI/build environment or making `momence-client.ts` fail gracefully when token is missing during static analysis.
+- None
