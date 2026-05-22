@@ -155,9 +155,9 @@ function ThankYouContent() {
             </div>
             <div className="bg-white border border-[#1a260e]/10 rounded-xl p-5">
               <p className="font-serif text-3xl mb-2 text-[#1a260e]/30">03</p>
-              <h3 className="font-serif text-base mb-1.5">Just bring yourself</h3>
+              <h3 className="font-serif text-base mb-1.5">What to bring</h3>
               <p className="text-xs text-[#1a260e]/65 leading-relaxed">
-                Comfortable clothes you can move in. We provide mats, towels, and everything else.
+                Comfortable clothes you can move in. <strong className="text-[#1a260e]/85 font-medium">Grip socks</strong> are mandatory for Reformer &mdash; bring your own or buy a pair at the studio (one-time, reuse every class). For <strong className="text-[#1a260e]/85 font-medium">Hot Pilates</strong>, a towel is also mandatory &mdash; bring one or buy at the studio.
               </p>
             </div>
           </div>
