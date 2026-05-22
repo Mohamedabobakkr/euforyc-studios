@@ -12,8 +12,6 @@ interface PackageCardProps {
   showBadge?: boolean;
 }
 
-// Returns data-* attributes used by the global pixel click handler to fire
-// InitiateCheckout with real values and bridge identifiers to Momence.
 function pixelAttrs(product: MomenceProduct, category = '/packages') {
   const offerId = product.id
     ? `package-${product.id}`

@@ -29,8 +29,6 @@ export default function PixelTracker() {
     const pvId = generateEventId('PageView');
     fbq('track', 'PageView', {}, { eventID: pvId });
 
-    // ViewContent only fires when the current page exposes #page-content-meta with real data.
-    // This avoids polluting Meta with fake flat values on every SPA navigation.
     const metaEl = document.getElementById('page-content-meta');
     if (metaEl) {
       const vcId = generateEventId('ViewContent');

@@ -325,8 +325,6 @@ export default function RootLayout({
               }
             } catch (e) {}
 
-            // Persistent external_id — cross-session, cross-page user identifier.
-            // Strongest match signal Meta accepts after email hash.
             var euforycUserId = (function() {
               try {
                 var id = localStorage.getItem('euforyc_uid');
@@ -349,8 +347,6 @@ export default function RootLayout({
               } catch (e) { return null; }
             }
 
-            // Advanced Matching — re-evaluated at every fire to catch form fields
-            // filled AFTER page init. Meta's fbevents.js hashes client-side.
             function euforycAdvancedMatching() {
               var data = { country: 'gb' };
               if (euforycUserId) data.external_id = euforycUserId;
@@ -378,18 +374,13 @@ export default function RootLayout({
 
             fbq('init', '${EUFORYC_PIXEL_ID}', euforycAdvancedMatching());
 
-            // Re-init before each track to refresh advanced matching with current form values.
             function euforycRefreshMatching() {
               try { fbq('init', '${EUFORYC_PIXEL_ID}', euforycAdvancedMatching()); } catch (e) {}
             }
 
-            // Initial PageView (subsequent SPA navigations handled by PixelTracker component)
             var initialPv = euforycEventId('PageView');
             fbq('track', 'PageView', {}, { eventID: initialPv });
 
-            // ViewContent — only fires with real monetary value via data-* attributes on /offers, /memberships, etc.
-            // Generic page ViewContent is no longer faked; pages that want it must set data attributes
-            // on a #page-content-meta element OR fire it themselves with real data.
             try {
               var metaEl = document.getElementById('page-content-meta');
               if (metaEl) {
@@ -410,9 +401,6 @@ export default function RootLayout({
               }
             } catch (e) {}
 
-            // InitiateCheckout on Momence booking clicks.
-            // Reads explicit data-* attributes (no more £-regex guessing).
-            // Bridges identifiers to Momence via URL params for cross-domain attribution.
             var lastCheckoutTime = 0;
             document.addEventListener('click', function(e) {
               var target = e.target.closest('a[href*="momence.com"], button[data-booking]');
@@ -442,8 +430,6 @@ export default function RootLayout({
               if (value > 0) { icPayload.value = value; icPayload.currency = currency; }
               fbq('track', 'InitiateCheckout', icPayload, { eventID: icId });
 
-              // Bridge identity to Momence checkout URL so its CAPI can attribute back.
-              // Momence preserves URL params and forwards them in CAPI events.
               try {
                 var href = target.getAttribute('href');
                 if (href && href.indexOf('momence.com') !== -1) {
