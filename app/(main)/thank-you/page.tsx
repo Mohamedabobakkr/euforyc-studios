@@ -3,6 +3,7 @@
 import { useEffect, useRef, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
+import { resolveMomenceId } from '@/lib/momence-pricing';
 
 function readParam(sp: URLSearchParams, keys: string[]): string {
   for (const k of keys) {
@@ -23,20 +24,29 @@ function ThankYouContent() {
     if (typeof fbq !== 'function') return;
 
     const orderId = readParam(searchParams, ['order_id', 'orderId', 'booking_id', 'bookingId', 'id', 'transaction_id']);
+    const momenceId = readParam(searchParams, ['membershipId', 'productId', 'packageId', 'classId', 'eventId', 'id']);
     const rawValue = readParam(searchParams, ['value', 'amount', 'price', 'total']);
-    const value = parseFloat(rawValue.replace(/[^0-9.]/g, '')) || 0;
-    const currency = readParam(searchParams, ['currency']) || 'GBP';
-    const serviceName = readParam(searchParams, ['service', 'service_name', 'item', 'product', 'name', 'content_name']);
-    const purchaseType = readParam(searchParams, ['type', 'purchase_type', 'category', 'content_type']);
+    const urlValue = parseFloat(rawValue.replace(/[^0-9.]/g, '')) || 0;
+    const urlCurrency = readParam(searchParams, ['currency']);
+    const urlServiceName = readParam(searchParams, ['service', 'service_name', 'item', 'product', 'name', 'content_name']);
+    const urlType = readParam(searchParams, ['type', 'purchase_type', 'category', 'content_type']);
     const email = readParam(searchParams, ['email', 'em']);
     const phoneRaw = readParam(searchParams, ['phone', 'ph', 'mobile']);
     const firstName = readParam(searchParams, ['first_name', 'fname', 'firstName']);
     const lastName = readParam(searchParams, ['last_name', 'lname', 'lastName']);
 
-    // Deterministic event_id from orderId keeps page refreshes from double-firing.
-    let eventId = readParam(searchParams, ['event_id', 'eventId']);
+    const resolved = resolveMomenceId(momenceId);
+    const value = urlValue > 0 ? urlValue : (resolved?.value ?? 0);
+    const currency = urlCurrency || resolved?.currency || 'GBP';
+    const serviceName = urlServiceName || resolved?.contentName || '';
+    const purchaseType = resolved?.contentType || urlType || '';
+
+    let eventId = readParam(searchParams, ['event_id']);
     if (!eventId && orderId) {
       eventId = 'purchase_momence_' + orderId.replace(/[^A-Za-z0-9_-]/g, '').substring(0, 64);
+    }
+    if (!eventId && momenceId) {
+      eventId = 'purchase_mid_' + momenceId.replace(/[^A-Za-z0-9_-]/g, '').substring(0, 32) + '_' + Math.floor(Date.now() / 60000);
     }
     if (!eventId) {
       eventId = 'purchase_' + Date.now() + '_' + Math.random().toString(36).substring(2, 10);
@@ -68,9 +78,10 @@ function ThankYouContent() {
     payload.currency = currency.toUpperCase();
     if (serviceName) payload.content_name = serviceName.substring(0, 200);
     if (purchaseType) payload.content_type = purchaseType.substring(0, 50);
-    if (orderId) {
-      payload.content_ids = [orderId.substring(0, 100)];
-      payload.order_id = orderId.substring(0, 100);
+    const idForContent = orderId || momenceId;
+    if (idForContent) {
+      payload.content_ids = [idForContent.substring(0, 100)];
+      payload.order_id = idForContent.substring(0, 100);
     }
     payload.num_items = 1;
 
@@ -78,8 +89,11 @@ function ThankYouContent() {
     firedRef.current = true;
   }, [searchParams]);
 
-  const value = searchParams.get('value') || searchParams.get('amount') || searchParams.get('price') || '';
-  const service = searchParams.get('service') || searchParams.get('service_name') || searchParams.get('item') || '';
+  const displayMomenceId = searchParams.get('membershipId') || searchParams.get('productId') || searchParams.get('packageId') || searchParams.get('classId') || '';
+  const displayResolved = resolveMomenceId(displayMomenceId);
+  const urlValueRaw = searchParams.get('value') || searchParams.get('amount') || searchParams.get('price') || '';
+  const value = urlValueRaw || (displayResolved ? String(displayResolved.value) : '');
+  const service = searchParams.get('service') || searchParams.get('service_name') || searchParams.get('item') || displayResolved?.contentName || '';
   const orderId = searchParams.get('order_id') || searchParams.get('booking_id') || '';
 
   return (
