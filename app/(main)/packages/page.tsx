@@ -2,7 +2,7 @@
 
 import { useState, useEffect, Suspense, useRef } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { Sparkles, Flame, Zap, Heart, Crown, ChevronRight, Dumbbell } from 'lucide-react';
+import { Sparkles, Flame, Zap, Heart, Crown, ChevronRight, Dumbbell, Music } from 'lucide-react';
 
 // Services Schema for SEO
 const servicesSchema = {
@@ -51,6 +51,7 @@ const packages = {
       { id: 'hot-pilates', name: 'Hot Pilates', classes: '3 Classes', price: '£50', savings: 'First-time offer', description: 'Dynamic mat-based pilates with infrared heat', momenceUrl: 'https://momence.com/m/507852', icon: 'flame', validity: '20 days' },
       { id: 'red-light', name: 'Red Light Hot Pilates', classes: '3 Classes', price: '£65', savings: 'First-time offer', description: 'Enhanced hot pilates with red light therapy benefits', momenceUrl: 'https://momence.com/m/624096', icon: 'zap', validity: '20 days' },
       { id: 'barre', name: 'Barre', classes: '3 Classes', price: '£60', savings: 'First-time offer', description: 'Ballet-inspired workout for strength and flexibility', momenceUrl: 'https://momence.com/m/621480', icon: 'heart', validity: '30 days' },
+      { id: 'belly-dance', name: 'Belly Dance', classes: '3 Classes', price: '£35', savings: 'First-time offer', description: 'Sensual, expressive movement rooted in traditional belly dance', momenceUrl: 'https://momence.com/m/776393', icon: 'music', validity: '30 days' },
       { id: 'try-all', name: 'Try All', classes: '3 Classes', price: '£70', savings: 'First-time offer', description: 'Experience all class types - Reformer, Hot Pilates, Barre, Dance & more', momenceUrl: 'https://momence.com/m/631782', icon: 'sparkles', validity: '20 days' },
       { id: 'cadillac', name: 'Cadillac 1-1', classes: '3 Classes', price: '£180', savings: 'First-time offer', description: 'Private one-on-one sessions on our Cadillac Reformer', momenceUrl: 'https://momence.com/m/708119', icon: 'crown', validity: '20 days' },
       { id: 'ems-sculpt', name: 'EMS Sculpt', classes: '3 Classes', price: '£180', savings: 'First-time offer', description: 'Electrical Muscle Stimulation training for accelerated sculpting', momenceUrl: 'https://momence.com/m/718403', icon: 'dumbbell', validity: '30 days' }
@@ -135,7 +136,7 @@ const categories: { key: CategoryKey; label: string }[] = [
   { key: 'dancePackage', label: 'Dance' },
 ];
 
-type IntroOfferType = 'reformer' | 'hot-pilates' | 'red-light' | 'barre' | 'try-all' | 'cadillac' | 'ems-sculpt';
+type IntroOfferType = 'reformer' | 'hot-pilates' | 'red-light' | 'barre' | 'belly-dance' | 'try-all' | 'cadillac' | 'ems-sculpt';
 
 const getIcon = (icon: string, className?: string) => {
   switch (icon) {
@@ -145,6 +146,7 @@ const getIcon = (icon: string, className?: string) => {
     case 'sparkles': return <Sparkles className={className} />;
     case 'crown': return <Crown className={className} />;
     case 'dumbbell': return <Dumbbell className={className} />;
+    case 'music': return <Music className={className} />;
     default: return <Sparkles className={className} />;
   }
 };
@@ -157,7 +159,7 @@ function IntroOffersSection() {
 
   useEffect(() => {
     const offer = searchParams.get('offer') as IntroOfferType | null;
-    if (offer && ['reformer', 'hot-pilates', 'red-light', 'barre', 'try-all', 'cadillac', 'ems-sculpt'].includes(offer)) {
+    if (offer && ['reformer', 'hot-pilates', 'red-light', 'barre', 'belly-dance', 'try-all', 'cadillac', 'ems-sculpt'].includes(offer)) {
       setSelectedOffer(offer);
       setFromAd(true);
     }

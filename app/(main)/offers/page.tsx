@@ -126,6 +126,27 @@ const introOffers = {
     icon: Heart,
     highlight: false,
   },
+  'belly-dance': {
+    id: 'belly-dance',
+    name: 'Belly Dance',
+    shortName: 'Belly Dance',
+    classes: '3 Classes',
+    price: '£35',
+    perClass: '£11.67',
+    regularPrice: '£45',
+    savings: 'Save £10',
+    validity: '30 days',
+    description: 'Sensual, expressive movement rooted in traditional belly dance',
+    benefits: [
+      'No dance experience needed',
+      'Core strength & posture',
+      'Fun, expressive workout',
+      'All ages & levels welcome'
+    ],
+    momenceUrl: 'https://momence.com/m/776393',
+    icon: Music,
+    highlight: false,
+  },
   'try-all': {
     id: 'try-all',
     name: 'Try All',
@@ -214,7 +235,7 @@ const dancePackages = [
 const danceStyles = ['Dabke', 'Belly Dance', 'Afro', 'Bollywood'];
 
 type OfferId = keyof typeof introOffers;
-const offerIds: OfferId[] = ['reformer', 'hot-pilates', 'red-light', 'barre', 'try-all', 'cadillac', 'ems-sculpt'];
+const offerIds: OfferId[] = ['reformer', 'hot-pilates', 'red-light', 'barre', 'belly-dance', 'try-all', 'cadillac', 'ems-sculpt'];
 
 // Main content component
 function OffersContent() {
