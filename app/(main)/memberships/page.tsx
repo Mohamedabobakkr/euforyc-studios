@@ -794,6 +794,12 @@ export default function Memberships() {
                     href={m.momenceUrl}
                     target="_blank"
                     rel="noopener noreferrer"
+                    data-offer-id={`membership-${current.id}-${m.name.toLowerCase().replace(/\s+/g, '-')}`}
+                    data-content-name={`${current.id} ${m.name} ${m.monthlyPrice}/mo`}
+                    data-content-type="membership"
+                    data-content-category="/memberships"
+                    data-value={String(m.monthlyPrice || '').replace(/[^0-9.]/g, '')}
+                    data-currency="GBP"
                     className={`group relative flex flex-col flex-shrink-0 w-[76vw] max-w-[320px] snap-start rounded-sm transition-all duration-300 ${
                       m.popular
                         ? 'bg-[#1a260e] text-[#fffcf2] shadow-lg shadow-[#1a260e]/20'
@@ -850,6 +856,12 @@ export default function Memberships() {
                     href={m.momenceUrl}
                     target="_blank"
                     rel="noopener noreferrer"
+                    data-offer-id={`membership-${current.id}-${m.name.toLowerCase().replace(/\s+/g, '-')}`}
+                    data-content-name={`${current.id} ${m.name} ${m.monthlyPrice}/mo`}
+                    data-content-type="membership"
+                    data-content-category="/memberships"
+                    data-value={String(m.monthlyPrice || '').replace(/[^0-9.]/g, '')}
+                    data-currency="GBP"
                     className={`group relative flex flex-col h-full rounded-sm transition-all duration-500 hover:-translate-y-1 ${
                       m.popular
                         ? 'bg-[#1a260e] text-[#fffcf2]'

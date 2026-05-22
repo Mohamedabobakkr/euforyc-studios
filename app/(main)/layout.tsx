@@ -318,7 +318,6 @@ export default function RootLayout({
             }
 
             // Rebuild _fbc from fbclid URL param when cookie is missing (ITP/privacy browsers)
-            // Strict allowlist prevents cookie-injection via crafted fbclid values.
             try {
               var fbclid = new URLSearchParams(window.location.search).get('fbclid');
               if (fbclid && fbclid.length <= 256 && /^[A-Za-z0-9_\\-.]+$/.test(fbclid) && document.cookie.indexOf('_fbc=') === -1) {
@@ -326,10 +325,35 @@ export default function RootLayout({
               }
             } catch (e) {}
 
-            // Best-effort Advanced Matching from any form fields present at init.
-            // Meta's fbevents.js hashes these client-side before network transmission.
+            // Persistent external_id — cross-session, cross-page user identifier.
+            // Strongest match signal Meta accepts after email hash.
+            var euforycUserId = (function() {
+              try {
+                var id = localStorage.getItem('euforyc_uid');
+                if (!id) {
+                  if (window.crypto && typeof window.crypto.randomUUID === 'function') {
+                    id = window.crypto.randomUUID();
+                  } else {
+                    id = 'euf_' + Date.now().toString(36) + '_' + Math.random().toString(36).substring(2, 15);
+                  }
+                  localStorage.setItem('euforyc_uid', id);
+                }
+                return id;
+              } catch (e) { return null; }
+            })();
+
+            function euforycReadCookie(name) {
+              try {
+                var match = document.cookie.match(new RegExp('(^|; )' + name + '=([^;]+)'));
+                return match ? decodeURIComponent(match[2]) : null;
+              } catch (e) { return null; }
+            }
+
+            // Advanced Matching — re-evaluated at every fire to catch form fields
+            // filled AFTER page init. Meta's fbevents.js hashes client-side.
             function euforycAdvancedMatching() {
               var data = { country: 'gb' };
+              if (euforycUserId) data.external_id = euforycUserId;
               try {
                 var emailEl = document.querySelector('input[type="email"], input[name*="email" i]');
                 if (emailEl && emailEl.value) {
@@ -354,42 +378,41 @@ export default function RootLayout({
 
             fbq('init', '${EUFORYC_PIXEL_ID}', euforycAdvancedMatching());
 
+            // Re-init before each track to refresh advanced matching with current form values.
+            function euforycRefreshMatching() {
+              try { fbq('init', '${EUFORYC_PIXEL_ID}', euforycAdvancedMatching()); } catch (e) {}
+            }
+
             // Initial PageView (subsequent SPA navigations handled by PixelTracker component)
             var initialPv = euforycEventId('PageView');
             fbq('track', 'PageView', {}, { eventID: initialPv });
 
-            // Initial ViewContent with per-path value (SPA navigations handled in PixelTracker)
-            var euforycPathValues = {
-              '/offers': { v: 50, t: 'intro_offer' },
-              '/_all-access-offer': { v: 150, t: 'all_access' },
-              '/packages': { v: 100, t: 'package' },
-              '/packages-memberships': { v: 100, t: 'package' },
-              '/memberships': { v: 150, t: 'membership' },
-              '/pricing': { v: 50, t: 'pricing' },
-              '/schedule': { v: 25, t: 'class_schedule' },
-              '/book': { v: 50, t: 'booking' },
-              '/massage': { v: 60, t: 'service' },
-              '/ems-sculpt': { v: 75, t: 'service' },
-              '/summer-challenge': { v: 50, t: 'challenge' },
-              '/gift-cards': { v: 50, t: 'gift_card' }
-            };
-            var euforycPath = window.location.pathname;
-            var matched = null;
-            for (var p in euforycPathValues) {
-              if (euforycPath === p || euforycPath.indexOf(p + '/') === 0) { matched = euforycPathValues[p]; break; }
-            }
-            if (matched) {
-              var vcId = euforycEventId('ViewContent');
-              fbq('track', 'ViewContent', {
-                content_name: (document.title || '').substring(0, 200),
-                content_type: matched.t,
-                content_category: euforycPath,
-                value: matched.v,
-                currency: 'GBP'
-              }, { eventID: vcId });
-            }
+            // ViewContent — only fires with real monetary value via data-* attributes on /offers, /memberships, etc.
+            // Generic page ViewContent is no longer faked; pages that want it must set data attributes
+            // on a #page-content-meta element OR fire it themselves with real data.
+            try {
+              var metaEl = document.getElementById('page-content-meta');
+              if (metaEl) {
+                var vcId = euforycEventId('ViewContent');
+                var vcPayload = {
+                  content_name: (metaEl.getAttribute('data-content-name') || document.title || '').substring(0, 200),
+                  content_type: metaEl.getAttribute('data-content-type') || 'page',
+                  content_category: metaEl.getAttribute('data-content-category') || window.location.pathname
+                };
+                var vcValue = parseFloat(metaEl.getAttribute('data-value') || '');
+                if (!isNaN(vcValue) && vcValue > 0) {
+                  vcPayload.value = vcValue;
+                  vcPayload.currency = metaEl.getAttribute('data-currency') || 'GBP';
+                  var vcContentIds = metaEl.getAttribute('data-content-ids');
+                  if (vcContentIds) vcPayload.content_ids = [vcContentIds];
+                }
+                fbq('track', 'ViewContent', vcPayload, { eventID: vcId });
+              }
+            } catch (e) {}
 
-            // InitiateCheckout on Momence booking clicks (replaces misused Lead)
+            // InitiateCheckout on Momence booking clicks.
+            // Reads explicit data-* attributes (no more £-regex guessing).
+            // Bridges identifiers to Momence via URL params for cross-domain attribution.
             var lastCheckoutTime = 0;
             document.addEventListener('click', function(e) {
               var target = e.target.closest('a[href*="momence.com"], button[data-booking]');
@@ -398,20 +421,47 @@ export default function RootLayout({
               if (now - lastCheckoutTime < 2000) return;
               lastCheckoutTime = now;
 
-              var buttonText = ((target.innerText || target.textContent || '').trim()).substring(0, 200);
-              var href = target.getAttribute ? (target.getAttribute('href') || '') : '';
-              var decoded = href;
-              try { decoded = decodeURIComponent(href); } catch (err) {}
-              var m = decoded.match(/£\\s*(\\d+(?:\\.\\d+)?)/);
-              var value = m ? parseFloat(m[1]) : 0;
+              euforycRefreshMatching();
+
+              var value = parseFloat(target.getAttribute('data-value') || '0') || 0;
+              var currency = target.getAttribute('data-currency') || 'GBP';
+              var contentName = target.getAttribute('data-content-name')
+                || ((target.innerText || target.textContent || '').trim()).substring(0, 200);
+              var offerId = target.getAttribute('data-offer-id') || 'unknown';
+              var contentCategory = target.getAttribute('data-content-category') || 'booking_click';
+              var contentType = target.getAttribute('data-content-type') || 'intro_offer';
 
               var icId = euforycEventId('InitiateCheckout');
-              fbq('track', 'InitiateCheckout', {
-                content_name: buttonText,
-                content_category: 'booking_click',
-                value: value,
-                currency: 'GBP'
-              }, { eventID: icId });
+              var icPayload = {
+                content_name: contentName,
+                content_category: contentCategory,
+                content_type: contentType,
+                content_ids: [offerId],
+                num_items: 1
+              };
+              if (value > 0) { icPayload.value = value; icPayload.currency = currency; }
+              fbq('track', 'InitiateCheckout', icPayload, { eventID: icId });
+
+              // Bridge identity to Momence checkout URL so its CAPI can attribute back.
+              // Momence preserves URL params and forwards them in CAPI events.
+              try {
+                var href = target.getAttribute('href');
+                if (href && href.indexOf('momence.com') !== -1) {
+                  var url = new URL(href, window.location.origin);
+                  if (!url.searchParams.has('utm_source')) url.searchParams.set('utm_source', 'meta');
+                  if (!url.searchParams.has('utm_medium')) url.searchParams.set('utm_medium', 'paid_social');
+                  if (!url.searchParams.has('utm_campaign')) url.searchParams.set('utm_campaign', offerId);
+                  if (euforycUserId && !url.searchParams.has('utm_content')) {
+                    url.searchParams.set('utm_content', 'euf_' + euforycUserId.replace(/[^a-zA-Z0-9]/g, '').substring(0, 16));
+                  }
+                  var existingFbclid = new URLSearchParams(window.location.search).get('fbclid');
+                  if (existingFbclid && !url.searchParams.has('fbclid')) {
+                    url.searchParams.set('fbclid', existingFbclid);
+                  }
+                  if (!url.searchParams.has('event_id')) url.searchParams.set('event_id', icId);
+                  target.setAttribute('href', url.toString());
+                }
+              } catch (err) {}
             });
 
             // Contact events (phone/WhatsApp clicks)
@@ -423,11 +473,14 @@ export default function RootLayout({
               if (now - lastContactTime < 2000) return;
               lastContactTime = now;
 
+              euforycRefreshMatching();
+
               var href = target.getAttribute('href') || '';
               var contactType = href.indexOf('tel:') === 0 ? 'phone' : 'whatsapp';
               var contactId = euforycEventId('Contact');
               fbq('track', 'Contact', {
-                content_name: contactType
+                content_name: contactType,
+                content_category: 'contact_click'
               }, { eventID: contactId });
             });
           `}

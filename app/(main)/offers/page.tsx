@@ -355,6 +355,12 @@ function OffersContent() {
               href={offer.momenceUrl}
               target="_blank"
               rel="noopener noreferrer"
+              data-offer-id={offer.id}
+              data-content-name={`${offer.name} ${offer.classes} ${offer.price}`}
+              data-content-type="intro_offer"
+              data-content-category="/offers"
+              data-value={offer.price.replace(/[^0-9.]/g, '')}
+              data-currency="GBP"
               className="group block relative rounded-2xl p-6 md:p-8 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl bg-gradient-to-br from-[#1a260e] to-[#2a3a1e] text-[#fffcf2]"
             >
               <div className="flex flex-col md:flex-row md:items-start gap-6">
@@ -452,6 +458,12 @@ function OffersContent() {
                 href={pkg.momenceUrl}
                 target="_blank"
                 rel="noopener noreferrer"
+                data-offer-id={`dance-${pkg.name.toLowerCase().replace(/\s+/g, '-')}`}
+                data-content-name={`Dance ${pkg.name} ${pkg.price}`}
+                data-content-type="dance_package"
+                data-content-category="/offers/dance"
+                data-value={pkg.price.replace(/[^0-9.]/g, '')}
+                data-currency="GBP"
                 className="group relative rounded-2xl p-6 md:p-8 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl bg-gradient-to-br from-[#1a260e] to-[#2a3a1e] text-[#fffcf2]"
               >
                 {pkg.highlight && (
@@ -607,6 +619,12 @@ function OffersContent() {
           href={offer.momenceUrl}
           target="_blank"
           rel="noopener noreferrer"
+          data-offer-id={offer.id}
+          data-content-name={`${offer.name} ${offer.classes} ${offer.price}`}
+          data-content-type="intro_offer"
+          data-content-category="/offers/sticky-mobile"
+          data-value={offer.price.replace(/[^0-9.]/g, '')}
+          data-currency="GBP"
           className="flex items-center justify-center gap-2 bg-[#1a260e] text-[#fffcf2] w-full py-4 text-sm tracking-[0.1em] uppercase rounded-lg active:scale-[0.98] transition-transform font-medium"
         >
           CLAIM {offer.shortName.toUpperCase()} OFFER — {offer.price}

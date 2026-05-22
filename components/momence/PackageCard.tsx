@@ -12,6 +12,22 @@ interface PackageCardProps {
   showBadge?: boolean;
 }
 
+// Returns data-* attributes used by the global pixel click handler to fire
+// InitiateCheckout with real values and bridge identifiers to Momence.
+function pixelAttrs(product: MomenceProduct, category = '/packages') {
+  const offerId = product.id
+    ? `package-${product.id}`
+    : `package-${product.name.toLowerCase().replace(/\s+/g, '-')}`;
+  return {
+    'data-offer-id': offerId,
+    'data-content-name': product.name,
+    'data-content-type': product.isIntroOffer ? 'intro_offer' : 'package',
+    'data-content-category': category,
+    'data-value': product.price ? product.price.toFixed(2) : '0',
+    'data-currency': 'GBP',
+  } as const;
+}
+
 export default function PackageCard({ product, showBadge = true }: PackageCardProps) {
   // Format price
   const formattedPrice = product.price ? `£${product.price.toFixed(0)}` : 'Contact Us';
@@ -33,6 +49,7 @@ export default function PackageCard({ product, showBadge = true }: PackageCardPr
       href={product.purchaseUrl}
       target="_blank"
       rel="noopener noreferrer"
+      {...pixelAttrs(product)}
       className="group relative bg-[#1a260e] text-[#fffcf2] rounded-2xl p-6 hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 hover:scale-[1.02]"
       aria-label={`Purchase ${product.name} package`}
     >
@@ -185,6 +202,7 @@ export function CompactPackageCard({ product }: { product: MomenceProduct }) {
       href={product.purchaseUrl}
       target="_blank"
       rel="noopener noreferrer"
+      {...pixelAttrs(product)}
       className="group block p-4 bg-[#1a260e] text-[#fffcf2] rounded-xl hover:shadow-lg transition-all duration-200 hover:-translate-y-1"
     >
       <div className="flex items-center justify-between gap-3">
@@ -239,6 +257,7 @@ export function FeaturedIntroCard({ product }: { product: MomenceProduct }) {
       href={product.purchaseUrl}
       target="_blank"
       rel="noopener noreferrer"
+      {...pixelAttrs(product, '/packages/intro')}
       className="block bg-gradient-to-br from-green-600 via-green-500 to-green-600 text-white rounded-2xl p-8 relative overflow-hidden shadow-xl shadow-green-500/30 hover:shadow-2xl hover:shadow-green-500/40 transition-all duration-300 hover:-translate-y-2"
     >
       {/* Decorative circles */}

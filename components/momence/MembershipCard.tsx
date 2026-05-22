@@ -12,6 +12,20 @@ interface MembershipCardProps {
   isPopular?: boolean;
 }
 
+function pixelAttrs(membership: MomenceMembership) {
+  const offerId = membership.id
+    ? `membership-${membership.id}`
+    : `membership-${membership.name.toLowerCase().replace(/\s+/g, '-')}`;
+  return {
+    'data-offer-id': offerId,
+    'data-content-name': membership.name,
+    'data-content-type': 'membership',
+    'data-content-category': '/memberships',
+    'data-value': membership.price ? membership.price.toFixed(2) : '0',
+    'data-currency': 'GBP',
+  } as const;
+}
+
 export default function MembershipCard({ membership, isPopular }: MembershipCardProps) {
   const popular = isPopular || membership.isPopular;
 
@@ -39,6 +53,7 @@ export default function MembershipCard({ membership, isPopular }: MembershipCard
       href={membership.signUpUrl}
       target="_blank"
       rel="noopener noreferrer"
+      {...pixelAttrs(membership)}
       className={`group relative rounded-2xl p-8 hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 ${
         popular
           ? 'bg-[#1a260e] text-[#fffcf2] border-2 border-[#1a260e]'
@@ -209,6 +224,7 @@ export function CompactMembershipCard({ membership }: { membership: MomenceMembe
       href={membership.signUpUrl}
       target="_blank"
       rel="noopener noreferrer"
+      {...pixelAttrs(membership)}
       className="group block p-6 bg-white border border-[#1a260e]/10 rounded-xl hover:border-[#1a260e]/20 hover:shadow-lg transition-all duration-200"
     >
       <div className="flex items-start justify-between gap-4">

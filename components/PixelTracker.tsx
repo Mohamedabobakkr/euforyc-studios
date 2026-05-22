@@ -3,30 +3,14 @@
 import { useEffect, useRef } from 'react';
 import { usePathname } from 'next/navigation';
 
-const PATH_VALUES: Record<string, { value: number; content_type: string }> = {
-  '/offers': { value: 50, content_type: 'intro_offer' },
-  '/_all-access-offer': { value: 150, content_type: 'all_access' },
-  '/packages': { value: 100, content_type: 'package' },
-  '/packages-memberships': { value: 100, content_type: 'package' },
-  '/memberships': { value: 150, content_type: 'membership' },
-  '/pricing': { value: 50, content_type: 'pricing' },
-  '/schedule': { value: 25, content_type: 'class_schedule' },
-  '/book': { value: 50, content_type: 'booking' },
-  '/massage': { value: 60, content_type: 'service' },
-  '/ems-sculpt': { value: 75, content_type: 'service' },
-  '/summer-challenge': { value: 50, content_type: 'challenge' },
-  '/gift-cards': { value: 50, content_type: 'gift_card' },
-};
-
 function generateEventId(name: string): string {
   return `${name.toLowerCase()}_${Date.now()}_${Math.random().toString(36).substring(2, 10)}`;
 }
 
-function getContentForPath(pathname: string) {
-  for (const [path, config] of Object.entries(PATH_VALUES)) {
-    if (pathname === path || pathname.startsWith(path + '/')) return config;
+declare global {
+  interface Window {
+    fbq?: (...args: unknown[]) => void;
   }
-  return null;
 }
 
 export default function PixelTracker() {
@@ -39,28 +23,31 @@ export default function PixelTracker() {
       return;
     }
 
-    if (typeof window === 'undefined') return;
-    const fbq = (window as unknown as { fbq?: (...args: unknown[]) => void }).fbq;
-    if (typeof fbq !== 'function') return;
+    if (typeof window === 'undefined' || typeof window.fbq !== 'function') return;
+    const fbq = window.fbq;
 
     const pvId = generateEventId('PageView');
     fbq('track', 'PageView', {}, { eventID: pvId });
 
-    const content = getContentForPath(pathname);
-    if (content) {
+    // ViewContent only fires when the current page exposes #page-content-meta with real data.
+    // This avoids polluting Meta with fake flat values on every SPA navigation.
+    const metaEl = document.getElementById('page-content-meta');
+    if (metaEl) {
       const vcId = generateEventId('ViewContent');
-      fbq(
-        'track',
-        'ViewContent',
-        {
-          content_name: document.title,
-          content_type: content.content_type,
-          content_category: pathname,
-          value: content.value,
-          currency: 'GBP',
-        },
-        { eventID: vcId }
-      );
+      const payload: Record<string, unknown> = {
+        content_name: (metaEl.getAttribute('data-content-name') || document.title || '').substring(0, 200),
+        content_type: metaEl.getAttribute('data-content-type') || 'page',
+        content_category: metaEl.getAttribute('data-content-category') || pathname,
+      };
+      const valueAttr = metaEl.getAttribute('data-value');
+      const value = valueAttr ? parseFloat(valueAttr) : NaN;
+      if (!isNaN(value) && value > 0) {
+        payload.value = value;
+        payload.currency = metaEl.getAttribute('data-currency') || 'GBP';
+        const contentIds = metaEl.getAttribute('data-content-ids');
+        if (contentIds) payload.content_ids = [contentIds];
+      }
+      fbq('track', 'ViewContent', payload, { eventID: vcId });
     }
   }, [pathname]);
 

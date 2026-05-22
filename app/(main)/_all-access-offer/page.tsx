@@ -227,6 +227,12 @@ export default function AllAccessOfferPage() {
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => setSelectedPackage(pkg.id)}
+                data-offer-id={`all-access-${pkg.id}`}
+                data-content-name={`All Access ${pkg.name} £${pkg.discountedPrice}`}
+                data-content-type="all_access_offer"
+                data-content-category="/all-access-offer"
+                data-value={String(pkg.discountedPrice)}
+                data-currency="GBP"
                 className={`group relative rounded-2xl p-6 md:p-8 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl bg-gradient-to-br from-[#1a260e] to-[#2a3a1e] text-[#fffcf2]`}
               >
                 {pkg.highlight && (
