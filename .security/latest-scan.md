@@ -1,6 +1,6 @@
 # Security Scan Report
 
-**Date:** 2026-05-23 11:30 UTC
+**Date:** 2026-05-23 19:30 UTC
 **Status:** CLEAN
 
 ## npm audit
@@ -24,13 +24,13 @@
 10. Safe Health Checks: PASS — No health check endpoints exist; auth check endpoint (`GET /api/sips/auth`) returns only `{ authenticated: boolean }` with no internal config
 
 ## Additional Checks
-- `dangerouslySetInnerHTML` usage: SAFE — All instances are JSON-LD structured data via `JSON.stringify()` on hardcoded schema objects (no user input)
+- `dangerouslySetInnerHTML` usage: SAFE — All 9 instances are JSON-LD structured data via `JSON.stringify()` on hardcoded schema objects (no user input)
 - Open redirect protection: PASS — `create-order/route.ts` validates redirect origin against `ALLOWED_ORIGINS` whitelist
 - Telegram notification XSS: PASS — `escapeHtml()` in `lib/notify.ts` sanitizes user-supplied `customerName` and `note` before HTML rendering
 - Cookie security: PASS — `__Secure-` prefix, HttpOnly, Secure (in prod), SameSite=lax, 12h maxAge, unique JTI per token
 - Logout endpoint: PASS — properly clears session cookie with maxAge=0
 - No `eval()` or `new Function()` usage found
-- No `NEXT_PUBLIC_` env vars exposing secrets
+- `NEXT_PUBLIC_SITE_URL` contains only the public domain (euforyc.co.uk) — no secrets exposed
 
 ## CSP Advisory (informational, not a vulnerability)
 - `script-src` includes `'unsafe-inline'` and `'unsafe-eval'` — required by Facebook Pixel and Google Analytics integrations. These weaken XSS protection but are standard for sites using third-party tracking. Consider migrating to nonce-based CSP when feasible.
