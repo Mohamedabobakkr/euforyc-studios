@@ -1,6 +1,6 @@
 # Security Scan Report
 
-**Date:** 2026-05-25 03:25 UTC
+**Date:** 2026-05-25 11:25 UTC
 **Status:** CLEAN
 
 ## npm audit
@@ -30,7 +30,8 @@
 - Cookie security: PASS — `__Secure-` prefix, HttpOnly, Secure (in prod), SameSite=lax, 12h maxAge, unique JTI per token
 - Logout endpoint: PASS — properly clears session cookie with maxAge=0
 - No `eval()` or `new Function()` usage found
-- `NEXT_PUBLIC_SITE_URL` contains only the public domain (euforyc.co.uk) — no secrets exposed
+- No `NEXT_PUBLIC_` env vars exposing secrets
+- No sensitive files committed to git (`.env` files properly gitignored)
 
 ## CSP Advisory (informational, not a vulnerability)
 - `script-src` includes `'unsafe-inline'` and `'unsafe-eval'` — required by Facebook Pixel and Google Analytics integrations. These weaken XSS protection but are standard for sites using third-party tracking. Consider migrating to nonce-based CSP when feasible.
