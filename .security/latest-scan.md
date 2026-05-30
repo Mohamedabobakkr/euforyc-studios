@@ -1,6 +1,6 @@
 # Security Scan Report
 
-**Date:** 2026-05-30 11:30 UTC
+**Date:** 2026-05-30 19:25 UTC
 **Status:** CLEAN
 
 ## npm audit
@@ -24,12 +24,11 @@
 10. Safe Health Checks: PASS — No health check endpoints exist; auth check endpoint (`GET /api/sips/auth`) returns only `{ authenticated: boolean }` with no internal config
 
 ## Additional Checks
-- `dangerouslySetInnerHTML` usage: SAFE — All instances are JSON-LD structured data via `JSON.stringify()` on hardcoded schema objects (no user input)
+- `eval()` / `new Function()`: PASS — none found in app/, lib/, or components/
 - Open redirect protection: PASS — `create-order/route.ts` validates redirect origin against `ALLOWED_ORIGINS` whitelist
 - Telegram notification XSS: PASS — `escapeHtml()` in `lib/notify.ts` sanitizes user-supplied `customerName` and `note` before HTML rendering
 - Cookie security: PASS — `__Secure-` prefix, HttpOnly, Secure (in prod), SameSite=lax, 12h maxAge, unique JTI per token
 - Logout endpoint: PASS — properly clears session cookie with maxAge=0
-- No `eval()` or `new Function()` usage found
 - No `NEXT_PUBLIC_` env vars exposing secrets
 - No sensitive files committed to git (`.env` files properly gitignored)
 
