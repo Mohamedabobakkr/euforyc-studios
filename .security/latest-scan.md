@@ -1,6 +1,6 @@
 # Security Scan Report
 
-**Date:** 2026-06-01 19:30 UTC
+**Date:** 2026-06-02 03:30 UTC
 **Status:** CLEAN
 
 ## npm audit
@@ -9,7 +9,7 @@
 - Medium: 0
 - Low: 0
 
-554 packages audited. 0 vulnerabilities found.
+549 packages audited. 0 vulnerabilities found.
 
 ## Code Security Checks
 1. SSRF Protection: PASS — `validateSquarePath()` in `lib/square.ts:40-54` blocks `..`, `//`, `\\`; requires leading `/`; enforces `/^\/[a-zA-Z0-9/_-]+$/` on path portion before query string
@@ -32,6 +32,7 @@
 - No `eval()` or `new Function()` usage found
 - No `NEXT_PUBLIC_` env vars exposing secrets
 - No sensitive files committed to git (`.env` files properly gitignored)
+- Dependabot configured (`.github/dependabot.yml`) for automated dependency updates
 
 ## CSP Advisory (informational, not a vulnerability)
 - `script-src` includes `'unsafe-inline'` and `'unsafe-eval'` — required by Facebook Pixel and Google Analytics integrations. These weaken XSS protection but are standard for sites using third-party tracking. Consider migrating to nonce-based CSP when feasible.
