@@ -1,6 +1,6 @@
 # Security Scan Report
 
-**Date:** 2026-06-06 19:25 UTC
+**Date:** 2026-06-07 03:25 UTC
 **Status:** CLEAN
 
 ## npm audit
@@ -34,7 +34,7 @@
 - No sensitive files committed to git (`.env` files properly gitignored)
 
 ## CSP Advisory (informational, not a vulnerability)
-- `script-src` includes `'unsafe-inline'` and `'unsafe-eval'` — required by Facebook Pixel and Google Analytics integrations. These weaken XSS protection but are standard for sites using third-party tracking. Consider migrating to nonce-based CSP when feasible.
+- `script-src` includes `'unsafe-inline'` and `'unsafe-eval'` — required by Facebook Pixel and Google Tag Manager integrations. These weaken XSS protection but are standard for sites using third-party tracking. Consider migrating to nonce-based CSP when feasible.
 
 ## Fixes Applied
 - None needed — all checks pass
