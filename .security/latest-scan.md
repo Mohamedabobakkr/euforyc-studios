@@ -1,15 +1,15 @@
 # Security Scan Report
 
 **Date:** 2026-06-15 12:00 UTC
-**Status:** CLEAN
+**Status:** FIXES_APPLIED
 
 ## npm audit
 - Critical: 0
 - High: 0
-- Medium: 0
+- Medium: 0 (was 1, fixed)
 - Low: 0
 
-554 packages audited (540 prod, 15 optional). 0 vulnerabilities found.
+549 packages audited. js-yaml upgraded 4.1.1 → 4.2.0 to resolve GHSA-h67p-54hq-rp68.
 
 ## Code Security Checks
 1. SSRF Protection: PASS — `validateSquarePath()` in `lib/square.ts` blocks `..`, `//`, `\\`; requires leading `/`; enforces `/^\/[a-zA-Z0-9/_-]+$/` on path portion before query string
@@ -37,7 +37,7 @@
 - `script-src` includes `'unsafe-inline'` and `'unsafe-eval'` — required by Facebook Pixel and Google Tag Manager integrations. Consider migrating to nonce-based CSP when feasible.
 
 ## Fixes Applied
-- None needed — all checks pass
+- `99b185a` — fix(security): upgrade js-yaml 4.1.1 → 4.2.0 to fix DoS vulnerability (GHSA-h67p-54hq-rp68, moderate severity, transitive dep of eslint via @eslint/eslintrc)
 
 ## Manual Action Required
-- None
+- None — all vulnerabilities resolved
