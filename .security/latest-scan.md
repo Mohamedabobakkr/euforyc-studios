@@ -1,15 +1,18 @@
 # Security Scan Report
 
-**Date:** 2026-06-17 03:24 UTC
-**Status:** CLEAN
+**Date:** 2026-06-17 11:25 UTC
+**Status:** FIXES_APPLIED
 
 ## npm audit
 - Critical: 0
 - High: 0
-- Medium: 0
+- Medium: 0 (was 1 — fixed)
 - Low: 0
 
-549 packages audited (540 prod, 15 optional). 0 vulnerabilities found.
+549 packages audited. 0 vulnerabilities remaining after fix.
+
+### Fixed
+- **js-yaml <=4.1.1** (moderate): Quadratic-complexity DoS in merge key handling via repeated aliases (GHSA-h67p-54hq-rp68). Transitive dep via `eslint` → `@eslint/eslintrc`. Fixed by `npm audit fix` — lock file updated to resolve past advisory range.
 
 ## Code Security Checks
 1. SSRF Protection: PASS — `validateSquarePath()` in `lib/square.ts:40-54` blocks `..`, `//`, `\\`; requires leading `/`; enforces `/^\/[a-zA-Z0-9/_-]+$/` on path portion before query string
@@ -24,7 +27,7 @@
 10. Safe Health Checks: PASS — No health check endpoints exist; auth check endpoint (`GET /api/sips/auth`) returns only `{ authenticated: boolean }` with no internal config
 
 ## Fixes Applied
-- None needed — all checks pass
+- `d749427` — fix(security): update js-yaml to resolve CVE in merge key handling (package-lock.json updated)
 
 ## Manual Action Required
 - None
