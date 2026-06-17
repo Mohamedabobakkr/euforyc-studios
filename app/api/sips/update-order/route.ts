@@ -47,11 +47,13 @@ export async function PATCH(request: NextRequest) {
       );
     }
 
-    // Validate state transition
-    const validNext = Object.values(VALID_TRANSITIONS);
-    if (!validNext.includes(body.newState)) {
+    // Validate state transition — newState must be a reachable destination
+    const validDestinations = Object.values(VALID_TRANSITIONS).filter(
+      (s): s is FulfillmentState => s !== null,
+    );
+    if (!validDestinations.includes(body.newState)) {
       return NextResponse.json(
-        { success: false, error: `Invalid state: ${body.newState}` },
+        { success: false, error: 'Invalid state transition' },
         { status: 400 },
       );
     }
