@@ -1,15 +1,18 @@
 # Security Scan Report
 
-**Date:** 2026-06-18 11:25 UTC
-**Status:** CLEAN
+**Date:** 2026-06-18 19:25 UTC
+**Status:** FIXES_APPLIED
 
 ## npm audit
 - Critical: 0
 - High: 0
-- Medium: 0
+- Medium: 0 (was 1 — fixed)
 - Low: 0
 
-549 packages audited. 0 vulnerabilities.
+549 packages audited (540 prod, 15 optional). 0 vulnerabilities after fix.
+
+### Fixed
+- **js-yaml <=4.1.1** (GHSA-h67p-54hq-rp68): Quadratic-complexity DoS in merge key handling via repeated aliases. Updated 4.1.1 → 4.2.0. Transitive dependency via eslint → @eslint/eslintrc (dev tooling only, not shipped to production bundle).
 
 ## Code Security Checks
 1. SSRF Protection: PASS — `validateSquarePath()` blocks `../`, `//`, `\\` with strict regex `/^\/[a-zA-Z0-9/_-]+$/`
@@ -24,7 +27,7 @@
 10. Safe Health Checks: PASS — No health endpoints expose tokens; auth check returns only `{ authenticated: boolean }`
 
 ## Fixes Applied
-- None needed — all previous fixes from 2026-06-17 remain in place
+- `d220f5f` — fix(security): update js-yaml 4.1.1→4.2.0 to fix CVE quadratic DoS (GHSA-h67p-54hq-rp68)
 
 ## Manual Action Required
 - None
