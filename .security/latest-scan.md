@@ -1,15 +1,15 @@
 # Security Scan Report
 
-**Date:** 2026-06-17 09:30 UTC
-**Status:** FIXES_APPLIED
+**Date:** 2026-06-18 03:25 UTC
+**Status:** CLEAN
 
 ## npm audit
 - Critical: 0
 - High: 0
-- Medium: 0 (was 1 — js-yaml DoS via merge key aliases GHSA-h67p-54hq-rp68, now fixed)
+- Medium: 0
 - Low: 0
 
-549 packages audited. 0 vulnerabilities remaining after fix.
+549 packages audited. 0 vulnerabilities.
 
 ## Code Security Checks
 1. SSRF Protection: PASS — `validateSquarePath()` blocks `../`, `//`, `\\` with strict regex `/^\/[a-zA-Z0-9/_-]+$/`
@@ -24,9 +24,8 @@
 10. Safe Health Checks: PASS — No health endpoints expose tokens; auth check returns only `{ authenticated: boolean }`
 
 ## Fixes Applied
-- `9d4a1a4` — fix(security): resolve js-yaml moderate DoS vulnerability (GHSA-h67p-54hq-rp68) — updated via eslint dependency chain
-- `a3f0757` — fix(security): harden state transition validation and remove state value leak — tightened fulfillment state validation to only accept valid destination states; replaced error message that exposed `body.newState` value with generic message
+- None needed — all previous fixes from 2026-06-17 remain in place
 
 ## Manual Action Required
-- Build is currently failing due to Momence API returning 503 (external service outage, not a security issue). Monitor and retry once Momence recovers.
-- CSP includes `'unsafe-inline'` and `'unsafe-eval'` for Facebook Pixel/Google Analytics — consider migrating to nonce-based CSP when feasible (informational, not a vulnerability).
+- None
+- Informational: CSP includes `'unsafe-inline'` and `'unsafe-eval'` for Facebook Pixel/Google Analytics — consider migrating to nonce-based CSP when feasible (not a vulnerability)
