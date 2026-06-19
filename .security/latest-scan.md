@@ -1,18 +1,15 @@
 # Security Scan Report
 
-**Date:** 2026-06-19 03:25 UTC
-**Status:** FIXES_APPLIED
+**Date:** 2026-06-19 11:25 UTC
+**Status:** CLEAN
 
 ## npm audit
 - Critical: 0
 - High: 0
-- Medium: 0 (was 1, fixed)
+- Medium: 0
 - Low: 0
 
-549 packages audited. 0 vulnerabilities remaining after fix.
-
-### Fixed
-- **js-yaml <=4.1.1** (moderate): Quadratic-complexity DoS in merge key handling via repeated aliases (GHSA-h67p-54hq-rp68). Transitive dep via eslint -> @eslint/eslintrc -> js-yaml. Lockfile pinned 4.1.1; resolved by `npm audit fix` updating to 4.2.0.
+554 packages audited. 0 vulnerabilities found.
 
 ## Code Security Checks
 1. SSRF Protection: PASS — `validateSquarePath()` blocks `../`, `//`, `\\` with strict regex `/^\/[a-zA-Z0-9/_-]+$/`
@@ -27,8 +24,7 @@
 10. Safe Health Checks: PASS — No health endpoints expose tokens; auth check returns only `{ authenticated: boolean }`
 
 ## Fixes Applied
-- js-yaml updated from 4.1.1 to 4.2.0 in package-lock.json (resolves GHSA-h67p-54hq-rp68)
+- None needed
 
 ## Manual Action Required
 - None
-- Informational: CSP includes `'unsafe-inline'` and `'unsafe-eval'` for Facebook Pixel/Google Analytics — consider migrating to nonce-based CSP when feasible (not a vulnerability)
