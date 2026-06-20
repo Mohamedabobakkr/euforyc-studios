@@ -1,22 +1,15 @@
 # Security Scan Report
 
-**Date:** 2026-06-20 03:30 UTC
-**Status:** FIXES_APPLIED
+**Date:** 2026-06-20 12:00 UTC
+**Status:** CLEAN
 
 ## npm audit
 - Critical: 0
 - High: 0
-- Medium: 0 (was 1, fixed)
+- Medium: 0
 - Low: 0
 
-549 packages audited (540 prod, 15 optional). 0 vulnerabilities after fix.
-
-### Fixed: js-yaml Quadratic DoS (GHSA-h67p-54hq-rp68)
-- **Severity:** Moderate (CVSS 5.3)
-- **Package:** js-yaml <=4.1.1 (via eslint -> @eslint/eslintrc)
-- **Issue:** Quadratic-complexity DoS in merge key handling via repeated aliases
-- **Fix:** Upgraded js-yaml 4.1.1 -> 4.2.0 via `npm audit fix`
-- **Build verification:** Pre-existing build failure (Momence API 503) unrelated to fix; confirmed same failure on unmodified main
+549 packages audited (540 prod, 15 optional). 0 vulnerabilities.
 
 ## Code Security Checks
 1. SSRF Protection: PASS — `validateSquarePath()` blocks `../`, `//`, `\\` with strict regex `/^\/[a-zA-Z0-9/_-]+$/`
@@ -30,8 +23,14 @@
 9. No Error Leaks: PASS — Generic error strings to clients; Momence routes only show `details` in development; no `String(error)` or stack traces in responses
 10. Safe Health Checks: PASS — No health endpoints expose tokens; auth check returns only `{ authenticated: boolean }`
 
+## Additional Checks
+- Open redirect protection: PASS — `create-order/route.ts` validates redirect origin against `ALLOWED_ORIGINS` whitelist
+- Cookie security: PASS — `__Secure-` prefix, HttpOnly, Secure (in prod), SameSite=lax, 12h maxAge, unique JTI per token
+- No `eval()` or `new Function()` usage found
+- No `NEXT_PUBLIC_` env vars exposing secrets
+
 ## Fixes Applied
-- `3536d9b` fix(security): upgrade js-yaml 4.1.1 -> 4.2.0 (CVE quadratic DoS via eslint -> @eslint/eslintrc)
+- None needed
 
 ## Manual Action Required
-- **Momence API Build Failure (non-security):** `npm run build` fails because the Momence API returns 503 during static page generation for `/api/momence/events`. This is a runtime/infrastructure issue, not a security vulnerability. Consider adding graceful fallback handling for Momence API unavailability at build time.
+- None
