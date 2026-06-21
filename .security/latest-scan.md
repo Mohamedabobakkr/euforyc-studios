@@ -1,6 +1,6 @@
 # Security Scan Report
 
-**Date:** 2026-06-21 11:25 UTC
+**Date:** 2026-06-21 14:30 UTC
 **Status:** CLEAN
 
 ## npm audit
@@ -9,7 +9,7 @@
 - Medium: 0
 - Low: 0
 
-549 packages audited (540 prod, 15 optional). 0 vulnerabilities.
+549 packages audited. 0 vulnerabilities.
 
 ## Code Security Checks
 1. SSRF Protection: PASS — `validateSquarePath()` blocks `../`, `//`, `\\` with strict regex `/^\/[a-zA-Z0-9/_-]+$/`
@@ -30,7 +30,7 @@
 - No `NEXT_PUBLIC_` env vars exposing secrets
 
 ## Fixes Applied
-- None needed
+- None needed — js-yaml fix (GHSA-h67p-54hq-rp68) was already applied in a prior scan
 
 ## Manual Action Required
-- None
+- Pre-existing build failure: `npm run build` fails on `/api/momence/memberships` due to missing Momence API config (CONFIG_ERROR, status 503). This is a runtime environment issue, not a security vulnerability, but it means the site cannot be fully built without valid MOMENCE_API_TOKEN/MOMENCE_API_URL environment variables.
