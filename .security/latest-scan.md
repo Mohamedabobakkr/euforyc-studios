@@ -1,6 +1,6 @@
 # Security Scan Report
 
-**Date:** 2026-06-21 14:30 UTC
+**Date:** 2026-06-22 03:30 UTC
 **Status:** CLEAN
 
 ## npm audit
@@ -33,4 +33,4 @@
 - None needed — js-yaml fix (GHSA-h67p-54hq-rp68) was already applied in a prior scan
 
 ## Manual Action Required
-- Pre-existing build failure: `npm run build` fails on `/api/momence/memberships` due to missing Momence API config (CONFIG_ERROR, status 503). This is a runtime environment issue, not a security vulnerability, but it means the site cannot be fully built without valid MOMENCE_API_TOKEN/MOMENCE_API_URL environment variables.
+- None
