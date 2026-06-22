@@ -1,6 +1,6 @@
 # Security Scan Report
 
-**Date:** 2026-06-22 03:30 UTC
+**Date:** 2026-06-22 11:25 UTC
 **Status:** CLEAN
 
 ## npm audit
@@ -26,11 +26,12 @@
 ## Additional Checks
 - Open redirect protection: PASS — `create-order/route.ts` validates redirect origin against `ALLOWED_ORIGINS` whitelist
 - Cookie security: PASS — `__Secure-` prefix, HttpOnly, Secure (in prod), SameSite=lax, 12h maxAge, unique JTI per token
+- Telegram notification: PASS — User input HTML-escaped via `escapeHtml()`; bot token server-side only
 - No `eval()` or `new Function()` usage found
 - No `NEXT_PUBLIC_` env vars exposing secrets
 
 ## Fixes Applied
-- None needed — js-yaml fix (GHSA-h67p-54hq-rp68) was already applied in a prior scan
+- None needed
 
 ## Manual Action Required
 - None
