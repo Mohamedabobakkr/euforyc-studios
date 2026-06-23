@@ -1,6 +1,6 @@
 # Security Scan Report
 
-**Date:** 2026-06-23 03:30 UTC
+**Date:** 2026-06-23 11:25 UTC
 **Status:** CLEAN
 
 ## npm audit
@@ -20,7 +20,7 @@
 6. Image Hostnames: PASS — Only whitelisted domains (squarecdn.com, euforyc.co.uk, momence.com, S3 bucket, localhost); no `hostname: '**'` wildcard
 7. No Hardcoded Secrets: PASS — No `sk-`, `pk_live_`, or hardcoded passwords found; all secrets from `process.env`; `.env` files gitignored
 8. No localStorage Credentials: PASS — Auth uses HttpOnly + Secure + SameSite cookies exclusively; localStorage only stores anonymous UUID (`euforyc_uid`)
-9. No Error Leaks: PASS — Generic error strings to clients; Momence routes only show `details` when `NODE_ENV === 'development'`; no `String(error)` or stack traces in responses
+9. No Error Leaks: PASS — Generic error strings to clients; no `String(error)` or stack traces in responses
 10. Safe Health Checks: PASS — No health check endpoints exist; auth check returns only `{ authenticated: boolean }`
 
 ## Additional Checks
