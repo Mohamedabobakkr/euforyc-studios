@@ -1,6 +1,6 @@
 # Security Scan Report
 
-**Date:** 2026-06-23 19:25 UTC
+**Date:** 2026-06-24 08:00 UTC
 **Status:** CLEAN
 
 ## npm audit
@@ -9,7 +9,7 @@
 - Medium: 0
 - Low: 0
 
-549 packages audited (540 prod, 15 optional). 0 vulnerabilities found.
+549 packages audited. 0 vulnerabilities found.
 
 ## Code Security Checks
 1. SSRF Protection: PASS — `validateSquarePath()` in `lib/square.ts` blocks `..`, `//`, `\\`; requires leading `/`; enforces `/^\/[a-zA-Z0-9/_-]+$/` on path portion before query string
@@ -20,13 +20,12 @@
 6. Image Hostnames: PASS — Only whitelisted domains (squarecdn.com, euforyc.co.uk, momence.com, S3 bucket, localhost); no `hostname: '**'` wildcard
 7. No Hardcoded Secrets: PASS — No `sk-`, `pk_live_`, or hardcoded passwords found; all secrets from `process.env`; `.env` files gitignored
 8. No localStorage Credentials: PASS — Auth uses HttpOnly + Secure + SameSite cookies exclusively; localStorage only stores anonymous UUID (`euforyc_uid`)
-9. No Error Leaks: PASS — Generic error strings to clients; no `String(error)` or stack traces in responses
+9. No Error Leaks: PASS — Generic error strings to clients; `details` field only in NODE_ENV=development; no stack traces exposed
 10. Safe Health Checks: PASS — No health check endpoints exist; auth check returns only `{ authenticated: boolean }`
 
 ## Additional Checks
 - Open redirect protection: PASS — `create-order/route.ts` validates redirect origin against `ALLOWED_ORIGINS` whitelist
 - Cookie security: PASS — `__Secure-` prefix, HttpOnly, Secure (in prod), SameSite=lax, 12h maxAge, unique JTI per token
-- Telegram notification: PASS — User input HTML-escaped via `escapeHtml()`; bot token server-side only
 - No `eval()` or `new Function()` usage found
 - No `NEXT_PUBLIC_` env vars exposing secrets
 
