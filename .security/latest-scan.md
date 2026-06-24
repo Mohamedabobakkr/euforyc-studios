@@ -1,15 +1,15 @@
 # Security Scan Report
 
 **Date:** 2026-06-24 08:00 UTC
-**Status:** CLEAN
+**Status:** FIXES_APPLIED
 
 ## npm audit
 - Critical: 0
 - High: 0
-- Medium: 0
+- Medium: 0 (was 1 — js-yaml@4.1.1 DoS via merge key aliasing, fixed by lockfile update to 4.2.0)
 - Low: 0
 
-549 packages audited. 0 vulnerabilities found.
+554 packages audited (540 prod, 15 optional). 0 vulnerabilities after fix.
 
 ## Code Security Checks
 1. SSRF Protection: PASS — `validateSquarePath()` in `lib/square.ts` blocks `..`, `//`, `\\`; requires leading `/`; enforces `/^\/[a-zA-Z0-9/_-]+$/` on path portion before query string
@@ -33,7 +33,7 @@
 - `script-src` includes `'unsafe-inline'` and `'unsafe-eval'` — required by Facebook Pixel and Google Analytics integrations. Consider migrating to nonce-based CSP when feasible.
 
 ## Fixes Applied
-- None needed — all checks pass
+- `package-lock.json`: Updated js-yaml from 4.1.1 to 4.2.0 (fixes GHSA-h67p-54hq-rp68 — quadratic-complexity DoS in merge key handling via repeated aliases). Transitive dependency of eslint only, not used in application code. Risk was low but fix is zero-effort.
 
 ## Manual Action Required
 - None
