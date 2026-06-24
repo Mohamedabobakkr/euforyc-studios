@@ -1,15 +1,15 @@
 # Security Scan Report
 
-**Date:** 2026-06-24 08:00 UTC
-**Status:** FIXES_APPLIED
+**Date:** 2026-06-24 19:25 UTC
+**Status:** CLEAN
 
 ## npm audit
 - Critical: 0
 - High: 0
-- Medium: 0 (was 1 — js-yaml@4.1.1 DoS via merge key aliasing, fixed by lockfile update to 4.2.0)
+- Medium: 0
 - Low: 0
 
-554 packages audited (540 prod, 15 optional). 0 vulnerabilities after fix.
+549 packages audited. 0 vulnerabilities.
 
 ## Code Security Checks
 1. SSRF Protection: PASS — `validateSquarePath()` in `lib/square.ts` blocks `..`, `//`, `\\`; requires leading `/`; enforces `/^\/[a-zA-Z0-9/_-]+$/` on path portion before query string
@@ -23,17 +23,8 @@
 9. No Error Leaks: PASS — Generic error strings to clients; `details` field only in NODE_ENV=development; no stack traces exposed
 10. Safe Health Checks: PASS — No health check endpoints exist; auth check returns only `{ authenticated: boolean }`
 
-## Additional Checks
-- Open redirect protection: PASS — `create-order/route.ts` validates redirect origin against `ALLOWED_ORIGINS` whitelist
-- Cookie security: PASS — `__Secure-` prefix, HttpOnly, Secure (in prod), SameSite=lax, 12h maxAge, unique JTI per token
-- No `eval()` or `new Function()` usage found
-- No `NEXT_PUBLIC_` env vars exposing secrets
-
-## CSP Advisory (informational, not a vulnerability)
-- `script-src` includes `'unsafe-inline'` and `'unsafe-eval'` — required by Facebook Pixel and Google Analytics integrations. Consider migrating to nonce-based CSP when feasible.
-
 ## Fixes Applied
-- `package-lock.json`: Updated js-yaml from 4.1.1 to 4.2.0 (fixes GHSA-h67p-54hq-rp68 — quadratic-complexity DoS in merge key handling via repeated aliases). Transitive dependency of eslint only, not used in application code. Risk was low but fix is zero-effort.
+- None needed
 
 ## Manual Action Required
 - None
