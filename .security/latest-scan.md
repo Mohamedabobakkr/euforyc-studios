@@ -1,6 +1,6 @@
 # Security Scan Report
 
-**Date:** 2026-06-26 11:30 UTC
+**Date:** 2026-06-26 14:00 UTC
 **Status:** CLEAN
 
 ## npm audit
@@ -9,7 +9,7 @@
 - Medium: 0
 - Low: 0
 
-549 packages audited (540 prod, 15 optional). 0 vulnerabilities.
+554 packages audited (540 prod, 15 optional). 0 vulnerabilities.
 
 ## Code Security Checks
 1. SSRF Protection: PASS — `validateSquarePath()` in `lib/square.ts:40-54` blocks `..`, `//`, `\\`; requires leading `/`; enforces `/^\/[a-zA-Z0-9/_-]+$/` on path portion before query string
@@ -24,7 +24,7 @@
 10. Safe Health Checks: PASS — No health check endpoints exist; auth check endpoint (`GET /api/sips/auth`) returns only `{ authenticated: boolean }` with no internal config
 
 ## Fixes Applied
-- None needed — js-yaml fix was already applied in previous scan
+- None needed
 
 ## Manual Action Required
 - None
