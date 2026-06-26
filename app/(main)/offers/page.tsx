@@ -3,7 +3,7 @@
 import { useState, useEffect, Suspense, useMemo } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import { ExternalLink, Package, Flame, Zap, Heart, CheckCircle2, Music, ArrowRight, Sparkles, Users, Clock, MapPin, Timer, Crown, Dumbbell } from 'lucide-react';
+import { ExternalLink, Package, Flame, Zap, Heart, CheckCircle2, Music, ArrowRight, Sparkles, Users, Clock, MapPin, Timer, Crown, Dumbbell, PartyPopper } from 'lucide-react';
 
 // Countdown hook for urgency timer
 function useCountdown(targetTimestamp: number) {
@@ -42,6 +42,27 @@ function getEndOfMonth() {
 
 // Intro Offer data
 const introOffers = {
+  'anniversary': {
+    id: 'anniversary',
+    name: 'Euforyc Turns 1',
+    shortName: 'Birthday Offer',
+    classes: '10 Days Unlimited',
+    price: '£85',
+    perClass: 'unlimited',
+    regularPrice: '£280+',
+    savings: 'Save £195+',
+    validity: '10 days',
+    description: 'Our 1st birthday offer — 10 days of unlimited access to everything Euforyc. Reformer, Hot Pilates, Red Light, Barre, Sculpt Mat & Dance — all included.',
+    benefits: [
+      'Unlimited classes for 10 days',
+      'All class types included',
+      'Reformer + Hot + Red Light + Barre',
+      'Open to new + existing clients'
+    ],
+    momenceUrl: 'https://momence.com/m/831833',
+    icon: PartyPopper,
+    highlight: true,
+  },
   'reformer': {
     id: 'reformer',
     name: 'Reformer Pilates',
@@ -235,7 +256,7 @@ const dancePackages = [
 const danceStyles = ['Dabke', 'Belly Dance', 'Afro', 'Bollywood'];
 
 type OfferId = keyof typeof introOffers;
-const offerIds: OfferId[] = ['reformer', 'hot-pilates', 'red-light', 'barre', 'belly-dance', 'try-all', 'cadillac', 'ems-sculpt'];
+const offerIds: OfferId[] = ['anniversary', 'reformer', 'hot-pilates', 'red-light', 'barre', 'belly-dance', 'try-all', 'cadillac', 'ems-sculpt'];
 
 // Main content component
 function OffersContent() {
@@ -378,7 +399,7 @@ function OffersContent() {
               rel="noopener noreferrer"
               data-offer-id={offer.id}
               data-content-name={`${offer.name} ${offer.classes} ${offer.price}`}
-              data-content-type="intro_offer"
+              data-content-type={selectedOffer === 'anniversary' ? 'all_access_offer' : 'intro_offer'}
               data-content-category="/offers"
               data-value={offer.price.replace(/[^0-9.]/g, '')}
               data-currency="GBP"
@@ -437,7 +458,7 @@ function OffersContent() {
                   <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
                 </div>
                 <p className="text-center text-xs text-[#fffcf2]/50 mt-3">
-                  First-time clients only
+                  {selectedOffer === 'anniversary' ? 'Limited time · Open to all' : 'First-time clients only'}
                 </p>
               </div>
             </a>
