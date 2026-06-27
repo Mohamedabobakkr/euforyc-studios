@@ -370,11 +370,37 @@ function OffersContent() {
           </div>
 
           {/* Offer Selector Pills */}
-          <div className="flex flex-wrap justify-center gap-3 mb-10 md:mb-12">
+          <div className="flex flex-wrap justify-center items-center gap-3 mb-10 md:mb-12">
             {offerIds.map((offerId) => {
               const offerData = introOffers[offerId];
               const isSelected = selectedOffer === offerId;
+              const isAnniversary = offerId === 'anniversary';
               const Icon = offerData.icon;
+
+              if (isAnniversary) {
+                return (
+                  <button
+                    key={offerId}
+                    onClick={() => setSelectedOffer(offerId)}
+                    className={`relative group px-6 py-3 md:px-7 md:py-3.5 rounded-full font-sans text-xs md:text-sm font-semibold tracking-wider transition-all duration-300 flex items-center gap-2 bg-gradient-to-r from-rose-500 via-pink-500 to-amber-500 text-white shadow-lg shadow-rose-500/40 hover:shadow-xl hover:shadow-rose-500/50 hover:scale-[1.04] ${isSelected ? 'ring-2 ring-rose-300 ring-offset-2 ring-offset-[#fffcf2] scale-[1.04]' : ''}`}
+                  >
+                    {!isSelected && (
+                      <span
+                        aria-hidden
+                        className="absolute -inset-1 rounded-full bg-gradient-to-r from-rose-500 via-pink-500 to-amber-500 opacity-40 blur-md animate-pulse"
+                      />
+                    )}
+                    <span className="relative flex items-center gap-2">
+                      <span className="text-base leading-none">🎂</span>
+                      <span>{offerData.shortName}</span>
+                      <span className="hidden sm:inline-flex bg-white/25 backdrop-blur-sm rounded-full px-2 py-0.5 text-[10px] tracking-[0.15em] font-bold">
+                        LIMITED
+                      </span>
+                    </span>
+                  </button>
+                );
+              }
+
               return (
                 <button
                   key={offerId}
