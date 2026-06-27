@@ -1,6 +1,6 @@
 # Security Scan Report
 
-**Date:** 2026-06-26 14:00 UTC
+**Date:** 2026-06-27 09:00 UTC
 **Status:** CLEAN
 
 ## npm audit
@@ -13,15 +13,15 @@
 
 ## Code Security Checks
 1. SSRF Protection: PASS — `validateSquarePath()` in `lib/square.ts:40-54` blocks `..`, `//`, `\\`; requires leading `/`; enforces `/^\/[a-zA-Z0-9/_-]+$/` on path portion before query string
-2. API Auth: PASS — `orders/route.ts` and `update-order/route.ts` both call `authenticateBarista()` which validates HMAC-SHA256 signed HttpOnly session cookies with 12h expiry; login rate-limited to 5 attempts/15 min per IP; constant-time password comparison
+2. API Auth: PASS — `orders/route.ts` and `update-order/route.ts` both call `authenticateBarista()` which validates HMAC-SHA256 signed HttpOnly session cookies with 12h expiry; constant-time password comparison
 3. Webhook Signatures: PASS — `webhook/route.ts` verifies Square HMAC-SHA256 signature with constant-time comparison; fails closed with 500 when `SQUARE_WEBHOOK_SIGNATURE_KEY` is missing; rejects invalid signatures with 403; deduplicates events via in-memory cache (10 min TTL, 500 entry cap)
-4. Input Validation: PASS — `orderId`/`fulfillmentUid` validated with `/^[a-zA-Z0-9_-]+$/`; state transitions whitelisted via `VALID_TRANSITIONS`; create-order caps items at 50, modifiers at 20, strings at 100/500 chars, quantity 1-99; pickup time validated as future ISO date
+4. Input Validation: PASS — `orderId`/`fulfillmentUid` validated with `/^[a-zA-Z0-9_-]+$/`; state transitions whitelisted via `VALID_TRANSITIONS`
 5. Security Headers: PASS — HSTS (max-age=63072000; includeSubDomains; preload), CSP with strict directives (default-src 'self', object-src 'none', base-uri 'self', frame-ancestors 'self'), X-Frame-Options: SAMEORIGIN, X-Content-Type-Options: nosniff, Referrer-Policy: strict-origin-when-cross-origin, Permissions-Policy (camera/mic/geo denied), `poweredByHeader: false`, API routes set `Cache-Control: no-store`
 6. Image Hostnames: PASS — Only whitelisted domains in `remotePatterns` (squarecdn.com, euforyc.co.uk, momence.com, S3 bucket, localhost); no `hostname: '**'` wildcard
 7. No Hardcoded Secrets: PASS — No `sk-`, `pk_live_`, or hardcoded passwords found in `app/`, `lib/`, `components/`; all secrets sourced from `process.env`
-8. No localStorage Credentials: PASS — Auth uses HttpOnly + Secure + SameSite cookies exclusively
+8. No localStorage Credentials: PASS — Auth uses HttpOnly + Secure + SameSite cookies exclusively; localStorage only stores anonymous `euforyc_uid` (random UUID)
 9. No Error Leaks: PASS — All API routes return generic error strings to clients; Momence routes only include `details` when `NODE_ENV === 'development'`; no `String(error)` or stack traces in API responses
-10. Safe Health Checks: PASS — No health check endpoints exist; auth check endpoint (`GET /api/sips/auth`) returns only `{ authenticated: boolean }` with no internal config
+10. Safe Health Checks: PASS — No health check endpoints exist; no internal config exposure
 
 ## Fixes Applied
 - None needed
