@@ -1,6 +1,6 @@
 # Security Scan Report
 
-**Date:** 2026-06-28 19:26 UTC
+**Date:** 2026-06-29 07:12 UTC
 **Status:** CLEAN
 
 ## npm audit
@@ -19,8 +19,8 @@
 5. Security Headers: PASS — HSTS (63072000s; includeSubDomains; preload), CSP, X-Frame-Options: SAMEORIGIN, X-Content-Type-Options: nosniff, Referrer-Policy, Permissions-Policy, poweredByHeader: false, API Cache-Control: no-store
 6. Image Hostnames: PASS — only whitelisted domains in remotePatterns; no `hostname: '**'` wildcard
 7. No Hardcoded Secrets: PASS — no sk-, pk_live, or hardcoded passwords found; all secrets from process.env
-8. No localStorage Credentials: PASS — only euforyc_uid (anonymous visitor ID) stored; auth uses HttpOnly cookies
-9. No Error Leaks: PASS — all API routes return generic error strings; no String(error) or stack traces in responses
+8. No localStorage Credentials: PASS — auth uses HttpOnly cookies; only anonymous tracking ID in localStorage
+9. No Error Leaks: PASS — all API routes return generic error strings; Momence routes only include details in development mode
 10. Safe Health Checks: PASS — no health check endpoints exist; auth check returns only `{ authenticated: boolean }`
 
 ## Fixes Applied
@@ -31,5 +31,4 @@
 
 ## Recommendations (non-blocking)
 - CSP uses `'unsafe-inline'` and `'unsafe-eval'` in script-src (required for analytics integrations); consider nonce-based CSP when feasible
-- Add max-length check on order IDs for defense-in-depth (currently format-validated but unbounded)
 - Remove `http://localhost` from `images.remotePatterns` in production builds
