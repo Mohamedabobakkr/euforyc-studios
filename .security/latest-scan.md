@@ -1,6 +1,6 @@
 # Security Scan Report
 
-**Date:** 2026-07-01 03:30 UTC
+**Date:** 2026-07-01 11:25 UTC
 **Status:** CLEAN
 
 ## npm audit
@@ -9,7 +9,7 @@
 - Medium: 0
 - Low: 0
 
-549 packages audited. 0 vulnerabilities found.
+554 packages audited (540 prod, 15 optional). 0 vulnerabilities found.
 
 ## Code Security Checks
 1. SSRF Protection: PASS — `validateSquarePath()` in `lib/square.ts` blocks `..`, `//`, `\\`; requires leading `/`; enforces strict regex `^\/[a-zA-Z0-9/_-]+$` on path portion
@@ -19,8 +19,8 @@
 5. Security Headers: PASS — HSTS (max-age=63072000; includeSubDomains; preload), CSP with strict directives, X-Frame-Options: SAMEORIGIN, X-Content-Type-Options: nosniff, Referrer-Policy: strict-origin-when-cross-origin, Permissions-Policy (camera/mic/geo denied), `poweredByHeader: false`, API routes set `Cache-Control: no-store`
 6. Image Hostnames: PASS — Only whitelisted domains in `remotePatterns` (squarecdn.com, euforyc.co.uk, momence.com, S3 bucket, localhost); no `hostname: '**'` wildcard
 7. No Hardcoded Secrets: PASS — No `sk-`, `pk_live_`, `sk_test_`, or hardcoded passwords found in `app/`, `lib/`, `components/`; all secrets sourced from `process.env`; `.env` files properly gitignored
-8. No localStorage Credentials: PASS — Only `euforyc_uid` (random anonymous tracking ID) stored in localStorage; auth uses HttpOnly + Secure + SameSite cookies exclusively
-9. No Error Leaks: PASS — All API routes return generic error strings to clients; Momence routes only include `error.details` when `NODE_ENV === 'development'`; no stack traces exposed in production
+8. No localStorage Credentials: PASS — Auth uses HttpOnly + Secure + SameSite cookies exclusively; no sensitive data in localStorage
+9. No Error Leaks: PASS — All API routes return generic error strings to clients; Momence routes only include `error.details` when `NODE_ENV === 'development'`; no `String(error)` or stack traces in production responses
 10. Safe Health Checks: PASS — No health check endpoints exist; auth check endpoint returns only `{ authenticated: boolean }` with no internal config
 
 ## Fixes Applied
