@@ -1,6 +1,6 @@
 # Security Scan Report
 
-**Date:** 2026-07-05 12:00 UTC
+**Date:** 2026-07-05 19:25 UTC
 **Status:** CLEAN
 
 ## npm audit
@@ -9,7 +9,7 @@
 - Medium: 0
 - Low: 0
 
-549 packages audited (540 prod, 15 optional). 0 vulnerabilities found.
+554 packages audited (540 prod, 15 optional). 0 vulnerabilities found.
 
 ## Code Security Checks
 1. SSRF Protection: PASS — `validateSquarePath()` in `lib/square.ts` blocks `..`, `//`, `\\`; requires leading `/`; enforces strict regex `/^\/[a-zA-Z0-9/_-]+$/` on path portion
