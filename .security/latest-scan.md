@@ -1,15 +1,15 @@
 # Security Scan Report
 
-**Date:** 2026-07-21 06:00 UTC
-**Status:** FIXES_APPLIED
+**Date:** 2026-07-21 14:00 UTC
+**Status:** CLEAN
 
 ## npm audit
 - Critical: 0
-- High: 0 (was 1 — fixed)
+- High: 0
 - Medium: 0
 - Low: 0
 
-549 packages audited. 0 vulnerabilities remaining after fix.
+549 packages audited. 0 vulnerabilities.
 
 ## Code Security Checks
 1. SSRF Protection: PASS — `validateSquarePath()` in `lib/square.ts` blocks `..`, `//`, `\\`; requires leading `/`; enforces strict regex `/^\/[a-zA-Z0-9/_-]+$/` on path portion
@@ -24,7 +24,7 @@
 10. Safe Health Checks: PASS — No health check endpoints exist; auth check returns only `{ authenticated: boolean }`; no tokens or config exposed
 
 ## Fixes Applied
-- `e84feb5` fix(security): patch brace-expansion DoS vulnerability (GHSA-3jxr-9vmj-r5cp) — updated brace-expansion 1.1.13->1.1.16 and 5.0.6->5.0.7 via eslint and eslint-config-next dependency chains
+- `0f7e2d8` fix(security): patch brace-expansion DoS vulnerability (GHSA-3jxr-9vmj-r5cp) — applied earlier today
 
 ## Manual Action Required
 - None
