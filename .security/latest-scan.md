@@ -1,15 +1,15 @@
 # Security Scan Report
 
-**Date:** 2026-07-21 14:00 UTC
-**Status:** CLEAN
+**Date:** 2026-07-22 06:00 UTC
+**Status:** FIXES_APPLIED
 
 ## npm audit
 - Critical: 0
-- High: 0
+- High: 0 (was 2 — fixed)
 - Medium: 0
 - Low: 0
 
-549 packages audited. 0 vulnerabilities.
+549 packages audited. 0 vulnerabilities after fix.
 
 ## Code Security Checks
 1. SSRF Protection: PASS — `validateSquarePath()` in `lib/square.ts` blocks `..`, `//`, `\\`; requires leading `/`; enforces strict regex `/^\/[a-zA-Z0-9/_-]+$/` on path portion
@@ -24,7 +24,7 @@
 10. Safe Health Checks: PASS — No health check endpoints exist; auth check returns only `{ authenticated: boolean }`; no tokens or config exposed
 
 ## Fixes Applied
-- `0f7e2d8` fix(security): patch brace-expansion DoS vulnerability (GHSA-3jxr-9vmj-r5cp) — applied earlier today
+- `dc55720` fix(security): patch sharp libvips CVEs via npm override (GHSA-f88m-g3jw-g9cj) — Added `"sharp": ">=0.35.0"` override in package.json to resolve CVE-2026-33327, CVE-2026-33328, CVE-2026-35590, CVE-2026-35591 from libvips in sharp <0.35.0. Upgraded sharp 0.34.5 -> 0.35.3.
 
 ## Manual Action Required
 - None
