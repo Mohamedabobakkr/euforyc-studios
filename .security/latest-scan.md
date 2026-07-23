@@ -1,11 +1,11 @@
 # Security Scan Report
 
-**Date:** 2026-07-23 06:15 UTC
-**Status:** FIXES_APPLIED
+**Date:** 2026-07-23 14:22 UTC
+**Status:** CLEAN
 
 ## npm audit
 - Critical: 0
-- High: 0 (was 3, all fixed)
+- High: 0
 - Medium: 0
 - Low: 0
 
@@ -22,10 +22,7 @@
 10. Safe Health Checks: PASS — no health check endpoints exist (N/A)
 
 ## Fixes Applied
-- fix(security): upgrade next to 16.2.11 and override sharp to 0.35.3
-  - next 16.2.6 -> 16.2.11: fixes 9 CVEs (middleware bypass, SSRF, DoS, cache confusion, endpoint disclosure)
-  - sharp 0.34.5 -> 0.35.3 via npm override: fixes 4 libvips CVEs (CVE-2026-33327/33328/35590/35591)
-  - brace-expansion: DoS fix via npm audit fix (GHSA-3jxr-9vmj-r5cp)
+- None needed — all vulnerabilities from previous scan (sharp, next, brace-expansion) already resolved in commit 330c7d5
 
 ## Manual Action Required
-- Build currently fails due to Momence API being unavailable (503 Service Temporarily Unavailable) — this is a pre-existing external service issue unrelated to security. The /api/momence/events and /api/momence/memberships routes fail during static page generation when the Momence API is down. Consider adding error boundaries or fallback behavior for these routes.
+- Build currently fails due to Momence API being unavailable (503 Service Temporarily Unavailable) — this is a pre-existing external service issue unrelated to security. Consider adding error boundaries or fallback behavior for the /api/momence routes.
