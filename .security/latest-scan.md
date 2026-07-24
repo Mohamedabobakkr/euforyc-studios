@@ -1,21 +1,13 @@
 # Security Scan Report
 
-**Date:** 2026-07-23 19:28 UTC
-**Status:** FIXES_APPLIED
+**Date:** 2026-07-24 06:00 UTC
+**Status:** CLEAN
 
 ## npm audit
 - Critical: 0
-- High: 0 (was 5 — all fixed)
+- High: 0
 - Medium: 0
 - Low: 0
-
-### Dependency Fixes Applied
-| Package | From | To | Advisory |
-|---------|------|----|----------|
-| postcss | 8.5.10 | 8.5.22 | GHSA-6g55-p6wh-862q — arbitrary file read via sourceMappingURL |
-| next | 16.2.6 | 16.2.11 | GHSA-6gpp-xcg3-4w24, GHSA-m99w-x7hq-7vfj, GHSA-89xv-2m56-2m9x, GHSA-p9j2-gv94-2wf4 + 5 moderate |
-| sharp | 0.34.5 | 0.35.3 | GHSA-f88m-g3jw-g9cj — inherited libvips CVEs |
-| brace-expansion | 1.1.13/5.0.6 | 1.1.16/5.0.7 | GHSA-3jxr-9vmj-r5cp — DoS via exponential expansion |
 
 ## Code Security Checks
 1. SSRF Protection: PASS — `validateSquarePath()` in `lib/square.ts` blocks `..`, `//`, `\\`; requires leading `/`; enforces strict regex `/^\/[a-zA-Z0-9/_-]+$/` on path portion
@@ -30,7 +22,7 @@
 10. Safe Health Checks: PASS — No health check endpoints exist; auth check returns only `{ authenticated: boolean }`; no tokens or config exposed
 
 ## Fixes Applied
-- `957323d` fix(security): upgrade postcss, next.js, sharp, and brace-expansion
+- None needed
 
 ## Manual Action Required
 - None — all npm audit vulnerabilities resolved, all code security checks pass
