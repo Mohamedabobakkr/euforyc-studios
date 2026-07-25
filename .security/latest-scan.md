@@ -1,11 +1,11 @@
 # Security Scan Report
 
-**Date:** 2026-07-25 06:00 UTC
-**Status:** FIXES_APPLIED
+**Date:** 2026-07-25 09:00 UTC
+**Status:** CLEAN
 
 ## npm audit
 - Critical: 0
-- High: 0 (was 9, fixed via brace-expansion override)
+- High: 0
 - Medium: 0
 - Low: 0
 
@@ -17,12 +17,12 @@
 5. Security Headers: PASS — HSTS (max-age=63072000; includeSubDomains; preload), CSP with strict directives, X-Frame-Options: SAMEORIGIN, X-Content-Type-Options: nosniff, Referrer-Policy: strict-origin-when-cross-origin, Permissions-Policy (camera/mic/geo denied), `poweredByHeader: false`, API routes set `Cache-Control: no-store`
 6. Image Hostnames: PASS — Only whitelisted domains in `remotePatterns` (squarecdn.com, euforyc.co.uk, momence.com, S3 bucket, localhost); no `hostname: '**'` wildcard
 7. No Hardcoded Secrets: PASS — No `sk-`, `pk_live_`, or hardcoded passwords found in source; all secrets sourced from `process.env`; `.env` files properly gitignored
-8. No localStorage Credentials: PASS — Auth uses HttpOnly + Secure + SameSite cookies exclusively; only `euforyc_uid` (anonymous tracking ID) in localStorage
+8. No localStorage Credentials: PASS — Auth uses HttpOnly + Secure + SameSite cookies exclusively; no credentials in localStorage
 9. No Error Leaks: PASS — All API routes return generic error strings to clients; Momence detail leaks gated behind `NODE_ENV === 'development'`; no stack traces in production responses
 10. Safe Health Checks: PASS — No health check endpoints exist; auth check returns only `{ authenticated: boolean }`; no tokens or config exposed
 
 ## Fixes Applied
-- `2604698` fix(security): override brace-expansion to 5.0.8 to fix DoS vulnerability (GHSA-mh99-v99m-4gvg) — resolved all 9 high-severity findings in eslint dependency chain
+- None needed — previous brace-expansion override (commit 4c9dfb2) remains in place and effective
 
 ## Manual Action Required
 - None — all npm audit vulnerabilities resolved, all code security checks pass
