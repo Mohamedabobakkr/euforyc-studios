@@ -1,11 +1,11 @@
 # Security Scan Report
 
-**Date:** 2026-07-24 19:25 UTC
-**Status:** CLEAN
+**Date:** 2026-07-25 06:00 UTC
+**Status:** FIXES_APPLIED
 
 ## npm audit
 - Critical: 0
-- High: 0
+- High: 0 (was 9, fixed via brace-expansion override)
 - Medium: 0
 - Low: 0
 
@@ -22,7 +22,7 @@
 10. Safe Health Checks: PASS — No health check endpoints exist; auth check returns only `{ authenticated: boolean }`; no tokens or config exposed
 
 ## Fixes Applied
-- None needed
+- `2604698` fix(security): override brace-expansion to 5.0.8 to fix DoS vulnerability (GHSA-mh99-v99m-4gvg) — resolved all 9 high-severity findings in eslint dependency chain
 
 ## Manual Action Required
 - None — all npm audit vulnerabilities resolved, all code security checks pass
