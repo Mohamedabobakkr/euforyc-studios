@@ -1,11 +1,11 @@
 # Security Scan Report
 
-**Date:** 2026-07-26 12:00 UTC
+**Date:** 2026-07-26 09:00 UTC
 **Status:** FIXES_APPLIED
 
 ## npm audit
 - Critical: 0
-- High: 0 (was 9 — fixed)
+- High: 0 (was 9, fixed via brace-expansion override)
 - Medium: 0
 - Low: 0
 
@@ -22,7 +22,7 @@
 10. Safe Health Checks: PASS — No health check endpoints exist; auth check returns only `{ authenticated: boolean }`; no tokens or config exposed
 
 ## Fixes Applied
-- `b633f28` fix(security): override brace-expansion to ^5.0.8 to fix DoS vulnerability (GHSA-mh99-v99m-4gvg) — resolved all 9 high-severity npm audit findings in the eslint dependency tree
+- `4b2060d` fix(security): override brace-expansion to >=2.0.1 to fix DoS vulnerability — resolved all 9 HIGH vulnerabilities in eslint's minimatch/brace-expansion chain (GHSA-mh99-v99m-4gvg: unbounded expansion causing OOM crash)
 
 ## Manual Action Required
 - Build verification could not complete in this environment (missing MOMENCE_API_TOKEN). The override change only affects package.json overrides and does not touch runtime code. Verify build passes in production CI.
