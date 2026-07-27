@@ -1,28 +1,28 @@
 # Security Scan Report
 
-**Date:** 2026-07-27 05:30 UTC
+**Date:** 2026-07-27 11:25 UTC
 **Status:** FIXES_APPLIED
 
 ## npm audit
 - Critical: 0
-- High: 0 (was 9, fixed via brace-expansion override bump to >=4.0.1)
+- High: 0 (was 9, fixed by brace-expansion override to ^5.0.8)
 - Medium: 0
 - Low: 0
 
 ## Code Security Checks
-1. SSRF Protection: PASS — `validateSquarePath()` in `lib/square.ts` blocks `..`, `//`, `\\`; requires leading `/`; enforces strict regex `/^\/[a-zA-Z0-9/_-]+$/` on path portion
-2. API Auth: PASS — `orders/route.ts` and `update-order/route.ts` both call `authenticateBarista()` which validates HMAC-SHA256 signed HttpOnly session cookies with 12h expiry; login rate-limited (5 attempts/15min); constant-time password comparison
-3. Webhook Signatures: PASS — `webhook/route.ts` verifies Square HMAC-SHA256 signature with constant-time comparison; fails closed with 500 when `SQUARE_WEBHOOK_SIGNATURE_KEY` is missing; rejects invalid signatures with 403; deduplication cache prevents replay
-4. Input Validation: PASS — `orderId`/`fulfillmentUid` validated with `/^[a-zA-Z0-9_-]+$/`; state transitions whitelisted; create-order caps items at 50, modifiers at 20, strings at 100/500 chars, quantity 1-99; pickup time validated as future ISO date; redirect URLs validated against allowlist
-5. Security Headers: PASS — HSTS (max-age=63072000; includeSubDomains; preload), CSP with strict directives, X-Frame-Options: SAMEORIGIN, X-Content-Type-Options: nosniff, Referrer-Policy: strict-origin-when-cross-origin, Permissions-Policy (camera/mic/geo denied), `poweredByHeader: false`, API routes set `Cache-Control: no-store`
-6. Image Hostnames: PASS — Only whitelisted domains in `remotePatterns` (squarecdn.com, euforyc.co.uk, momence.com, S3 bucket, localhost); no `hostname: '**'` wildcard
-7. No Hardcoded Secrets: PASS — No `sk-`, `pk_live_`, or hardcoded passwords found in source; all secrets sourced from `process.env`; `.env` files properly gitignored
-8. No localStorage Credentials: PASS — Auth uses HttpOnly + Secure + SameSite cookies exclusively; only `euforyc_uid` (anonymous tracking ID) in localStorage
-9. No Error Leaks: PASS — All API routes return generic error strings to clients; Momence detail leaks gated behind `NODE_ENV === 'development'`; no stack traces in production responses
-10. Safe Health Checks: PASS — No health check endpoints exist; auth check returns only `{ authenticated: boolean }`; no tokens or config exposed
+1. SSRF Protection: PASS - validateSquarePath() blocks `..`, `//`, `\\`; enforces strict regex on path portion
+2. API Auth: PASS - orders and update-order routes call authenticateBarista() via HttpOnly session cookies; constant-time password comparison
+3. Webhook Signatures: PASS - HMAC-SHA256 verified with constant-time comparison; fails closed with 500 when key missing
+4. Input Validation: PASS - orderId/fulfillmentUid validated with /^[a-zA-Z0-9_-]+$/; state transitions whitelisted
+5. Security Headers: PASS - HSTS, CSP, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy all set; poweredByHeader: false
+6. Image Hostnames: PASS - remotePatterns restricted to specific trusted domains only; no hostname: '**' wildcard
+7. No Hardcoded Secrets: PASS - no sk-, pk_live, or hardcoded passwords found in source; all secrets from process.env
+8. No localStorage Credentials: PASS - auth uses HttpOnly + Secure + SameSite cookies exclusively
+9. No Error Leaks: PASS - all API routes return generic error messages; no details/stack traces exposed to clients
+10. Safe Health Checks: PASS - no health check endpoints expose tokens or internal config
 
 ## Fixes Applied
-- `74580f8` fix(security): override brace-expansion to >=4.0.1 to fix DoS vulnerability — bumped previous >=2.0.1 override to >=4.0.1 for complete GHSA-mh99-v99m-4gvg remediation across all eslint dependency paths
+- Bumped brace-expansion override from >=4.0.1 to ^5.0.8 for complete GHSA-mh99-v99m-4gvg remediation
 
 ## Manual Action Required
 - None
