@@ -1,6 +1,6 @@
 # Security Scan Report
 
-**Date:** 2026-07-29 19:30 UTC
+**Date:** 2026-07-30 05:00 UTC
 **Status:** CLEAN
 
 ## npm audit
@@ -22,7 +22,7 @@
 10. Safe Health Checks: PASS — No health check endpoints exist; auth check returns only `{ authenticated: boolean }`; no tokens or config exposed
 
 ## Fixes Applied
-- None needed — all vulnerabilities resolved by prior scan's dependency updates (eslint ^10.8.0, eslint-config-next ^16.2.12, minimatch override ^10.2.6)
+- None needed
 
 ## Manual Action Required
-- `npm run build` fails due to Momence API returning 503 (MomenceApiError: Service temporarily unavailable, code CONFIG_ERROR). This is an external service issue, not a security concern. Monitor and retry when Momence API recovers.
+- None
