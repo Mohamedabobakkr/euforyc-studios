@@ -150,6 +150,8 @@ export default function ScheduleView({ initialData }: ScheduleViewProps) {
     if (baseTitle.toLowerCase().includes('barre')) return 'Barre';
     if (baseTitle.toLowerCase().includes('afro') || baseTitle.toLowerCase().includes('dabke')) return 'Dance';
     if (baseTitle.toLowerCase().includes('belly')) return 'Belly Dance';
+    if (baseTitle.toLowerCase().includes('journal')) return 'Guided Journaling';
+    if (baseTitle.toLowerCase().includes('circle')) return "Women's Circle";
     if (baseTitle.toLowerCase().includes('dance')) return 'Dance';
     if (baseTitle.toLowerCase().includes('yoga')) return 'Yoga';
 

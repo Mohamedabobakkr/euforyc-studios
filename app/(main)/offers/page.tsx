@@ -3,7 +3,7 @@
 import { useState, useEffect, Suspense, useMemo } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import { ExternalLink, Package, Flame, Zap, Heart, CheckCircle2, Music, ArrowRight, Sparkles, Users, Clock, MapPin, Timer, Crown, Dumbbell, PartyPopper } from 'lucide-react';
+import { ExternalLink, Package, Flame, Zap, Heart, CheckCircle2, Music, ArrowRight, Sparkles, Users, Clock, MapPin, Timer, Crown, Dumbbell, PartyPopper, BookOpen, Flower2 } from 'lucide-react';
 
 // Countdown hook for urgency timer
 function useCountdown(targetTimestamp: number) {
@@ -168,6 +168,48 @@ const introOffers = {
     icon: Music,
     highlight: false,
   },
+  'guided-journaling': {
+    id: 'guided-journaling',
+    name: 'Guided Journaling',
+    shortName: 'Journaling',
+    classes: '3 Sessions',
+    price: '£40',
+    perClass: '£13.33',
+    regularPrice: '£54',
+    savings: 'Save £14',
+    validity: 'all 3 August dates',
+    description: 'A gentle space to slow down and return to yourself — guided journaling, gentle spiritual reflection, dua\'a and affirmations. Tuesdays 9–9.45pm: 11th, 18th & 25th August.',
+    benefits: [
+      'Guided journaling prompts',
+      'Dua\'a & affirmations',
+      'Gentle spiritual reflection',
+      'Optional sharing'
+    ],
+    momenceUrl: '/book',
+    icon: BookOpen,
+    highlight: false,
+  },
+  'womens-circle': {
+    id: 'womens-circle',
+    name: 'Women\'s Circle',
+    shortName: 'Women\'s Circle',
+    classes: '3 Circles',
+    price: '£60',
+    perClass: '£20',
+    regularPrice: '£75',
+    savings: 'Save £15',
+    validity: 'all 3 August dates',
+    description: 'For women who long to slow down and return to themselves — reflection, remembrance and sisterhood. A place to pause, to be seen, held and softened. Sundays 4pm: 16th, 23rd & 30th August.',
+    benefits: [
+      'Reflection & remembrance',
+      'Sisterhood & connection',
+      'Held in a gentle space',
+      'Only 15 spaces per circle'
+    ],
+    momenceUrl: '/book',
+    icon: Flower2,
+    highlight: false,
+  },
   'try-all': {
     id: 'try-all',
     name: 'Try All',
@@ -255,8 +297,34 @@ const dancePackages = [
 
 const danceStyles = ['Dabke', 'Belly Dance', 'Afro', 'Bollywood'];
 
+// Women's Circle data
+const womensCircleExpect = ['Guided Journaling', 'Gentle Spiritual Reflection', 'Dua\'a & Affirmations', 'Optional Sharing'];
+
+const womensCircleFormats = [
+  {
+    name: 'Guided Journaling',
+    time: 'Tuesdays · 9–9.45pm',
+    dates: ['Tuesday 11th August', 'Tuesday 18th August', 'Tuesday 25th August'],
+    price: '£18',
+    priceNote: 'per class · August',
+    intro: '3 Sessions for £40',
+    introUrl: '/book',
+    icon: BookOpen,
+  },
+  {
+    name: 'Women\'s Circle',
+    time: 'Sundays · 4pm',
+    dates: ['Sunday 16th August', 'Sunday 23rd August', 'Sunday 30th August'],
+    price: '£25',
+    priceNote: 'per circle · August',
+    intro: '3 Circles for £60',
+    introUrl: '/book',
+    icon: Flower2,
+  },
+];
+
 type OfferId = keyof typeof introOffers;
-const offerIds: OfferId[] = ['anniversary', 'reformer', 'hot-pilates', 'red-light', 'barre', 'belly-dance', 'try-all', 'cadillac', 'ems-sculpt'];
+const offerIds: OfferId[] = ['anniversary', 'reformer', 'hot-pilates', 'red-light', 'barre', 'belly-dance', 'guided-journaling', 'womens-circle', 'try-all', 'cadillac', 'ems-sculpt'];
 
 // Main content component
 function OffersContent() {
@@ -484,7 +552,11 @@ function OffersContent() {
                   <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
                 </div>
                 <p className="text-center text-xs text-[#fffcf2]/50 mt-3">
-                  {selectedOffer === 'anniversary' ? 'Limited time · Open to all' : 'First-time clients only'}
+                  {selectedOffer === 'anniversary'
+                    ? 'Limited time · Open to all'
+                    : selectedOffer === 'guided-journaling' || selectedOffer === 'womens-circle'
+                      ? 'Claimable once · New & existing clients'
+                      : 'First-time clients only'}
                 </p>
               </div>
             </a>
@@ -565,6 +637,91 @@ function OffersContent() {
                   </span>
                 </div>
               </a>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Women's Circle Section */}
+      <section id="womens-circle" className="section-padding bg-[#fffcf2]">
+        <div className="container-width">
+          <div className="text-center mb-10 md:mb-16">
+            <p className="tagline text-[#1a260e]/60 mb-4">SLOW DOWN & RETURN TO YOURSELF</p>
+            <h2 className="heading-secondary">
+              Women&apos;s Circle
+            </h2>
+            <p className="body-text max-w-2xl mx-auto mt-4">
+              Created for women who long to slow down and return to themselves.
+              A gentle space for reflection, remembrance and sisterhood — a place to pause,
+              to be seen, held and softened.
+            </p>
+          </div>
+
+          {/* What to Expect */}
+          <div className="flex flex-wrap justify-center gap-3 mb-10 md:mb-12">
+            {womensCircleExpect.map((item) => (
+              <div
+                key={item}
+                className="px-6 py-3 border border-[#1a260e]/10 rounded-full bg-white"
+              >
+                <span className="font-serif text-base md:text-lg text-[#1a260e]">{item}</span>
+              </div>
+            ))}
+          </div>
+
+          {/* Women's Circle Format Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 max-w-3xl mx-auto">
+            {womensCircleFormats.map((format) => (
+              <div
+                key={format.name}
+                className="relative rounded-2xl p-6 md:p-8 bg-gradient-to-br from-[#1a260e] to-[#2a3a1e] text-[#fffcf2] flex flex-col"
+              >
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 md:w-14 md:h-14 rounded-xl flex items-center justify-center flex-shrink-0 bg-[#fffcf2]/10">
+                    <format.icon className="h-6 w-6 md:h-7 md:w-7 text-[#fffcf2]" />
+                  </div>
+                  <div className="flex-1 space-y-1">
+                    <h3 className="font-serif text-xl md:text-2xl font-light">{format.name}</h3>
+                    <p className="text-sm text-[#fffcf2]/70">{format.time}</p>
+                    <div className="flex items-baseline gap-2 pt-1">
+                      <span className="font-serif text-3xl font-light">{format.price}</span>
+                      <span className="text-sm text-[#fffcf2]/60">{format.priceNote}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <ul className="space-y-2 mt-6 pt-6 border-t border-[#fffcf2]/10">
+                  {format.dates.map((date) => (
+                    <li key={date} className="flex items-center gap-2 text-sm text-[#fffcf2]/90">
+                      <Clock className="h-4 w-4 flex-shrink-0 text-[#fffcf2]/50" />
+                      <span>{date}</span>
+                    </li>
+                  ))}
+                  <li className="flex items-center gap-2 text-sm text-[#fffcf2]/90">
+                    <Users className="h-4 w-4 flex-shrink-0 text-[#fffcf2]/50" />
+                    <span>Only 15 spaces</span>
+                  </li>
+                </ul>
+
+                <a
+                  href={format.introUrl}
+                  data-offer-id={`womens-circle-${format.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`}
+                  data-content-name={`${format.name} Intro ${format.intro}`}
+                  data-content-type="intro_offer"
+                  data-content-category="/offers/womens-circle"
+                  data-value={format.intro.replace(/^.*£/, '')}
+                  data-currency="GBP"
+                  className="group mt-6 pt-6 border-t border-[#fffcf2]/10 block"
+                >
+                  <div className="w-full flex items-center justify-center gap-2 bg-white text-[#1a260e] py-4 px-6 rounded-xl font-semibold text-sm tracking-wider uppercase transition-all duration-300 group-hover:shadow-xl group-hover:scale-[1.02]">
+                    <span>Intro Offer · {format.intro}</span>
+                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                  </div>
+                  <p className="text-center text-xs text-[#fffcf2]/50 mt-3">
+                    Claimable once · New & existing clients
+                  </p>
+                </a>
+              </div>
             ))}
           </div>
         </div>

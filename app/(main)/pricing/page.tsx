@@ -335,6 +335,58 @@ export default function Pricing() {
               </div>
             </div>
 
+            {/* Women's Circle Section */}
+            <div className="space-y-8">
+              <div className="text-center space-y-2">
+                <h2 className="heading-secondary">Women&apos;s Circle</h2>
+                <p className="tagline text-[#1a260e]/60">JOURNALING • REFLECTION • SISTERHOOD</p>
+              </div>
+
+              <div className="space-y-0">
+                <div className="flex justify-between items-center py-5 border-b border-[#1a260e]/10">
+                  <div>
+                    <h3 className="font-serif text-xl md:text-2xl font-light">Guided Journaling</h3>
+                    <p className="text-xs text-[#1a260e]/60">Tuesdays 9–9.45pm • 15 spaces</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="font-serif text-2xl md:text-3xl font-light">£18</p>
+                    <p className="text-xs text-[#1a260e]/60">per class · August</p>
+                  </div>
+                </div>
+
+                <div className="flex justify-between items-center py-5 bg-[#1a260e]/5 px-4 rounded-lg mt-4 mb-4">
+                  <div>
+                    <h3 className="font-serif text-xl md:text-2xl font-light">Journaling Intro (3 Sessions)</h3>
+                    <p className="text-xs text-[#1a260e]/60">Claimable once • New & existing clients</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="font-serif text-2xl md:text-3xl font-light">£40</p>
+                  </div>
+                </div>
+
+                <div className="flex justify-between items-center py-5 border-b border-[#1a260e]/10">
+                  <div>
+                    <h3 className="font-serif text-xl md:text-2xl font-light">Women&apos;s Circle</h3>
+                    <p className="text-xs text-[#1a260e]/60">Sundays 4pm • 15 spaces</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="font-serif text-2xl md:text-3xl font-light">£25</p>
+                    <p className="text-xs text-[#1a260e]/60">per circle · August</p>
+                  </div>
+                </div>
+
+                <div className="flex justify-between items-center py-5 bg-[#1a260e]/5 px-4 rounded-lg mt-4">
+                  <div>
+                    <h3 className="font-serif text-xl md:text-2xl font-light">Circle Intro (3 Circles)</h3>
+                    <p className="text-xs text-[#1a260e]/60">Claimable once • New & existing clients</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="font-serif text-2xl md:text-3xl font-light">£60</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
           </div>
         </div>
       </section>

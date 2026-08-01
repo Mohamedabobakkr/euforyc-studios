@@ -236,6 +236,14 @@ const structuredData = {
           name: 'Sculpt Mat Pilates',
           description: 'Strength-focused mat work for toning and sculpting'
         }
+      },
+      {
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: "Women's Circle",
+          description: "Guided journaling sessions and women's circles — reflection, remembrance and sisterhood in a gentle women-only space"
+        }
       }
     ]
   },

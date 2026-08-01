@@ -52,6 +52,8 @@ const packages = {
       { id: 'red-light', name: 'Red Light Hot Pilates', classes: '3 Classes', price: '£65', savings: 'First-time offer', description: 'Enhanced hot pilates with red light therapy benefits', momenceUrl: 'https://momence.com/m/624096', icon: 'zap', validity: '20 days' },
       { id: 'barre', name: 'Barre', classes: '3 Classes', price: '£60', savings: 'First-time offer', description: 'Ballet-inspired workout for strength and flexibility', momenceUrl: 'https://momence.com/m/621480', icon: 'heart', validity: '30 days' },
       { id: 'belly-dance', name: 'Belly Dance', classes: '3 Classes', price: '£40', savings: 'First-time offer', description: 'Sensual, expressive movement rooted in traditional belly dance', momenceUrl: 'https://momence.com/m/776393', icon: 'music', validity: '30 days' },
+      { id: 'guided-journaling', name: 'Guided Journaling', classes: '3 Sessions', price: '£40', savings: 'Claimable once', description: 'Guided journaling, gentle spiritual reflection, dua\'a & affirmations — Tuesdays 9–9.45pm in August', momenceUrl: '/book', icon: 'sparkles', validity: 'August dates' },
+      { id: 'womens-circle', name: 'Women\'s Circle', classes: '3 Circles', price: '£60', savings: 'Claimable once', description: 'A gentle space for reflection, remembrance and sisterhood — Sundays 4pm in August', momenceUrl: '/book', icon: 'heart', validity: 'August dates' },
       { id: 'try-all', name: 'Try All', classes: '3 Classes', price: '£70', savings: 'First-time offer', description: 'Experience all class types - Reformer, Hot Pilates, Barre, Dance & more', momenceUrl: 'https://momence.com/m/631782', icon: 'sparkles', validity: '20 days' },
       { id: 'cadillac', name: 'Cadillac 1-1', classes: '3 Classes', price: '£180', savings: 'First-time offer', description: 'Private one-on-one sessions on our Cadillac Reformer', momenceUrl: 'https://momence.com/m/708119', icon: 'crown', validity: '20 days' },
       { id: 'ems-sculpt', name: 'EMS Sculpt', classes: '3 Classes', price: '£180', savings: 'First-time offer', description: 'Electrical Muscle Stimulation training for accelerated sculpting', momenceUrl: 'https://momence.com/m/718403', icon: 'dumbbell', validity: '30 days' }
@@ -136,7 +138,7 @@ const categories: { key: CategoryKey; label: string }[] = [
   { key: 'dancePackage', label: 'Dance' },
 ];
 
-type IntroOfferType = 'reformer' | 'hot-pilates' | 'red-light' | 'barre' | 'belly-dance' | 'try-all' | 'cadillac' | 'ems-sculpt';
+type IntroOfferType = 'reformer' | 'hot-pilates' | 'red-light' | 'barre' | 'belly-dance' | 'guided-journaling' | 'womens-circle' | 'try-all' | 'cadillac' | 'ems-sculpt';
 
 const getIcon = (icon: string, className?: string) => {
   switch (icon) {
@@ -159,7 +161,7 @@ function IntroOffersSection() {
 
   useEffect(() => {
     const offer = searchParams.get('offer') as IntroOfferType | null;
-    if (offer && ['reformer', 'hot-pilates', 'red-light', 'barre', 'belly-dance', 'try-all', 'cadillac', 'ems-sculpt'].includes(offer)) {
+    if (offer && ['reformer', 'hot-pilates', 'red-light', 'barre', 'belly-dance', 'guided-journaling', 'womens-circle', 'try-all', 'cadillac', 'ems-sculpt'].includes(offer)) {
       setSelectedOffer(offer);
       setFromAd(true);
     }
@@ -275,7 +277,7 @@ function IntroOffersSection() {
           </div>
 
           <p className="text-center text-[11px] text-[#1a260e]/30 mt-6 tracking-wide">
-            Intro offers are for first-time clients only
+            Intro offers are for first-time clients only · Women&apos;s Circle intros are claimable once by all clients
           </p>
         </div>
       </div>

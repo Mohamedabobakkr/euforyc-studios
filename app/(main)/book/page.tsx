@@ -182,6 +182,45 @@ export default function Book() {
                     Ideal for beginners, rehabilitation, or advanced practitioners.
                   </p>
                 </div>
+
+                {/* Guided Journaling */}
+                <div className="border-l-4 border-[#1a260e]/20 pl-6 space-y-2">
+                  <h3 className="font-playfair text-xl font-light">Guided Journaling</h3>
+                  <div className="flex items-center space-x-4 text-sm text-[#1a260e]/80">
+                    <div className="flex items-center space-x-1">
+                      <Clock className="h-4 w-4" />
+                      <span>Tuesdays 9–9.45pm</span>
+                    </div>
+                    <div className="flex items-center space-x-1">
+                      <Users className="h-4 w-4" />
+                      <span>15 spaces</span>
+                    </div>
+                  </div>
+                  <p className="body-text">
+                    A gentle space to slow down and return to yourself. Guided journaling,
+                    gentle spiritual reflection, dua&apos;a and affirmations, with optional sharing.
+                  </p>
+                </div>
+
+                {/* Women's Circle */}
+                <div className="border-l-4 border-[#1a260e]/20 pl-6 space-y-2">
+                  <h3 className="font-playfair text-xl font-light">Women&apos;s Circle</h3>
+                  <div className="flex items-center space-x-4 text-sm text-[#1a260e]/80">
+                    <div className="flex items-center space-x-1">
+                      <Clock className="h-4 w-4" />
+                      <span>Sundays 4pm</span>
+                    </div>
+                    <div className="flex items-center space-x-1">
+                      <Users className="h-4 w-4" />
+                      <span>15 spaces</span>
+                    </div>
+                  </div>
+                  <p className="body-text">
+                    For women who long to slow down and return to themselves — a workshop of
+                    reflection, remembrance and sisterhood. A place to pause, to be seen,
+                    held and softened.
+                  </p>
+                </div>
               </div>
             </div>
 
