@@ -152,10 +152,10 @@ const introOffers = {
     name: 'Belly Dance',
     shortName: 'Belly Dance',
     classes: '3 Classes',
-    price: '£35',
-    perClass: '£11.67',
+    price: '£40',
+    perClass: '£13.33',
     regularPrice: '£45',
-    savings: 'Save £10',
+    savings: 'Save £5',
     validity: '30 days',
     description: 'Sensual, expressive movement rooted in traditional belly dance',
     benefits: [
@@ -237,8 +237,8 @@ const introOffers = {
 const dancePackages = [
   {
     name: '4 Classes',
-    price: '£50',
-    savings: 'save £10',
+    price: '£65',
+    savings: '',
     description: 'Perfect for trying out different styles',
     momenceUrl: 'https://momence.com/m/597174',
     highlight: false,
@@ -551,7 +551,9 @@ function OffersContent() {
                     </p>
                     <div className="flex items-baseline gap-2">
                       <span className="font-serif text-3xl font-light">{pkg.price}</span>
-                      <span className="text-green-400 text-sm font-medium">{pkg.savings}</span>
+                      {pkg.savings && (
+                        <span className="text-green-400 text-sm font-medium">{pkg.savings}</span>
+                      )}
                     </div>
                   </div>
                 </div>

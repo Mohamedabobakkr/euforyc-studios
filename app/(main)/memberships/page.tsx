@@ -437,10 +437,11 @@ const categories: Category[] = [
     memberships: [
       {
         name: '4 Classes',
-        monthlyPrice: '£45',
-        perClass: '£11.25 per class',
+        monthlyPrice: '£55',
+        perClass: '£13.75 per class',
         description: 'Once a week',
-        savings: 'Save £15/month vs drop-in',
+        savings: 'Save £5/month vs drop-in',
+        popular: true,
         features: [
           '4 Dance classes per month',
           'Valid for all dance styles',
@@ -448,21 +449,6 @@ const categories: Category[] = [
           'Ongoing monthly commitment'
         ],
         momenceUrl: 'https://momence.com/m/597181'
-      },
-      {
-        name: '8 Classes',
-        monthlyPrice: '£85',
-        perClass: '£10.63 per class',
-        description: 'Twice a week',
-        savings: 'Save £40/month vs drop-in',
-        popular: true,
-        features: [
-          '8 Dance classes per month',
-          'Valid for all dance styles',
-          'Priority booking access',
-          'Ongoing monthly commitment'
-        ],
-        momenceUrl: 'https://momence.com/m/609596'
       }
     ]
   }

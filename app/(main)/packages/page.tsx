@@ -51,7 +51,7 @@ const packages = {
       { id: 'hot-pilates', name: 'Hot Pilates', classes: '3 Classes', price: '£50', savings: 'First-time offer', description: 'Dynamic mat-based pilates with infrared heat', momenceUrl: 'https://momence.com/m/507852', icon: 'flame', validity: '20 days' },
       { id: 'red-light', name: 'Red Light Hot Pilates', classes: '3 Classes', price: '£65', savings: 'First-time offer', description: 'Enhanced hot pilates with red light therapy benefits', momenceUrl: 'https://momence.com/m/624096', icon: 'zap', validity: '20 days' },
       { id: 'barre', name: 'Barre', classes: '3 Classes', price: '£60', savings: 'First-time offer', description: 'Ballet-inspired workout for strength and flexibility', momenceUrl: 'https://momence.com/m/621480', icon: 'heart', validity: '30 days' },
-      { id: 'belly-dance', name: 'Belly Dance', classes: '3 Classes', price: '£35', savings: 'First-time offer', description: 'Sensual, expressive movement rooted in traditional belly dance', momenceUrl: 'https://momence.com/m/776393', icon: 'music', validity: '30 days' },
+      { id: 'belly-dance', name: 'Belly Dance', classes: '3 Classes', price: '£40', savings: 'First-time offer', description: 'Sensual, expressive movement rooted in traditional belly dance', momenceUrl: 'https://momence.com/m/776393', icon: 'music', validity: '30 days' },
       { id: 'try-all', name: 'Try All', classes: '3 Classes', price: '£70', savings: 'First-time offer', description: 'Experience all class types - Reformer, Hot Pilates, Barre, Dance & more', momenceUrl: 'https://momence.com/m/631782', icon: 'sparkles', validity: '20 days' },
       { id: 'cadillac', name: 'Cadillac 1-1', classes: '3 Classes', price: '£180', savings: 'First-time offer', description: 'Private one-on-one sessions on our Cadillac Reformer', momenceUrl: 'https://momence.com/m/708119', icon: 'crown', validity: '20 days' },
       { id: 'ems-sculpt', name: 'EMS Sculpt', classes: '3 Classes', price: '£180', savings: 'First-time offer', description: 'Electrical Muscle Stimulation training for accelerated sculpting', momenceUrl: 'https://momence.com/m/718403', icon: 'dumbbell', validity: '30 days' }
@@ -118,7 +118,7 @@ const packages = {
     title: 'Dance',
     subtitle: 'Dabke, Belly Dance, Afro, or Bollywood — your choice',
     packages: [
-      { name: '4 Classes', price: '£50', savings: 'save £10', momenceUrl: 'https://momence.com/m/597174' },
+      { name: '4 Classes', price: '£65', momenceUrl: 'https://momence.com/m/597174' },
       { name: '8 Classes', price: '£90', savings: 'save £30', momenceUrl: 'https://momence.com/m/609496' }
     ]
   }

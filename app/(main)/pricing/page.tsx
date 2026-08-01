@@ -318,8 +318,7 @@ export default function Pricing() {
                     <p className="text-xs text-[#1a260e]/60">Mix & match any dance style</p>
                   </div>
                   <div className="text-right">
-                    <p className="font-serif text-2xl md:text-3xl font-light">£50</p>
-                    <p className="text-sm text-green-600 font-medium">save £10</p>
+                    <p className="font-serif text-2xl md:text-3xl font-light">£65</p>
                   </div>
                 </div>
 

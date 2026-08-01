@@ -20,8 +20,9 @@ export const MOMENCE_PRICING: Record<string, MomencePriceEntry> = {
   '631782': { value: 70,  currency: 'GBP', contentName: 'Try All Intro 3 for £70',               contentType: 'intro_offer' },
   '708119': { value: 180, currency: 'GBP', contentName: 'Cadillac 1-1 Intro 3 for £180',         contentType: 'intro_offer' },
   '718403': { value: 180, currency: 'GBP', contentName: 'EMS Sculpt Intro 3 for £180',           contentType: 'intro_offer' },
+  '776393': { value: 40,  currency: 'GBP', contentName: 'Belly Dance Intro 3 for £40',           contentType: 'intro_offer' },
 
-  '597174': { value: 50,  currency: 'GBP', contentName: 'Dance 4 Classes',                       contentType: 'dance_package' },
+  '597174': { value: 65,  currency: 'GBP', contentName: 'Dance 4 Classes',                       contentType: 'dance_package' },
   '609496': { value: 90,  currency: 'GBP', contentName: 'Dance 8 Classes',                       contentType: 'dance_package' },
 
   '632399': { value: 84,  currency: 'GBP', contentName: 'All Access 4 Classes (limited offer)',  contentType: 'all_access_offer' },
@@ -55,8 +56,7 @@ export const MOMENCE_PRICING: Record<string, MomencePriceEntry> = {
   '707780': { value: 200, currency: 'GBP', contentName: 'Sculpt Mat Membership — Unlimited',     contentType: 'membership' },
   '707782': { value: 80,  currency: 'GBP', contentName: 'Sculpt Mat Membership — Special',       contentType: 'membership' },
 
-  '597181': { value: 45,  currency: 'GBP', contentName: 'Dance Membership — 4 classes/mo',       contentType: 'membership' },
-  '609596': { value: 85,  currency: 'GBP', contentName: 'Dance Membership — 8 classes/mo',       contentType: 'membership' },
+  '597181': { value: 55,  currency: 'GBP', contentName: 'Dance Membership — 4 classes/mo',       contentType: 'membership' },
 };
 
 export function resolveMomenceId(id: string | null | undefined): MomencePriceEntry | null {
