@@ -1,7 +1,7 @@
 # Security Scan Report
 
-**Date:** 2026-08-04 06:00 UTC
-**Status:** FIXES_APPLIED
+**Date:** 2026-08-04 06:30 UTC
+**Status:** CLEAN (verified — fixes from earlier run confirmed)
 
 ## npm audit
 - Critical: 0
@@ -25,4 +25,4 @@
 - `dd5d8e1` — fix(security): update lockfile to resolve postcss (<=8.5.22) and brace-expansion (4.0.0-5.0.8) vulnerabilities. Installed versions were already patched but lockfile metadata was stale.
 
 ## Manual Action Required
-- None
+- `next build` failing due to Momence API returning 503 ("Service temporarily unavailable") — pre-existing, unrelated to security. The `/api/momence/*` routes fetch data during static generation and fail when the external API is down. Verify Momence API connectivity or ensure all momence routes have `export const dynamic = 'force-dynamic'`.
