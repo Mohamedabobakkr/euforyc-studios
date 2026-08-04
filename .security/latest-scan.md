@@ -1,12 +1,12 @@
 # Security Scan Report
 
-**Date:** 2026-08-03 22:49 UTC
+**Date:** 2026-08-04 06:00 UTC
 **Status:** FIXES_APPLIED
 
 ## npm audit
 - Critical: 0
-- High: 0 (was 1 — brace-expansion DoS, fixed)
-- Moderate: 0 (was 2 — postcss path traversal + next transitive, fixed)
+- High: 0 (was 1 — brace-expansion DoS via GHSA-rgw5-rvv9-x895, fixed)
+- Medium: 0 (was 2 — postcss path traversal GHSA-fxqj-rqcc-2cmp + next transitive, fixed)
 - Low: 0
 
 ## Code Security Checks
@@ -22,10 +22,7 @@
 10. Safe Health Checks: PASS — No health check endpoints exist; auth check returns only `{ authenticated: boolean }`; no tokens or config exposed
 
 ## Fixes Applied
-- `0c2fb37` fix(security): update postcss to 8.5.25 and override brace-expansion to 5.0.9
-  - postcss ^8.5.22 → ^8.5.25 (fixes GHSA-fxqj-rqcc-2cmp: sourceMappingURL path traversal)
-  - Added brace-expansion ^5.0.9 override (fixes GHSA-rgw5-rvv9-x895: DoS via unbounded arrays)
-  - Also resolves transitive next vulnerability via postcss
+- `dd5d8e1` — fix(security): update lockfile to resolve postcss (<=8.5.22) and brace-expansion (4.0.0-5.0.8) vulnerabilities. Installed versions were already patched but lockfile metadata was stale.
 
 ## Manual Action Required
 - None
