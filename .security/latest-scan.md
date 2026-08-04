@@ -1,12 +1,12 @@
 # Security Scan Report
 
-**Date:** 2026-08-04 06:30 UTC
-**Status:** CLEAN (verified — fixes from earlier run confirmed)
+**Date:** 2026-08-04 14:00 UTC
+**Status:** CLEAN
 
 ## npm audit
 - Critical: 0
-- High: 0 (was 1 — brace-expansion DoS via GHSA-rgw5-rvv9-x895, fixed)
-- Medium: 0 (was 2 — postcss path traversal GHSA-fxqj-rqcc-2cmp + next transitive, fixed)
+- High: 0
+- Medium: 0
 - Low: 0
 
 ## Code Security Checks
@@ -18,11 +18,11 @@
 6. Image Hostnames: PASS — Only whitelisted domains in `remotePatterns` (squarecdn.com, euforyc.co.uk, momence.com, S3 bucket, localhost); no `hostname: '**'` wildcard
 7. No Hardcoded Secrets: PASS — No `sk-`, `pk_live_`, or hardcoded passwords found in source; all secrets sourced from `process.env`; `.env` files properly gitignored
 8. No localStorage Credentials: PASS — Auth uses HttpOnly + Secure + SameSite cookies exclusively; only `euforyc_uid` (anonymous tracking ID) in localStorage
-9. No Error Leaks: PASS — All API routes return generic error strings to clients; Momence routes expose `error.details` only when `NODE_ENV === 'development'`; no stack traces in production responses
+9. No Error Leaks: PASS — All API routes return generic error strings to clients; no stack traces in production responses
 10. Safe Health Checks: PASS — No health check endpoints exist; auth check returns only `{ authenticated: boolean }`; no tokens or config exposed
 
 ## Fixes Applied
-- `dd5d8e1` — fix(security): update lockfile to resolve postcss (<=8.5.22) and brace-expansion (4.0.0-5.0.8) vulnerabilities. Installed versions were already patched but lockfile metadata was stale.
+- None needed
 
 ## Manual Action Required
-- `next build` failing due to Momence API returning 503 ("Service temporarily unavailable") — pre-existing, unrelated to security. The `/api/momence/*` routes fetch data during static generation and fail when the external API is down. Verify Momence API connectivity or ensure all momence routes have `export const dynamic = 'force-dynamic'`.
+- None
