@@ -1,12 +1,12 @@
 # Security Scan Report
 
-**Date:** 2026-08-05 08:00 UTC
+**Date:** 2026-08-05 19:30 UTC
 **Status:** FIXES_APPLIED
 
 ## npm audit
 - Critical: 0
-- High: 0 (was 1 — brace-expansion DoS via unbounded intermediate arrays, fixed via lockfile update)
-- Medium: 0 (were 2 — postcss path traversal + next transitive dep, fixed via lockfile update)
+- High: 0 (was 1 - brace-expansion DoS via unbounded arrays, GHSA-rgw5-rvv9-x895)
+- Medium: 0 (was 2 - postcss path traversal via sourceMappingURL GHSA-fxqj-rqcc-2cmp, plus next transitive dep)
 - Low: 0
 
 ## Code Security Checks
@@ -22,7 +22,7 @@
 10. Safe Health Checks: PASS — No health check endpoints exist; auth check returns only `{ authenticated: boolean }`; no tokens or config exposed
 
 ## Fixes Applied
-- Lockfile updated to resolve brace-expansion (high) and postcss (moderate) advisories (already applied upstream in prior scan)
+- `776a8fc` fix(security): update postcss to 8.5.25 and add brace-expansion 5.0.9 override — resolves 1 high + 2 moderate vulnerabilities
 
 ## Manual Action Required
-- Build fails due to missing MOMENCE_API_TOKEN env var (pre-existing, not a security issue). The Momence API route throws at build time when the token is not set.
+- Build fails due to Momence API being temporarily unavailable (pre-existing, unrelated to security). Monitor and retry when Momence API recovers.
