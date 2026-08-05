@@ -3,7 +3,7 @@
 import { useState, useEffect, Suspense, useMemo } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import { ExternalLink, Package, Flame, Zap, Heart, CheckCircle2, Music, ArrowRight, Sparkles, Users, Clock, MapPin, Timer, Crown, Dumbbell, PartyPopper, BookOpen, Flower2 } from 'lucide-react';
+import { ExternalLink, Package, Flame, Zap, Heart, CheckCircle2, Music, ArrowRight, Sparkles, Users, Clock, MapPin, Timer, Crown, Dumbbell, BookOpen, Flower2 } from 'lucide-react';
 
 // Countdown hook for urgency timer
 function useCountdown(targetTimestamp: number) {
@@ -42,27 +42,6 @@ function getEndOfMonth() {
 
 // Intro Offer data
 const introOffers = {
-  'anniversary': {
-    id: 'anniversary',
-    name: 'Euforyc Turns 1',
-    shortName: 'Birthday Offer',
-    classes: '10 Days Unlimited',
-    price: '£85',
-    perClass: 'unlimited',
-    regularPrice: '£280+',
-    savings: 'Save £195+',
-    validity: '10 days',
-    description: 'Our 1st birthday offer — 10 days of unlimited access to everything Euforyc. Reformer, Hot Pilates, Red Light, Barre, Sculpt Mat & Dance — all included.',
-    benefits: [
-      'Unlimited classes for 10 days',
-      'All class types included',
-      'Reformer + Hot + Red Light + Barre',
-      'Open to new + existing clients'
-    ],
-    momenceUrl: 'https://momence.com/m/831833',
-    icon: PartyPopper,
-    highlight: true,
-  },
   'reformer': {
     id: 'reformer',
     name: 'Reformer Pilates',
@@ -185,7 +164,7 @@ const introOffers = {
       'Gentle spiritual reflection',
       'Optional sharing'
     ],
-    momenceUrl: '/book',
+    momenceUrl: 'https://momence.com/m/872693',
     icon: BookOpen,
     highlight: false,
   },
@@ -206,7 +185,7 @@ const introOffers = {
       'Held in a gentle space',
       'Only 15 spaces per circle'
     ],
-    momenceUrl: '/book',
+    momenceUrl: 'https://momence.com/m/872694',
     icon: Flower2,
     highlight: false,
   },
@@ -308,7 +287,7 @@ const womensCircleFormats = [
     price: '£18',
     priceNote: 'per class · August',
     intro: '3 Sessions for £40',
-    introUrl: '/book',
+    introUrl: 'https://momence.com/m/872693',
     icon: BookOpen,
   },
   {
@@ -318,13 +297,13 @@ const womensCircleFormats = [
     price: '£25',
     priceNote: 'per circle · August',
     intro: '3 Circles for £60',
-    introUrl: '/book',
+    introUrl: 'https://momence.com/m/872694',
     icon: Flower2,
   },
 ];
 
 type OfferId = keyof typeof introOffers;
-const offerIds: OfferId[] = ['anniversary', 'reformer', 'hot-pilates', 'red-light', 'barre', 'belly-dance', 'guided-journaling', 'womens-circle', 'try-all', 'cadillac', 'ems-sculpt'];
+const offerIds: OfferId[] = ['reformer', 'hot-pilates', 'red-light', 'barre', 'belly-dance', 'guided-journaling', 'womens-circle', 'try-all', 'cadillac', 'ems-sculpt'];
 
 // Main content component
 function OffersContent() {
@@ -442,32 +421,7 @@ function OffersContent() {
             {offerIds.map((offerId) => {
               const offerData = introOffers[offerId];
               const isSelected = selectedOffer === offerId;
-              const isAnniversary = offerId === 'anniversary';
               const Icon = offerData.icon;
-
-              if (isAnniversary) {
-                return (
-                  <button
-                    key={offerId}
-                    onClick={() => setSelectedOffer(offerId)}
-                    className={`relative group px-6 py-3 md:px-7 md:py-3.5 rounded-full font-sans text-xs md:text-sm font-semibold tracking-wider transition-all duration-300 flex items-center gap-2 bg-gradient-to-r from-rose-500 via-pink-500 to-amber-500 text-white shadow-lg shadow-rose-500/40 hover:shadow-xl hover:shadow-rose-500/50 hover:scale-[1.04] ${isSelected ? 'ring-2 ring-rose-300 ring-offset-2 ring-offset-[#fffcf2] scale-[1.04]' : ''}`}
-                  >
-                    {!isSelected && (
-                      <span
-                        aria-hidden
-                        className="absolute -inset-1 rounded-full bg-gradient-to-r from-rose-500 via-pink-500 to-amber-500 opacity-40 blur-md animate-pulse"
-                      />
-                    )}
-                    <span className="relative flex items-center gap-2">
-                      <span className="text-base leading-none">🎂</span>
-                      <span>{offerData.shortName}</span>
-                      <span className="hidden sm:inline-flex bg-white/25 backdrop-blur-sm rounded-full px-2 py-0.5 text-[10px] tracking-[0.15em] font-bold">
-                        LIMITED
-                      </span>
-                    </span>
-                  </button>
-                );
-              }
 
               return (
                 <button
@@ -493,7 +447,7 @@ function OffersContent() {
               rel="noopener noreferrer"
               data-offer-id={offer.id}
               data-content-name={`${offer.name} ${offer.classes} ${offer.price}`}
-              data-content-type={selectedOffer === 'anniversary' ? 'all_access_offer' : 'intro_offer'}
+              data-content-type="intro_offer"
               data-content-category="/offers"
               data-value={offer.price.replace(/[^0-9.]/g, '')}
               data-currency="GBP"
@@ -552,11 +506,9 @@ function OffersContent() {
                   <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
                 </div>
                 <p className="text-center text-xs text-[#fffcf2]/50 mt-3">
-                  {selectedOffer === 'anniversary'
-                    ? 'Limited time · Open to all'
-                    : selectedOffer === 'guided-journaling' || selectedOffer === 'womens-circle'
-                      ? 'Claimable once · New & existing clients'
-                      : 'First-time clients only'}
+                  {selectedOffer === 'guided-journaling' || selectedOffer === 'womens-circle'
+                    ? 'Claimable once · New & existing clients'
+                    : 'First-time clients only'}
                 </p>
               </div>
             </a>
@@ -705,6 +657,8 @@ function OffersContent() {
 
                 <a
                   href={format.introUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   data-offer-id={`womens-circle-${format.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`}
                   data-content-name={`${format.name} Intro ${format.intro}`}
                   data-content-type="intro_offer"
