@@ -43,7 +43,7 @@ function initializeOpenAIPixel(): void {
 
   queue('init', {
     pixelId: OPENAI_PIXEL_ID,
-    debug: true,
+    debug: process.env.NODE_ENV !== 'production',
   });
 }
 
