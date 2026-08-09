@@ -87,7 +87,7 @@ const nextConfig = {
             key: 'Content-Security-Policy',
             value: [
               "default-src 'self'",
-              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://connect.facebook.net https://www.googletagmanager.com https://www.google-analytics.com https://cdn.vercel-insights.com https://va.vercel-scripts.com https://bzrcdn.openai.com",
+              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://connect.facebook.net https://www.googletagmanager.com https://www.google-analytics.com https://cdn.vercel-insights.com https://va.vercel-scripts.com https://bzrcdn.openai.com https://momence.com",
               "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
               "img-src 'self' data: blob: https: http://localhost:3000",
               "font-src 'self' https://fonts.gstatic.com",
