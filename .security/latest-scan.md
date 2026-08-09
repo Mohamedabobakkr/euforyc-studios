@@ -1,6 +1,6 @@
 # Security Scan Report
 
-**Date:** 2026-08-09 03:25 UTC
+**Date:** 2026-08-09 11:25 UTC
 **Status:** FIXES_APPLIED
 
 ## npm audit
@@ -22,7 +22,7 @@
 10. Safe Health Checks: PASS — No health check endpoints exist; auth check returns only `{ authenticated: boolean }`; no tokens or config exposed
 
 ## Fixes Applied
-- postcss upgraded to 8.5.26 to resolve nanoid high-severity vulnerability (GHSA-2v37-7h3g-55p8, CVSS 5.9) — fix was applied in a prior scan run
+- postcss upgraded to 8.5.26 to resolve nanoid high-severity vulnerability (GHSA-2v37-7h3g-55p8, CVSS 5.9) — fix confirmed applied and pushed
 
 ## Manual Action Required
 - Build fails in this CI environment due to missing `MOMENCE_API_TOKEN` environment variable (pre-existing issue, not security-related). Ensure the token is set in deployment environment.
