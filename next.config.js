@@ -91,7 +91,7 @@ const nextConfig = {
               "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
               "img-src 'self' data: blob: https: http://localhost:3000",
               "font-src 'self' https://fonts.gstatic.com",
-              "connect-src 'self' https://euforyc.co.uk https://www.euforyc.co.uk https://capig.euforyc.co.uk https://connect.squareup.com https://web.squarecdn.com https://momence.com https://graph.facebook.com https://*.google-analytics.com https://*.analytics.google.com https://cdn.vercel-insights.com https://va.vercel-scripts.com https://vitals.vercel-insights.com https://bzr.openai.com https://bzrcdn.openai.com",
+              "connect-src 'self' https://euforyc.co.uk https://www.euforyc.co.uk https://capig.euforyc.co.uk https://connect.squareup.com https://web.squarecdn.com https://momence.com https://api.momence.com https://graph.facebook.com https://*.google-analytics.com https://*.analytics.google.com https://cdn.vercel-insights.com https://va.vercel-scripts.com https://vitals.vercel-insights.com https://bzr.openai.com https://bzrcdn.openai.com",
               "frame-src 'self' https://connect.squareup.com https://web.squarecdn.com https://momence.com https://www.facebook.com",
               "object-src 'none'",
               "base-uri 'self'",
