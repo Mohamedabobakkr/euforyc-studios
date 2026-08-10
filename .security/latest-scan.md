@@ -1,11 +1,11 @@
 # Security Scan Report
 
-**Date:** 2026-08-09 11:25 UTC
-**Status:** FIXES_APPLIED
+**Date:** 2026-08-10 00:00 UTC
+**Status:** CLEAN
 
 ## npm audit
 - Critical: 0
-- High: 0 (was 1 — nanoid <3.3.17 via postcss, now fixed)
+- High: 0
 - Medium: 0
 - Low: 0
 
@@ -18,11 +18,11 @@
 6. Image Hostnames: PASS — Only whitelisted domains in `remotePatterns`; no `hostname: '**'` wildcard
 7. No Hardcoded Secrets: PASS — No `sk-`, `pk_live_`, or hardcoded passwords found in source; all secrets sourced from `process.env`
 8. No localStorage Credentials: PASS — Auth uses HttpOnly + Secure + SameSite cookies exclusively; only `euforyc_uid` (anonymous tracking ID) in localStorage
-9. No Error Leaks: PASS — All API routes return generic error strings to clients; no stack traces in production responses
+9. No Error Leaks: PASS — All API routes return generic error strings to clients; no stack traces in production responses; Momence error details gated to `NODE_ENV=development` only
 10. Safe Health Checks: PASS — No health check endpoints exist; auth check returns only `{ authenticated: boolean }`; no tokens or config exposed
 
 ## Fixes Applied
-- postcss upgraded to 8.5.26 to resolve nanoid high-severity vulnerability (GHSA-2v37-7h3g-55p8, CVSS 5.9) — fix confirmed applied and pushed
+- None needed
 
 ## Manual Action Required
-- Build fails in this CI environment due to missing `MOMENCE_API_TOKEN` environment variable (pre-existing issue, not security-related). Ensure the token is set in deployment environment.
+- None
