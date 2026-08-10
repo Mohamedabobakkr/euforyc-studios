@@ -1,11 +1,11 @@
 # Security Scan Report
 
-**Date:** 2026-08-10 00:00 UTC
-**Status:** CLEAN
+**Date:** 2026-08-10 11:35 UTC
+**Status:** FIXES_APPLIED
 
 ## npm audit
 - Critical: 0
-- High: 0
+- High: 0 (was 1 — nanoid fixed)
 - Medium: 0
 - Low: 0
 
@@ -22,7 +22,7 @@
 10. Safe Health Checks: PASS — No health check endpoints exist; auth check returns only `{ authenticated: boolean }`; no tokens or config exposed
 
 ## Fixes Applied
-- None needed
+- `4bd44ff` fix(security): override nanoid to >=3.3.17 — fixes GHSA-2v37-7h3g-55p8 (infinite loop in custom generators when size is zero). Transitive via postcss. Now resolved to nanoid@3.3.18.
 
 ## Manual Action Required
-- None
+- None — all vulnerabilities resolved
