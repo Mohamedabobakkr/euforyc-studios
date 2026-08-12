@@ -1,6 +1,6 @@
 # Security Scan Report
 
-**Date:** 2026-08-12 11:25 UTC
+**Date:** 2026-08-12 19:25 UTC
 **Status:** FIXES_APPLIED
 
 ## npm audit
@@ -8,6 +8,9 @@
 - High: 0 (was 1 — fixed)
 - Medium: 0
 - Low: 0
+
+### Fixed
+- **nanoid** (HIGH — GHSA-2v37-7h3g-55p8): custom generators can loop indefinitely when size is zero. Transitive dep via postcss 8.5.25. Fixed by updating postcss to 8.5.26, pulling nanoid 3.3.18.
 
 ## Code Security Checks
 1. SSRF Protection: PASS — `validateSquarePath()` blocks `..`, `//`, `\\`; requires leading `/`; enforces strict regex `/^\/[a-zA-Z0-9/_-]+$/` on path portion
@@ -22,7 +25,7 @@
 10. Safe Health Checks: PASS — No health check endpoints exist; auth check returns only `{ authenticated: boolean }`; no tokens or config exposed
 
 ## Fixes Applied
-- postcss upgraded 8.5.25 → 8.5.26 to resolve nanoid CVE (GHSA-2v37-7h3g-55p8, CVSS 5.9 high — infinite loop in nanoid custom generators). nanoid 3.3.16 → 3.3.18.
+- postcss upgraded 8.5.25 → 8.5.26 to resolve nanoid CVE (GHSA-2v37-7h3g-55p8, high severity — infinite loop in nanoid custom generators). nanoid 3.3.16 → 3.3.18.
 
 ## Manual Action Required
-- None — all vulnerabilities resolved. Note: `npm run build` fails due to missing MOMENCE_API_TOKEN env var (pre-existing, not security-related).
+- None
