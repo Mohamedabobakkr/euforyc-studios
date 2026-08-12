@@ -1,28 +1,28 @@
 # Security Scan Report
 
-**Date:** 2026-08-12 06:15 UTC
-**Status:** CLEAN
+**Date:** 2026-08-12 11:25 UTC
+**Status:** FIXES_APPLIED
 
 ## npm audit
 - Critical: 0
-- High: 0
+- High: 0 (was 1 — fixed)
 - Medium: 0
 - Low: 0
 
 ## Code Security Checks
-1. SSRF Protection: PASS — validateSquarePath() blocks `..`, `//`, `\\`, and enforces safe-character regex
-2. API Auth: PASS — both orders and update-order routes use authenticateBarista() with HttpOnly session cookies
-3. Webhook Signatures: PASS — HMAC-SHA256 verified with constant-time comparison; fails closed when key is missing (returns 500)
-4. Input Validation: PASS — orderId and fulfillmentUid validated with `/^[a-zA-Z0-9_-]+$/`; state transitions whitelisted
-5. Security Headers: PASS — HSTS, CSP, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy all set
-6. Image Hostnames: PASS — remotePatterns scoped to specific trusted domains, no `**` wildcard
-7. No Hardcoded Secrets: PASS — no sk-, pk_live, or hardcoded passwords found in app/lib/components
-8. No localStorage Credentials: PASS — no sensitive data stored in localStorage
-9. No Error Leaks: PASS — API routes return generic messages; client-side err.message usage is UI-only, not API responses
-10. Safe Health Checks: PASS — no health check endpoints exposing tokens or internal config
+1. SSRF Protection: PASS — `validateSquarePath()` blocks `..`, `//`, `\\`; requires leading `/`; enforces strict regex `/^\/[a-zA-Z0-9/_-]+$/` on path portion
+2. API Auth: PASS — Both `orders/route.ts` and `update-order/route.ts` call `authenticateBarista()` which validates HMAC-SHA256 signed HttpOnly session cookies with 12h expiry; login rate-limited (5 attempts/15min); constant-time password comparison
+3. Webhook Signatures: PASS — HMAC-SHA256 verified with constant-time comparison; fails closed (500) when key missing; rejects invalid with 403; deduplication cache prevents replay
+4. Input Validation: PASS — `orderId`/`fulfillmentUid` validated with `/^[a-zA-Z0-9_-]+$/`; state transitions whitelisted; create-order caps items at 50, modifiers at 20, strings at 100/500 chars, quantity 1-99; pickup time validated as future ISO date; redirect URLs validated against allowlist
+5. Security Headers: PASS — HSTS (max-age=63072000; includeSubDomains; preload), CSP with strict directives, X-Frame-Options: SAMEORIGIN, X-Content-Type-Options: nosniff, Referrer-Policy: strict-origin-when-cross-origin, Permissions-Policy (camera/mic/geo denied), `poweredByHeader: false`, API routes set `Cache-Control: no-store`
+6. Image Hostnames: PASS — Only whitelisted domains in `remotePatterns` (squarecdn.com, euforyc.co.uk, momence.com, S3 bucket, localhost); no `hostname: '**'` wildcard
+7. No Hardcoded Secrets: PASS — No `sk-`, `pk_live_`, or hardcoded passwords found in source; all secrets sourced from `process.env`; `.env` files properly gitignored
+8. No localStorage Credentials: PASS — Auth uses HttpOnly + Secure + SameSite cookies exclusively; only `euforyc_uid` (anonymous tracking ID) in localStorage
+9. No Error Leaks: PASS — All API routes return generic error strings to clients; Momence routes guard `error.details` behind `NODE_ENV === 'development'`; no stack traces in production responses
+10. Safe Health Checks: PASS — No health check endpoints exist; auth check returns only `{ authenticated: boolean }`; no tokens or config exposed
 
 ## Fixes Applied
-- None needed — nanoid lockfile was already patched to 3.3.18 by prior scan
+- postcss upgraded 8.5.25 → 8.5.26 to resolve nanoid CVE (GHSA-2v37-7h3g-55p8, CVSS 5.9 high — infinite loop in nanoid custom generators). nanoid 3.3.16 → 3.3.18.
 
 ## Manual Action Required
-- Build is failing due to missing `MOMENCE_API_TOKEN` environment variable in CI (pre-existing, not security-related)
+- None — all vulnerabilities resolved. Note: `npm run build` fails due to missing MOMENCE_API_TOKEN env var (pre-existing, not security-related).
