@@ -1,6 +1,6 @@
 # Security Scan Report
 
-**Date:** 2026-08-11 07:00 UTC
+**Date:** 2026-08-12 06:15 UTC
 **Status:** CLEAN
 
 ## npm audit
@@ -22,7 +22,7 @@
 10. Safe Health Checks: PASS — no health check endpoints exposing tokens or internal config
 
 ## Fixes Applied
-- None needed
+- None needed — nanoid lockfile was already patched to 3.3.18 by prior scan
 
 ## Manual Action Required
-- None
+- Build is failing due to missing `MOMENCE_API_TOKEN` environment variable in CI (pre-existing, not security-related)
