@@ -1,16 +1,13 @@
 # Security Scan Report
 
-**Date:** 2026-08-13 03:25 UTC
-**Status:** FIXES_APPLIED
+**Date:** 2026-08-13 19:27 UTC
+**Status:** CLEAN
 
 ## npm audit
 - Critical: 0
-- High: 0 (was 1 — nanoid <3.3.17 infinite loop, fixed in prior scan)
+- High: 0
 - Medium: 0
 - Low: 0
-
-### Fixed
-- **nanoid** (HIGH — GHSA-2v37-7h3g-55p8): custom generators can loop indefinitely when size is zero. Transitive dep via postcss 8.5.25. Fixed by updating postcss to 8.5.26, pulling nanoid 3.3.18.
 
 ## Code Security Checks
 1. SSRF Protection: PASS — `validateSquarePath()` blocks `..`, `//`, `\\`; requires leading `/`; enforces strict regex `/^\/[a-zA-Z0-9/_-]+$/` on path portion
@@ -20,12 +17,12 @@
 5. Security Headers: PASS — HSTS (max-age=63072000; includeSubDomains; preload), CSP with strict directives, X-Frame-Options: SAMEORIGIN, X-Content-Type-Options: nosniff, Referrer-Policy: strict-origin-when-cross-origin, Permissions-Policy (camera/mic/geo denied), `poweredByHeader: false`, API routes set `Cache-Control: no-store`
 6. Image Hostnames: PASS — Only whitelisted domains in `remotePatterns` (squarecdn.com, euforyc.co.uk, momence.com, S3 bucket, localhost); no `hostname: '**'` wildcard
 7. No Hardcoded Secrets: PASS — No `sk-`, `pk_live_`, or hardcoded passwords found in source; all secrets sourced from `process.env`; `.env` files properly gitignored
-8. No localStorage Credentials: PASS — Auth uses HttpOnly + Secure + SameSite cookies exclusively; only `euforyc_uid` (anonymous tracking ID) in localStorage
+8. No localStorage Credentials: PASS — Auth uses HttpOnly + Secure + SameSite cookies exclusively; only `euforyc_uid` (anonymous tracking ID) in localStorage; `sessionStorage` used only for OpenAI pixel event deduplication
 9. No Error Leaks: PASS — All API routes return generic error strings to clients; Momence routes guard `error.details` behind `NODE_ENV === 'development'`; no stack traces in production responses
 10. Safe Health Checks: PASS — No health check endpoints exist; auth check returns only `{ authenticated: boolean }`; no tokens or config exposed
 
 ## Fixes Applied
-- postcss upgraded 8.5.25 → 8.5.26 to resolve nanoid CVE (GHSA-2v37-7h3g-55p8, high severity — infinite loop in nanoid custom generators). nanoid 3.3.16 → 3.3.18.
+- None needed
 
 ## Manual Action Required
 - None
