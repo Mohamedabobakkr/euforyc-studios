@@ -1,11 +1,11 @@
 # Security Scan Report
 
-**Date:** 2026-08-12 19:25 UTC
+**Date:** 2026-08-13 03:25 UTC
 **Status:** FIXES_APPLIED
 
 ## npm audit
 - Critical: 0
-- High: 0 (was 1 — fixed)
+- High: 0 (was 1 — nanoid <3.3.17 infinite loop, fixed in prior scan)
 - Medium: 0
 - Low: 0
 
