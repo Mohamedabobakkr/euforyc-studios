@@ -22,7 +22,7 @@
 10. Safe Health Checks: PASS — No health check endpoints exist; auth check returns only `{ authenticated: boolean }`; no tokens or config exposed
 
 ## Fixes Applied
-- None needed — 0 npm vulnerabilities, all 10 code security checks pass
+- None needed — 0 npm vulnerabilities; all code checks pass
 
 ## Manual Action Required
 - None
