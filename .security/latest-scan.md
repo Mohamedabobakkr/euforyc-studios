@@ -1,6 +1,6 @@
 # Security Scan Report
 
-**Date:** 2026-08-18 06:00 UTC
+**Date:** 2026-08-18 14:00 UTC
 **Status:** CLEAN
 
 ## npm audit
@@ -17,8 +17,8 @@
 5. Security Headers: PASS — HSTS (max-age=63072000; includeSubDomains; preload), CSP with strict directives, X-Frame-Options: SAMEORIGIN, X-Content-Type-Options: nosniff, Referrer-Policy: strict-origin-when-cross-origin, Permissions-Policy (camera/mic/geo denied), `poweredByHeader: false`, API routes set `Cache-Control: no-store`
 6. Image Hostnames: PASS — Only whitelisted domains in `remotePatterns` (squarecdn.com, euforyc.co.uk, momence.com, S3 bucket, localhost); no `hostname: '**'` wildcard
 7. No Hardcoded Secrets: PASS — No `sk-`, `pk_live_`, or hardcoded passwords found in source; all secrets sourced from `process.env`; `.env` files properly gitignored
-8. No localStorage Credentials: PASS — Auth uses HttpOnly + Secure + SameSite cookies exclusively; no credential storage in localStorage
-9. No Error Leaks: PASS — All API routes return generic error strings to clients; no `details: String(error)` or stack traces exposed
+8. No localStorage Credentials: PASS — Auth uses HttpOnly + Secure + SameSite cookies exclusively; only `euforyc_uid` (anonymous tracking ID) in localStorage
+9. No Error Leaks: PASS — All API routes return generic error strings to clients; Momence error details only exposed in development mode
 10. Safe Health Checks: PASS — No health check endpoints exist; auth check returns only `{ authenticated: boolean }`; no tokens or config exposed
 
 ## Fixes Applied
