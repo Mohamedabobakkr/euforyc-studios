@@ -1,6 +1,6 @@
 # Security Scan Report
 
-**Date:** 2026-08-20 03:25 UTC
+**Date:** 2026-08-20 11:26 UTC
 **Status:** CLEAN
 
 ## npm audit
@@ -10,19 +10,19 @@
 - Low: 0
 
 ## Code Security Checks
-1. SSRF Protection: PASS — `validateSquarePath()` blocks `../`, `//`, `\\`; requires leading `/`; enforces strict regex `/^\/[a-zA-Z0-9/_-]+$/` on path portion
-2. API Auth: PASS — Both `orders/route.ts` and `update-order/route.ts` call `authenticateBarista()` which validates HMAC-SHA256 signed HttpOnly session cookies with 12h expiry; login rate-limited (5 attempts/15min); constant-time password comparison
-3. Webhook Signatures: PASS — HMAC-SHA256 verified with constant-time comparison; fails closed (500) when key missing; rejects invalid with 403; deduplication cache prevents replay
-4. Input Validation: PASS — `orderId`/`fulfillmentUid` validated with `/^[a-zA-Z0-9_-]+$/`; state transitions whitelisted; create-order caps items at 50, modifiers at 20, strings at 100/500 chars, quantity 1-99; pickup time validated as future ISO date; redirect URLs validated against allowlist
-5. Security Headers: PASS — HSTS (max-age=63072000; includeSubDomains; preload), CSP with strict directives, X-Frame-Options: SAMEORIGIN, X-Content-Type-Options: nosniff, Referrer-Policy: strict-origin-when-cross-origin, Permissions-Policy (camera/mic/geo denied), `poweredByHeader: false`, API routes set `Cache-Control: no-store`
-6. Image Hostnames: PASS — Only whitelisted domains in `remotePatterns` (squarecdn.com, euforyc.co.uk, momence.com, S3 bucket, localhost); no `hostname: '**'` wildcard
-7. No Hardcoded Secrets: PASS — No `sk-`, `pk_live_`, or hardcoded passwords found in source; all secrets sourced from `process.env`; `.env` files properly gitignored
-8. No localStorage Credentials: PASS — Auth uses HttpOnly + Secure + SameSite cookies exclusively; only `euforyc_uid` (anonymous tracking ID) in localStorage
-9. No Error Leaks: PASS — All API routes return generic error strings to clients; no stack traces or internal details exposed
-10. Safe Health Checks: PASS — No health check endpoints exist; auth check returns only `{ authenticated: boolean }`; no tokens or config exposed
+1. SSRF Protection: PASS — validateSquarePath() blocks ../, //, \\; enforces strict allowlist regex /^\/[a-zA-Z0-9/_-]+$/
+2. API Auth: PASS — orders and update-order routes call authenticateBarista() with HMAC-SHA256 session tokens; rate-limited login; constant-time password comparison
+3. Webhook Signatures: PASS — HMAC-SHA256 with constant-time comparison; fails closed (500) when key missing; rejects invalid with 403
+4. Input Validation: PASS — orderId/fulfillmentUid validated against /^[a-zA-Z0-9_-]+$/; state transitions whitelisted
+5. Security Headers: PASS — HSTS, CSP, X-Frame-Options, X-Content-Type-Options all set; poweredByHeader disabled; API routes set Cache-Control: no-store
+6. Image Hostnames: PASS — remotePatterns uses specific named hosts only, no ** wildcard
+7. No Hardcoded Secrets: PASS — all secrets read from process.env at runtime; .env files gitignored
+8. No localStorage Credentials: PASS — auth uses HttpOnly cookies exclusively; only random analytics ID in localStorage
+9. No Error Leaks: PASS — generic messages in production; details only in dev mode via NODE_ENV guard
+10. Safe Health Checks: PASS — no health-check endpoints exist; no routes expose env vars or config
 
 ## Fixes Applied
-- None needed — 0 npm vulnerabilities, all 10 code security checks passing
+- None needed
 
 ## Manual Action Required
 - None
