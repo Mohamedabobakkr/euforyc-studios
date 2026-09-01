@@ -1,13 +1,17 @@
 # Security Scan Report
 
-**Date:** 2026-09-01 06:00 UTC
-**Status:** CLEAN
+**Date:** 2026-09-01 19:30 UTC
+**Status:** FIXES_APPLIED
 
 ## npm audit
 - Critical: 0
 - High: 0
 - Medium: 0
 - Low: 0
+
+Previously found 2 vulnerabilities (1 high, 1 low) — both resolved:
+- `browserslist` <=4.28.6: 2 high-severity advisories (GHSA-c83g-rgw3-j3cx, GHSA-73wf-gq98-2v4g) — updated via npm audit fix
+- `postcss-selector-parser` 6.1.0-6.1.2: 1 low-severity advisory (GHSA-w9m9-85wc-3x92) — updated via npm audit fix
 
 ## Code Security Checks
 1. SSRF Protection: PASS — `validateSquarePath()` blocks `..`, `//`, `\\`; requires leading `/`; enforces strict regex `/^\/[a-zA-Z0-9/_-]+$/` on path portion
@@ -22,7 +26,12 @@
 10. Safe Health Checks: PASS — No health check endpoints exist; no tokens or config exposed
 
 ## Fixes Applied
-- None needed
+- `36a0a04` fix(security): update browserslist and postcss-selector-parser transitive deps
 
 ## Manual Action Required
-- None
+- None — all vulnerabilities resolved
+
+## Informational Notes
+- CSP includes `'unsafe-inline' 'unsafe-eval'` for script-src (common for Next.js, consider nonces if feasible)
+- Login rate limiter is in-memory; consider Redis for multi-instance deployments
+- Build fails due to missing `MOMENCE_API_TOKEN` env var (pre-existing, not security-related)
