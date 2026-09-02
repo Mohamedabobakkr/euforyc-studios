@@ -1,13 +1,15 @@
 # Security Scan Report
 
-**Date:** 2026-09-02 06:00 UTC
-**Status:** CLEAN
+**Date:** 2026-09-02 06:15 UTC
+**Status:** FIXES_APPLIED
 
 ## npm audit
 - Critical: 0
 - High: 0
 - Medium: 0
 - Low: 0
+
+(1 moderate vulnerability found and fixed during this scan — @humanfs/node < 0.16.8)
 
 ## Code Security Checks
 1. SSRF Protection: PASS — `validateSquarePath()` blocks `..`, `//`, `\\`; requires leading `/`; enforces strict regex `/^\/[a-zA-Z0-9/_-]+$/` on path portion
@@ -22,7 +24,7 @@
 10. Safe Health Checks: PASS — No health check endpoints exist; no tokens or config exposed
 
 ## Fixes Applied
-- None needed
+- `ad12931` — fix(security): update @humanfs/node to 0.16.8 (GHSA-p498-v437-472g) — symlink traversal in recursive copy (transitive dep via eslint)
 
 ## Manual Action Required
 - None
