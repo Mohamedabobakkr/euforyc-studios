@@ -1,6 +1,6 @@
 # Security Scan Report
 
-**Date:** 2026-09-03 03:24 UTC
+**Date:** 2026-09-03 11:25 UTC
 **Status:** CLEAN
 
 ## npm audit
@@ -18,11 +18,11 @@
 6. Image Hostnames: PASS — Only whitelisted domains in `remotePatterns`; no `hostname: '**'` wildcard
 7. No Hardcoded Secrets: PASS — No `sk-`, `pk_live_`, or hardcoded passwords found in source; all secrets from `process.env`
 8. No localStorage Credentials: PASS — Auth uses HttpOnly cookies exclusively; only `euforyc_uid` (anonymous tracking ID) in localStorage
-9. No Error Leaks: PASS — All API routes return generic error strings to clients; no stack traces exposed
+9. No Error Leaks: PASS — All API routes return generic error strings to clients; Momence routes gate `error.details` behind `NODE_ENV === 'development'` only
 10. Safe Health Checks: PASS — No health check endpoints exist; no tokens or config exposed
 
 ## Fixes Applied
-- None needed — all dependencies already at patched versions (browserslist 4.28.8, postcss-selector-parser 6.1.4, @humanfs/node 0.16.8)
+- None needed
 
 ## Manual Action Required
 - None
