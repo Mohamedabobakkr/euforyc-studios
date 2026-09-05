@@ -1,6 +1,6 @@
 # Security Scan Report
 
-**Date:** 2026-09-05 08:12 UTC
+**Date:** 2026-09-05 19:26 UTC
 **Status:** CLEAN
 
 ## npm audit
@@ -18,12 +18,11 @@
 6. Image Hostnames: PASS — Only whitelisted domains in `remotePatterns`; no `hostname: '**'` wildcard
 7. No Hardcoded Secrets: PASS — No `sk-`, `pk_live_`, or hardcoded passwords found in source; all secrets from `process.env`
 8. No localStorage Credentials: PASS — Auth uses HttpOnly cookies exclusively; no credentials in localStorage
-9. No Error Leaks: PASS — All API routes return generic error strings to clients; no `details: String(error)` or stack traces in responses
+9. No Error Leaks: PASS — All API routes return generic error strings to clients; Momence routes gate `error.details` behind `NODE_ENV === 'development'`
 10. Safe Health Checks: PASS — No health check endpoints exist; no tokens or config exposed
 
 ## Fixes Applied
-- Previously applied by earlier scan run (`67103fc`): bumped browserslist, @humanfs/node, postcss-selector-parser to patched versions
-- This scan confirmed 0 vulnerabilities remaining
+- None needed this scan — all 3 transitive dependency vulnerabilities (browserslist, @humanfs/node, postcss-selector-parser) were resolved by commit `67103fc` from earlier today
 
 ## Manual Action Required
 - None
