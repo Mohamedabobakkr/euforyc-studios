@@ -1,6 +1,6 @@
 # Security Scan Report
 
-**Date:** 2026-09-07 09:00 UTC
+**Date:** 2026-09-07 19:25 UTC
 **Status:** CLEAN
 
 ## npm audit
@@ -10,19 +10,24 @@
 - Low: 0
 
 ## Code Security Checks
-1. SSRF Protection: PASS — validateSquarePath() blocks `..`, `//`, `\\`; requires leading `/`; enforces strict regex `/^\/[a-zA-Z0-9/_-]+$/` on path portion
-2. API Auth: PASS — Both orders/route.ts and update-order/route.ts call authenticateBarista() which validates HMAC-SHA256 signed HttpOnly session cookies; constant-time password comparison
-3. Webhook Signatures: PASS — HMAC-SHA256 verified with constant-time comparison; fails closed (500) when key missing; rejects invalid with 403
-4. Input Validation: PASS — orderId/fulfillmentUid validated with `/^[a-zA-Z0-9_-]+$/`; state transitions whitelisted via VALID_TRANSITIONS map; input lengths capped
-5. Security Headers: PASS — HSTS (max-age=63072000; includeSubDomains; preload), CSP, X-Frame-Options: SAMEORIGIN, X-Content-Type-Options: nosniff, Permissions-Policy, poweredByHeader: false
-6. Image Hostnames: PASS — Only whitelisted domains in remotePatterns; no `hostname: '**'` wildcard
-7. No Hardcoded Secrets: PASS — No sk-, pk_live_, or hardcoded passwords found in source; all secrets from process.env
-8. No localStorage Credentials: PASS — Auth uses HttpOnly cookies exclusively; localStorage only stores anonymous visitor UID (euforyc_uid)
-9. No Error Leaks: PASS — All API routes return generic error strings to clients; no stack traces or error.message exposed
-10. Safe Health Checks: PASS — No health check endpoints exist; no tokens or config exposed
+1. SSRF Protection: PASS — validateSquarePath() blocks `../`, `//`, `\\` and enforces strict regex `^\/[a-zA-Z0-9/_-]+$`
+2. API Auth: PASS — Both orders and update-order routes call authenticateBarista() with HMAC-SHA256 signed session tokens
+3. Webhook Signatures: PASS — Fails closed with 500 when SQUARE_WEBHOOK_SIGNATURE_KEY is missing; uses constant-time comparison
+4. Input Validation: PASS — Order IDs and fulfillment UIDs validated against `^[a-zA-Z0-9_-]+$`; state transitions use whitelist
+5. Security Headers: PASS — HSTS, CSP, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy all present; poweredByHeader disabled
+6. Image Hostnames: PASS — Only specific trusted domains (squarecdn.com, S3, euforyc.co.uk, momence.com, localhost)
+7. No Hardcoded Secrets: PASS — All sensitive values read from process.env
+8. No localStorage Credentials: PASS — Barista session uses HttpOnly cookies exclusively
+9. No Error Leaks: PASS — Generic error messages returned; development-only detail gating is correct
+10. Safe Health Checks: PASS — No health/status endpoints exist
 
 ## Fixes Applied
 - None needed
 
 ## Manual Action Required
 - None
+
+## Advisory Notes
+- CSP includes `unsafe-inline` and `unsafe-eval` for scripts (common with Next.js but worth reviewing if dependencies allow removal)
+- In-memory rate limiting and webhook dedup caches reset on restart and don't work across replicas; consider Redis at scale
+- Momence API error details gated on NODE_ENV=development — ensure production never runs with this value
