@@ -1,6 +1,6 @@
 # Security Scan Report
 
-**Date:** 2026-09-07 19:25 UTC
+**Date:** 2026-09-08 03:25 UTC
 **Status:** CLEAN
 
 ## npm audit
@@ -18,7 +18,7 @@
 6. Image Hostnames: PASS — Only specific trusted domains (squarecdn.com, S3, euforyc.co.uk, momence.com, localhost)
 7. No Hardcoded Secrets: PASS — All sensitive values read from process.env
 8. No localStorage Credentials: PASS — Barista session uses HttpOnly cookies exclusively
-9. No Error Leaks: PASS — Generic error messages returned; development-only detail gating is correct
+9. No Error Leaks: PASS — Generic error messages returned; no stack traces or internal details exposed
 10. Safe Health Checks: PASS — No health/status endpoints exist
 
 ## Fixes Applied
@@ -30,4 +30,3 @@
 ## Advisory Notes
 - CSP includes `unsafe-inline` and `unsafe-eval` for scripts (common with Next.js but worth reviewing if dependencies allow removal)
 - In-memory rate limiting and webhook dedup caches reset on restart and don't work across replicas; consider Redis at scale
-- Momence API error details gated on NODE_ENV=development — ensure production never runs with this value
