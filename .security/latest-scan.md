@@ -1,6 +1,6 @@
 # Security Scan Report
 
-**Date:** 2026-09-10 03:25 UTC
+**Date:** 2026-09-10 06:00 UTC
 **Status:** CLEAN
 
 ## npm audit
@@ -18,11 +18,11 @@
 6. Image Hostnames: PASS — Only specific trusted domains (squarecdn.com, S3, euforyc.co.uk, momence.com, localhost)
 7. No Hardcoded Secrets: PASS — All sensitive values read from process.env
 8. No localStorage Credentials: PASS — Barista session uses HttpOnly cookies exclusively
-9. No Error Leaks: PASS — API routes return generic error messages; no stack traces or error details exposed
-10. Safe Health Checks: PASS — No health/status endpoints exist that could expose tokens
+9. No Error Leaks: PASS — Generic error messages returned; details only exposed in development mode
+10. Safe Health Checks: PASS — No health/status endpoints exist
 
 ## Fixes Applied
-- None needed — previous fix (commit `6f159b4`, applied 2026-09-09) already upgraded next 16.3.0 → 16.3.4 and sharp 0.35.3 → 0.35.4
+- None needed — previous scan (2026-09-10 03:25 UTC) already applied next 16.3.0→16.3.4 and sharp 0.35.3→0.35.4
 
 ## Manual Action Required
 - None
