@@ -1,6 +1,6 @@
 # Security Scan Report
 
-**Date:** 2026-09-10 19:27 UTC
+**Date:** 2026-09-11 06:00 UTC
 **Status:** CLEAN
 
 ## npm audit
@@ -17,9 +17,9 @@
 5. Security Headers: PASS — HSTS, CSP, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy all present; poweredByHeader disabled
 6. Image Hostnames: PASS — Only specific trusted domains (squarecdn.com, S3, euforyc.co.uk, momence.com, localhost)
 7. No Hardcoded Secrets: PASS — All sensitive values read from process.env
-8. No localStorage Credentials: PASS — Barista session uses HttpOnly cookies exclusively
+8. No localStorage Credentials: PASS — Barista session uses HttpOnly cookies exclusively; localStorage stores only euforyc_uid (random UUID)
 9. No Error Leaks: PASS — Generic error messages returned; details only exposed in development mode
-10. Safe Health Checks: PASS — No health/status endpoints exist
+10. Safe Health Checks: PASS — No health/status endpoints exist that could expose tokens or config
 
 ## Fixes Applied
 - None needed — all dependencies are up to date and all code checks pass
