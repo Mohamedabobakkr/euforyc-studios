@@ -1,6 +1,6 @@
 # Security Scan Report
 
-**Date:** 2026-09-12 19:30 UTC
+**Date:** 2026-09-13 03:25 UTC
 **Status:** CLEAN
 
 ## npm audit
@@ -18,7 +18,7 @@
 6. Image Hostnames: PASS — remotePatterns uses specific hostnames (squarecdn.com, S3 bucket, euforyc.co.uk, momence.com, localhost); no `**` wildcard
 7. No Hardcoded Secrets: PASS — all secrets sourced from process.env (BARISTA_PASSWORD, SQUARE_ACCESS_TOKEN, SQUARE_WEBHOOK_SIGNATURE_KEY)
 8. No localStorage Credentials: PASS — no localStorage usage for passwords, tokens, or secrets found
-9. No Error Leaks: PASS — error.message only exposed when NODE_ENV === 'development'; production responses use generic messages
+9. No Error Leaks: PASS — error.details only exposed when NODE_ENV === 'development'; production responses use generic messages
 10. Safe Health Checks: PASS — no dedicated health endpoint exists; no risk of token/config exposure
 
 ## Fixes Applied
