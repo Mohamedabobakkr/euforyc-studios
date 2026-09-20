@@ -1,6 +1,6 @@
 # Security Scan Report
 
-**Date:** 2026-09-20 14:30 UTC
+**Date:** 2026-09-20 UTC
 **Status:** CLEAN
 
 ## npm audit
@@ -10,7 +10,7 @@
 - Low: 0
 
 ## Code Security Checks
-1. SSRF Protection: PASS — validateSquarePath() blocks `..`, `//`, `\\`, and enforces safe character whitelist
+1. SSRF Protection: PASS — validateSquarePath() blocks `..`, `//`, `\\`, and enforces safe character allowlist
 2. API Auth: PASS — orders/route.ts and update-order/route.ts both call authenticateBarista() via HttpOnly session cookie
 3. Webhook Signatures: PASS — HMAC-SHA256 verified with constant-time comparison; returns 500 when key is missing (fail-closed)
 4. Input Validation: PASS — orderId and fulfillmentUid validated against /^[a-zA-Z0-9_-]+$/; quantities capped; input lengths sliced
