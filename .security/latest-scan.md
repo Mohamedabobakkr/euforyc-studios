@@ -1,6 +1,6 @@
 # Security Scan Report
 
-**Date:** 2026-09-19 11:25 UTC
+**Date:** 2026-09-20 03:25 UTC
 **Status:** CLEAN
 
 ## npm audit
@@ -17,8 +17,8 @@
 5. Security Headers: PASS — HSTS, CSP, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy all set
 6. Image Hostnames: PASS — no wildcard `**` hostname; only specific trusted domains listed
 7. No Hardcoded Secrets: PASS — all secrets read from environment variables (BARISTA_PASSWORD, SQUARE_ACCESS_TOKEN, etc.)
-8. No localStorage Credentials: PASS — only euforyc_uid (random UUID for analytics) stored; no credentials
-9. No Error Leaks: PASS — all API routes return generic error messages; error.details only exposed in development mode
+8. No localStorage Credentials: PASS — only stores anonymous analytics UUID (euforyc_uid), no credentials
+9. No Error Leaks: PASS — all API routes return generic error messages; error.message only in development mode
 10. Safe Health Checks: PASS — no dedicated health endpoint; API routes don't expose tokens or internal config
 
 ## Fixes Applied
