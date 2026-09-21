@@ -1,6 +1,6 @@
 # Security Scan Report
 
-**Date:** 2026-09-21 11:24 UTC
+**Date:** 2026-09-21 19:26 UTC
 **Status:** CLEAN
 
 ## npm audit
@@ -10,16 +10,16 @@
 - Low: 0
 
 ## Code Security Checks
-1. SSRF Protection: PASS — `validateSquarePath()` blocks `../`, `//`, `\\` and enforces safe character regex
-2. API Auth: PASS — `/api/sips/orders` and `/api/sips/update-order` both validate barista session via HttpOnly cookie (`authenticateBarista()`)
-3. Webhook Signatures: PASS — Fails closed when `SQUARE_WEBHOOK_SIGNATURE_KEY` missing (returns 500); HMAC-SHA256 with constant-time comparison
-4. Input Validation: PASS — Order IDs validated with `/^[a-zA-Z0-9_-]+$/`; customer names, notes, quantities all sanitized and length-limited
-5. Security Headers: PASS — HSTS (2yr, preload), CSP, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy all configured; `poweredByHeader: false`
-6. Image Hostnames: PASS — No `hostname: '**'` wildcard; only specific trusted domains in `remotePatterns`
-7. No Hardcoded Secrets: PASS — No `sk-`, `sk_live`, `pk_live`, or hardcoded passwords found in source
-8. No localStorage Credentials: PASS — No credentials stored in localStorage; session uses HttpOnly cookies
-9. No Error Leaks: PASS — All API routes return generic error messages; no `details: String(error)` or stack trace exposure
-10. Safe Health Checks: PASS — No health check endpoints that expose tokens or internal config
+1. SSRF Protection: PASS — validateSquarePath() blocks `..`, `//`, `\\`, and enforces safe character allowlist
+2. API Auth: PASS — both orders and update-order routes call authenticateBarista() via HttpOnly cookie with HMAC-SHA256 session tokens
+3. Webhook Signatures: PASS — HMAC-SHA256 verified with constant-time comparison; fails closed when key missing (returns 500)
+4. Input Validation: PASS — orderId and fulfillmentUid validated against `/^[a-zA-Z0-9_-]+$/`; state transitions whitelisted
+5. Security Headers: PASS — HSTS, CSP, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy all set
+6. Image Hostnames: PASS — no wildcard `**` hostname; only specific trusted domains listed
+7. No Hardcoded Secrets: PASS — all secrets read from environment variables (BARISTA_PASSWORD, SQUARE_ACCESS_TOKEN, etc.)
+8. No localStorage Credentials: PASS — only non-sensitive analytics UID stored; no credential storage
+9. No Error Leaks: PASS — all API routes return generic error messages; no stack traces or error details exposed
+10. Safe Health Checks: PASS — no dedicated health endpoint; API routes don't expose tokens or internal config
 
 ## Fixes Applied
 - None needed
