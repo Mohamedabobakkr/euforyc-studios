@@ -1,6 +1,6 @@
 # Security Scan Report
 
-**Date:** 2026-09-20 UTC
+**Date:** 2026-09-21 06:00 UTC
 **Status:** CLEAN
 
 ## npm audit
@@ -10,16 +10,16 @@
 - Low: 0
 
 ## Code Security Checks
-1. SSRF Protection: PASS — validateSquarePath() blocks `..`, `//`, `\\`, and enforces safe character allowlist
-2. API Auth: PASS — orders/route.ts and update-order/route.ts both call authenticateBarista() via HttpOnly session cookie
-3. Webhook Signatures: PASS — HMAC-SHA256 verified with constant-time comparison; returns 500 when key is missing (fail-closed)
-4. Input Validation: PASS — orderId and fulfillmentUid validated against /^[a-zA-Z0-9_-]+$/; quantities capped; input lengths sliced
-5. Security Headers: PASS — HSTS, CSP, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy all configured
-6. Image Hostnames: PASS — remotePatterns restricted to specific trusted domains (squarecdn, S3, euforyc.co.uk, momence, localhost)
-7. No Hardcoded Secrets: PASS — all secrets sourced from environment variables; no sk-, pk_live, or credentials in source
-8. No localStorage Credentials: PASS — localStorage stores only anonymous UID (euforyc_uid), no tokens or passwords
-9. No Error Leaks: PASS — all API error responses return generic messages; no stack traces or error.message exposed
-10. Safe Health Checks: PASS — no health check endpoints exist; no internal config exposure
+1. SSRF Protection: PASS — `validateSquarePath()` blocks `../`, `//`, `\\` and enforces safe character regex
+2. API Auth: PASS — `/api/sips/orders` and `/api/sips/update-order` both validate barista session via HttpOnly cookie (`authenticateBarista()`)
+3. Webhook Signatures: PASS — Fails closed when `SQUARE_WEBHOOK_SIGNATURE_KEY` missing (returns 500); HMAC-SHA256 with constant-time comparison
+4. Input Validation: PASS — Order IDs validated with `/^[a-zA-Z0-9_-]+$/`; customer names, notes, quantities all sanitized and length-limited
+5. Security Headers: PASS — HSTS (2yr, preload), CSP, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy all configured; `poweredByHeader: false`
+6. Image Hostnames: PASS — No `hostname: '**'` wildcard; only specific trusted domains in `remotePatterns`
+7. No Hardcoded Secrets: PASS — No `sk-`, `sk_live`, `pk_live`, or hardcoded passwords found in source
+8. No localStorage Credentials: PASS — No credentials stored in localStorage; session uses HttpOnly cookies
+9. No Error Leaks: PASS — All API routes return generic error messages; `error.details` exposed only in development mode
+10. Safe Health Checks: PASS — No health check endpoints that expose tokens or internal config
 
 ## Fixes Applied
 - None needed
