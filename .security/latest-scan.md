@@ -1,6 +1,6 @@
 # Security Scan Report
 
-**Date:** 2026-09-21 06:00 UTC
+**Date:** 2026-09-21 11:24 UTC
 **Status:** CLEAN
 
 ## npm audit
@@ -18,7 +18,7 @@
 6. Image Hostnames: PASS — No `hostname: '**'` wildcard; only specific trusted domains in `remotePatterns`
 7. No Hardcoded Secrets: PASS — No `sk-`, `sk_live`, `pk_live`, or hardcoded passwords found in source
 8. No localStorage Credentials: PASS — No credentials stored in localStorage; session uses HttpOnly cookies
-9. No Error Leaks: PASS — All API routes return generic error messages; `error.details` exposed only in development mode
+9. No Error Leaks: PASS — All API routes return generic error messages; no `details: String(error)` or stack trace exposure
 10. Safe Health Checks: PASS — No health check endpoints that expose tokens or internal config
 
 ## Fixes Applied
