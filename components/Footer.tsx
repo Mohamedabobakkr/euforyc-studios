@@ -111,7 +111,7 @@ const Footer = () => {
             </Link>
           </div>
           <p className="font-sans text-xs opacity-60 tracking-wider">
-            © 2025 EUFORYC STUDIOS. ALL RIGHTS RESERVED. All content, designs, graphics, and code are protected by copyright.
+            © {new Date().getFullYear()} EUFORYC STUDIOS. ALL RIGHTS RESERVED. All content, designs, graphics, and code are protected by copyright.
             Unauthorized use, copying, or reproduction is strictly prohibited.
           </p>
         </div>

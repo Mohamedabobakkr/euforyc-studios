@@ -4,7 +4,7 @@ import { ArrowRight } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'Pricing | Pilates Classes & Packages',
-  description: 'Transparent pricing for all classes at Euforyc Studios Edgware. Reformer pilates from £28, hot pilates from £22, barre from £25, sculpt mat pilates from £20, red light pilates from £30, private sessions from £65. Packages & memberships available.',
+  description: 'Transparent pricing for all classes at Euforyc Studios Edgware. Reformer pilates from £28, hot pilates from £22, barre from £25, sculpt mat pilates from £20, red light pilates from £30, private sessions from £65. Euforyc Membership from £90/month.',
   keywords: ['pilates prices london', 'reformer pilates cost london', 'hot pilates price edgware', 'pilates class cost near me', 'pilates membership london', 'pilates pricing uk'],
   alternates: { canonical: 'https://euforyc.co.uk/pricing' },
 };
@@ -27,6 +27,53 @@ export default function Pricing() {
       <section className="section-padding bg-[#fffcf2]">
         <div className="container-width max-w-4xl">
           <div className="space-y-16">
+
+            {/* Euforyc Membership Section */}
+            <div className="space-y-8">
+              <div className="text-center space-y-2">
+                <h2 className="heading-secondary">Euforyc <span className="italic">Membership</span></h2>
+                <p className="tagline text-[#1a260e]/60">ALL GROUP CLASSES • 6-MONTH MINIMUM TERM, MONTHLY ROLLING</p>
+              </div>
+
+              <div className="space-y-0">
+                {[
+                  { name: 'Euforyc 4', price: '£90', perClass: '£22.50 per class' },
+                  { name: 'Euforyc 8', price: '£165', perClass: '£20.63 per class' },
+                  { name: 'Euforyc 12', price: '£240', perClass: '£20 per class' },
+                ].map((tier) => (
+                  <div key={tier.name} className="flex justify-between items-center py-5 border-b border-[#1a260e]/10">
+                    <div>
+                      <h3 className="font-serif text-xl md:text-2xl font-light">{tier.name}</h3>
+                      <p className="text-xs text-[#1a260e]/60">{tier.perClass}</p>
+                    </div>
+                    <div className="text-right">
+                      <p className="font-serif text-2xl md:text-3xl font-light">{tier.price}<span className="font-sans text-sm text-[#1a260e]/60">/mo</span></p>
+                    </div>
+                  </div>
+                ))}
+
+                <div className="flex justify-between items-center gap-4 py-5 bg-[#2a3a21] text-[#fffcf2] px-4 rounded-lg mt-4">
+                  <div>
+                    <p className="font-sans text-[10px] font-semibold tracking-[0.15em] uppercase text-[#fffcf2]/70 mb-1">Best Value</p>
+                    <h3 className="font-serif text-xl md:text-2xl font-light">Euforyc Unlimited</h3>
+                    <p className="text-xs text-[#fffcf2]/70">Unlimited classes + exclusive perks</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="font-serif text-2xl md:text-3xl font-light">£280<span className="font-sans text-sm text-[#fffcf2]/70">/mo</span></p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="text-center">
+                <Link
+                  href="/memberships"
+                  className="inline-flex items-center justify-center gap-2 bg-[#1a260e] text-[#fffcf2] px-8 py-4 font-sans text-sm tracking-wider uppercase hover:bg-[#1a260e]/90 transition-colors"
+                >
+                  VIEW MEMBERSHIPS
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+              </div>
+            </div>
 
             {/* Reformer Pilates (GROUP) Section */}
             <div className="space-y-8">
@@ -299,7 +346,7 @@ export default function Pricing() {
             <div className="space-y-8">
               <div className="text-center space-y-2">
                 <h2 className="heading-secondary">Dance Classes</h2>
-                <p className="tagline text-[#1a260e]/60">DABKE • BELLY DANCE • AFRO</p>
+                <p className="tagline text-[#1a260e]/60">BELLY DANCE</p>
               </div>
 
               <div className="space-y-0">
@@ -350,7 +397,7 @@ export default function Pricing() {
                   </div>
                   <div className="text-right">
                     <p className="font-serif text-2xl md:text-3xl font-light">£18</p>
-                    <p className="text-xs text-[#1a260e]/60">per class · August</p>
+                    <p className="text-xs text-[#1a260e]/60">per class</p>
                   </div>
                 </div>
 
@@ -371,7 +418,7 @@ export default function Pricing() {
                   </div>
                   <div className="text-right">
                     <p className="font-serif text-2xl md:text-3xl font-light">£25</p>
-                    <p className="text-xs text-[#1a260e]/60">per circle · August</p>
+                    <p className="text-xs text-[#1a260e]/60">per circle</p>
                   </div>
                 </div>
 
@@ -439,6 +486,9 @@ export default function Pricing() {
               </p>
               <p className="font-sans text-sm text-[#1a260e]/70">
                 • Prices are subject to change with 30 days notice
+              </p>
+              <p className="font-sans text-sm text-[#1a260e]/70">
+                • Euforyc Memberships have a 6-month minimum term, then continue monthly until cancelled with two full billing cycles&apos; notice
               </p>
             </div>
           </div>

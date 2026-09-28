@@ -187,10 +187,10 @@ function ThankYouContent() {
           <h2 className="font-serif font-light text-3xl md:text-4xl leading-[1.15] mb-5">
             Become a member,
             <br />
-            <span className="italic">save up to 40%</span>
+            <span className="italic">save on every class</span>
           </h2>
           <p className="text-sm md:text-base text-[#fffcf2]/75 leading-relaxed max-w-md mx-auto mb-8">
-            Memberships start from £65/mo. Priority booking, unlimited options, and the lowest per-class rate we offer.
+            The Euforyc Membership starts from £90/mo, with credits that work across the whole timetable. Go Unlimited for priority booking and exclusive perks.
           </p>
           <Link
             href="/memberships"

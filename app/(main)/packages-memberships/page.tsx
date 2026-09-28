@@ -102,30 +102,30 @@ export default function PackagesMemberships() {
                       NEW
                     </div>
                     <h2 className="font-serif text-3xl font-light text-[#fffcf2] mb-3">
-                      Contract Memberships
+                      Euforyc <span className="italic">Membership</span>
                     </h2>
                     <p className="text-[#fffcf2]/70 text-lg leading-relaxed">
-                      Ongoing memberships with better value and priority booking for committed practitioners 
-                      ready to make Pilates a lifestyle.
+                      One monthly membership for the whole Euforyc timetable, from £90/month.
+                      Euforyc Unlimited is our best value, with exclusive perks.
                     </p>
                   </div>
 
                   <div className="space-y-4">
                     <div className="flex items-start space-x-3">
                       <div className="bg-[#fffcf2] w-2 h-2 rounded-full mt-2 flex-shrink-0"></div>
-                      <p className="text-[#fffcf2]/80">Better value per class</p>
+                      <p className="text-[#fffcf2]/80">Credits work across every group class</p>
                     </div>
                     <div className="flex items-start space-x-3">
                       <div className="bg-[#fffcf2] w-2 h-2 rounded-full mt-2 flex-shrink-0"></div>
-                      <p className="text-[#fffcf2]/80">Priority booking access</p>
+                      <p className="text-[#fffcf2]/80">Better value per class, from £20</p>
                     </div>
                     <div className="flex items-start space-x-3">
                       <div className="bg-[#fffcf2] w-2 h-2 rounded-full mt-2 flex-shrink-0"></div>
-                      <p className="text-[#fffcf2]/80">Ongoing monthly commitment</p>
+                      <p className="text-[#fffcf2]/80">6-month minimum, then monthly rolling</p>
                     </div>
                     <div className="flex items-start space-x-3">
                       <div className="bg-[#fffcf2] w-2 h-2 rounded-full mt-2 flex-shrink-0"></div>
-                      <p className="text-[#fffcf2]/80">Perfect for regular practitioners</p>
+                      <p className="text-[#fffcf2]/80">Unlimited: priority booking, monthly massage &amp; more</p>
                     </div>
                   </div>
 
@@ -199,7 +199,11 @@ export default function PackagesMemberships() {
                   </li>
                   <li className="flex items-start">
                     <span className="text-yellow-400 mr-3 mt-1">✓</span>
-                    You prefer priority booking
+                    You want to mix Reformer, Hot Pilates, Barre &amp; more
+                  </li>
+                  <li className="flex items-start">
+                    <span className="text-yellow-400 mr-3 mt-1">✓</span>
+                    You want Unlimited perks like priority booking
                   </li>
                   <li className="flex items-start">
                     <span className="text-yellow-400 mr-3 mt-1">✓</span>

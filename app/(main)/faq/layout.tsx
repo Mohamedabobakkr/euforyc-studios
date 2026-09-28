@@ -26,7 +26,7 @@ const faqSchema = {
     {
       '@type': 'Question',
       name: "What's the difference between the intro offer, packages, and memberships? Which one is best for me?",
-      acceptedAnswer: { '@type': 'Answer', text: 'The intro offer (3 classes for £60) is perfect for first-timers to experience our studio and teaching style. Packages are flexible pay-as-you-go options valid for 30 days from your first class booking, ideal for occasional practice or trying different class types. Memberships require a 6-month commitment but offer the best value with priority booking and exclusive perks.' },
+      acceptedAnswer: { '@type': 'Answer', text: 'The intro offer (3 classes for £60) is perfect for first-timers to experience our studio and teaching style. Packages are flexible pay-as-you-go options valid for 30 days from your first class booking, ideal for occasional practice or trying different class types. The Euforyc Membership has a 6-month minimum term (then rolling monthly) and offers the best value, with credits that work across our whole group timetable.' },
     },
     {
       '@type': 'Question',
