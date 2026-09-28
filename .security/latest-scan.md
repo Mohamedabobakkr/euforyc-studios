@@ -1,6 +1,6 @@
 # Security Scan Report
 
-**Date:** 2026-09-27 08:00 UTC
+**Date:** 2026-09-28 03:24 UTC
 **Status:** CLEAN
 
 ## npm audit
@@ -18,7 +18,7 @@
 6. Image Hostnames: PASS — remotePatterns restricted to specific trusted domains only (squarecdn.com, euforyc.co.uk, momence.com, S3 bucket, localhost)
 7. No Hardcoded Secrets: PASS — grep for sk-, pk_live, hardcoded passwords found nothing; all secrets via env vars
 8. No localStorage Credentials: PASS — localStorage only stores euforyc_uid (anonymous UUID); no tokens or passwords
-9. No Error Leaks: PASS — error details only exposed when NODE_ENV=development; production returns generic messages
+9. No Error Leaks: PASS — all API routes return generic error messages; no stack traces or error details exposed
 10. Safe Health Checks: PASS — no health check endpoints found that expose tokens or internal config
 
 ## Fixes Applied
