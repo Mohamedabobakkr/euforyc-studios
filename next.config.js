@@ -122,6 +122,22 @@ const nextConfig = {
         destination: '/',
         permanent: true,
       },
+      {
+        source: '/summer-challenge',
+        destination: '/memberships',
+        permanent: true,
+      },
+      // Retreats have moved to Euforyc Social
+      {
+        source: '/morocco-retreat',
+        destination: 'https://euforycsocial.co.uk',
+        permanent: true,
+      },
+      {
+        source: '/retreat',
+        destination: 'https://euforycsocial.co.uk',
+        permanent: true,
+      },
     ]
   },
 };

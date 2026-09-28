@@ -31,6 +31,13 @@ export const MOMENCE_PRICING: Record<string, MomencePriceEntry> = {
   '632400': { value: 168, currency: 'GBP', contentName: 'All Access 8 Classes (limited offer)',  contentType: 'all_access_offer' },
   '632401': { value: 252, currency: 'GBP', contentName: 'All Access 12 Classes (limited offer)', contentType: 'all_access_offer' },
 
+  '937341': { value: 90,  currency: 'GBP', contentName: 'Euforyc Membership — Euforyc 4',        contentType: 'membership' },
+  '937345': { value: 165, currency: 'GBP', contentName: 'Euforyc Membership — Euforyc 8',        contentType: 'membership' },
+  '937346': { value: 240, currency: 'GBP', contentName: 'Euforyc Membership — Euforyc 12',       contentType: 'membership' },
+  '937348': { value: 280, currency: 'GBP', contentName: 'Euforyc Membership — Euforyc Unlimited', contentType: 'membership' },
+
+  // Legacy memberships — no longer sold on the site
+
 
   '631785': { value: 100, currency: 'GBP', contentName: 'All Access Membership — 4 classes/mo',  contentType: 'membership' },
   '631786': { value: 170, currency: 'GBP', contentName: 'All Access Membership — 8 classes/mo',  contentType: 'membership' },
