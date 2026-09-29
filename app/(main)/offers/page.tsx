@@ -1,207 +1,119 @@
 'use client';
 
-import { useState, useEffect, Suspense, useMemo } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import { ExternalLink, Package, Flame, Zap, Heart, CheckCircle2, Music, ArrowRight, Sparkles, Users, Clock, MapPin, Timer, Crown, Dumbbell, BookOpen, Flower2 } from 'lucide-react';
+import { ExternalLink, CheckCircle2, Music, ArrowRight, Sparkles, Users, Clock, MapPin, Timer, Crown, Copy, Check } from 'lucide-react';
 
-// Countdown hook for urgency timer
+import MomenceReviews from '@/components/MomenceReviews';
+
+// Membership promo code (set up in Momence checkout)
+const PROMO_CODE = 'EUFORYC5';
+// 30 November 2026, 23:59 Europe/London — the UK is on GMT (UTC+0) in November
+const PROMO_ENDS_AT = Date.UTC(2026, 10, 30, 23, 59, 59);
+
+type TimeLeft = { days: number; hours: number; minutes: number; seconds: number };
+
+function getTimeLeft(targetTimestamp: number): TimeLeft | null {
+  const difference = targetTimestamp - Date.now();
+  if (difference <= 0) return null;
+  return {
+    days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+    hours: Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+    minutes: Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60)),
+    seconds: Math.floor((difference % (1000 * 60)) / 1000),
+  };
+}
+
+// Countdown to a fixed deadline — returns null once the deadline has passed
 function useCountdown(targetTimestamp: number) {
-  const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+  const [timeLeft, setTimeLeft] = useState<TimeLeft | null>(() => getTimeLeft(targetTimestamp));
 
   useEffect(() => {
-    const calculateTimeLeft = () => {
-      const now = Date.now();
-      const difference = targetTimestamp - now;
-
-      if (difference > 0) {
-        setTimeLeft({
-          days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-          hours: Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
-          minutes: Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60)),
-          seconds: Math.floor((difference % (1000 * 60)) / 1000),
-        });
-      }
+    const tick = () => {
+      const next = getTimeLeft(targetTimestamp);
+      setTimeLeft(next);
+      if (!next) clearInterval(interval);
     };
-
-    calculateTimeLeft();
-    const interval = setInterval(calculateTimeLeft, 1000);
+    const interval = setInterval(tick, 1000);
+    tick();
     return () => clearInterval(interval);
   }, [targetTimestamp]);
 
   return timeLeft;
 }
 
-import MomenceReviews from '@/components/MomenceReviews';
-
-// Calculate end of current month for offer deadline
-function getEndOfMonth() {
-  const now = new Date();
-  return new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59);
+async function copyToClipboard(text: string) {
+  try {
+    await navigator.clipboard.writeText(text);
+    return true;
+  } catch {
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    textarea.setAttribute('readonly', '');
+    textarea.style.position = 'absolute';
+    textarea.style.left = '-9999px';
+    document.body.appendChild(textarea);
+    textarea.select();
+    const ok = document.execCommand('copy');
+    document.body.removeChild(textarea);
+    return ok;
+  }
 }
+
+// Euforyc Membership — first-month saving with EUFORYC5
+const membershipOffers = [
+  {
+    id: 'euforyc-4',
+    name: 'Euforyc 4',
+    monthlyPrice: '£90',
+    description: 'Once a week · 4 class credits per month',
+    firstMonthSaving: '£4.50',
+    momenceUrl: 'https://momence.com/m/937341',
+    bestValue: false,
+  },
+  {
+    id: 'euforyc-8',
+    name: 'Euforyc 8',
+    monthlyPrice: '£165',
+    description: 'Twice a week · 8 class credits per month',
+    firstMonthSaving: '£8.25',
+    momenceUrl: 'https://momence.com/m/937345',
+    bestValue: false,
+  },
+  {
+    id: 'euforyc-12',
+    name: 'Euforyc 12',
+    monthlyPrice: '£240',
+    description: 'Three times a week · 12 class credits per month',
+    firstMonthSaving: '£12',
+    momenceUrl: 'https://momence.com/m/937346',
+    bestValue: false,
+  },
+  {
+    id: 'euforyc-unlimited',
+    name: 'Euforyc Unlimited',
+    monthlyPrice: '£280',
+    description: 'Unlimited classes + exclusive member perks',
+    firstMonthSaving: '£14',
+    momenceUrl: 'https://momence.com/m/937348',
+    bestValue: true,
+  },
+];
 
 // Intro Offer data
 const introOffers = {
-  'reformer': {
-    id: 'reformer',
-    name: 'Reformer Pilates',
-    shortName: 'Reformer',
-    classes: '3 Classes',
-    price: '£60',
-    perClass: '£20',
-    regularPrice: '£84',
-    savings: 'Save £24',
-    validity: '20 days',
-    description: 'Equipment-based pilates on professional reformer machines',
-    benefits: [
-      'Professional reformer machines',
-      'Max 8 people per class',
-      '45-minute sessions',
-      'All fitness levels welcome'
-    ],
-    momenceUrl: 'https://momence.com/m/488100',
-    icon: Package,
-    highlight: true,
-  },
-  'hot-pilates': {
-    id: 'hot-pilates',
-    name: 'Hot Pilates',
-    shortName: 'Hot Pilates',
-    classes: '3 Classes',
-    price: '£50',
-    perClass: '£16.67',
-    regularPrice: '£66',
-    savings: 'Save £16',
-    validity: '20 days',
-    description: 'Dynamic mat-based pilates in our infrared-heated studio',
-    benefits: [
-      'Infrared heated studio',
-      'Max 7 people per class',
-      'Deep stretch & detox',
-      'Stress relief focused'
-    ],
-    momenceUrl: 'https://momence.com/m/507852',
-    icon: Flame,
-    highlight: true,
-  },
-  'red-light': {
-    id: 'red-light',
-    name: 'Red Light Hot Pilates',
-    shortName: 'Red Light',
-    classes: '3 Classes',
-    price: '£65',
-    perClass: '£21.67',
-    regularPrice: '£90',
-    savings: 'Save £25',
-    validity: '20 days',
-    description: 'Hot pilates enhanced with red light therapy benefits',
-    benefits: [
-      'Red light therapy included',
-      'Anti-inflammatory benefits',
-      'Collagen boosting',
-      'Premium experience'
-    ],
-    momenceUrl: 'https://momence.com/m/624096',
-    icon: Zap,
-    highlight: false,
-  },
-  'barre': {
-    id: 'barre',
-    name: 'Barre',
-    shortName: 'Barre',
-    classes: '3 Classes',
-    price: '£60',
-    perClass: '£20',
-    regularPrice: '£75',
-    savings: 'Save £15',
-    validity: '30 days',
-    description: 'Ballet-inspired workout combining pilates, dance, and yoga',
-    benefits: [
-      'No dance experience needed',
-      'Long, lean muscles',
-      'Improved posture',
-      'Low-impact, high-results'
-    ],
-    momenceUrl: 'https://momence.com/m/621480',
-    icon: Heart,
-    highlight: false,
-  },
-  'belly-dance': {
-    id: 'belly-dance',
-    name: 'Belly Dance',
-    shortName: 'Belly Dance',
-    classes: '3 Classes',
-    price: '£40',
-    perClass: '£13.33',
-    regularPrice: '£45',
-    savings: 'Save £5',
-    validity: '30 days',
-    description: 'Sensual, expressive movement rooted in traditional belly dance',
-    benefits: [
-      'No dance experience needed',
-      'Core strength & posture',
-      'Fun, expressive workout',
-      'All ages & levels welcome'
-    ],
-    momenceUrl: 'https://momence.com/m/776393',
-    icon: Music,
-    highlight: false,
-  },
-  'guided-journaling': {
-    id: 'guided-journaling',
-    name: 'Guided Journaling',
-    shortName: 'Journaling',
-    classes: '3 Sessions',
-    price: '£40',
-    perClass: '£13.33',
-    regularPrice: '£54',
-    savings: 'Save £14',
-    validity: 'all 3 August dates',
-    description: 'A gentle space to slow down and return to yourself — guided journaling, gentle spiritual reflection, dua\'a and affirmations. Tuesdays 9–9.45pm: 11th, 18th & 25th August.',
-    benefits: [
-      'Guided journaling prompts',
-      'Dua\'a & affirmations',
-      'Gentle spiritual reflection',
-      'Optional sharing'
-    ],
-    momenceUrl: 'https://momence.com/m/872693',
-    icon: BookOpen,
-    highlight: false,
-  },
-  'womens-circle': {
-    id: 'womens-circle',
-    name: 'Women\'s Circle',
-    shortName: 'Women\'s Circle',
-    classes: '3 Circles',
-    price: '£60',
-    perClass: '£20',
-    regularPrice: '£75',
-    savings: 'Save £15',
-    validity: 'all 3 August dates',
-    description: 'For women who long to slow down and return to themselves — reflection, remembrance and sisterhood. A place to pause, to be seen, held and softened. Sundays 4pm: 16th, 23rd & 30th August.',
-    benefits: [
-      'Reflection & remembrance',
-      'Sisterhood & connection',
-      'Held in a gentle space',
-      'Only 15 spaces per circle'
-    ],
-    momenceUrl: 'https://momence.com/m/872694',
-    icon: Flower2,
-    highlight: false,
-  },
   'try-all': {
     id: 'try-all',
-    name: 'Try All',
-    shortName: 'Try All',
+    name: 'Try It All',
+    shortName: 'Try It All',
     classes: '3 Classes',
-    price: '£70',
-    perClass: '£23',
-    regularPrice: '£90',
-    savings: 'Save £20',
-    validity: '20 days',
-    description: 'Experience all our class types - Reformer, Hot Pilates, Barre, Dance & more',
+    price: '£60',
+    perClass: '£20',
+    validity: '30 days from first class',
+    description: 'Three classes to use across all our group classes - Reformer, Hot Pilates, Barre, Dance & more',
     benefits: [
-      'Try any class type',
+      'Try any group class',
       'Perfect for exploring',
       'Mix & match freely',
       'Find your favourite'
@@ -209,48 +121,6 @@ const introOffers = {
     momenceUrl: 'https://momence.com/m/631782',
     icon: Sparkles,
     highlight: true,
-  },
-  'cadillac': {
-    id: 'cadillac',
-    name: 'Cadillac 1-1',
-    shortName: 'Cadillac 1-1',
-    classes: '3 Classes',
-    price: '£180',
-    perClass: '£60',
-    regularPrice: '£225',
-    savings: 'Save £45',
-    validity: '20 days',
-    description: 'Private one-on-one sessions on our Cadillac Reformer for personalised training',
-    benefits: [
-      'Private 1-on-1 sessions',
-      'Cadillac Reformer machine',
-      'Fully personalised program',
-      'Expert instructor guidance'
-    ],
-    momenceUrl: 'https://momence.com/m/708119',
-    icon: Crown,
-    highlight: false,
-  },
-  'ems-sculpt': {
-    id: 'ems-sculpt',
-    name: 'EMS Sculpt',
-    shortName: 'EMS Sculpt',
-    classes: '3 Classes',
-    price: '£180',
-    perClass: '£60',
-    regularPrice: '£225',
-    savings: 'Save £45',
-    validity: '30 days',
-    description: 'Electrical Muscle Stimulation training for accelerated sculpting and toning',
-    benefits: [
-      'EMS technology training',
-      'Accelerated muscle activation',
-      'Time-efficient sessions',
-      'Targeted body sculpting'
-    ],
-    momenceUrl: 'https://momence.com/m/718403',
-    icon: Dumbbell,
-    highlight: false,
   }
 };
 
@@ -259,58 +129,25 @@ const dancePackages = [
   {
     name: '4 Classes',
     price: '£65',
-    savings: '',
+    savings: 'save £15',
     description: 'Perfect for trying out different styles',
     momenceUrl: 'https://momence.com/m/597174',
     highlight: false,
-  },
-  {
-    name: '8 Classes',
-    price: '£90',
-    savings: 'save £30',
-    description: 'Best value for dance enthusiasts',
-    momenceUrl: 'https://momence.com/m/609496',
-    highlight: true,
   }
 ];
 
-const danceStyles = ['Dabke', 'Belly Dance', 'Afro', 'Bollywood'];
-
-// Women's Circle data
-const womensCircleExpect = ['Guided Journaling', 'Gentle Spiritual Reflection', 'Dua\'a & Affirmations', 'Optional Sharing'];
-
-const womensCircleFormats = [
-  {
-    name: 'Guided Journaling',
-    time: 'Tuesdays · 9–9.45pm',
-    dates: ['Tuesday 11th August', 'Tuesday 18th August', 'Tuesday 25th August'],
-    price: '£18',
-    priceNote: 'per class · August',
-    intro: '3 Sessions for £40',
-    introUrl: 'https://momence.com/m/872693',
-    icon: BookOpen,
-  },
-  {
-    name: 'Women\'s Circle',
-    time: 'Sundays · 4pm',
-    dates: ['Sunday 16th August', 'Sunday 23rd August', 'Sunday 30th August'],
-    price: '£25',
-    priceNote: 'per circle · August',
-    intro: '3 Circles for £60',
-    introUrl: 'https://momence.com/m/872694',
-    icon: Flower2,
-  },
-];
+const danceStyles = ['Belly Dance'];
 
 type OfferId = keyof typeof introOffers;
-const offerIds: OfferId[] = ['reformer', 'hot-pilates', 'red-light', 'barre', 'belly-dance', 'guided-journaling', 'womens-circle', 'try-all', 'cadillac', 'ems-sculpt'];
+const offerIds: OfferId[] = ['try-all'];
 
 // Main content component
 function OffersContent() {
   const searchParams = useSearchParams();
-  const [selectedOffer, setSelectedOffer] = useState<OfferId>('reformer');
-  const endOfMonthTimestamp = useMemo(() => getEndOfMonth().getTime(), []);
-  const timeLeft = useCountdown(endOfMonthTimestamp);
+  const [selectedOffer, setSelectedOffer] = useState<OfferId>('try-all');
+  const [copied, setCopied] = useState(false);
+  const timeLeft = useCountdown(PROMO_ENDS_AT);
+  const promoActive = timeLeft !== null;
 
   useEffect(() => {
     const offerParam = searchParams.get('offer') as OfferId | null;
@@ -318,6 +155,16 @@ function OffersContent() {
       setSelectedOffer(offerParam);
     }
   }, [searchParams]);
+
+  useEffect(() => {
+    if (!copied) return;
+    const timeout = setTimeout(() => setCopied(false), 2000);
+    return () => clearTimeout(timeout);
+  }, [copied]);
+
+  const handleCopy = async () => {
+    if (await copyToClipboard(PROMO_CODE)) setCopied(true);
+  };
 
   const offer = introOffers[selectedOffer];
 
@@ -330,17 +177,9 @@ function OffersContent() {
           <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4wMyI+PGNpcmNsZSBjeD0iMzAiIGN5PSIzMCIgcj0iMyIvPjwvZz48L2c+PC9zdmc+')] opacity-50" />
         </div>
 
-        <div className="relative z-10 container-width text-center px-6">
-          {/* Urgency Badge */}
-          <div className="inline-flex items-center gap-2 bg-orange-500/20 backdrop-blur-sm border border-orange-400/30 rounded-full px-3 py-1.5 md:px-5 md:py-2 mb-4 md:mb-5">
-            <Timer className="h-3.5 w-3.5 md:h-4 md:w-4 text-orange-400" />
-            <span className="text-xs md:text-sm text-orange-300 tracking-wider font-medium">
-              OFFER ENDS IN: {timeLeft.days}d {timeLeft.hours}h {timeLeft.minutes}m
-            </span>
-          </div>
-
+        <div className="relative z-10 container-width text-center px-6 pt-12 pb-10 md:pt-24 md:pb-12">
           {/* First-time badge */}
-          <div className="inline-flex items-center gap-2 bg-[#fffcf2]/10 backdrop-blur-sm border border-[#fffcf2]/20 rounded-full px-3 py-1.5 md:px-5 md:py-2 mb-6 md:mb-8 ml-2">
+          <div className="inline-flex items-center gap-2 bg-[#fffcf2]/10 backdrop-blur-sm border border-[#fffcf2]/20 rounded-full px-3 py-1.5 md:px-5 md:py-2 mb-6 md:mb-8">
             <Sparkles className="h-3.5 w-3.5 md:h-4 md:w-4 text-[#fffcf2]" />
             <span className="text-xs md:text-sm text-[#fffcf2] tracking-wider">FIRST-TIME CLIENTS ONLY</span>
           </div>
@@ -352,7 +191,7 @@ function OffersContent() {
           </h1>
 
           <p className="text-[#fffcf2]/80 text-base md:text-lg lg:text-xl max-w-2xl mx-auto mb-6 md:mb-8 font-light">
-            New to Euforyc? Experience the power of Pilates with our exclusive intro offers.
+            New to Euforyc? Experience the power of Pilates with our Try It All intro offer.
             Your journey to a stronger, more balanced you starts here.
           </p>
 
@@ -365,12 +204,21 @@ function OffersContent() {
               CLAIM YOUR FIRST 3 CLASSES
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
             </a>
-            <Link
-              href="/packages"
-              className="text-[#fffcf2]/80 text-sm tracking-wider hover:text-[#fffcf2] transition-colors"
-            >
-              Returning client? View packages & perks →
-            </Link>
+            {promoActive ? (
+              <a
+                href="#membership-offer"
+                className="text-[#fffcf2]/80 text-sm tracking-wider hover:text-[#fffcf2] transition-colors"
+              >
+                Ready to commit? 5% off your first month of membership →
+              </a>
+            ) : (
+              <Link
+                href="/packages"
+                className="text-[#fffcf2]/80 text-sm tracking-wider hover:text-[#fffcf2] transition-colors"
+              >
+                Returning client? View packages & perks →
+              </Link>
+            )}
           </div>
 
           {/* Trust indicators */}
@@ -397,23 +245,13 @@ function OffersContent() {
       <section id="intro-offers" className="section-padding bg-[#fffcf2]">
         <div className="container-width">
           <div className="text-center mb-10 md:mb-16">
-            <p className="tagline text-[#1a260e]/60 mb-4">CHOOSE YOUR PATH</p>
+            <p className="tagline text-[#1a260e]/60 mb-4">TRY IT ALL</p>
             <h2 className="heading-secondary">
-              Intro Offers
+              Intro Offer
             </h2>
             <p className="body-text max-w-2xl mx-auto mt-4">
-              3 classes to discover the transformative power of Pilates. Perfect for beginners or those new to Euforyc.
+              3 classes to use across all our group classes. Perfect for beginners or those new to Euforyc.
             </p>
-            {/* Scarcity indicator */}
-            <div className="inline-flex items-center gap-2 bg-green-50 border border-green-200 rounded-full px-4 py-2 mt-6">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
-              </span>
-              <span className="text-sm text-green-700 font-medium">
-                Limited spots available this week
-              </span>
-            </div>
           </div>
 
           {/* Offer Selector Pills */}
@@ -476,11 +314,8 @@ function OffersContent() {
                 <div className="text-left md:text-right space-y-1">
                   <div className="flex items-baseline gap-2 md:justify-end">
                     <span className="font-serif text-4xl md:text-5xl font-light">{offer.price}</span>
-                    <span className="line-through text-lg text-[#fffcf2]/40">
-                      {offer.regularPrice}
-                    </span>
                   </div>
-                  <p className="text-green-400 text-sm font-medium">{offer.savings}</p>
+                  <p className="text-green-400 text-sm font-medium">{offer.perClass} per class</p>
                   <p className="text-xs text-[#fffcf2]/50">
                     Valid for {offer.validity}
                   </p>
@@ -506,15 +341,115 @@ function OffersContent() {
                   <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
                 </div>
                 <p className="text-center text-xs text-[#fffcf2]/50 mt-3">
-                  {selectedOffer === 'guided-journaling' || selectedOffer === 'womens-circle'
-                    ? 'Claimable once · New & existing clients'
-                    : 'First-time clients only'}
+                  First-time clients only · Can only be bought once
                 </p>
               </div>
             </a>
           </div>
         </div>
       </section>
+
+      {/* Membership Offer Section */}
+      {promoActive && (
+        <section id="membership-offer" className="section-padding bg-[#fffcf2]">
+          <div className="container-width">
+            <div className="text-center mb-10 md:mb-16">
+              <p className="tagline text-[#1a260e]/60 mb-4">LOVED YOUR FIRST CLASSES?</p>
+              <h2 className="heading-secondary">
+                Your first month, <span className="italic">5% off</span>
+              </h2>
+              <p className="body-text max-w-2xl mx-auto mt-4">
+                Ready to make it a habit? Choose any Euforyc Membership and enter {PROMO_CODE} at checkout to take 5% off your first monthly payment. One membership for the whole group timetable.
+              </p>
+              {/* Real deadline: 30 November 2026, 23:59 UK time */}
+              <div className="inline-flex items-center gap-2 bg-orange-500/10 border border-orange-400/20 rounded-full px-4 py-2 mt-6">
+                <Timer className="h-4 w-4 text-orange-500" />
+                <span className="text-sm text-orange-600 font-medium">
+                  OFFER ENDS IN: {timeLeft.days}d {timeLeft.hours}h {timeLeft.minutes}m
+                </span>
+              </div>
+            </div>
+
+            {/* Promo code */}
+            <div className="max-w-md mx-auto mb-12 md:mb-16 text-center">
+              <div className="bg-gradient-to-br from-[#1a260e] to-[#2a3a1e] text-[#fffcf2] border border-dashed border-[#1a260e]/30 rounded-2xl p-5 md:p-6">
+                <p className="text-xs tracking-widest text-[#fffcf2]/50 mb-2">USE CODE AT CHECKOUT</p>
+                <p className="font-serif text-4xl md:text-5xl tracking-[0.12em] mb-4 select-all">{PROMO_CODE}</p>
+                <button
+                  type="button"
+                  onClick={handleCopy}
+                  aria-live="polite"
+                  className="w-full inline-flex items-center justify-center gap-2 bg-[#fffcf2] text-[#1a260e] px-8 py-4 font-sans text-sm tracking-[0.15em] uppercase transition-all duration-300 hover:scale-[1.02] hover:shadow-xl"
+                >
+                  {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
+                  {copied ? 'Copied!' : 'Tap to copy code'}
+                </button>
+              </div>
+              <p className="text-xs text-[#1a260e]/60 mt-4 leading-relaxed">
+                5% off your first monthly payment only. New membership subscribers only. 6-month minimum term applies. Valid until 30 November 2026. One use per customer.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
+              {membershipOffers.map((membership) => (
+                <a
+                  key={membership.id}
+                  href={membership.momenceUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-offer-id={`euforyc5-${membership.id}`}
+                  data-content-name={`${membership.name} Membership ${membership.monthlyPrice} (${PROMO_CODE})`}
+                  data-content-type="membership"
+                  data-content-category="/offers/euforyc5"
+                  data-value={membership.monthlyPrice.replace(/[^0-9.]/g, '')}
+                  data-currency="GBP"
+                  className={`group relative rounded-2xl p-6 md:p-8 flex flex-col transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl bg-gradient-to-br from-[#1a260e] to-[#2a3a1e] text-[#fffcf2] ${membership.bestValue ? 'ring-2 ring-amber-400/60' : ''}`}
+                >
+                  {membership.bestValue && (
+                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-10">
+                      <div className="bg-gradient-to-r from-amber-400 to-amber-500 text-white px-4 py-1.5 rounded-full text-[10px] font-semibold tracking-[0.15em] uppercase whitespace-nowrap flex items-center gap-1.5 shadow-lg shadow-amber-400/20">
+                        <Crown className="w-3 h-3" />
+                        BEST VALUE
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="space-y-2 flex-1">
+                    <h3 className="font-serif text-xl md:text-2xl font-light">{membership.name}</h3>
+                    <p className="text-sm text-[#fffcf2]/70">{membership.description}</p>
+                    <div className="flex items-baseline gap-1 pt-2">
+                      <span className="font-serif text-3xl font-light">{membership.monthlyPrice}</span>
+                      <span className="text-sm text-[#fffcf2]/60">/mo</span>
+                    </div>
+                    <p className="text-green-400 text-sm font-medium">
+                      Save {membership.firstMonthSaving} on your first month
+                    </p>
+                  </div>
+
+                  <div className="mt-6 pt-6 border-t border-[#fffcf2]/10">
+                    <div className="w-full flex items-center justify-center gap-2 bg-white text-[#1a260e] py-4 px-6 rounded-xl font-semibold text-sm tracking-wider uppercase transition-all duration-300 group-hover:shadow-xl group-hover:scale-[1.02]">
+                      <span>Claim offer</span>
+                      <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                    </div>
+                    <p className="text-center text-xs text-[#fffcf2]/50 mt-3">
+                      Enter {PROMO_CODE} at checkout
+                    </p>
+                  </div>
+                </a>
+              ))}
+            </div>
+
+            <div className="text-center mt-8 md:mt-10">
+              <Link
+                href="/memberships"
+                className="text-sm text-[#1a260e]/60 tracking-wider hover:text-[#1a260e] transition-colors"
+              >
+                Compare membership benefits →
+              </Link>
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Dance Section */}
       <section id="dance" className="section-padding bg-[#fffcf2]">
@@ -525,8 +460,7 @@ function OffersContent() {
               Dance Classes
             </h2>
             <p className="body-text max-w-2xl mx-auto mt-4">
-              Discover the joy of movement through our diverse dance offerings.
-              Mix and match any style — Dabke, Belly Dance, Afro, or Bollywood.
+              Discover the joy of movement with our Belly Dance classes.
             </p>
           </div>
 
@@ -543,7 +477,7 @@ function OffersContent() {
           </div>
 
           {/* Dance Package Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 max-w-2xl mx-auto">
+          <div className={`grid grid-cols-1 gap-4 md:gap-6 mx-auto ${dancePackages.length === 1 ? 'max-w-sm' : 'md:grid-cols-2 max-w-2xl'}`}>
             {dancePackages.map((pkg, index) => (
               <a
                 key={index}
@@ -594,93 +528,6 @@ function OffersContent() {
         </div>
       </section>
 
-      {/* Women's Circle Section */}
-      <section id="womens-circle" className="section-padding bg-[#fffcf2]">
-        <div className="container-width">
-          <div className="text-center mb-10 md:mb-16">
-            <p className="tagline text-[#1a260e]/60 mb-4">SLOW DOWN & RETURN TO YOURSELF</p>
-            <h2 className="heading-secondary">
-              Women&apos;s Circle
-            </h2>
-            <p className="body-text max-w-2xl mx-auto mt-4">
-              Created for women who long to slow down and return to themselves.
-              A gentle space for reflection, remembrance and sisterhood — a place to pause,
-              to be seen, held and softened.
-            </p>
-          </div>
-
-          {/* What to Expect */}
-          <div className="flex flex-wrap justify-center gap-3 mb-10 md:mb-12">
-            {womensCircleExpect.map((item) => (
-              <div
-                key={item}
-                className="px-6 py-3 border border-[#1a260e]/10 rounded-full bg-white"
-              >
-                <span className="font-serif text-base md:text-lg text-[#1a260e]">{item}</span>
-              </div>
-            ))}
-          </div>
-
-          {/* Women's Circle Format Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 max-w-3xl mx-auto">
-            {womensCircleFormats.map((format) => (
-              <div
-                key={format.name}
-                className="relative rounded-2xl p-6 md:p-8 bg-gradient-to-br from-[#1a260e] to-[#2a3a1e] text-[#fffcf2] flex flex-col"
-              >
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 md:w-14 md:h-14 rounded-xl flex items-center justify-center flex-shrink-0 bg-[#fffcf2]/10">
-                    <format.icon className="h-6 w-6 md:h-7 md:w-7 text-[#fffcf2]" />
-                  </div>
-                  <div className="flex-1 space-y-1">
-                    <h3 className="font-serif text-xl md:text-2xl font-light">{format.name}</h3>
-                    <p className="text-sm text-[#fffcf2]/70">{format.time}</p>
-                    <div className="flex items-baseline gap-2 pt-1">
-                      <span className="font-serif text-3xl font-light">{format.price}</span>
-                      <span className="text-sm text-[#fffcf2]/60">{format.priceNote}</span>
-                    </div>
-                  </div>
-                </div>
-
-                <ul className="space-y-2 mt-6 pt-6 border-t border-[#fffcf2]/10">
-                  {format.dates.map((date) => (
-                    <li key={date} className="flex items-center gap-2 text-sm text-[#fffcf2]/90">
-                      <Clock className="h-4 w-4 flex-shrink-0 text-[#fffcf2]/50" />
-                      <span>{date}</span>
-                    </li>
-                  ))}
-                  <li className="flex items-center gap-2 text-sm text-[#fffcf2]/90">
-                    <Users className="h-4 w-4 flex-shrink-0 text-[#fffcf2]/50" />
-                    <span>Only 15 spaces</span>
-                  </li>
-                </ul>
-
-                <a
-                  href={format.introUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  data-offer-id={`womens-circle-${format.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`}
-                  data-content-name={`${format.name} Intro ${format.intro}`}
-                  data-content-type="intro_offer"
-                  data-content-category="/offers/womens-circle"
-                  data-value={format.intro.replace(/^.*£/, '')}
-                  data-currency="GBP"
-                  className="group mt-6 pt-6 border-t border-[#fffcf2]/10 block"
-                >
-                  <div className="w-full flex items-center justify-center gap-2 bg-white text-[#1a260e] py-4 px-6 rounded-xl font-semibold text-sm tracking-wider uppercase transition-all duration-300 group-hover:shadow-xl group-hover:scale-[1.02]">
-                    <span>Intro Offer · {format.intro}</span>
-                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-                  </div>
-                  <p className="text-center text-xs text-[#fffcf2]/50 mt-3">
-                    Claimable once · New & existing clients
-                  </p>
-                </a>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* Existing Members Section */}
       <section className="section-padding bg-[#1a260e] text-[#fffcf2]">
         <div className="container-width">
@@ -696,7 +543,7 @@ function OffersContent() {
             </h2>
 
             <p className="text-[#fffcf2]/80 text-sm md:text-lg max-w-xl mx-auto">
-              These intro offers are exclusively for new clients — but we&apos;ve got you covered. Explore our class packages and memberships for even more value and perks.
+              Try It All is exclusively for new clients — but we&apos;ve got you covered. Explore our class packages and memberships for even more value and perks.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -740,8 +587,15 @@ function OffersContent() {
             <div className="space-y-4 md:space-y-6">
               <div className="border-b border-[#1a260e]/10 pb-4 md:pb-6">
                 <h3 className="font-serif text-lg md:text-xl font-light text-[#1a260e] mb-2 md:mb-3">I&apos;ve never done pilates before</h3>
-                <p className="text-xs md:text-sm text-[#1a260e]/70">Perfect! Our intro offers are designed for beginners. Our instructors will guide you through every movement with personalized attention.</p>
+                <p className="text-xs md:text-sm text-[#1a260e]/70">Perfect! Try It All is designed for beginners. Our instructors will guide you through every movement with personalized attention.</p>
               </div>
+
+              {promoActive && (
+                <div className="border-b border-[#1a260e]/10 pb-4 md:pb-6">
+                  <h3 className="font-serif text-lg md:text-xl font-light text-[#1a260e] mb-2 md:mb-3">How does the {PROMO_CODE} code work?</h3>
+                  <p className="text-xs md:text-sm text-[#1a260e]/70">Choose any Euforyc Membership (Euforyc 4, 8, 12 or Unlimited) and enter {PROMO_CODE} at checkout. You&apos;ll get 5% off your first monthly payment only; after that you pay the standard monthly price. The code is for new membership subscribers only, can be used once per customer and is valid until 23:59 (UK time) on 30 November 2026. The Euforyc Membership&apos;s 6-month minimum term applies.</p>
+                </div>
+              )}
 
               <div className="border-b border-[#1a260e]/10 pb-4 md:pb-6">
                 <h3 className="font-serif text-lg md:text-xl font-light text-[#1a260e] mb-2 md:mb-3">What should I bring?</h3>
@@ -751,11 +605,6 @@ function OffersContent() {
               <div className="border-b border-[#1a260e]/10 pb-4 md:pb-6">
                 <h3 className="font-serif text-lg md:text-xl font-light text-[#1a260e] mb-2 md:mb-3">How do I book my classes?</h3>
                 <p className="text-xs md:text-sm text-[#1a260e]/70">After purchase, you&apos;ll receive access to our booking system where you can schedule your classes at times that suit you.</p>
-              </div>
-
-              <div className="border-b border-[#1a260e]/10 pb-4 md:pb-6">
-                <h3 className="font-serif text-lg md:text-xl font-light text-[#1a260e] mb-2 md:mb-3">Can I mix dance styles?</h3>
-                <p className="text-xs md:text-sm text-[#1a260e]/70">Yes! Our dance packages let you choose any combination of Dabke, Belly Dance, Afro, or Bollywood classes. Mix and match as you like.</p>
               </div>
             </div>
 
@@ -773,13 +622,6 @@ function OffersContent() {
       <section className="py-16 md:py-20 bg-[#fffcf2]">
         <div className="container-width">
           <div className="text-center space-y-6">
-            {/* Urgency reminder */}
-            <div className="inline-flex items-center gap-2 bg-orange-500/10 border border-orange-400/20 rounded-full px-4 py-2">
-              <Timer className="h-4 w-4 text-orange-500" />
-              <span className="text-sm text-orange-600 font-medium">
-                Only {timeLeft.days} days left — Don&apos;t miss out!
-              </span>
-            </div>
             <h2 className="font-serif text-2xl md:text-3xl lg:text-4xl text-[#1a260e] font-light">
               Ready to Begin Your Journey?
             </h2>

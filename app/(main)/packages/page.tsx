@@ -18,7 +18,7 @@ const servicesSchema = {
       description: 'Equipment-based group pilates classes using professional reformer machines',
       provider: { '@type': 'LocalBusiness', name: 'Euforyc Studios', address: '7 Holmstall Ave, Edgware HA8 5HX, London' },
       areaServed: 'London',
-      offers: { '@type': 'AggregateOffer', lowPrice: '60', highPrice: '340', priceCurrency: 'GBP' }
+      offers: { '@type': 'AggregateOffer', lowPrice: '28', highPrice: '320', priceCurrency: 'GBP' }
     },
     {
       '@type': 'Service',
@@ -27,7 +27,7 @@ const servicesSchema = {
       description: 'Infrared-heated pilates classes for enhanced flexibility and detoxification',
       provider: { '@type': 'LocalBusiness', name: 'Euforyc Studios', address: '7 Holmstall Ave, Edgware HA8 5HX, London' },
       areaServed: 'London',
-      offers: { '@type': 'AggregateOffer', lowPrice: '50', highPrice: '300', priceCurrency: 'GBP' }
+      offers: { '@type': 'AggregateOffer', lowPrice: '28', highPrice: '320', priceCurrency: 'GBP' }
     },
     {
       '@type': 'Service',
@@ -44,57 +44,10 @@ const servicesSchema = {
 // Package data
 const packages = {
   intro: {
-    title: 'Intro Offers',
-    subtitle: 'New to Euforyc? Choose your perfect start',
+    title: 'Intro Offer',
+    subtitle: 'New to Euforyc? Try It All',
     packages: [
-      { id: 'reformer', name: 'Reformer Pilates', classes: '3 Classes', price: '£60', savings: 'First-time offer', description: 'Equipment-based pilates on our professional reformer machines', momenceUrl: 'https://momence.com/m/488100', icon: 'package', validity: '20 days' },
-      { id: 'hot-pilates', name: 'Hot Pilates', classes: '3 Classes', price: '£50', savings: 'First-time offer', description: 'Dynamic mat-based pilates with infrared heat', momenceUrl: 'https://momence.com/m/507852', icon: 'flame', validity: '20 days' },
-      { id: 'red-light', name: 'Red Light Hot Pilates', classes: '3 Classes', price: '£65', savings: 'First-time offer', description: 'Enhanced hot pilates with red light therapy benefits', momenceUrl: 'https://momence.com/m/624096', icon: 'zap', validity: '20 days' },
-      { id: 'barre', name: 'Barre', classes: '3 Classes', price: '£60', savings: 'First-time offer', description: 'Ballet-inspired workout for strength and flexibility', momenceUrl: 'https://momence.com/m/621480', icon: 'heart', validity: '30 days' },
-      { id: 'belly-dance', name: 'Belly Dance', classes: '3 Classes', price: '£40', savings: 'First-time offer', description: 'Sensual, expressive movement rooted in traditional belly dance', momenceUrl: 'https://momence.com/m/776393', icon: 'music', validity: '30 days' },
-      { id: 'guided-journaling', name: 'Guided Journaling', classes: '3 Sessions', price: '£40', savings: 'Claimable once', description: 'Guided journaling, gentle spiritual reflection, dua\'a & affirmations — Tuesdays 9–9.45pm in August', momenceUrl: 'https://momence.com/m/872693', icon: 'sparkles', validity: 'August dates' },
-      { id: 'womens-circle', name: 'Women\'s Circle', classes: '3 Circles', price: '£60', savings: 'Claimable once', description: 'A gentle space for reflection, remembrance and sisterhood — Sundays 4pm in August', momenceUrl: 'https://momence.com/m/872694', icon: 'heart', validity: 'August dates' },
-      { id: 'try-all', name: 'Try All', classes: '3 Classes', price: '£70', savings: 'First-time offer', description: 'Experience all class types - Reformer, Hot Pilates, Barre, Dance & more', momenceUrl: 'https://momence.com/m/631782', icon: 'sparkles', validity: '20 days' },
-      { id: 'cadillac', name: 'Cadillac 1-1', classes: '3 Classes', price: '£180', savings: 'First-time offer', description: 'Private one-on-one sessions on our Cadillac Reformer', momenceUrl: 'https://momence.com/m/708119', icon: 'crown', validity: '20 days' },
-      { id: 'ems-sculpt', name: 'EMS Sculpt', classes: '3 Classes', price: '£180', savings: 'First-time offer', description: 'Electrical Muscle Stimulation training for accelerated sculpting', momenceUrl: 'https://momence.com/m/718403', icon: 'dumbbell', validity: '30 days' }
-    ]
-  },
-  reformer: {
-    title: 'Reformer Pilates',
-    subtitle: 'Equipment-based group classes',
-    packages: [
-      { name: '4 Classes', price: '£100', savings: 'save £12', momenceUrl: 'https://momence.com/m/473322' },
-      { name: '8 Classes', price: '£190', savings: 'save £34', momenceUrl: 'https://momence.com/m/473323' },
-      { name: '12 Classes', price: '£270', savings: 'save £66', momenceUrl: 'https://momence.com/m/473324' },
-      { name: 'Unlimited', price: '£340', savings: 'save £100+', momenceUrl: 'https://momence.com/m/473325' }
-    ]
-  },
-  hotPilates: {
-    title: 'Hot Pilates',
-    subtitle: 'Dynamic heated mat classes',
-    packages: [
-      { name: '4 Classes', price: '£75', savings: 'save £13', momenceUrl: 'https://momence.com/m/473314' },
-      { name: '8 Classes', price: '£140', savings: 'save £36', momenceUrl: 'https://momence.com/m/473315' },
-      { name: '12 Classes', price: '£200', savings: 'save £64', momenceUrl: 'https://momence.com/m/473316' },
-      { name: 'Unlimited', price: '£300', savings: 'save £60+', momenceUrl: 'https://momence.com/m/473319' }
-    ]
-  },
-  sculptMatPilates: {
-    title: 'Sculpt Mat Pilates',
-    subtitle: 'Strengthen, tone and sculpt with mat-based pilates',
-    packages: [
-      { name: '4 Classes', price: '£70', savings: 'save £2', momenceUrl: 'https://momence.com/m/707786' },
-      { name: '8 Classes', price: '£135', savings: 'save £9', momenceUrl: 'https://momence.com/m/707788' },
-      { name: '12 Classes', price: '£199', savings: 'save £17', momenceUrl: 'https://momence.com/m/707789' },
-      { name: 'Unlimited', price: '£250', savings: 'best value', momenceUrl: 'https://momence.com/m/707790' }
-    ]
-  },
-  barrePackage: {
-    title: 'Barre',
-    subtitle: 'Ballet-inspired strength, flexibility and grace',
-    packages: [
-      { name: '4 Classes', price: '£90', savings: 'save £10', momenceUrl: 'https://momence.com/m/707791' },
-      { name: '8 Classes', price: '£175', savings: 'save £25', momenceUrl: 'https://momence.com/m/707793' }
+      { id: 'try-all', name: 'Try It All', classes: '3 Classes', price: '£60', savings: 'First-time offer', description: 'Three classes to use across all our group classes - Reformer, Hot Pilates, Barre, Dance & more', momenceUrl: 'https://momence.com/m/631782', icon: 'sparkles', validity: '30 days from first class' }
     ]
   },
   private: {
@@ -107,38 +60,35 @@ const packages = {
       { name: '12 Sessions', price: '£700', savings: 'save £200', momenceUrl: 'https://momence.com/m/473321' }
     ]
   },
-  allAccess: {
-    title: 'Euforyc All Access',
-    subtitle: 'Access ALL class types — Reformer, Hot Pilates, Barre, Red Light & Dance',
+  euforycPackage: {
+    title: 'Euforyc Package',
+    subtitle: 'Use your classes across all group classes. No contract.',
+    note: 'Valid 30 days from your first class',
     packages: [
-      { name: '4 Classes', price: '£115', momenceUrl: 'https://momence.com/m/632399' },
-      { name: '8 Classes', price: '£200', momenceUrl: 'https://momence.com/m/632400' },
-      { name: '12 Classes', price: '£280', momenceUrl: 'https://momence.com/m/632401' }
+      { name: '4 Classes', price: '£105', savings: 'save £7', momenceUrl: 'https://momence.com/m/632399' },
+      { name: '8 Classes', price: '£190', savings: 'save £34', momenceUrl: 'https://momence.com/m/632400' },
+      { name: '12 Classes', price: '£270', savings: 'save £66', momenceUrl: 'https://momence.com/m/632401' },
+      { name: '30 Days Unlimited', price: '£320', momenceUrl: 'https://momence.com/m/938674' }
     ]
   },
   dancePackage: {
     title: 'Dance',
-    subtitle: 'Dabke, Belly Dance, Afro, or Bollywood — your choice',
+    subtitle: 'Belly Dance classes',
     packages: [
-      { name: '4 Classes', price: '£65', momenceUrl: 'https://momence.com/m/597174' },
-      { name: '8 Classes', price: '£90', savings: 'save £30', momenceUrl: 'https://momence.com/m/609496' }
+      { name: '4 Classes', price: '£65', savings: 'save £15', momenceUrl: 'https://momence.com/m/597174' }
     ]
   }
 };
 
-type CategoryKey = 'reformer' | 'hotPilates' | 'sculptMatPilates' | 'barrePackage' | 'private' | 'allAccess' | 'dancePackage';
+type CategoryKey = 'euforycPackage' | 'private' | 'dancePackage';
 
 const categories: { key: CategoryKey; label: string }[] = [
-  { key: 'reformer', label: 'Reformer' },
-  { key: 'hotPilates', label: 'Hot Pilates' },
-  { key: 'sculptMatPilates', label: 'Sculpt Mat' },
-  { key: 'barrePackage', label: 'Barre' },
+  { key: 'euforycPackage', label: 'Euforyc Package' },
   { key: 'private', label: 'Private' },
-  { key: 'allAccess', label: 'All Access' },
   { key: 'dancePackage', label: 'Dance' },
 ];
 
-type IntroOfferType = 'reformer' | 'hot-pilates' | 'red-light' | 'barre' | 'belly-dance' | 'guided-journaling' | 'womens-circle' | 'try-all' | 'cadillac' | 'ems-sculpt';
+type IntroOfferType = 'try-all';
 
 const getIcon = (icon: string, className?: string) => {
   switch (icon) {
@@ -156,12 +106,12 @@ const getIcon = (icon: string, className?: string) => {
 // Intro section with useSearchParams
 function IntroOffersSection() {
   const searchParams = useSearchParams();
-  const [selectedOffer, setSelectedOffer] = useState<IntroOfferType>('reformer');
+  const [selectedOffer, setSelectedOffer] = useState<IntroOfferType>('try-all');
   const [fromAd, setFromAd] = useState(false);
 
   useEffect(() => {
     const offer = searchParams.get('offer') as IntroOfferType | null;
-    if (offer && ['reformer', 'hot-pilates', 'red-light', 'barre', 'belly-dance', 'guided-journaling', 'womens-circle', 'try-all', 'cadillac', 'ems-sculpt'].includes(offer)) {
+    if (offer && ['try-all'].includes(offer)) {
       setSelectedOffer(offer);
       setFromAd(true);
     }
@@ -181,7 +131,7 @@ function IntroOffersSection() {
               <span className="font-sans text-[10px] tracking-[0.2em] text-[#1a260e]/70 uppercase">New clients</span>
             </div>
             <h2 className="font-serif text-3xl md:text-5xl font-light text-[#1a260e] tracking-wide mb-3">
-              Intro Offers
+              Intro Offer
             </h2>
             <p className="font-sans text-sm md:text-base text-[#1a260e]/50">
               Your first step into the studio
@@ -245,7 +195,7 @@ function IntroOffersSection() {
           </div>
 
           {/* Desktop: Row of cards */}
-          <div className="hidden md:grid grid-cols-3 gap-4">
+          <div className={`hidden md:grid gap-4 ${introPackages.length === 1 ? 'grid-cols-1 max-w-sm mx-auto' : 'grid-cols-3'}`}>
             {introPackages.map((pkg) => (
               <a
                 key={pkg.id}
@@ -277,7 +227,7 @@ function IntroOffersSection() {
           </div>
 
           <p className="text-center text-[11px] text-[#1a260e]/30 mt-6 tracking-wide">
-            Intro offers are for first-time clients only · Women&apos;s Circle intros are claimable once by all clients
+            Try It All is for first-time clients only and can only be bought once
           </p>
         </div>
       </div>
@@ -287,7 +237,7 @@ function IntroOffersSection() {
 
 // Package card component
 function PackageCard({ pkg }: { pkg: { name: string; price: string; savings?: string; momenceUrl: string } }) {
-  const isUnlimited = pkg.name === 'Unlimited';
+  const isUnlimited = pkg.name.endsWith('Unlimited');
   return (
     <a
       href={pkg.momenceUrl}
@@ -339,7 +289,7 @@ function PackageCard({ pkg }: { pkg: { name: string; price: string; savings?: st
 
 // Main packages section with tabs
 function PackagesSection() {
-  const [activeCategory, setActiveCategory] = useState<CategoryKey>('reformer');
+  const [activeCategory, setActiveCategory] = useState<CategoryKey>('euforycPackage');
   const tabsRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
@@ -380,6 +330,7 @@ function PackagesSection() {
 
   // Determine grid layout based on package count
   const getGridCols = (count: number) => {
+    if (count === 1) return 'grid-cols-1 max-w-sm';
     if (count <= 2) return 'grid-cols-1 md:grid-cols-2 max-w-2xl';
     if (count === 3) return 'grid-cols-1 md:grid-cols-3 max-w-4xl';
     return 'grid-cols-2 md:grid-cols-4 max-w-5xl';
@@ -489,15 +440,15 @@ function PackagesSection() {
               ))}
             </div>
 
-            {/* All Access upsell hint when not on All Access */}
-            {activeCategory !== 'allAccess' && activeCategory !== 'private' && (
+            {/* Euforyc Package upsell hint when not on Euforyc Package */}
+            {activeCategory !== 'euforycPackage' && activeCategory !== 'private' && (
               <div className="mt-8 text-center">
                 <button
-                  onClick={() => setActiveCategory('allAccess')}
+                  onClick={() => setActiveCategory('euforycPackage')}
                   className="inline-flex items-center gap-2 text-[#1a260e]/30 hover:text-[#1a260e]/60 transition-colors duration-300 group"
                 >
                   <span className="font-sans text-xs tracking-wider uppercase">Want access to everything?</span>
-                  <span className="font-sans text-xs tracking-wider uppercase underline underline-offset-4 group-hover:no-underline">See All Access</span>
+                  <span className="font-sans text-xs tracking-wider uppercase underline underline-offset-4 group-hover:no-underline">See Euforyc Package</span>
                   <ChevronRight className="h-3 w-3 transition-transform duration-300 group-hover:translate-x-0.5" />
                 </button>
               </div>

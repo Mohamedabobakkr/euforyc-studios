@@ -125,7 +125,7 @@ export default function GiftCards() {
                   <div className="space-y-3">
                     {[
                       { amount: '£60', description: 'Perfect for a 3-class intro package' },
-                      { amount: '£90', description: 'Great for a 4-class reformer package' },
+                      { amount: '£90', description: 'Great towards a Euforyc Package' },
                       { amount: '£170', description: 'Ideal for an 8-class package' },
                       { amount: '£240', description: 'Perfect for a 12-class package' },
                       { amount: 'Custom', description: 'Choose any amount that works for you' }

@@ -403,7 +403,7 @@ export default function About() {
                   href="/offers"
                   className="text-[#fffcf2]/50 text-sm tracking-wider hover:text-[#fffcf2] transition-colors"
                 >
-                  View intro offers →
+                  View our intro offer →
                 </Link>
               </div>
             </div>

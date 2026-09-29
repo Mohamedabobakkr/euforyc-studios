@@ -4,7 +4,7 @@ import { ArrowRight } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'Pricing | Pilates Classes & Packages',
-  description: 'Transparent pricing for all classes at Euforyc Studios Edgware. Reformer pilates from £28, hot pilates from £22, barre from £25, sculpt mat pilates from £20, red light pilates from £30, private sessions from £65. Euforyc Membership from £90/month.',
+  description: 'Transparent pricing at Euforyc Studios Edgware. Group class drop-ins £28 (Sculpt Mat Pilates & Belly Dance £20), Try It All intro offer 3 classes for £60, Euforyc Package from £105, Euforyc Membership from £90/month.',
   keywords: ['pilates prices london', 'reformer pilates cost london', 'hot pilates price edgware', 'pilates class cost near me', 'pilates membership london', 'pilates pricing uk'],
   alternates: { canonical: 'https://euforyc.co.uk/pricing' },
 };
@@ -18,7 +18,7 @@ export default function Pricing() {
           <p className="tagline text-[#1a260e]/60 mb-4">TRANSPARENT PRICING</p>
           <h1 className="heading-primary mb-6">Price List</h1>
           <p className="body-text max-w-2xl mx-auto">
-            All packages are valid for 30 days from your first class. First-time clients can enjoy our special intro offers.
+            All packages are valid for 30 days from your first class. First-time clients can start with our Try It All intro offer: 3 classes for £60.
           </p>
         </div>
       </section>
@@ -75,36 +75,29 @@ export default function Pricing() {
               </div>
             </div>
 
-            {/* Reformer Pilates (GROUP) Section */}
+            {/* Euforyc Package Section */}
             <div className="space-y-8">
               <div className="text-center space-y-2">
-                <h2 className="heading-secondary">Reformer Pilates (Group)</h2>
-                <p className="tagline text-[#1a260e]/60">EQUIPMENT-BASED • MAX 8 PER CLASS • 45 MIN</p>
+                <h2 className="heading-secondary">Euforyc <span className="italic">Package</span></h2>
+                <p className="tagline text-[#1a260e]/60">ALL GROUP CLASSES • VALID 30 DAYS FROM FIRST CLASS • NO CONTRACT</p>
               </div>
 
               <div className="space-y-0">
                 <div className="flex justify-between items-center py-5 border-b border-[#1a260e]/10">
                   <div>
-                    <h3 className="font-serif text-xl md:text-2xl font-light">Single Class (Drop-in)</h3>
+                    <h3 className="font-serif text-xl md:text-2xl font-light">4 Euforyc Classes</h3>
+                    <p className="text-xs text-[#1a260e]/60">£26.25 per class</p>
                   </div>
                   <div className="text-right">
-                    <p className="font-serif text-2xl md:text-3xl font-light">£28</p>
+                    <p className="font-serif text-2xl md:text-3xl font-light">£105</p>
+                    <p className="text-sm text-green-600 font-medium">save £7</p>
                   </div>
                 </div>
 
                 <div className="flex justify-between items-center py-5 border-b border-[#1a260e]/10">
                   <div>
-                    <h3 className="font-serif text-xl md:text-2xl font-light">4 Classes</h3>
-                  </div>
-                  <div className="text-right">
-                    <p className="font-serif text-2xl md:text-3xl font-light">£100</p>
-                    <p className="text-sm text-green-600 font-medium">save £12</p>
-                  </div>
-                </div>
-
-                <div className="flex justify-between items-center py-5 border-b border-[#1a260e]/10">
-                  <div>
-                    <h3 className="font-serif text-xl md:text-2xl font-light">8 Classes</h3>
+                    <h3 className="font-serif text-xl md:text-2xl font-light">8 Euforyc Classes</h3>
+                    <p className="text-xs text-[#1a260e]/60">£23.75 per class</p>
                   </div>
                   <div className="text-right">
                     <p className="font-serif text-2xl md:text-3xl font-light">£190</p>
@@ -114,7 +107,8 @@ export default function Pricing() {
 
                 <div className="flex justify-between items-center py-5 border-b border-[#1a260e]/10">
                   <div>
-                    <h3 className="font-serif text-xl md:text-2xl font-light">12 Classes</h3>
+                    <h3 className="font-serif text-xl md:text-2xl font-light">12 Euforyc Classes</h3>
+                    <p className="text-xs text-[#1a260e]/60">£22.50 per class</p>
                   </div>
                   <div className="text-right">
                     <p className="font-serif text-2xl md:text-3xl font-light">£270</p>
@@ -124,18 +118,38 @@ export default function Pricing() {
 
                 <div className="flex justify-between items-center py-5 border-b border-[#1a260e]/10">
                   <div>
-                    <h3 className="font-serif text-xl md:text-2xl font-light">Unlimited</h3>
+                    <h3 className="font-serif text-xl md:text-2xl font-light">30 Days Unlimited</h3>
+                    <p className="text-xs text-[#1a260e]/60">Unlimited Euforyc classes for 30 days</p>
                   </div>
                   <div className="text-right">
-                    <p className="font-serif text-2xl md:text-3xl font-light">£340</p>
-                    <p className="text-sm text-green-600 font-medium">save £100+</p>
+                    <p className="font-serif text-2xl md:text-3xl font-light">£320</p>
                   </div>
                 </div>
+              </div>
 
-                <div className="flex justify-between items-center py-5 bg-[#1a260e]/5 px-4 rounded-lg mt-4">
+              <div className="text-center">
+                <Link
+                  href="/packages"
+                  className="inline-flex items-center justify-center gap-2 bg-[#1a260e] text-[#fffcf2] px-8 py-4 font-sans text-sm tracking-wider uppercase hover:bg-[#1a260e]/90 transition-colors"
+                >
+                  VIEW PACKAGES
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+              </div>
+            </div>
+
+            {/* Try It All Intro Offer Section */}
+            <div className="space-y-8">
+              <div className="text-center space-y-2">
+                <h2 className="heading-secondary">Try It All</h2>
+                <p className="tagline text-[#1a260e]/60">INTRO OFFER • ALL GROUP CLASSES</p>
+              </div>
+
+              <div className="space-y-0">
+                <div className="flex justify-between items-center py-5 bg-[#1a260e]/5 px-4 rounded-lg">
                   <div>
-                    <h3 className="font-serif text-xl md:text-2xl font-light">Intro Offer (3 Classes)</h3>
-                    <p className="text-xs text-[#1a260e]/60">First-time clients only • Valid 20 days</p>
+                    <h3 className="font-serif text-xl md:text-2xl font-light">Try It All (3 Classes)</h3>
+                    <p className="text-xs text-[#1a260e]/60">First-time clients only • Valid 30 days from first class</p>
                   </div>
                   <div className="text-right">
                     <p className="font-serif text-2xl md:text-3xl font-light">£60</p>
@@ -144,115 +158,71 @@ export default function Pricing() {
               </div>
             </div>
 
-            {/* Hot Pilates Section */}
+            {/* Drop-in Prices Section */}
             <div className="space-y-8">
               <div className="text-center space-y-2">
-                <h2 className="heading-secondary">Hot Pilates</h2>
-                <p className="tagline text-[#1a260e]/60">INFRARED HEATED • MAX 7 PER CLASS • 45 MIN</p>
+                <h2 className="heading-secondary">Drop-in Classes</h2>
+                <p className="tagline text-[#1a260e]/60">SINGLE CLASS • PAY AS YOU GO</p>
               </div>
 
               <div className="space-y-0">
                 <div className="flex justify-between items-center py-5 border-b border-[#1a260e]/10">
                   <div>
-                    <h3 className="font-serif text-xl md:text-2xl font-light">Single Class (Drop-in)</h3>
+                    <h3 className="font-serif text-xl md:text-2xl font-light">Reformer Pilates</h3>
                   </div>
                   <div className="text-right">
-                    <p className="font-serif text-2xl md:text-3xl font-light">£22</p>
+                    <p className="font-serif text-2xl md:text-3xl font-light">£28</p>
                   </div>
                 </div>
 
                 <div className="flex justify-between items-center py-5 border-b border-[#1a260e]/10">
                   <div>
-                    <h3 className="font-serif text-xl md:text-2xl font-light">4 Classes</h3>
+                    <h3 className="font-serif text-xl md:text-2xl font-light">Hot Pilates</h3>
                   </div>
                   <div className="text-right">
-                    <p className="font-serif text-2xl md:text-3xl font-light">£75</p>
-                    <p className="text-sm text-green-600 font-medium">save £13</p>
+                    <p className="font-serif text-2xl md:text-3xl font-light">£28</p>
                   </div>
                 </div>
 
                 <div className="flex justify-between items-center py-5 border-b border-[#1a260e]/10">
                   <div>
-                    <h3 className="font-serif text-xl md:text-2xl font-light">8 Classes</h3>
+                    <h3 className="font-serif text-xl md:text-2xl font-light">Red Light Hot Pilates</h3>
                   </div>
                   <div className="text-right">
-                    <p className="font-serif text-2xl md:text-3xl font-light">£140</p>
-                    <p className="text-sm text-green-600 font-medium">save £36</p>
+                    <p className="font-serif text-2xl md:text-3xl font-light">£28</p>
                   </div>
                 </div>
 
                 <div className="flex justify-between items-center py-5 border-b border-[#1a260e]/10">
                   <div>
-                    <h3 className="font-serif text-xl md:text-2xl font-light">12 Classes</h3>
+                    <h3 className="font-serif text-xl md:text-2xl font-light">Barre</h3>
                   </div>
                   <div className="text-right">
-                    <p className="font-serif text-2xl md:text-3xl font-light">£200</p>
-                    <p className="text-sm text-green-600 font-medium">save £64</p>
+                    <p className="font-serif text-2xl md:text-3xl font-light">£28</p>
                   </div>
                 </div>
 
                 <div className="flex justify-between items-center py-5 border-b border-[#1a260e]/10">
                   <div>
-                    <h3 className="font-serif text-xl md:text-2xl font-light">Unlimited</h3>
+                    <h3 className="font-serif text-xl md:text-2xl font-light">Mat Pilates</h3>
                   </div>
                   <div className="text-right">
-                    <p className="font-serif text-2xl md:text-3xl font-light">£300</p>
-                    <p className="text-sm text-green-600 font-medium">save £60+</p>
+                    <p className="font-serif text-2xl md:text-3xl font-light">£28</p>
                   </div>
                 </div>
 
-                <div className="flex justify-between items-center py-5 bg-[#1a260e]/5 px-4 rounded-lg mt-4">
-                  <div>
-                    <h3 className="font-serif text-xl md:text-2xl font-light">Intro Offer (3 Classes)</h3>
-                    <p className="text-xs text-[#1a260e]/60">First-time clients only • Valid 30 days</p>
-                  </div>
-                  <div className="text-right">
-                    <p className="font-serif text-2xl md:text-3xl font-light">£50</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Red Light Hot Pilates Section */}
-            <div className="space-y-8">
-              <div className="text-center space-y-2">
-                <h2 className="heading-secondary">Red Light Hot Pilates</h2>
-                <p className="tagline text-[#1a260e]/60">HOT PILATES + RED LIGHT THERAPY • PREMIUM</p>
-              </div>
-
-              <div className="space-y-0">
                 <div className="flex justify-between items-center py-5 border-b border-[#1a260e]/10">
                   <div>
-                    <h3 className="font-serif text-xl md:text-2xl font-light">Single Class (Drop-in)</h3>
+                    <h3 className="font-serif text-xl md:text-2xl font-light">Sculpt Mat Pilates</h3>
                   </div>
                   <div className="text-right">
-                    <p className="font-serif text-2xl md:text-3xl font-light">£30</p>
+                    <p className="font-serif text-2xl md:text-3xl font-light">£20</p>
                   </div>
                 </div>
 
-                <div className="flex justify-between items-center py-5 bg-[#1a260e]/5 px-4 rounded-lg mt-4">
-                  <div>
-                    <h3 className="font-serif text-xl md:text-2xl font-light">Intro Offer (3 Classes)</h3>
-                    <p className="text-xs text-[#1a260e]/60">First-time clients only • Valid 30 days</p>
-                  </div>
-                  <div className="text-right">
-                    <p className="font-serif text-2xl md:text-3xl font-light">£65</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Sculpt Mat Pilates Section */}
-            <div className="space-y-8">
-              <div className="text-center space-y-2">
-                <h2 className="heading-secondary">Sculpt Mat Pilates</h2>
-                <p className="tagline text-[#1a260e]/60">STRENGTH-FOCUSED • MAT WORK • 45 MIN</p>
-              </div>
-
-              <div className="space-y-0">
                 <div className="flex justify-between items-center py-5 border-b border-[#1a260e]/10">
                   <div>
-                    <h3 className="font-serif text-xl md:text-2xl font-light">Single Class (Drop-in)</h3>
+                    <h3 className="font-serif text-xl md:text-2xl font-light">Belly Dance</h3>
                   </div>
                   <div className="text-right">
                     <p className="font-serif text-2xl md:text-3xl font-light">£20</p>
@@ -261,30 +231,22 @@ export default function Pricing() {
               </div>
             </div>
 
-            {/* Barre Section */}
+            {/* Dance Package Section */}
             <div className="space-y-8">
               <div className="text-center space-y-2">
-                <h2 className="heading-secondary">Barre</h2>
-                <p className="tagline text-[#1a260e]/60">BALLET-INSPIRED • SCULPT & TONE • 45 MIN</p>
+                <h2 className="heading-secondary">Dance Package</h2>
+                <p className="tagline text-[#1a260e]/60">BELLY DANCE</p>
               </div>
 
               <div className="space-y-0">
                 <div className="flex justify-between items-center py-5 border-b border-[#1a260e]/10">
                   <div>
-                    <h3 className="font-serif text-xl md:text-2xl font-light">Single Class (Drop-in)</h3>
+                    <h3 className="font-serif text-xl md:text-2xl font-light">4 Classes</h3>
+                    <p className="text-xs text-[#1a260e]/60">Belly Dance classes</p>
                   </div>
                   <div className="text-right">
-                    <p className="font-serif text-2xl md:text-3xl font-light">£25</p>
-                  </div>
-                </div>
-
-                <div className="flex justify-between items-center py-5 bg-[#1a260e]/5 px-4 rounded-lg mt-4">
-                  <div>
-                    <h3 className="font-serif text-xl md:text-2xl font-light">Intro Offer (3 Classes)</h3>
-                    <p className="text-xs text-[#1a260e]/60">First-time clients only • Valid 30 days</p>
-                  </div>
-                  <div className="text-right">
-                    <p className="font-serif text-2xl md:text-3xl font-light">£60</p>
+                    <p className="font-serif text-2xl md:text-3xl font-light">£65</p>
+                    <p className="text-sm text-green-600 font-medium">save £15</p>
                   </div>
                 </div>
               </div>
@@ -342,46 +304,6 @@ export default function Pricing() {
               </div>
             </div>
 
-            {/* Dance Classes Section */}
-            <div className="space-y-8">
-              <div className="text-center space-y-2">
-                <h2 className="heading-secondary">Dance Classes</h2>
-                <p className="tagline text-[#1a260e]/60">BELLY DANCE</p>
-              </div>
-
-              <div className="space-y-0">
-                <div className="flex justify-between items-center py-5 border-b border-[#1a260e]/10">
-                  <div>
-                    <h3 className="font-serif text-xl md:text-2xl font-light">Single Class (Drop-in)</h3>
-                  </div>
-                  <div className="text-right">
-                    <p className="font-serif text-2xl md:text-3xl font-light">£15</p>
-                  </div>
-                </div>
-
-                <div className="flex justify-between items-center py-5 border-b border-[#1a260e]/10">
-                  <div>
-                    <h3 className="font-serif text-xl md:text-2xl font-light">4 Classes</h3>
-                    <p className="text-xs text-[#1a260e]/60">Mix & match any dance style</p>
-                  </div>
-                  <div className="text-right">
-                    <p className="font-serif text-2xl md:text-3xl font-light">£65</p>
-                  </div>
-                </div>
-
-                <div className="flex justify-between items-center py-5 border-b border-[#1a260e]/10">
-                  <div>
-                    <h3 className="font-serif text-xl md:text-2xl font-light">8 Classes</h3>
-                    <p className="text-xs text-[#1a260e]/60">Mix & match any dance style</p>
-                  </div>
-                  <div className="text-right">
-                    <p className="font-serif text-2xl md:text-3xl font-light">£90</p>
-                    <p className="text-sm text-green-600 font-medium">save £30</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
             {/* Women's Circle Section */}
             <div className="space-y-8">
               <div className="text-center space-y-2">
@@ -401,16 +323,6 @@ export default function Pricing() {
                   </div>
                 </div>
 
-                <div className="flex justify-between items-center py-5 bg-[#1a260e]/5 px-4 rounded-lg mt-4 mb-4">
-                  <div>
-                    <h3 className="font-serif text-xl md:text-2xl font-light">Journaling Intro (3 Sessions)</h3>
-                    <p className="text-xs text-[#1a260e]/60">Claimable once • New & existing clients</p>
-                  </div>
-                  <div className="text-right">
-                    <p className="font-serif text-2xl md:text-3xl font-light">£40</p>
-                  </div>
-                </div>
-
                 <div className="flex justify-between items-center py-5 border-b border-[#1a260e]/10">
                   <div>
                     <h3 className="font-serif text-xl md:text-2xl font-light">Women&apos;s Circle</h3>
@@ -419,16 +331,6 @@ export default function Pricing() {
                   <div className="text-right">
                     <p className="font-serif text-2xl md:text-3xl font-light">£25</p>
                     <p className="text-xs text-[#1a260e]/60">per circle</p>
-                  </div>
-                </div>
-
-                <div className="flex justify-between items-center py-5 bg-[#1a260e]/5 px-4 rounded-lg mt-4">
-                  <div>
-                    <h3 className="font-serif text-xl md:text-2xl font-light">Circle Intro (3 Circles)</h3>
-                    <p className="text-xs text-[#1a260e]/60">Claimable once • New & existing clients</p>
-                  </div>
-                  <div className="text-right">
-                    <p className="font-serif text-2xl md:text-3xl font-light">£60</p>
                   </div>
                 </div>
               </div>
@@ -470,13 +372,10 @@ export default function Pricing() {
             <h3 className="font-serif text-2xl font-light">Terms & Conditions</h3>
             <div className="space-y-2 max-w-2xl mx-auto text-left">
               <p className="font-sans text-sm text-[#1a260e]/70">
-                • All class packages are valid for 30 days from your first class attended
+                • All class packages, including Try It All, are valid for 30 days from your first class attended (1-1 Cadillac packages: 90 days)
               </p>
               <p className="font-sans text-sm text-[#1a260e]/70">
-                • Intro offers are valid for 20-30 days from purchase (see individual offers)
-              </p>
-              <p className="font-sans text-sm text-[#1a260e]/70">
-                • Intro offers are for first-time clients only and cannot be combined with other offers
+                • Try It All is for first-time clients only, can only be bought once and cannot be combined with other offers
               </p>
               <p className="font-sans text-sm text-[#1a260e]/70">
                 • All packages are non-refundable and non-transferable

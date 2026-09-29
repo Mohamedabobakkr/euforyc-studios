@@ -39,7 +39,7 @@ export const metadata: Metadata = {
     default: 'EUFORYC STUDIOS • Pilates • Wellness • Strength',
     template: '%s | EUFORYC STUDIOS'
   },
-  description: 'The best women-only pilates studio in North West London. Reformer pilates, hot infrared pilates, red light therapy, barre, dance & private 1:1 sessions in Edgware. Small intimate classes, max 8. Intro offers from £45. Near Edgware Station.',
+  description: 'The best women-only pilates studio in North West London. Reformer pilates, hot infrared pilates, red light therapy, barre, dance & private 1:1 sessions in Edgware. Small intimate classes, max 8. Try It All intro offer £60. Near Edgware Station.',
   keywords: [
     // North West London — primary target
     'pilates north west london', 'pilates nw london', 'pilates studio north west london', 'reformer pilates north west london', 'best pilates north west london', 'hot pilates north west london', 'women only pilates north west london', 'pilates classes north west london', 'barre classes north west london', 'pilates studio nw london',
@@ -64,7 +64,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: 'EUFORYC STUDIOS | Best Women\'s Pilates Studio in North West London',
-    description: 'The best women-only pilates studio in North West London. Reformer pilates, hot infrared pilates, red light therapy, barre, dance & private 1:1 sessions in Edgware. Small intimate classes, max 8. Intro offers from £45.',
+    description: 'The best women-only pilates studio in North West London. Reformer pilates, hot infrared pilates, red light therapy, barre, dance & private 1:1 sessions in Edgware. Small intimate classes, max 8. Try It All intro offer £60.',
     url: siteUrl,
     siteName: 'Euforyc Studios',
     locale: 'en_GB',
@@ -81,7 +81,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'EUFORYC STUDIOS | Best Women\'s Pilates Studio in North West London',
-    description: 'The best women-only pilates studio in North West London. Reformer pilates, hot infrared pilates, barre, dance & private sessions in Edgware. Intro offers from £45.',
+    description: 'The best women-only pilates studio in North West London. Reformer pilates, hot infrared pilates, barre, dance & private sessions in Edgware. Try It All intro offer £60.',
     site: '@euforycstudios',
     images: [`${siteUrl}/logo.png`],
   },
@@ -226,7 +226,7 @@ const structuredData = {
         itemOffered: {
           '@type': 'Service',
           name: 'Dance Classes',
-          description: 'Dabke, Belly Dance, and Afro dance classes for self-expression through rhythm'
+          description: 'Belly Dance classes for self-expression through rhythm'
         }
       },
       {

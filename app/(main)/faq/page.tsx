@@ -11,11 +11,11 @@ const faqs = [
   },
   {
     question: "Do you offer pilates classes for beginners in London?",
-    answer: "Yes! We welcome beginners to our pilates studio in Edgware, London. Our expert instructors provide modifications for all exercises and offer guidance throughout each class. We recommend starting with our intro package of 3 classes for £60 to get familiar with our studio and teaching style."
+    answer: "Yes! We welcome beginners to our pilates studio in Edgware, London. Our expert instructors provide modifications for all exercises and offer guidance throughout each class. We recommend starting with our Try It All intro offer (3 classes for £60, usable across all our group classes) to get familiar with our studio and teaching style."
   },
   {
-    question: "What's the difference between the intro offer, packages, and memberships? Which one is best for me?",
-    answer: "The intro offer (3 classes for £60) is perfect for first-timers to experience our studio and teaching style. Packages are flexible pay-as-you-go options valid for 30 days from your first class booking (not purchase date), ideal for occasional practice or trying different class types. The Euforyc Membership has a 6-month minimum term (then rolling monthly) and offers the best value, with credits that work across our whole group timetable. Which is best for you? It depends on your goals and schedule - if you're new, start with the intro offer. If you plan to attend regularly (2+ times per week), a membership offers the best value. For occasional practice or flexibility, packages are your best choice."
+    question: "What's the difference between Try It All, the Euforyc Package, and memberships? Which one is best for me?",
+    answer: "Try It All (3 classes for £60, first-time clients only) is perfect for first-timers to experience our studio and teaching style across all our group classes. The Euforyc Package (4, 8 or 12 classes from £105, or 30 Days Unlimited for £320) is a flexible pay-as-you-go option with no contract, usable across all group classes and valid for 30 days from your first class (not purchase date), ideal for occasional practice or trying different class types. The Euforyc Membership has a 6-month minimum term (then rolling monthly) and offers the best value, with credits that work across our whole group timetable. Which is best for you? It depends on your goals and schedule - if you're new, start with Try It All. If you plan to attend regularly (2+ times per week), a membership offers the best value. For occasional practice or flexibility, packages are your best choice."
   },
   {
     question: "What should I wear to pilates classes?",
@@ -35,7 +35,7 @@ const faqs = [
   },
   {
     question: "How do I book pilates classes at your Edgware studio?",
-    answer: "You can book classes online through our booking system or by calling us directly. We recommend booking in advance as our small class sizes (maximum 8 people) fill up quickly. First-time clients should start with our intro package for the best value."
+    answer: "You can book classes online through our booking system or by calling us directly. We recommend booking in advance as our small class sizes (maximum 8 people) fill up quickly. First-time clients should start with our Try It All intro offer for the best value."
   },
   {
     question: "Do you have parking available at the studio?",
@@ -51,7 +51,7 @@ const faqs = [
   },
   {
     question: "What is the difference between your packages and memberships?",
-    answer: "Packages are pay-as-you-go options valid for 30 days starting from your first class, perfect for trying our classes or occasional practice. The Euforyc Membership is billed monthly with a 6-month minimum term, then continues monthly until cancelled with two full billing cycles' notice. Choose Euforyc 4, 8 or 12 (from £90/month), with credits you can use across the whole group timetable, or Euforyc Unlimited (£280/month) for unlimited classes plus priority booking, a monthly massage, a guest pass and more. Memberships can be frozen for up to 4 weeks per 6 months."
+    answer: "The Euforyc Package is pay-as-you-go with no contract: 4, 8 or 12 classes (from £105) or 30 Days Unlimited (£320), usable across all group classes and valid for 30 days starting from your first class, perfect for trying our classes or occasional practice. The Euforyc Membership is billed monthly with a 6-month minimum term, then continues monthly until cancelled with two full billing cycles' notice. Choose Euforyc 4, 8 or 12 (from £90/month), with credits you can use across the whole group timetable, or Euforyc Unlimited (£280/month) for unlimited classes plus priority booking, a monthly massage, a guest pass and more. Memberships can be frozen for up to 4 weeks per 6 months."
   },
   {
     question: "Do you offer private pilates sessions?",

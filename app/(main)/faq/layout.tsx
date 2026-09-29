@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'FAQ | Frequently Asked Questions | Euforyc Studios London',
-  description: 'Find answers to common questions about Euforyc Studios in Edgware. Class types, booking, cancellation policy, what to wear, parking, membership info, intro offers & more.',
+  description: 'Find answers to common questions about Euforyc Studios in Edgware. Class types, booking, cancellation policy, what to wear, parking, membership info, the Try It All intro offer & more.',
   keywords: ['euforyc faq', 'pilates questions', 'reformer pilates faq', 'pilates studio questions edgware', 'pilates booking help', 'pilates cancellation policy', 'what to wear pilates', 'pilates for beginners faq'],
   alternates: {
     canonical: 'https://euforyc.co.uk/faq',
@@ -21,12 +21,12 @@ const faqSchema = {
     {
       '@type': 'Question',
       name: 'Do you offer pilates classes for beginners in London?',
-      acceptedAnswer: { '@type': 'Answer', text: 'Yes! We welcome beginners to our pilates studio in Edgware, London. Our expert instructors provide modifications for all exercises and offer guidance throughout each class. We recommend starting with our intro package of 3 classes for £60 to get familiar with our studio and teaching style.' },
+      acceptedAnswer: { '@type': 'Answer', text: 'Yes! We welcome beginners to our pilates studio in Edgware, London. Our expert instructors provide modifications for all exercises and offer guidance throughout each class. We recommend starting with our Try It All intro offer (3 classes for £60, usable across all our group classes) to get familiar with our studio and teaching style.' },
     },
     {
       '@type': 'Question',
-      name: "What's the difference between the intro offer, packages, and memberships? Which one is best for me?",
-      acceptedAnswer: { '@type': 'Answer', text: 'The intro offer (3 classes for £60) is perfect for first-timers to experience our studio and teaching style. Packages are flexible pay-as-you-go options valid for 30 days from your first class booking, ideal for occasional practice or trying different class types. The Euforyc Membership has a 6-month minimum term (then rolling monthly) and offers the best value, with credits that work across our whole group timetable.' },
+      name: "What's the difference between Try It All, the Euforyc Package, and memberships? Which one is best for me?",
+      acceptedAnswer: { '@type': 'Answer', text: 'Try It All (3 classes for £60, first-time clients only) is perfect for first-timers to experience our studio and teaching style across all our group classes. The Euforyc Package (4, 8 or 12 classes from £105, or 30 Days Unlimited for £320) is a flexible pay-as-you-go option with no contract, usable across all group classes and valid for 30 days from your first class booking, ideal for occasional practice or trying different class types. The Euforyc Membership has a 6-month minimum term (then rolling monthly) and offers the best value, with credits that work across our whole group timetable.' },
     },
     {
       '@type': 'Question',
@@ -51,7 +51,7 @@ const faqSchema = {
     {
       '@type': 'Question',
       name: 'How do I book pilates classes at your Edgware studio?',
-      acceptedAnswer: { '@type': 'Answer', text: 'You can book classes online through our booking system or by calling us directly. We recommend booking in advance as our small class sizes (maximum 8 people) fill up quickly. First-time clients should start with our intro package for the best value.' },
+      acceptedAnswer: { '@type': 'Answer', text: 'You can book classes online through our booking system or by calling us directly. We recommend booking in advance as our small class sizes (maximum 8 people) fill up quickly. First-time clients should start with our Try It All intro offer for the best value.' },
     },
     {
       '@type': 'Question',

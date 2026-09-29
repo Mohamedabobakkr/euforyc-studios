@@ -89,7 +89,7 @@ export default function Book() {
                   <div>
                     <h3 className="font-serif text-xl md:text-3xl font-light mb-1 md:mb-2">Class Packages</h3>
                     <p className="text-[#1a260e]/60 text-xs md:text-sm font-light">
-                      Save up to £160 with bundles
+                      Save up to £66 with bundles
                     </p>
                   </div>
 
@@ -106,9 +106,9 @@ export default function Book() {
             {/* Quick Info - Mobile Optimized */}
             <div className="mt-6 md:mt-10 text-center">
               <div className="flex flex-col md:flex-row items-center justify-center gap-2 md:gap-0">
-                <span className="text-xs md:text-sm text-[#1a260e]/50 font-light">Drop-in from £15</span>
+                <span className="text-xs md:text-sm text-[#1a260e]/50 font-light">Drop-in from £20</span>
                 <span className="hidden md:inline text-[#1a260e]/30 mx-2">•</span>
-                <span className="text-xs md:text-sm text-[#1a260e]/50 font-light">Packages from £90</span>
+                <span className="text-xs md:text-sm text-[#1a260e]/50 font-light">Packages from £105</span>
                 <span className="hidden md:inline text-[#1a260e]/30 mx-2">•</span>
                 <span className="text-xs md:text-sm text-[#1a260e]/50 font-light">Private sessions available</span>
               </div>

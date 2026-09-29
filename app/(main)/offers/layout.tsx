@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Special Offers & Intro Deals',
-  description: 'Exclusive intro offers at Euforyc Studios Edgware. Try 3 reformer pilates classes for £60, 3 hot pilates classes for £50, or 3 barre classes for £60. First-time clients only. Book today.',
+  description: 'New to Euforyc? Try It All: 3 classes for £60. Ready to commit? 5% off your first month of any Euforyc Membership with code EUFORYC5 until 30 November 2026.',
   keywords: ['pilates intro offer london', 'cheap pilates classes london', 'pilates trial offer edgware', 'reformer pilates deal london', 'first time pilates offer uk'],
   alternates: { canonical: 'https://euforyc.co.uk/offers' },
 };
