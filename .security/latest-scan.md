@@ -1,11 +1,11 @@
 # Security Scan Report
 
-**Date:** 2026-09-30 06:00 UTC
+**Date:** 2026-09-30 19:30 UTC
 **Status:** FIXES_APPLIED
 
 ## npm audit
-- Critical: 0
-- High: 0 (was 1, fixed)
+- Critical: 0 (was 1, fixed)
+- High: 0
 - Medium: 0
 - Low: 0
 
@@ -22,7 +22,7 @@
 10. Safe Health Checks: PASS — no health check endpoints that expose tokens or internal config
 
 ## Fixes Applied
-- `16f6526` fix(security): upgrade brace-expansion 5.0.9 → 5.0.12 (3 DoS CVEs via eslint → minimatch → brace-expansion)
+- `fb4eabb` fix(security): upgrade Next.js 16.3.4 → 16.3.8 (critical RCE CVE GHSA-vcvr-r3jv-pc5j — Remote Code Execution in next/og ImageResponse)
 
 ## Manual Action Required
 - None
