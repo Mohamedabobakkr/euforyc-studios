@@ -18,7 +18,7 @@
 6. Image Hostnames: PASS — remotePatterns restricted to specific trusted domains only (squarecdn.com, euforyc.co.uk, momence.com, S3 bucket, localhost)
 7. No Hardcoded Secrets: PASS — grep for sk-, pk_live, hardcoded passwords found nothing; all secrets via env vars
 8. No localStorage Credentials: PASS — localStorage only stores analytics UID (euforyc_uid), no tokens or passwords
-9. No Error Leaks: PASS — all API routes return generic error messages; Momence error.details guarded behind NODE_ENV === 'development'
+9. No Error Leaks: PASS — all API routes return generic error messages; no stack traces or error details exposed
 10. Safe Health Checks: PASS — no health check endpoints that expose tokens or internal config
 
 ## Fixes Applied
