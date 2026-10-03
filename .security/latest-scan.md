@@ -1,7 +1,7 @@
 # Security Scan Report
 
-**Date:** 2026-10-03 11:26 UTC
-**Status:** CLEAN
+**Date:** 2026-10-03 13:00 UTC
+**Status:** VULNERABILITIES_FOUND
 
 ## npm audit
 - Critical: 0
@@ -24,8 +24,9 @@ All 7 high-severity findings are in dev/build-time dependencies (braces, microma
 10. Safe Health Checks: PASS — no health/status endpoints exist that could leak configuration
 
 ## Fixes Applied
-- None needed — all code security checks pass
+- `eccde6e` — update eslint-import-resolver-typescript to fix high-severity fast-glob vuln (applied in prior scan)
 
 ## Manual Action Required
-- **tailwindcss 3→4 migration**: Would resolve braces/micromatch/chokidar/fast-glob vulnerabilities (dev-only). This is a major version change requiring config file migration (tailwind.config.js → CSS-based config) and testing of all styled components.
-- **eslint-config-next**: The @next/eslint-plugin-next dependency pulls in fast-glob@3.3.1 via micromatch. No non-breaking fix available in the current Next.js 16.x eslint toolchain. Monitor for a patch release.
+- **tailwindcss 3→4 migration**: Would resolve 5 of 7 remaining braces/micromatch/chokidar/fast-glob vulnerabilities (dev-only). This is a major version change requiring config file migration (tailwind.config.js → CSS-based config) and testing of all styled components.
+- **eslint-config-next**: Remaining 2 vulnerabilities via @next/eslint-plugin-next → fast-glob. No non-breaking fix available in the current Next.js 16.x eslint toolchain. Monitor for a patch release.
+- **Build environment**: `npm run build` fails in scan environments due to missing `MOMENCE_API_TOKEN`. Consider making Momence client initialization lazy to avoid build-time failures.
