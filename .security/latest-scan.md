@@ -1,28 +1,35 @@
 # Security Scan Report
 
-**Date:** 2026-10-02 11:24 UTC
-**Status:** CLEAN
+**Date:** 2026-10-03 03:30 UTC
+**Status:** FIXES_APPLIED
 
 ## npm audit
 - Critical: 0
-- High: 0
+- High: 7 (down from 8; 1 fixed)
 - Medium: 0
 - Low: 0
 
+### Remaining High Vulnerabilities (all build-time, not runtime-exploitable)
+All 7 trace to `braces@3.0.3` (ReDoS via deeply nested glob patterns), a transitive dependency of `tailwindcss@3.4.19` (via chokidar/micromatch) and `eslint-config-next@16.2.12` (via @next/eslint-plugin-next/fast-glob). Fix requires tailwindcss v4 (breaking major upgrade). These are build-time-only dependencies — glob patterns are hardcoded in config, not user-supplied, so not exploitable in production.
+
+### Fixed
+- `eslint-import-resolver-typescript` updated to resolve its vulnerable `fast-glob` dependency (commit de53a25)
+
 ## Code Security Checks
-1. SSRF Protection: PASS — `validateSquarePath()` in `lib/square.ts` blocks `..`, `//`, `\\`, and enforces safe character regex
-2. API Auth: PASS — `orders/route.ts` and `update-order/route.ts` both call `authenticateBarista()` via HttpOnly session cookie
-3. Webhook Signatures: PASS — `webhook/route.ts` verifies HMAC-SHA256 signature and fails closed (returns 500) when `SQUARE_WEBHOOK_SIGNATURE_KEY` is missing
-4. Input Validation: PASS — `update-order/route.ts` validates orderId/fulfillmentUid format with `/^[a-zA-Z0-9_-]+$/` and validates state transitions
-5. Security Headers: PASS — HSTS (2-year max-age + preload), CSP, X-Frame-Options (SAMEORIGIN), X-Content-Type-Options (nosniff), Referrer-Policy, Permissions-Policy all configured in `next.config.js`
-6. Image Hostnames: PASS — No `hostname: '**'` wildcard; only specific trusted domains listed in `remotePatterns`
-7. No Hardcoded Secrets: PASS — No `sk-`, `pk_live`, `pk_test`, or hardcoded passwords found in `app/`, `lib/`, or `components/`
-8. No localStorage Credentials: PASS — `localStorage` only used for analytics UID (`euforyc_uid`), no passwords/tokens/secrets stored
-9. No Error Leaks: PASS — All API routes return generic error messages; `details` field in Momence routes is gated behind `NODE_ENV === 'development'`
-10. Safe Health Checks: PASS — No health check endpoints exist that could expose tokens or internal config
+1. SSRF Protection: PASS — validateSquarePath() blocks `..`, `//`, `\\` and enforces safe character regex
+2. API Auth: PASS — orders and update-order routes use authenticateBarista() with HttpOnly session cookie
+3. Webhook Signatures: PASS — HMAC-SHA256 verified, fails closed (500) when key missing
+4. Input Validation: PASS — orderId/fulfillmentUid validated with regex, items capped, lengths sanitized
+5. Security Headers: PASS — HSTS, CSP, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy all set
+6. Image Hostnames: PASS — only specific trusted domains, no wildcard hostname
+7. No Hardcoded Secrets: PASS — no sk-, pk_live, or hardcoded passwords in app/lib/components
+8. No localStorage Credentials: PASS — only stores anonymous euforyc_uid (UUID), no passwords or tokens
+9. No Error Leaks: PASS — all API routes return generic messages; Momence routes expose details only in development
+10. Safe Health Checks: PASS — no health/status/ping endpoints that could expose tokens or config
 
 ## Fixes Applied
-- None needed
+- de53a25: fix(security): update eslint-import-resolver-typescript to fix high-severity fast-glob vuln
 
 ## Manual Action Required
-- None
+- Upgrade tailwindcss from v3 to v4 to resolve remaining 7 braces/micromatch/chokidar vulnerabilities (breaking change — requires config migration). These are build-time dependencies only and not exploitable in production.
+- Pre-existing build failure: MOMENCE_API_TOKEN env var is not configured, causing `npm run build` to fail on Momence API routes. This is a deployment configuration issue, not a security vulnerability.
