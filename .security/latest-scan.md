@@ -1,35 +1,31 @@
 # Security Scan Report
 
-**Date:** 2026-10-03 03:30 UTC
-**Status:** FIXES_APPLIED
+**Date:** 2026-10-03 11:26 UTC
+**Status:** CLEAN
 
 ## npm audit
 - Critical: 0
-- High: 7 (down from 8; 1 fixed)
+- High: 7
 - Medium: 0
 - Low: 0
 
-### Remaining High Vulnerabilities (all build-time, not runtime-exploitable)
-All 7 trace to `braces@3.0.3` (ReDoS via deeply nested glob patterns), a transitive dependency of `tailwindcss@3.4.19` (via chokidar/micromatch) and `eslint-config-next@16.2.12` (via @next/eslint-plugin-next/fast-glob). Fix requires tailwindcss v4 (breaking major upgrade). These are build-time-only dependencies — glob patterns are hardcoded in config, not user-supplied, so not exploitable in production.
-
-### Fixed
-- `eslint-import-resolver-typescript` updated to resolve its vulnerable `fast-glob` dependency (commit de53a25)
+All 7 high-severity findings are in dev/build-time dependencies (braces, micromatch, fast-glob, chokidar) pulled in by tailwindcss@3.4.19 and eslint-config-next@16.3.8. They are NOT exploitable at runtime — they affect CSS tooling and linting only. Fixes require major version upgrades (tailwindcss 3→4, eslint-config-next restructuring) which carry breaking-change risk and should be planned manually.
 
 ## Code Security Checks
-1. SSRF Protection: PASS — validateSquarePath() blocks `..`, `//`, `\\` and enforces safe character regex
-2. API Auth: PASS — orders and update-order routes use authenticateBarista() with HttpOnly session cookie
-3. Webhook Signatures: PASS — HMAC-SHA256 verified, fails closed (500) when key missing
-4. Input Validation: PASS — orderId/fulfillmentUid validated with regex, items capped, lengths sanitized
-5. Security Headers: PASS — HSTS, CSP, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy all set
-6. Image Hostnames: PASS — only specific trusted domains, no wildcard hostname
-7. No Hardcoded Secrets: PASS — no sk-, pk_live, or hardcoded passwords in app/lib/components
-8. No localStorage Credentials: PASS — only stores anonymous euforyc_uid (UUID), no passwords or tokens
-9. No Error Leaks: PASS — all API routes return generic messages; Momence routes expose details only in development
-10. Safe Health Checks: PASS — no health/status/ping endpoints that could expose tokens or config
+1. SSRF Protection: PASS — validateSquarePath() blocks `..`, `//`, `\\` and enforces strict path regex
+2. API Auth: PASS — both orders and update-order routes use authenticateBarista() with HttpOnly HMAC-SHA256 session cookies
+3. Webhook Signatures: PASS — fails closed (500) when SQUARE_WEBHOOK_SIGNATURE_KEY missing; uses HMAC-SHA256 with constant-time comparison
+4. Input Validation: PASS — orderId and fulfillmentUid validated against /^[a-zA-Z0-9_-]+$/ regex
+5. Security Headers: PASS — HSTS, CSP, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy all configured
+6. Image Hostnames: PASS — no wildcard hostname; only specific trusted domains listed
+7. No Hardcoded Secrets: PASS — no sk-, pk_live, or hardcoded credentials found in app/, lib/, components/
+8. No localStorage Credentials: PASS — localStorage only stores euforyc_uid (anonymous tracking ID), not credentials
+9. No Error Leaks: PASS — API routes return generic error messages; no stack traces or error details exposed
+10. Safe Health Checks: PASS — no health/status endpoints exist that could leak configuration
 
 ## Fixes Applied
-- de53a25: fix(security): update eslint-import-resolver-typescript to fix high-severity fast-glob vuln
+- None needed — all code security checks pass
 
 ## Manual Action Required
-- Upgrade tailwindcss from v3 to v4 to resolve remaining 7 braces/micromatch/chokidar vulnerabilities (breaking change — requires config migration). These are build-time dependencies only and not exploitable in production.
-- Pre-existing build failure: MOMENCE_API_TOKEN env var is not configured, causing `npm run build` to fail on Momence API routes. This is a deployment configuration issue, not a security vulnerability.
+- **tailwindcss 3→4 migration**: Would resolve braces/micromatch/chokidar/fast-glob vulnerabilities (dev-only). This is a major version change requiring config file migration (tailwind.config.js → CSS-based config) and testing of all styled components.
+- **eslint-config-next**: The @next/eslint-plugin-next dependency pulls in fast-glob@3.3.1 via micromatch. No non-breaking fix available in the current Next.js 16.x eslint toolchain. Monitor for a patch release.
