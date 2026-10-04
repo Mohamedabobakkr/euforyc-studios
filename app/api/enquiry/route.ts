@@ -13,6 +13,32 @@ import { buildEmail, enquirySchema, type Enquiry } from '@/lib/enquiry';
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
+// ── In-memory rate limiter ──
+const submissions = new Map<string, { count: number; resetAt: number }>();
+const MAX_SUBMISSIONS = 5;
+const WINDOW_MS = 15 * 60 * 1000; // 15 minutes
+
+function isRateLimited(ip: string): boolean {
+  const now = Date.now();
+  const record = submissions.get(ip);
+
+  if (!record || now > record.resetAt) {
+    submissions.set(ip, { count: 1, resetAt: now + WINDOW_MS });
+    return false;
+  }
+
+  record.count++;
+  return record.count > MAX_SUBMISSIONS;
+}
+
+function getClientIp(request: NextRequest): string {
+  return (
+    request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
+    request.headers.get('x-real-ip') ||
+    'unknown'
+  );
+}
+
 const EMAIL_FROM = 'Euforyc Website <enquiries@euforyc.co.uk>';
 const EMAIL_TO = 'euforyc@gmail.com';
 const EMAIL_TIMEOUT_MS = 10_000;
@@ -87,6 +113,11 @@ async function sendEmail(enquiry: Enquiry, submittedAt: Date): Promise<SendFailu
 }
 
 export async function POST(request: NextRequest) {
+  const ip = getClientIp(request);
+  if (isRateLimited(ip)) {
+    return NextResponse.json({ success: false, error: 'Too many submissions. Please try again later.' }, { status: 429 });
+  }
+
   let body: unknown;
   try {
     const raw = await request.text();
