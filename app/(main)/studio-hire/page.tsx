@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect, useLayoutEffect } from 'react';
 import Link from 'next/link';
 import {
   Users,
@@ -129,6 +129,32 @@ function FloatingParticles() {
   );
 }
 
+// ─── Locked Height ────────────────────────────────────────────
+// Some mobile browsers shrink the viewport while the keyboard is open, which would shrink a
+// full-screen section and jump everything below it. On touch devices, fix the height in px
+// and only re-measure when the width changes (rotation).
+function useLockedHeight() {
+  const ref = useRef<HTMLElement>(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || !window.matchMedia('(pointer: coarse)').matches) return;
+    let width = window.innerWidth;
+    const lock = () => {
+      el.style.minHeight = '';
+      el.style.minHeight = `${el.offsetHeight}px`;
+    };
+    const onResize = () => {
+      if (window.innerWidth === width) return;
+      width = window.innerWidth;
+      lock();
+    };
+    lock();
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, []);
+  return ref;
+}
+
 // ─── Extras/Add-ons ───────────────────────────────────────────
 const extras = [
   { id: 'drinks', icon: GlassWater, label: 'Drinks & Refreshments', description: 'Matcha, smoothies, mocktails from Euforyc Sips' },
@@ -164,23 +190,67 @@ const emptyForm: FormData = {
   message: '',
 };
 
+// ─── Field Errors ─────────────────────────────────────────────
+// Shown under a field when the server rejects its value
+const FIELD_MESSAGES: Record<string, string> = {
+  name: 'Please enter your name (up to 100 characters).',
+  email: 'Please enter a valid email address, for example name@example.com.',
+  phone: 'Please enter your phone number (up to 40 characters).',
+  eventType: 'Please choose the type of event.',
+  guests: 'Please choose between 2 and 8 guests.',
+  date: 'Please choose your preferred date.',
+  time: 'Please choose your preferred time.',
+  message: 'Please keep your notes under 5,000 characters.',
+};
+
+function FieldError({ message }: { message?: string }) {
+  if (!message) return null;
+  return <p role="alert" className="mt-2 text-xs font-light text-red-800">{message}</p>;
+}
+
 export default function StudioHire() {
   const [formData, setFormData] = useState<FormData>(emptyForm);
   const [submitted, setSubmitted] = useState(false);
   const [sending, setSending] = useState(false);
   const [sendError, setSendError] = useState(false);
+  const [invalidFields, setInvalidFields] = useState<string[]>([]);
   const [roomError, setRoomError] = useState(false);
   const sendingRef = useRef(false); // guards against double submits
   const formRef = useRef<HTMLDivElement>(null);
   const roomsRef = useRef<HTMLDivElement>(null);
   const successRef = useRef<HTMLDivElement>(null);
+  const heroRef = useLockedHeight();
+  const heldRef = useRef<{ el: HTMLElement; top: number } | null>(null);
 
   // The success message is far shorter than the form it replaces, so bring it into view
   useEffect(() => {
     if (submitted) successRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }, [submitted]);
 
-  const toggleRoom = (room: string) => {
+  // Bring the first rejected field into view
+  useEffect(() => {
+    const first = invalidFields.find(field => field in FIELD_MESSAGES);
+    if (first) document.getElementById(first)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }, [invalidFields]);
+
+  const fieldError = (field: string) => (invalidFields.includes(field) ? FIELD_MESSAGES[field] : undefined);
+
+  // Choosing a room or extra mounts content further up the page (price estimates, "Selected"
+  // tags). Safari has no scroll anchoring, so that would push the rest of the page down:
+  // keep the control that was tapped exactly where it is on screen.
+  const holdInPlace = (el: HTMLElement) => {
+    heldRef.current = { el, top: el.getBoundingClientRect().top };
+  };
+  useLayoutEffect(() => {
+    const held = heldRef.current;
+    heldRef.current = null;
+    if (!held) return;
+    const moved = held.el.getBoundingClientRect().top - held.top;
+    if (moved !== 0) window.scrollBy({ top: moved, behavior: 'instant' });
+  }, [formData.rooms, formData.extras]);
+
+  const toggleRoom = (room: string, control: HTMLElement) => {
+    holdInPlace(control);
     setRoomError(false);
     setFormData(prev => ({
       ...prev,
@@ -197,7 +267,8 @@ export default function StudioHire() {
     }));
   };
 
-  const toggleExtra = (id: string) => {
+  const toggleExtra = (id: string, control: HTMLElement) => {
+    holdInPlace(control);
     setFormData(prev => ({
       ...prev,
       extras: prev.extras.includes(id)
@@ -219,22 +290,25 @@ export default function StudioHire() {
     sendingRef.current = true;
     setSending(true);
     setSendError(false);
+    setInvalidFields([]);
 
     const selectedExtras = formData.extras
       .map(id => extras.find(ex => ex.id === id)?.label)
       .filter(Boolean);
     const referral = String(new window.FormData(e.currentTarget).get('referral') ?? '');
 
-    const sent = await submitEnquiry({
+    const result = await submitEnquiry({
       formType: 'studio-hire',
       ...formData,
       extras: selectedExtras,
       referral,
     });
 
-    if (sent) {
+    if (result.status === 'sent') {
       setFormData(emptyForm);
       setSubmitted(true);
+    } else if (result.status === 'invalid') {
+      setInvalidFields(result.fields);
     } else {
       setSendError(true);
     }
@@ -257,7 +331,7 @@ export default function StudioHire() {
       {/* ════════════════════════════════════════════════════════
           HERO — Cinematic, dark, immersive
          ════════════════════════════════════════════════════════ */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#1a260e] xl:pt-40">
+      <section ref={heroRef} className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#1a260e] xl:pt-40">
         <FloatingParticles />
 
         {/* Background gradient orbs */}
@@ -401,9 +475,9 @@ export default function StudioHire() {
                 className={`group relative cursor-pointer transition-all duration-500 ${
                   formData.rooms.includes('reformer') ? 'scale-[1.02]' : ''
                 }`}
-                onClick={() => toggleRoom('reformer')}
+                onClick={(e) => toggleRoom('reformer', e.currentTarget)}
                 onKeyDown={(e) => {
-                  if (e.key === 'Enter' || e.key === ' ') toggleRoom('reformer');
+                  if (e.key === 'Enter' || e.key === ' ') toggleRoom('reformer', e.currentTarget);
                 }}
                 tabIndex={0}
                 role="checkbox"
@@ -501,9 +575,9 @@ export default function StudioHire() {
                 className={`group relative cursor-pointer transition-all duration-500 ${
                   formData.rooms.includes('hot-pilates') ? 'scale-[1.02]' : ''
                 }`}
-                onClick={() => toggleRoom('hot-pilates')}
+                onClick={(e) => toggleRoom('hot-pilates', e.currentTarget)}
                 onKeyDown={(e) => {
-                  if (e.key === 'Enter' || e.key === ' ') toggleRoom('hot-pilates');
+                  if (e.key === 'Enter' || e.key === ' ') toggleRoom('hot-pilates', e.currentTarget);
                 }}
                 tabIndex={0}
                 role="checkbox"
@@ -661,7 +735,7 @@ export default function StudioHire() {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <button
                       type="button"
-                      onClick={() => toggleRoom('reformer')}
+                      onClick={(e) => toggleRoom('reformer', e.currentTarget)}
                       className={`relative flex items-center gap-3 px-5 py-4 border rounded-sm text-left transition-all duration-300 ${
                         formData.rooms.includes('reformer')
                           ? 'border-[#1a260e] bg-[#1a260e] text-[#fffcf2]'
@@ -681,7 +755,7 @@ export default function StudioHire() {
                     </button>
                     <button
                       type="button"
-                      onClick={() => toggleRoom('hot-pilates')}
+                      onClick={(e) => toggleRoom('hot-pilates', e.currentTarget)}
                       className={`relative flex items-center gap-3 px-5 py-4 border rounded-sm text-left transition-all duration-300 ${
                         formData.rooms.includes('hot-pilates')
                           ? 'border-[#1a260e] bg-[#1a260e] text-[#fffcf2]'
@@ -918,7 +992,7 @@ export default function StudioHire() {
               <Reveal key={extra.id} delay={i * 0.06}>
                 <button
                   type="button"
-                  onClick={() => toggleExtra(extra.id)}
+                  onClick={(e) => toggleExtra(extra.id, e.currentTarget)}
                   className={`w-full text-left p-6 rounded-sm transition-all duration-500 group ${
                     formData.extras.includes(extra.id)
                       ? 'bg-[#fffcf2] text-[#1a260e]'
@@ -1019,8 +1093,9 @@ export default function StudioHire() {
                           value={formData.name}
                           onChange={handleChange}
                           placeholder="Your name"
-                          className="w-full px-4 py-3.5 bg-transparent border-b border-[#1a260e]/15 focus:border-[#1a260e] focus:outline-none transition-colors text-[#1a260e] placeholder:text-[#1a260e]/20 text-sm font-light"
+                          className="w-full px-4 py-3.5 bg-transparent border-b border-[#1a260e]/15 focus:border-[#1a260e] focus:outline-none transition-colors text-[#1a260e] placeholder:text-[#1a260e]/20 text-base md:text-sm font-light"
                         />
+                        <FieldError message={fieldError('name')} />
                       </div>
                       <div>
                         <label htmlFor="email" className="block font-sans text-xs tracking-wider uppercase text-[#1a260e]/40 mb-2">
@@ -1034,8 +1109,9 @@ export default function StudioHire() {
                           value={formData.email}
                           onChange={handleChange}
                           placeholder="your@email.com"
-                          className="w-full px-4 py-3.5 bg-transparent border-b border-[#1a260e]/15 focus:border-[#1a260e] focus:outline-none transition-colors text-[#1a260e] placeholder:text-[#1a260e]/20 text-sm font-light"
+                          className="w-full px-4 py-3.5 bg-transparent border-b border-[#1a260e]/15 focus:border-[#1a260e] focus:outline-none transition-colors text-[#1a260e] placeholder:text-[#1a260e]/20 text-base md:text-sm font-light"
                         />
+                        <FieldError message={fieldError('email')} />
                       </div>
                     </div>
                     <div className="mt-5">
@@ -1050,8 +1126,9 @@ export default function StudioHire() {
                         value={formData.phone}
                         onChange={handleChange}
                         placeholder="+44 ..."
-                        className="w-full px-4 py-3.5 bg-transparent border-b border-[#1a260e]/15 focus:border-[#1a260e] focus:outline-none transition-colors text-[#1a260e] placeholder:text-[#1a260e]/20 text-sm font-light"
+                        className="w-full px-4 py-3.5 bg-transparent border-b border-[#1a260e]/15 focus:border-[#1a260e] focus:outline-none transition-colors text-[#1a260e] placeholder:text-[#1a260e]/20 text-base md:text-sm font-light"
                       />
+                      <FieldError message={fieldError('phone')} />
                     </div>
                   </div>
 
@@ -1073,7 +1150,7 @@ export default function StudioHire() {
                           required
                           value={formData.eventType}
                           onChange={handleChange}
-                          className="w-full px-4 py-3.5 bg-transparent border-b border-[#1a260e]/15 focus:border-[#1a260e] focus:outline-none transition-colors text-[#1a260e] text-sm font-light appearance-none cursor-pointer"
+                          className="w-full px-4 py-3.5 bg-transparent border-b border-[#1a260e]/15 focus:border-[#1a260e] focus:outline-none transition-colors text-[#1a260e] text-base md:text-sm font-light appearance-none cursor-pointer"
                         >
                           <option value="" disabled>Select event type</option>
                           <option value="Birthday Party">Birthday Party</option>
@@ -1084,6 +1161,7 @@ export default function StudioHire() {
                           <option value="Team Building">Team Building</option>
                           <option value="Other">Other</option>
                         </select>
+                        <FieldError message={fieldError('eventType')} />
                       </div>
 
                       <div>
@@ -1096,13 +1174,14 @@ export default function StudioHire() {
                           required
                           value={formData.guests}
                           onChange={handleChange}
-                          className="w-full px-4 py-3.5 bg-transparent border-b border-[#1a260e]/15 focus:border-[#1a260e] focus:outline-none transition-colors text-[#1a260e] text-sm font-light appearance-none cursor-pointer"
+                          className="w-full px-4 py-3.5 bg-transparent border-b border-[#1a260e]/15 focus:border-[#1a260e] focus:outline-none transition-colors text-[#1a260e] text-base md:text-sm font-light appearance-none cursor-pointer"
                         >
                           <option value="" disabled>Select number</option>
                           {[2, 3, 4, 5, 6, 7, 8].map(n => (
                             <option key={n} value={n}>{n} {n === 2 ? '(minimum)' : n === 8 ? '(maximum)' : ''} guests</option>
                           ))}
                         </select>
+                        <FieldError message={fieldError('guests')} />
                       </div>
                     </div>
 
@@ -1114,7 +1193,7 @@ export default function StudioHire() {
                         <div className="flex flex-col gap-2">
                           <button
                             type="button"
-                            onClick={() => toggleRoom('reformer')}
+                            onClick={(e) => toggleRoom('reformer', e.currentTarget)}
                             className={`flex items-center gap-3 px-4 py-3 border rounded-sm text-left text-sm font-light transition-all duration-300 ${
                               formData.rooms.includes('reformer')
                                 ? 'border-[#1a260e] bg-[#1a260e]/[0.03] text-[#1a260e]'
@@ -1134,7 +1213,7 @@ export default function StudioHire() {
                           </button>
                           <button
                             type="button"
-                            onClick={() => toggleRoom('hot-pilates')}
+                            onClick={(e) => toggleRoom('hot-pilates', e.currentTarget)}
                             className={`flex items-center gap-3 px-4 py-3 border rounded-sm text-left text-sm font-light transition-all duration-300 ${
                               formData.rooms.includes('hot-pilates')
                                 ? 'border-[#1a260e] bg-[#1a260e]/[0.03] text-[#1a260e]'
@@ -1172,8 +1251,9 @@ export default function StudioHire() {
                           value={formData.date}
                           onChange={handleChange}
                           min={new Date().toISOString().split('T')[0]}
-                          className="w-full px-4 py-3.5 bg-transparent border-b border-[#1a260e]/15 focus:border-[#1a260e] focus:outline-none transition-colors text-[#1a260e] text-sm font-light"
+                          className="w-full px-4 py-3.5 bg-transparent border-b border-[#1a260e]/15 focus:border-[#1a260e] focus:outline-none transition-colors text-[#1a260e] text-base md:text-sm font-light"
                         />
+                        <FieldError message={fieldError('date')} />
                       </div>
                     </div>
 
@@ -1187,7 +1267,7 @@ export default function StudioHire() {
                         required
                         value={formData.time}
                         onChange={handleChange}
-                        className="w-full px-4 py-3.5 bg-transparent border-b border-[#1a260e]/15 focus:border-[#1a260e] focus:outline-none transition-colors text-[#1a260e] text-sm font-light appearance-none cursor-pointer"
+                        className="w-full px-4 py-3.5 bg-transparent border-b border-[#1a260e]/15 focus:border-[#1a260e] focus:outline-none transition-colors text-[#1a260e] text-base md:text-sm font-light appearance-none cursor-pointer"
                       >
                         <option value="" disabled>Select time</option>
                         <option value="Morning (9am - 12pm)">Morning (9am - 12pm)</option>
@@ -1196,6 +1276,7 @@ export default function StudioHire() {
                         <option value="Evening (6pm - 8pm)">Evening (6pm - 8pm)</option>
                         <option value="Flexible">Flexible / No preference</option>
                       </select>
+                      <FieldError message={fieldError('time')} />
                     </div>
                   </div>
 
@@ -1211,7 +1292,7 @@ export default function StudioHire() {
                         <button
                           key={extra.id}
                           type="button"
-                          onClick={() => toggleExtra(extra.id)}
+                          onClick={(e) => toggleExtra(extra.id, e.currentTarget)}
                           className={`p-4 rounded-sm border text-left transition-all duration-300 ${
                             formData.extras.includes(extra.id)
                               ? 'border-[#1a260e] bg-[#1a260e]/[0.03]'
@@ -1245,8 +1326,9 @@ export default function StudioHire() {
                       value={formData.message}
                       onChange={handleChange}
                       placeholder="Tell us about your event, any special requirements, dietary needs for drinks, or anything else we should know..."
-                      className="w-full px-4 py-3.5 bg-transparent border border-[#1a260e]/10 focus:border-[#1a260e] focus:outline-none transition-colors text-[#1a260e] placeholder:text-[#1a260e]/20 text-sm font-light resize-none rounded-sm"
+                      className="w-full px-4 py-3.5 bg-transparent border border-[#1a260e]/10 focus:border-[#1a260e] focus:outline-none transition-colors text-[#1a260e] placeholder:text-[#1a260e]/20 text-base md:text-sm font-light resize-none rounded-sm"
                     />
+                    <FieldError message={fieldError('message')} />
                   </div>
 
                   {/* Live Price Estimate */}
@@ -1278,6 +1360,12 @@ export default function StudioHire() {
                     {sending ? 'Sending…' : 'Send Enquiry'}
                     <Send className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                   </button>
+
+                  {invalidFields.length > 0 && (
+                    <p role="alert" className="text-center text-sm font-light text-red-800">
+                      Some of your details need checking. Please correct them and try again.
+                    </p>
+                  )}
 
                   {sendError && (
                     <p role="alert" className="text-center text-sm font-light text-red-800">

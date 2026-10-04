@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { Metadata } from 'next';
 import { MapPin, Phone, Mail, Clock, Instagram } from 'lucide-react';
 import Map from '@/components/Map';
@@ -15,10 +15,32 @@ const emptyForm = {
   message: ''
 };
 
+// Shown under a field when the server rejects its value
+const FIELD_MESSAGES: Record<string, string> = {
+  name: 'Please enter your name (up to 100 characters).',
+  email: 'Please enter a valid email address, for example name@example.com.',
+  phone: 'Please check your phone number (up to 40 characters).',
+  message: 'Please enter a message (up to 5,000 characters).',
+};
+
+function FieldError({ message }: { message?: string }) {
+  if (!message) return null;
+  return <p role="alert" className="mt-2 font-inter text-sm text-red-800">{message}</p>;
+}
+
 export default function Contact() {
   const [formData, setFormData] = useState(emptyForm);
-  const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
+  const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'invalid' | 'error'>('idle');
+  const [invalidFields, setInvalidFields] = useState<string[]>([]);
   const sendingRef = useRef(false); // guards against double submits
+
+  // Bring the first rejected field into view
+  useEffect(() => {
+    const first = invalidFields.find(field => field in FIELD_MESSAGES);
+    if (first) document.getElementById(first)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }, [invalidFields]);
+
+  const fieldError = (field: string) => (invalidFields.includes(field) ? FIELD_MESSAGES[field] : undefined);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -27,10 +49,11 @@ export default function Contact() {
     setStatus('sending');
 
     const referral = String(new FormData(e.currentTarget).get('referral') ?? '');
-    const sent = await submitEnquiry({ formType: 'contact', ...formData, referral });
+    const result = await submitEnquiry({ formType: 'contact', ...formData, referral });
 
-    if (sent) setFormData(emptyForm);
-    setStatus(sent ? 'success' : 'error');
+    if (result.status === 'sent') setFormData(emptyForm);
+    setInvalidFields(result.status === 'invalid' ? result.fields : []);
+    setStatus(result.status === 'sent' ? 'success' : result.status === 'invalid' ? 'invalid' : 'error');
     sendingRef.current = false;
   };
 
@@ -77,6 +100,7 @@ export default function Contact() {
                       onChange={handleChange}
                       className="w-full px-4 py-3 border border-[#1a260e]/20 bg-[#fffcf2] focus:border-[#1a260e] focus:outline-none transition-colors"
                     />
+                    <FieldError message={fieldError('name')} />
                   </div>
                   <div>
                     <label htmlFor="email" className="block font-inter text-sm font-medium text-[#1a260e] mb-2">
@@ -91,6 +115,7 @@ export default function Contact() {
                       onChange={handleChange}
                       className="w-full px-4 py-3 border border-[#1a260e]/20 bg-[#fffcf2] focus:border-[#1a260e] focus:outline-none transition-colors"
                     />
+                    <FieldError message={fieldError('email')} />
                   </div>
                 </div>
 
@@ -106,6 +131,7 @@ export default function Contact() {
                     onChange={handleChange}
                     className="w-full px-4 py-3 border border-[#1a260e]/20 bg-[#fffcf2] focus:border-[#1a260e] focus:outline-none transition-colors"
                   />
+                  <FieldError message={fieldError('phone')} />
                 </div>
 
                 <div>
@@ -122,6 +148,7 @@ export default function Contact() {
                     className="w-full px-4 py-3 border border-[#1a260e]/20 bg-[#fffcf2] focus:border-[#1a260e] focus:outline-none transition-colors resize-none"
                     placeholder="Tell us about your wellness goals or any questions you have..."
                   />
+                  <FieldError message={fieldError('message')} />
                 </div>
 
                 <button
@@ -135,6 +162,12 @@ export default function Contact() {
                 {status === 'success' && (
                   <p role="status" className="font-inter text-sm text-[#1a260e]">
                     Thank you, your message has been sent. We'll be in touch soon.
+                  </p>
+                )}
+
+                {status === 'invalid' && (
+                  <p role="alert" className="font-inter text-sm text-red-800">
+                    Some of your details need checking. Please correct them and try again.
                   </p>
                 )}
 

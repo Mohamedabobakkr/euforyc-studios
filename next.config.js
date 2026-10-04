@@ -6,6 +6,9 @@ const nextConfig = {
   // Disable X-Powered-By header
   poweredByHeader: false,
 
+  // Stop `next dev` generating AGENTS.md / CLAUDE.md in the repo root
+  agentRules: false,
+
   // Image optimization — restrict to known trusted domains only
   images: {
     remotePatterns: [
