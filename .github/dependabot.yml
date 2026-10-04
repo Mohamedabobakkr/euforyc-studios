@@ -6,7 +6,8 @@ updates:
     schedule:
       interval: "weekly"
       day: "monday"
-    open-pull-requests-limit: 10
+    # 0 disables routine version-update PRs; security update PRs still open
+    open-pull-requests-limit: 0
     groups:
       # Group minor/patch updates together to reduce PR noise
       dependencies:
