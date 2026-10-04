@@ -303,7 +303,7 @@ export default function MassagePage() {
   };
 
   return (
-    <div className="pt-24 pb-24 md:pb-0 bg-[#fffcf2]">
+    <div className="pt-24 xl:pt-40 pb-24 md:pb-0 bg-[#fffcf2]">
 
       {/* ════════════════════════════════════════════════════════
           PROMO BANNER — today-only discount code

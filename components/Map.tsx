@@ -1,12 +1,14 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { MapPin, Navigation } from 'lucide-react';
 
 export default function Map() {
   const [mapLoaded, setMapLoaded] = useState(false);
+  const [mapFailed, setMapFailed] = useState(false);
   const [showOverlay, setShowOverlay] = useState(false);
-  
+  const containerRef = useRef<HTMLDivElement>(null);
+
   // Direct link to Google Maps
   const googleMapsLink = "https://maps.app.goo.gl/zZfyhD3X2BuS6SnL6";
 
@@ -16,10 +18,50 @@ export default function Map() {
     }
   }, [mapLoaded]);
 
+  // Fallback: the iframe is lazy-loaded, so start counting once the map scrolls
+  // into view. If it still hasn't loaded ~8s later, swap the spinner for a link.
+  useEffect(() => {
+    if (mapLoaded) return;
+    const el = containerRef.current;
+    if (!el) return;
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    const obs = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting && !timer) {
+        timer = setTimeout(() => setMapFailed(true), 8000);
+      }
+    });
+    obs.observe(el);
+    return () => {
+      obs.disconnect();
+      if (timer) clearTimeout(timer);
+    };
+  }, [mapLoaded]);
+
   return (
-    <div className="relative w-full h-full bg-gradient-to-b from-[#fffcf2] to-[#faf8f3]">
+    <div ref={containerRef} className="relative w-full h-full bg-gradient-to-b from-[#fffcf2] to-[#faf8f3]">
+      {/* Fallback when the map doesn't load */}
+      {!mapLoaded && mapFailed && (
+        <div className="absolute inset-0 flex items-center justify-center z-30">
+          <div className="text-center space-y-6">
+            <MapPin className="h-16 w-16 text-[#1a260e]/20 mx-auto" />
+            <p className="font-sans text-sm text-[#1a260e]/80 leading-relaxed">
+              7 Holmstall Ave<br />
+              Edgware HA8 5HX
+            </p>
+            <a
+              href={googleMapsLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block font-sans text-xs tracking-[0.15em] uppercase text-[#1a260e] hover:text-[#1a260e]/70 transition-colors"
+            >
+              Open in Google Maps
+            </a>
+          </div>
+        </div>
+      )}
+
       {/* Loading state */}
-      {!mapLoaded && (
+      {!mapLoaded && !mapFailed && (
         <div className="absolute inset-0 flex items-center justify-center z-30">
           <div className="text-center space-y-6">
             <div className="relative">

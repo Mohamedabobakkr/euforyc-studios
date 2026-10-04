@@ -254,7 +254,7 @@ export default function StudioHire() {
       {/* ════════════════════════════════════════════════════════
           HERO — Cinematic, dark, immersive
          ════════════════════════════════════════════════════════ */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#1a260e]">
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#1a260e] xl:pt-40">
         <FloatingParticles />
 
         {/* Background gradient orbs */}
@@ -272,7 +272,7 @@ export default function StudioHire() {
           <div className="absolute top-2/3 left-0 w-full h-px bg-[#fffcf2]" />
         </div>
 
-        <div className="relative z-10 container-width px-6 text-center">
+        <div className="relative z-10 container-width px-6 text-center xl:pt-10 xl:pb-28">
           <Reveal>
             <p className="text-[#fffcf2]/30 text-xs tracking-[0.4em] uppercase mb-6">
               Introducing
@@ -380,7 +380,7 @@ export default function StudioHire() {
       {/* ════════════════════════════════════════════════════════
           PRICING — Two elegant cards
          ════════════════════════════════════════════════════════ */}
-      <section id="pricing" className="py-24 md:py-36 px-6 scroll-mt-32">
+      <section id="pricing" className="py-24 md:py-36 px-6 scroll-mt-32 xl:scroll-mt-40">
         <div className="container-width">
           <Reveal>
             <div className="text-center mb-16 md:mb-20">
@@ -963,7 +963,7 @@ export default function StudioHire() {
       {/* ════════════════════════════════════════════════════════
           ENQUIRY FORM — The main event
          ════════════════════════════════════════════════════════ */}
-      <section ref={formRef} className="py-24 md:py-36 px-6 scroll-mt-32">
+      <section ref={formRef} className="py-24 md:py-36 px-6 scroll-mt-32 xl:scroll-mt-40">
         <div className="container-width">
           <Reveal>
             <div className="text-center mb-14 md:mb-20">

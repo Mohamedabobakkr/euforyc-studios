@@ -396,7 +396,7 @@ export default function EmsSculptPage() {
   const pkg = PACKAGES[selected];
 
   return (
-    <div className="pt-20 md:pt-24 pb-24 md:pb-0 bg-[#fffcf2]">
+    <div className="pt-20 md:pt-24 xl:pt-40 pb-24 md:pb-0 bg-[#fffcf2]">
 
       {/* ════════════════════════════════════════════════════════
           HERO — mobile-first, tight, ad-optimised
