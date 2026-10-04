@@ -46,7 +46,9 @@ const nextConfig = {
 
   // Performance optimizations
   compiler: {
-    removeConsole: process.env.NODE_ENV === 'production',
+    // Strip console.* in production, but keep console.error — the transform also
+    // applies to server code, and API routes rely on it for Vercel logs
+    removeConsole: process.env.NODE_ENV === 'production' ? { exclude: ['error'] } : false,
   },
 
   // Security headers

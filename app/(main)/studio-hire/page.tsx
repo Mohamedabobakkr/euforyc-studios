@@ -21,6 +21,9 @@ import {
   Plus,
   Calculator,
 } from 'lucide-react';
+import HoneypotField from '@/components/HoneypotField';
+import { getPerPerson } from '@/lib/studio-hire-pricing';
+import { submitEnquiry } from '@/lib/submit-enquiry';
 
 // ─── Intersection Observer ────────────────────────────────────
 function useInView(threshold = 0.12) {
@@ -148,23 +151,37 @@ type FormData = {
   message: string;
 };
 
+const emptyForm: FormData = {
+  name: '',
+  email: '',
+  phone: '',
+  guests: '2',
+  rooms: [],
+  date: '',
+  time: '',
+  eventType: '',
+  extras: [],
+  message: '',
+};
+
 export default function StudioHire() {
-  const [formData, setFormData] = useState<FormData>({
-    name: '',
-    email: '',
-    phone: '',
-    guests: '2',
-    rooms: [],
-    date: '',
-    time: '',
-    eventType: '',
-    extras: [],
-    message: '',
-  });
+  const [formData, setFormData] = useState<FormData>(emptyForm);
   const [submitted, setSubmitted] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [sendError, setSendError] = useState(false);
+  const [roomError, setRoomError] = useState(false);
+  const sendingRef = useRef(false); // guards against double submits
   const formRef = useRef<HTMLDivElement>(null);
+  const roomsRef = useRef<HTMLDivElement>(null);
+  const successRef = useRef<HTMLDivElement>(null);
+
+  // The success message is far shorter than the form it replaces, so bring it into view
+  useEffect(() => {
+    if (submitted) successRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }, [submitted]);
 
   const toggleRoom = (room: string) => {
+    setRoomError(false);
     setFormData(prev => ({
       ...prev,
       rooms: prev.rooms.includes(room)
@@ -180,20 +197,6 @@ export default function StudioHire() {
     }));
   };
 
-  // Pricing: per-person rate by guest count
-  const REFORMER_PP: Record<number, number> = {
-    2: 80, 3: 70, 4: 60, 5: 50, 6: 40, 7: 35, 8: 32,
-  };
-  const HOT_PILATES_PP: Record<number, number> = {
-    2: 70, 3: 60, 4: 50, 5: 42, 6: 36, 7: 32, 8: 28,
-  };
-
-  const getPerPerson = (room: string, guests: number) => {
-    const table = room === 'reformer' ? REFORMER_PP : HOT_PILATES_PP;
-    const clamped = Math.max(2, Math.min(8, guests));
-    return table[clamped] ?? 0;
-  };
-
   const toggleExtra = (id: string) => {
     setFormData(prev => ({
       ...prev,
@@ -203,40 +206,40 @@ export default function StudioHire() {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (sendingRef.current) return;
+
+    if (formData.rooms.length === 0) {
+      setRoomError(true);
+      roomsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+
+    sendingRef.current = true;
+    setSending(true);
+    setSendError(false);
 
     const selectedExtras = formData.extras
       .map(id => extras.find(ex => ex.id === id)?.label)
-      .filter(Boolean)
-      .join(', ');
+      .filter(Boolean);
+    const referral = String(new window.FormData(e.currentTarget).get('referral') ?? '');
 
-    const roomLabels = formData.rooms.map(r => {
-      const pp = getPerPerson(r, parseInt(formData.guests || '2'));
-      return r === 'reformer' ? `Reformer Room (£${pp}/person)` : `Hot Pilates Room (£${pp}/person)`;
+    const sent = await submitEnquiry({
+      formType: 'studio-hire',
+      ...formData,
+      extras: selectedExtras,
+      referral,
     });
-    const roomLabel = roomLabels.length > 0 ? roomLabels.join(' + ') : 'Not selected';
 
-    const subject = encodeURIComponent(`Studio Hire Enquiry — ${formData.name}`);
-    const body = encodeURIComponent(
-      `STUDIO HIRE ENQUIRY\n` +
-      `━━━━━━━━━━━━━━━━━━━━━━━━━\n\n` +
-      `Name: ${formData.name}\n` +
-      `Email: ${formData.email}\n` +
-      `Phone: ${formData.phone}\n\n` +
-      `Event Type: ${formData.eventType}\n` +
-      `Room(s): ${roomLabel}\n` +
-      `Number of Guests: ${formData.guests}\n` +
-      `Preferred Date: ${formData.date}\n` +
-      `Preferred Time: ${formData.time}\n\n` +
-      `Extras Requested: ${selectedExtras || 'None'}\n\n` +
-      `Additional Notes:\n${formData.message || 'None'}\n`
-    );
-
-    window.location.href = `mailto:euforyc@gmail.com?subject=${subject}&body=${body}`;
-    setSubmitted(true);
-
-    setTimeout(() => setSubmitted(false), 5000);
+    if (sent) {
+      setFormData(emptyForm);
+      setSubmitted(true);
+    } else {
+      setSendError(true);
+    }
+    setSending(false);
+    sendingRef.current = false;
   };
 
   const scrollToForm = () => {
@@ -981,7 +984,7 @@ export default function StudioHire() {
           <div className="max-w-3xl mx-auto">
             {submitted ? (
               <Reveal>
-                <div className="text-center py-20">
+                <div ref={successRef} className="text-center py-20">
                   <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-[#1a260e]/5 mb-6">
                     <CheckCircle2 className="h-8 w-8 text-[#1a260e]/60" />
                   </div>
@@ -989,7 +992,7 @@ export default function StudioHire() {
                     Enquiry Sent
                   </h3>
                   <p className="text-[#1a260e]/50 font-light">
-                    Check your email client — we&apos;ve prepared the message for you.
+                    Thank you, we&apos;ve received your enquiry.
                     We&apos;ll be in touch soon!
                   </p>
                 </div>
@@ -1104,7 +1107,7 @@ export default function StudioHire() {
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-5">
-                      <div>
+                      <div ref={roomsRef}>
                         <label className="block font-sans text-xs tracking-wider uppercase text-[#1a260e]/40 mb-3">
                           Room(s) * <span className="normal-case tracking-normal text-[#1a260e]/25">— select one or both</span>
                         </label>
@@ -1150,8 +1153,10 @@ export default function StudioHire() {
                             Hot Pilates Room
                           </button>
                         </div>
-                        {formData.rooms.length === 0 && (
-                          <input type="text" required value="" readOnly className="sr-only" tabIndex={-1} aria-hidden="true" />
+                        {roomError && formData.rooms.length === 0 && (
+                          <p role="alert" className="mt-2 text-xs font-light text-red-800">
+                            Please select at least one room.
+                          </p>
                         )}
                       </div>
 
@@ -1267,19 +1272,30 @@ export default function StudioHire() {
                   {/* Submit */}
                   <button
                     type="submit"
-                    className="group w-full flex items-center justify-center gap-3 bg-[#1a260e] text-[#fffcf2] py-5 font-sans text-sm tracking-[0.15em] uppercase transition-all duration-500 hover:scale-[1.01] hover:shadow-xl"
+                    disabled={sending}
+                    className="group w-full flex items-center justify-center gap-3 bg-[#1a260e] text-[#fffcf2] py-5 font-sans text-sm tracking-[0.15em] uppercase transition-all duration-500 hover:scale-[1.01] hover:shadow-xl disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:hover:shadow-none"
                   >
-                    Send Enquiry
+                    {sending ? 'Sending…' : 'Send Enquiry'}
                     <Send className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                   </button>
 
+                  {sendError && (
+                    <p role="alert" className="text-center text-sm font-light text-red-800">
+                      Sorry, that didn&apos;t send. Please try again, or email us at{' '}
+                      <a href="mailto:euforyc@gmail.com" className="underline">euforyc@gmail.com</a>
+                      {' '}or call{' '}
+                      <a href="tel:+447375710370" className="underline">+44 7375 710370</a>.
+                    </p>
+                  )}
+
                   <p className="text-center text-[#1a260e]/25 text-xs font-light">
-                    This opens your email client with the enquiry details pre-filled.
                     You can also email us directly at{' '}
                     <a href="mailto:euforyc@gmail.com" className="underline hover:text-[#1a260e]/50 transition-colors">
                       euforyc@gmail.com
                     </a>
                   </p>
+
+                  <HoneypotField />
                 </form>
               </Reveal>
             )}

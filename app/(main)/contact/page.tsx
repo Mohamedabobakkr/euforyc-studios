@@ -1,27 +1,37 @@
 'use client';
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import type { Metadata } from 'next';
 import { MapPin, Phone, Mail, Clock, Instagram } from 'lucide-react';
 import Map from '@/components/Map';
+import HoneypotField from '@/components/HoneypotField';
 import { TikTokIcon } from '@/components/icons/TikTokIcon';
+import { submitEnquiry } from '@/lib/submit-enquiry';
+
+const emptyForm = {
+  name: '',
+  email: '',
+  phone: '',
+  message: ''
+};
 
 export default function Contact() {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    message: ''
-  });
+  const [formData, setFormData] = useState(emptyForm);
+  const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
+  const sendingRef = useRef(false); // guards against double submits
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // For now, we'll use mailto. In production, this would integrate with a form service
-    const subject = encodeURIComponent('Inquiry from Euforyc Studios Website');
-    const body = encodeURIComponent(
-      `Name: ${formData.name}\nEmail: ${formData.email}\nPhone: ${formData.phone}\n\nMessage:\n${formData.message}`
-    );
-    window.location.href = `mailto:euforyc@gmail.com?subject=${subject}&body=${body}`;
+    if (sendingRef.current) return;
+    sendingRef.current = true;
+    setStatus('sending');
+
+    const referral = String(new FormData(e.currentTarget).get('referral') ?? '');
+    const sent = await submitEnquiry({ formType: 'contact', ...formData, referral });
+
+    if (sent) setFormData(emptyForm);
+    setStatus(sent ? 'success' : 'error');
+    sendingRef.current = false;
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -114,9 +124,30 @@ export default function Contact() {
                   />
                 </div>
 
-                <button type="submit" className="btn-primary w-full">
-                  Send Message
+                <button
+                  type="submit"
+                  disabled={status === 'sending'}
+                  className="btn-primary w-full disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:scale-100"
+                >
+                  {status === 'sending' ? 'Sending…' : 'Send Message'}
                 </button>
+
+                {status === 'success' && (
+                  <p role="status" className="font-inter text-sm text-[#1a260e]">
+                    Thank you, your message has been sent. We'll be in touch soon.
+                  </p>
+                )}
+
+                {status === 'error' && (
+                  <p role="alert" className="font-inter text-sm text-red-800">
+                    Sorry, that didn't send. Please try again, or email us at{' '}
+                    <a href="mailto:euforyc@gmail.com" className="underline">euforyc@gmail.com</a>
+                    {' '}or call{' '}
+                    <a href="tel:+447375710370" className="underline">+44 7375 710370</a>.
+                  </p>
+                )}
+
+                <HoneypotField />
               </form>
             </div>
 
