@@ -129,6 +129,12 @@ const nextConfig = {
         destination: '/memberships',
         permanent: true,
       },
+      // EMS Sculpt landing page retired — EMS is offered through Skin Studio
+      {
+        source: '/ems-sculpt',
+        destination: '/skin-studio',
+        permanent: true,
+      },
       // Retreats have moved to Euforyc Social
       {
         source: '/morocco-retreat',
