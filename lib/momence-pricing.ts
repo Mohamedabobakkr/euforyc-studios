@@ -2,6 +2,7 @@ export type MomencePurchaseCategory =
   | 'intro_offer'
   | 'dance_package'
   | 'euforyc_package'
+  | 'move_package'
   | 'membership'
   | 'unknown';
 
@@ -15,19 +16,21 @@ export interface MomencePriceEntry {
 export const MOMENCE_PRICING: Record<string, MomencePriceEntry> = {
   '631782': { value: 60,  currency: 'GBP', contentName: 'Try It All Intro 3 for £60',            contentType: 'intro_offer' },
 
-  '597174': { value: 65,  currency: 'GBP', contentName: 'Dance 4 Classes',                       contentType: 'dance_package' },
-
   '632399': { value: 105, currency: 'GBP', contentName: 'Euforyc Package — 4 Classes',          contentType: 'euforyc_package' },
   '632400': { value: 190, currency: 'GBP', contentName: 'Euforyc Package — 8 Classes',          contentType: 'euforyc_package' },
   '632401': { value: 270, currency: 'GBP', contentName: 'Euforyc Package — 12 Classes',         contentType: 'euforyc_package' },
   '938674': { value: 320, currency: 'GBP', contentName: 'Euforyc Package — 30 Days Unlimited',  contentType: 'euforyc_package' },
+
+  '707786': { value: 70,  currency: 'GBP', contentName: 'MOVE — 4 Classes',                      contentType: 'move_package' },
+  '707788': { value: 135, currency: 'GBP', contentName: 'MOVE — 8 Classes',                      contentType: 'move_package' },
 
   '937341': { value: 90,  currency: 'GBP', contentName: 'Euforyc Membership — Euforyc 4',        contentType: 'membership' },
   '937345': { value: 165, currency: 'GBP', contentName: 'Euforyc Membership — Euforyc 8',        contentType: 'membership' },
   '937346': { value: 240, currency: 'GBP', contentName: 'Euforyc Membership — Euforyc 12',       contentType: 'membership' },
   '937348': { value: 280, currency: 'GBP', contentName: 'Euforyc Membership — Euforyc Unlimited', contentType: 'membership' },
 
-  // Legacy dance package — no longer sold on the site
+  // Legacy dance packages — no longer sold on the site
+  '597174': { value: 65,  currency: 'GBP', contentName: 'Dance 4 Classes',                       contentType: 'dance_package' },
   '609496': { value: 90,  currency: 'GBP', contentName: 'Dance 8 Classes',                       contentType: 'dance_package' },
 
   // Legacy intro offers — no longer sold on the site

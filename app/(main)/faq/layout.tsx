@@ -26,7 +26,7 @@ const faqSchema = {
     {
       '@type': 'Question',
       name: "What's the difference between Try It All, the Euforyc Package, and memberships? Which one is best for me?",
-      acceptedAnswer: { '@type': 'Answer', text: 'Try It All (3 classes for £60, first-time clients only) is perfect for first-timers to experience our studio and teaching style across all our group classes. The Euforyc Package (4, 8 or 12 classes from £105, or 30 Days Unlimited for £320) is a flexible pay-as-you-go option with no contract, usable across all group classes and valid for 30 days from your first class booking, ideal for occasional practice or trying different class types. The Euforyc Membership has a 6-month minimum term (then rolling monthly) and offers the best value, with credits that work across our whole group timetable.' },
+      acceptedAnswer: { '@type': 'Answer', text: 'Try It All (3 classes for £60, first-time clients only, valid for 20 days from your first class) is perfect for first-timers to experience our studio and teaching style across all our group classes. The Euforyc Package (4, 8 or 12 classes from £105, or 30 Days Unlimited for £320) is a flexible pay-as-you-go option with no contract, usable across all group classes and valid for 30 days from your first class booking, ideal for occasional practice or trying different class types. We also offer MOVE (4 classes £70 or 8 classes £135) for Sculpt Mat Pilates and Belly Dance, valid 30 days from your first class. The Euforyc Membership has a 6-month minimum term (then rolling monthly) and offers the best value, with credits that work across our whole group timetable.' },
     },
     {
       '@type': 'Question',

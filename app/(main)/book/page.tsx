@@ -322,7 +322,7 @@ export default function Book() {
             <div className="text-center space-y-3">
               <h3 className="font-playfair text-lg font-light">Package Validity</h3>
               <p className="body-text text-sm text-[#fffcf2]/80">
-                All class packages are valid for 30 days from purchase date
+                Class packages are valid for 30 days from your first class (Try It All: 20 days)
               </p>
             </div>
           </div>

@@ -110,7 +110,7 @@ const introOffers = {
     classes: '3 Classes',
     price: '£60',
     perClass: '£20',
-    validity: '30 days from first class',
+    validity: '20 days from first class',
     description: 'Three classes to use across all our group classes - Reformer, Hot Pilates, Barre, Dance & more',
     benefits: [
       'Try any group class',
@@ -124,19 +124,27 @@ const introOffers = {
   }
 };
 
-// Dance packages data
-const dancePackages = [
+// MOVE packages data
+const movePackages = [
   {
     name: '4 Classes',
-    price: '£65',
-    savings: 'save £15',
-    description: 'Perfect for trying out different styles',
-    momenceUrl: 'https://momence.com/m/597174',
+    price: '£70',
+    savings: 'save £10',
+    description: '£17.50 per class',
+    momenceUrl: 'https://momence.com/m/707786',
+    highlight: false,
+  },
+  {
+    name: '8 Classes',
+    price: '£135',
+    savings: 'save £25',
+    description: '£16.88 per class',
+    momenceUrl: 'https://momence.com/m/707788',
     highlight: false,
   }
 ];
 
-const danceStyles = ['Belly Dance'];
+const moveClasses = ['Sculpt Mat Pilates', 'Belly Dance'];
 
 type OfferId = keyof typeof introOffers;
 const offerIds: OfferId[] = ['try-all'];
@@ -451,22 +459,22 @@ function OffersContent() {
         </section>
       )}
 
-      {/* Dance Section */}
-      <section id="dance" className="section-padding bg-[#fffcf2]">
+      {/* MOVE Section */}
+      <section id="move" className="section-padding bg-[#fffcf2]">
         <div className="container-width">
           <div className="text-center mb-10 md:mb-16">
-            <p className="tagline text-[#1a260e]/60 mb-4">EXPRESS YOURSELF</p>
+            <p className="tagline text-[#1a260e]/60 mb-4">MIX &amp; MATCH</p>
             <h2 className="heading-secondary">
-              Dance Classes
+              MOVE
             </h2>
             <p className="body-text max-w-2xl mx-auto mt-4">
-              Discover the joy of movement with our Belly Dance classes.
+              Sculpt Mat Pilates and Belly Dance, mix and match. Valid 30 days from your first class, no contract.
             </p>
           </div>
 
-          {/* Dance Styles */}
+          {/* MOVE Classes */}
           <div className="flex flex-wrap justify-center gap-3 mb-10 md:mb-12">
-            {danceStyles.map((style) => (
+            {moveClasses.map((style) => (
               <div
                 key={style}
                 className="px-6 py-3 border border-[#1a260e]/10 rounded-full bg-white"
@@ -476,18 +484,18 @@ function OffersContent() {
             ))}
           </div>
 
-          {/* Dance Package Cards */}
-          <div className={`grid grid-cols-1 gap-4 md:gap-6 mx-auto ${dancePackages.length === 1 ? 'max-w-sm' : 'md:grid-cols-2 max-w-2xl'}`}>
-            {dancePackages.map((pkg, index) => (
+          {/* MOVE Package Cards */}
+          <div className={`grid grid-cols-1 gap-4 md:gap-6 mx-auto ${movePackages.length === 1 ? 'max-w-sm' : 'md:grid-cols-2 max-w-2xl'}`}>
+            {movePackages.map((pkg, index) => (
               <a
                 key={index}
                 href={pkg.momenceUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                data-offer-id={`dance-${pkg.name.toLowerCase().replace(/\s+/g, '-')}`}
-                data-content-name={`Dance ${pkg.name} ${pkg.price}`}
-                data-content-type="dance_package"
-                data-content-category="/offers/dance"
+                data-offer-id={`move-${pkg.name.toLowerCase().replace(/\s+/g, '-')}`}
+                data-content-name={`MOVE ${pkg.name} ${pkg.price}`}
+                data-content-type="move_package"
+                data-content-category="/offers/move"
                 data-value={pkg.price.replace(/[^0-9.]/g, '')}
                 data-currency="GBP"
                 className="group relative rounded-2xl p-6 md:p-8 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl bg-gradient-to-br from-[#1a260e] to-[#2a3a1e] text-[#fffcf2]"

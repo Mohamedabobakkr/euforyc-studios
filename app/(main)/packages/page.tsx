@@ -47,7 +47,7 @@ const packages = {
     title: 'Intro Offer',
     subtitle: 'New to Euforyc? Try It All',
     packages: [
-      { id: 'try-all', name: 'Try It All', classes: '3 Classes', price: '£60', savings: 'First-time offer', description: 'Three classes to use across all our group classes - Reformer, Hot Pilates, Barre, Dance & more', momenceUrl: 'https://momence.com/m/631782', icon: 'sparkles', validity: '30 days from first class' }
+      { id: 'try-all', name: 'Try It All', classes: '3 Classes', price: '£60', savings: 'First-time offer', description: 'Three classes to use across all our group classes - Reformer, Hot Pilates, Barre, Dance & more', momenceUrl: 'https://momence.com/m/631782', icon: 'sparkles', validity: '20 days from first class' }
     ]
   },
   private: {
@@ -71,21 +71,23 @@ const packages = {
       { name: '30 Days Unlimited', price: '£320', momenceUrl: 'https://momence.com/m/938674' }
     ]
   },
-  dancePackage: {
-    title: 'Dance',
-    subtitle: 'Belly Dance classes',
+  move: {
+    title: 'MOVE',
+    subtitle: 'Sculpt Mat Pilates & Belly Dance, mix and match. No contract.',
+    note: 'Valid 30 days from your first class',
     packages: [
-      { name: '4 Classes', price: '£65', savings: 'save £15', momenceUrl: 'https://momence.com/m/597174' }
+      { name: '4 Classes', price: '£70', savings: 'save £10', momenceUrl: 'https://momence.com/m/707786' },
+      { name: '8 Classes', price: '£135', savings: 'save £25', momenceUrl: 'https://momence.com/m/707788' }
     ]
   }
 };
 
-type CategoryKey = 'euforycPackage' | 'private' | 'dancePackage';
+type CategoryKey = 'euforycPackage' | 'move' | 'private';
 
 const categories: { key: CategoryKey; label: string }[] = [
   { key: 'euforycPackage', label: 'Euforyc Package' },
+  { key: 'move', label: 'MOVE' },
   { key: 'private', label: 'Private' },
-  { key: 'dancePackage', label: 'Dance' },
 ];
 
 type IntroOfferType = 'try-all';
@@ -346,7 +348,7 @@ function PackagesSection() {
               Class Packages
             </h2>
             <p className="font-sans text-sm md:text-base text-[#1a260e]/40 max-w-lg mx-auto">
-              Commit to your practice and save. All packages valid for 30 days from your first class.
+              Commit to your practice and save. Group class packages are valid for 30 days from your first class.
             </p>
           </div>
 
