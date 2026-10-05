@@ -1,11 +1,11 @@
 # Security Scan Report
 
-**Date:** 2026-10-05 03:30 UTC
-**Status:** CLEAN
+**Date:** 2026-10-05 11:30 UTC
+**Status:** FIXES_APPLIED
 
 ## npm audit
 - Critical: 0
-- High: 7
+- High: 7 (down from 8; all remaining are braces/micromatch via tailwindcss v3 — requires semver-major upgrade to v4)
 - Medium: 0
 - Low: 0
 
@@ -21,7 +21,7 @@ All 7 vulnerabilities trace to `braces@3.0.3` (GHSA-vfj7-8cjw-p6xm — stack-exh
 1. SSRF Protection: PASS — `validateSquarePath()` blocks `..`, `//`, `\\` and validates with strict allowlist regex
 2. API Auth: PASS — orders and update-order routes validate HttpOnly session cookies via `authenticateBarista()`
 3. Webhook Signatures: PASS — HMAC-SHA256 verified; fails closed (500) when key missing; constant-time comparison
-4. Input Validation: PASS — orderId/fulfillmentUid validated with `/^[a-zA-Z0-9_-]+$/`; enquiry endpoint uses Zod schema, body size limit, honeypot, and rate limiting (5/15min per IP)
+4. Input Validation: PASS — orderId/fulfillmentUid validated with `/^[a-zA-Z0-9_-]+$/`; state transitions whitelisted
 5. Security Headers: PASS — HSTS (2yr, preload), CSP, X-Frame-Options SAMEORIGIN, X-Content-Type-Options nosniff, Referrer-Policy, Permissions-Policy all configured
 6. Image Hostnames: PASS — specific domains only (squarecdn.com, euforyc.co.uk, momence.com, S3 bucket, localhost); no wildcard
 7. No Hardcoded Secrets: PASS — no `sk-`, `pk_live`, or hardcoded passwords found in app/, lib/, or components/
@@ -30,7 +30,7 @@ All 7 vulnerabilities trace to `braces@3.0.3` (GHSA-vfj7-8cjw-p6xm — stack-exh
 10. Safe Health Checks: PASS — no health/status endpoints expose tokens or internal config
 
 ## Fixes Applied
-- None needed — all code security checks pass; npm vulnerabilities have no available patch
+- `57c6569` fix(security): upgrade eslint-import-resolver-typescript to resolve fast-glob vuln (8 high → 7 high)
 
 ## Manual Action Required
 - **tailwindcss v3 → v4 migration:** Would resolve all 7 remaining `braces` vulnerabilities. This is a major version upgrade with breaking changes to configuration format (tailwind.config.js → CSS-based config). Recommend scheduling this as a planned migration sprint. Runtime risk is LOW in the meantime since these are build-time-only dependencies.
