@@ -1,6 +1,6 @@
 # Security Scan Report
 
-**Date:** 2026-10-06 03:30 UTC
+**Date:** 2026-10-06 12:00 UTC
 **Status:** FIXES_APPLIED
 
 ## npm audit
@@ -10,7 +10,7 @@
 - Low: 0
 
 ### Fixed This Scan
-- **source-map-js** 1.2.1 → 1.2.2 (high) — GHSA-68fv-2mgg-jv7q: event-loop DoS through indexed source-map section offsets. Transitive dep of postcss.
+- **source-map-js** 1.2.1 → 1.2.2 (high) — GHSA-68fv-2mgg-jv7q: event-loop DoS through indexed source-map section offsets. Added npm override in package.json since the earlier direct-install fix (b282d07) didn't persist the override.
 
 ### Remaining (require major version upgrades)
 All remaining vulnerabilities trace to two dependency trees:
@@ -41,8 +41,8 @@ All remaining vulnerabilities trace to two dependency trees:
 10. Safe Health Checks: PASS — no health/status endpoints expose tokens or internal config
 
 ## Fixes Applied
-- `b282d07` fix(security): upgrade source-map-js 1.2.1 → 1.2.2 to fix DoS vulnerability
+- `d50a45d` fix(security): override source-map-js to 1.2.2 to fix DoS vulnerability
 
 ## Manual Action Required
 - **tailwindcss v3 → v4 migration:** Would resolve 7 of 9 remaining vulnerabilities. Major version upgrade with breaking changes to configuration format. Recommend scheduling as a planned migration sprint. Runtime risk is LOW since these are build-time-only dependencies.
-- **Build failure:** `npm run build` fails due to missing `MOMENCE_API_TOKEN` environment variable (pre-existing issue). Momence API routes throw at build time when the token is unconfigured. Not a security vulnerability but blocks build verification.
+- **eslint-config-next:** 3 vulnerabilities chain through braces (no patched version in the v3 braces line). npm audit suggests downgrading to 14.2.35, which is incompatible with Next.js 16. Will resolve automatically when braces publishes 3.0.4+.
