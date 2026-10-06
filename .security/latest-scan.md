@@ -1,6 +1,6 @@
 # Security Scan Report
 
-**Date:** 2026-10-06 12:00 UTC
+**Date:** 2026-10-06 19:30 UTC
 **Status:** FIXES_APPLIED
 
 ## npm audit
@@ -10,7 +10,8 @@
 - Low: 0
 
 ### Fixed This Scan
-- **source-map-js** 1.2.1 → 1.2.2 (high) — GHSA-68fv-2mgg-jv7q: event-loop DoS through indexed source-map section offsets. Added npm override in package.json since the earlier direct-install fix (b282d07) didn't persist the override.
+- **source-map-js** 1.2.1 → 1.2.2 (high) — GHSA-68fv-2mgg-jv7q: event-loop DoS through indexed source-map section offsets
+- **sharp** 0.35.4 → 0.35.5 (high) — CVE-2026-96889 / GHSA-wq5f-xc86-pv6w: librsvg use-after-free vulnerability
 
 ### Remaining (require major version upgrades)
 All remaining vulnerabilities trace to two dependency trees:
@@ -41,7 +42,7 @@ All remaining vulnerabilities trace to two dependency trees:
 10. Safe Health Checks: PASS — no health/status endpoints expose tokens or internal config
 
 ## Fixes Applied
-- `d50a45d` fix(security): override source-map-js to 1.2.2 to fix DoS vulnerability
+- `4a5d6a7` fix(security): override source-map-js to 1.2.2 and sharp to 0.35.5
 
 ## Manual Action Required
 - **tailwindcss v3 → v4 migration:** Would resolve 7 of 9 remaining vulnerabilities. Major version upgrade with breaking changes to configuration format. Recommend scheduling as a planned migration sprint. Runtime risk is LOW since these are build-time-only dependencies.
