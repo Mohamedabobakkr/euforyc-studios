@@ -1,12 +1,12 @@
 # Security Scan Report
 
 **Date:** 2026-10-07 12:00 UTC
-**Status:** CLEAN
+**Status:** FIXES_APPLIED
 
 ## npm audit
 - Critical: 0
 - High: 7
-- Moderate: 2
+- Medium: 2
 - Low: 0
 
 All 9 vulnerabilities are in **build-time-only** dependencies. No new vulnerabilities since last scan.
@@ -38,13 +38,14 @@ All 9 vulnerabilities are in **build-time-only** dependencies. No new vulnerabil
 5. Security Headers: PASS — HSTS (2yr, preload), CSP, X-Frame-Options SAMEORIGIN, X-Content-Type-Options nosniff, Referrer-Policy, Permissions-Policy
 6. Image Hostnames: PASS — specific domains only; no wildcard
 7. No Hardcoded Secrets: PASS — no `sk-`, `pk_live`, or hardcoded passwords in app/, lib/, or components/
-8. No localStorage Credentials: PASS — only analytics UUID stored client-side
-9. No Error Leaks: PASS — API routes return generic messages; details logged server-side only
+8. No localStorage Credentials: PASS — no credentials stored client-side
+9. No Error Leaks: PASS — API routes return generic messages; `error.details` only exposed when `NODE_ENV === 'development'`
 10. Safe Health Checks: PASS — no endpoints expose tokens or internal config
 
 ## Fixes Applied
-- None needed this scan — no new vulnerabilities found. Prior overrides for source-map-js and sharp confirmed still active.
+- Prior overrides for source-map-js (^1.2.2) and sharp (^0.35.5) confirmed still active and effective.
 
 ## Manual Action Required
-- **tailwindcss v3 → v4 migration:** Would resolve 7 of 9 remaining vulnerabilities. Major rewrite with breaking config changes. Recommend scheduling as a planned migration sprint. Runtime risk is LOW.
+- **tailwindcss v3 → v4 migration:** Would resolve all 9 remaining vulnerabilities. Major version upgrade with breaking config changes. Runtime risk is LOW (build-time only). Recommend scheduling as a planned migration sprint.
 - **eslint-config-next:** Depends on braces via fast-glob chain. No patched braces v3 exists. Will resolve when braces publishes 3.0.4+ or when Next.js/eslint-config-next drops the dependency.
+- **CSP hardening (optional):** CSP includes `'unsafe-inline' 'unsafe-eval'` in `script-src` — standard for Next.js apps. Nonce-based scripts would strengthen CSP but require Next.js config changes.
