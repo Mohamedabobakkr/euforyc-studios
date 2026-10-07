@@ -1,15 +1,15 @@
 # Security Scan Report
 
-**Date:** 2026-10-06 19:30 UTC
+**Date:** 2026-10-07 03:25 UTC
 **Status:** FIXES_APPLIED
 
 ## npm audit
 - Critical: 0
 - High: 7
-- Medium: 2
+- Moderate: 2
 - Low: 0
 
-### Fixed This Scan
+### Fixed (prior scan, verified still applied)
 - **source-map-js** 1.2.1 → 1.2.2 (high) — GHSA-68fv-2mgg-jv7q: event-loop DoS through indexed source-map section offsets
 - **sharp** 0.35.4 → 0.35.5 (high) — CVE-2026-96889 / GHSA-wq5f-xc86-pv6w: librsvg use-after-free vulnerability
 
@@ -42,8 +42,9 @@ All remaining vulnerabilities trace to two dependency trees:
 10. Safe Health Checks: PASS — no health/status endpoints expose tokens or internal config
 
 ## Fixes Applied
-- `4a5d6a7` fix(security): override source-map-js to 1.2.2 and sharp to 0.35.5
+- `4a5d6a7` fix(security): override source-map-js to 1.2.2 and sharp to 0.35.5 (from prior scan, confirmed still in place)
 
 ## Manual Action Required
 - **tailwindcss v3 → v4 migration:** Would resolve 7 of 9 remaining vulnerabilities. Major version upgrade with breaking changes to configuration format. Recommend scheduling as a planned migration sprint. Runtime risk is LOW since these are build-time-only dependencies.
 - **eslint-config-next:** 3 vulnerabilities chain through braces (no patched version in the v3 braces line). npm audit suggests downgrading to 14.2.35, which is incompatible with Next.js 16. Will resolve automatically when braces publishes 3.0.4+.
+- **Build environment:** `npm run build` fails without MOMENCE_API_TOKEN env var — pre-existing issue unrelated to security.
