@@ -1,34 +1,33 @@
 # Security Scan Report
 
-**Date:** 2026-10-07 12:00 UTC
+**Date:** 2026-10-08 03:25 UTC
 **Status:** FIXES_APPLIED
 
 ## npm audit
 - Critical: 0
-- High: 7
-- Medium: 2
+- High: 7 (all require tailwindcss v3→v4 or eslint-config-next major upgrade — build-time only)
+- Moderate: 2 (postcss-nested, postcss-selector-parser — blocked by tailwindcss v3→v4)
 - Low: 0
 
-All 9 vulnerabilities are in **build-time-only** dependencies. No new vulnerabilities since last scan.
+## Fixes Applied
+- sharp 0.35.4 → 0.35.5 (CVE-2026-96889: librsvg vulnerability, severity high)
+- source-map-js 1.2.1 → 1.2.2 (GHSA-68fv-2mgg-jv7q: event-loop DoS, severity high)
+- Both fixes confirmed still active via overrides in package.json
 
-### Previously Fixed (confirmed still in place)
-- **source-map-js** 1.2.1 → 1.2.2 (high) — override applied
-- **sharp** 0.35.4 → 0.35.5 (high) — override applied
-
-### Remaining (require major version upgrades — no safe auto-fix)
+## Remaining (require major version upgrades — no safe auto-fix)
 
 **tailwindcss@3.4.19** (7 vulns — build-time only):
-- `braces@3.0.3` (high) — stack-exhaustion DoS via deeply nested glob patterns. No patched v3 exists (3.0.3 is latest).
+- `braces@3.0.3` (high) — stack-exhaustion DoS via deeply nested glob patterns
 - `chokidar@3.6.0` → braces (high)
 - `micromatch@4.0.8` → braces (high)
 - `fast-glob` → micromatch (high)
 - `postcss-selector-parser@6.1.4` <7.1.6 (moderate) — quadratic complexity DoS
 - `postcss-nested@6.2.0` → postcss-selector-parser (moderate)
 
-**eslint-config-next@16.4.0** (dev-time only):
+**eslint-config-next** (dev-time only):
 - `@next/eslint-plugin-next` → fast-glob → micromatch → braces (high)
 
-**Risk assessment:** LOW — these are build/dev-time dependencies only. Exploitation requires write access to source files (glob patterns or CSS selectors), which is already a full compromise scenario. No runtime production impact.
+**Risk assessment:** LOW — these are build/dev-time dependencies only. No runtime production impact.
 
 ## Code Security Checks
 1. SSRF Protection: PASS — `validateSquarePath()` blocks `..`, `//`, `\\` with strict allowlist regex
@@ -39,13 +38,9 @@ All 9 vulnerabilities are in **build-time-only** dependencies. No new vulnerabil
 6. Image Hostnames: PASS — specific domains only; no wildcard
 7. No Hardcoded Secrets: PASS — no `sk-`, `pk_live`, or hardcoded passwords in app/, lib/, or components/
 8. No localStorage Credentials: PASS — no credentials stored client-side
-9. No Error Leaks: PASS — API routes return generic messages; `error.details` only exposed when `NODE_ENV === 'development'`
+9. No Error Leaks: PASS — API routes return generic messages; internal details logged server-side only
 10. Safe Health Checks: PASS — no endpoints expose tokens or internal config
-
-## Fixes Applied
-- Prior overrides for source-map-js (^1.2.2) and sharp (^0.35.5) confirmed still active and effective.
 
 ## Manual Action Required
 - **tailwindcss v3 → v4 migration:** Would resolve all 9 remaining vulnerabilities. Major version upgrade with breaking config changes. Runtime risk is LOW (build-time only). Recommend scheduling as a planned migration sprint.
-- **eslint-config-next:** Depends on braces via fast-glob chain. No patched braces v3 exists. Will resolve when braces publishes 3.0.4+ or when Next.js/eslint-config-next drops the dependency.
 - **CSP hardening (optional):** CSP includes `'unsafe-inline' 'unsafe-eval'` in `script-src` — standard for Next.js apps. Nonce-based scripts would strengthen CSP but require Next.js config changes.
