@@ -1,47 +1,48 @@
 # Security Scan Report
 
-**Date:** 2026-10-08 12:00 UTC
-**Status:** FIXES_APPLIED
+**Date:** 2026-10-08 15:30 UTC
+**Status:** VULNERABILITIES_FOUND
 
 ## npm audit
 - Critical: 0
-- High: 7 (all require tailwindcss v3->v4 or eslint-config-next major upgrade -- build-time only)
-- Moderate: 2 (postcss-nested, postcss-selector-parser -- blocked by tailwindcss v3->v4)
+- High: 7
+- Moderate: 2
 - Low: 0
 
-## Fixes Applied
-- sharp 0.35.4 -> 0.35.5 (CVE-2026-96889: librsvg vulnerability, severity high)
-- source-map-js 1.2.1 -> 1.2.2 (GHSA-68fv-2mgg-jv7q: event-loop DoS, severity high)
-- Both fixes confirmed active via overrides in package.json
+### Details
+All 9 remaining vulnerability entries are in **build-time dependencies** (not production runtime):
 
-## Remaining (require major version upgrades -- no safe auto-fix)
+1. **braces** (high) — DoS via deeply nested patterns (GHSA-vfj7-8cjw-p6xm). Transitive dep of tailwindcss@3.4.19 and eslint-config-next@16.4.0. Fix requires tailwindcss v4 (breaking migration).
+2. **chokidar** (high) — depends on vulnerable braces. Transitive dep of tailwindcss.
+3. **micromatch** (high) — depends on vulnerable braces. Transitive dep of tailwindcss and eslint-config-next.
+4. **fast-glob** (high) — depends on vulnerable micromatch. Transitive dep of tailwindcss and @next/eslint-plugin-next.
+5. **@next/eslint-plugin-next** (high) — depends on vulnerable fast-glob. Transitive dep of eslint-config-next.
+6. **eslint-config-next** (high) — depends on vulnerable @next/eslint-plugin-next.
+7. **tailwindcss** (high) — depends on braces, chokidar, micromatch, fast-glob, postcss-nested, postcss-selector-parser.
+8. **postcss-selector-parser** (moderate) — quadratic complexity DoS (GHSA-rj75-hqrm-r3gf). Transitive dep of tailwindcss.
+9. **postcss-nested** (moderate) — depends on vulnerable postcss-selector-parser. Transitive dep of tailwindcss.
 
-**tailwindcss@3.4.19** (7 vulns -- build-time only):
-- `braces@3.0.3` (high) -- stack-exhaustion DoS via deeply nested glob patterns; no patch in v3
-- `chokidar@3.6.0` -> braces (high)
-- `micromatch@4.0.8` -> braces (high)
-- `fast-glob` -> micromatch (high)
-- `postcss-selector-parser@6.1.4` <7.1.6 (moderate) -- quadratic complexity DoS
-- `postcss-nested@6.2.0` -> postcss-selector-parser (moderate)
-
-**eslint-config-next** (dev-time only):
-- `@next/eslint-plugin-next` -> fast-glob -> micromatch -> braces (high)
-
-**Risk assessment:** LOW -- these are build/dev-time dependencies only. The braces vulnerability requires processing specially crafted glob patterns during `npm run build` / `npx tailwindcss`, never at runtime. The postcss-selector-parser vulnerability requires processing malicious CSS selectors at build time. No fix exists within the current major versions; tailwindcss v4 drops these dependencies.
+**Already patched (resolved in current lockfile):**
+- sharp@0.35.5 (was < 0.35.5 — librsvg CVE-2026-96889)
+- source-map-js@1.2.2 (was < 1.2.2 — event-loop DoS GHSA-68fv-2mgg-jv7q)
 
 ## Code Security Checks
-1. SSRF Protection: PASS -- `validateSquarePath()` blocks `..`, `//`, `\\` with strict allowlist regex
-2. API Auth: PASS -- orders and update-order routes validate HttpOnly session cookies via `authenticateBarista()`
-3. Webhook Signatures: PASS -- HMAC-SHA256 verified; fails closed (500) when key missing; constant-time comparison
-4. Input Validation: PASS -- orderId/fulfillmentUid validated with `/^[a-zA-Z0-9_-]+$/`; state transitions whitelisted
-5. Security Headers: PASS -- HSTS (2yr, preload), CSP, X-Frame-Options SAMEORIGIN, X-Content-Type-Options nosniff, Referrer-Policy, Permissions-Policy all configured
-6. Image Hostnames: PASS -- specific domains only (squarecdn.com, euforyc.co.uk, momence.com, S3 bucket, localhost); no wildcard
-7. No Hardcoded Secrets: PASS -- no `sk-`, `pk_live`, or hardcoded passwords found in app/, lib/, or components/
-8. No localStorage Credentials: PASS -- no credentials stored client-side; only `euforyc_uid` (anonymous analytics UUID)
-9. No Error Leaks: PASS -- API routes return generic messages; internal error details logged server-side only
-10. Safe Health Checks: PASS -- no health/status endpoints expose tokens or internal config
+1. SSRF Protection: PASS — `validateSquarePath()` blocks `../`, `//`, `\\` and enforces safe character regex
+2. API Auth: PASS — orders and update-order routes use `authenticateBarista()` with HttpOnly session cookie
+3. Webhook Signatures: PASS — fails closed when SQUARE_WEBHOOK_SIGNATURE_KEY missing (returns 500); constant-time HMAC-SHA256 verification
+4. Input Validation: PASS — orderId/fulfillmentUid validated with `/^[a-zA-Z0-9_-]+$/`; state transitions validated; order items capped at 50; input lengths truncated
+5. Security Headers: PASS — HSTS (2yr + preload), CSP, X-Frame-Options SAMEORIGIN, X-Content-Type-Options nosniff, Referrer-Policy, Permissions-Policy
+6. Image Hostnames: PASS — no wildcard `**` hostname; only specific trusted domains in remotePatterns
+7. No Hardcoded Secrets: PASS — all secrets loaded from environment variables
+8. No localStorage Credentials: PASS — no localStorage storing passwords/tokens/secrets
+9. No Error Leaks: PASS — all API routes return generic error messages; internal details only logged server-side
+10. Safe Health Checks: PASS — no health check endpoints expose tokens or config
+
+## Fixes Applied
+- None needed this scan — sharp and source-map-js already patched in prior scans; all code security checks pass
 
 ## Manual Action Required
-- **tailwindcss v3 -> v4 migration:** Would resolve all 9 remaining vulnerabilities. Major version upgrade with breaking config changes. Runtime risk is LOW (build-time only). Recommend scheduling as a planned migration sprint.
-- **Build configuration:** `npm run build` fails in environments without MOMENCE_API_TOKEN set (pre-existing, not a security issue). Consider making the Momence API route handle missing tokens gracefully at build time.
-- **CSP hardening (optional):** CSP includes `'unsafe-inline' 'unsafe-eval'` in `script-src` -- standard for Next.js apps. Nonce-based scripts would strengthen CSP but require Next.js config changes.
+- **tailwindcss v3 → v4 migration**: Resolves 7 of 9 npm vulnerability entries. Major rewrite of CSS toolchain. Recommend scheduling as a dedicated task.
+- **eslint-config-next**: Remaining 2 entries are in the linting toolchain. Monitor for a patch release of eslint-config-next@16 that updates its fast-glob dependency.
+- **Risk assessment**: All 9 vulnerabilities are DoS-type (not RCE) in build-time tools. They cannot be exploited by website visitors. Production runtime is not affected.
+- **CSP hardening (optional):** CSP includes `'unsafe-inline' 'unsafe-eval'` in `script-src`, common for Next.js apps. Migrating to nonce-based scripts would strengthen CSP but requires Next.js configuration changes.
