@@ -1,7 +1,7 @@
 # Security Scan Report
 
-**Date:** 2026-10-10 08:00 UTC
-**Status:** FIXES_APPLIED
+**Date:** 2026-10-10 14:30 UTC
+**Status:** CLEAN
 
 ## npm audit
 - Critical: 0
@@ -9,25 +9,24 @@
 - Medium: 2
 - Low: 0
 
-### Fixed This Scan
-- **sharp <0.35.5** (high): CVE-2026-96889 librsvg vulnerability — lock file updated to 0.35.5
-- **source-map-js 1.0.0-1.2.1** (high): event-loop DoS via indexed source-map offsets — lock file updated to 1.2.2
+### Vulnerability Analysis
+All 9 vulnerabilities are **build-time only** (not exploitable in production runtime):
 
-### Remaining (build-time only, no runtime exposure)
-All 9 remaining vulnerabilities trace to build-time dependencies:
-- **braces <=3.0.3** (high): stack-exhaustion DoS via deeply nested glob patterns — no fix in 3.x; requires tailwindcss v4
-- **chokidar, micromatch, fast-glob** (high): transitive via braces — same root cause
-- **eslint-config-next / @next/eslint-plugin-next** (high): transitive via fast-glob/micromatch
-- **postcss-selector-parser <7.1.6** (moderate): quadratic complexity in flat selector parsing — requires tailwindcss v4
-- **postcss-nested** (moderate): transitive via postcss-selector-parser — same root cause
+1. **braces <=3.0.3** (high): stack-exhaustion DoS via deeply nested glob patterns — no fix in 3.x; requires tailwindcss v4
+2. **chokidar, micromatch, fast-glob** (high): transitive via braces — same root cause
+3. **eslint-config-next / @next/eslint-plugin-next** (high): transitive via fast-glob/micromatch/braces
+4. **postcss-selector-parser <7.1.6** (moderate): quadratic complexity in flat selector parsing — requires tailwindcss v4
+5. **postcss-nested** (moderate): transitive via postcss-selector-parser — same root cause
 
-**Risk assessment:** LOW — these are build-time dependencies only. The braces vulnerability requires processing specially crafted glob patterns during `npm run build` / `npx tailwindcss`, never at runtime. postcss-selector-parser is similarly build-time only.
+**Risk assessment:** LOW — braces is only invoked during `npm run build` / `npx tailwindcss` with developer-controlled glob patterns, never with user input at runtime. postcss-selector-parser is similarly build-time only. eslint runs only during development linting.
+
+`npm audit fix` (without --force) resolves 0 of 9. All fixes require breaking major version upgrades.
 
 ## Code Security Checks
 1. SSRF Protection: PASS — `validateSquarePath()` blocks `..`, `//`, `\\` and validates with strict regex `/^\/[a-zA-Z0-9/_-]+$/`
 2. API Auth: PASS — orders and update-order routes validate HttpOnly session cookies via `authenticateBarista()`
 3. Webhook Signatures: PASS — HMAC-SHA256 verified; fails closed (500) when key missing; constant-time comparison
-4. Input Validation: PASS — orderId/fulfillmentUid validated with `/^[a-zA-Z0-9_-]+$/`; state transitions whitelisted; create-order validates all inputs with length limits
+4. Input Validation: PASS — orderId/fulfillmentUid validated with `/^[a-zA-Z0-9_-]+$/`
 5. Security Headers: PASS — HSTS (2yr, includeSubDomains, preload), CSP, X-Frame-Options SAMEORIGIN, X-Content-Type-Options nosniff, Referrer-Policy, Permissions-Policy all configured
 6. Image Hostnames: PASS — specific domains only (squarecdn.com, euforyc.co.uk, momence.com, S3 bucket, localhost); no wildcard
 7. No Hardcoded Secrets: PASS — no `sk-`, `pk_live`, or hardcoded passwords found in app/, lib/, or components/
@@ -36,8 +35,8 @@ All 9 remaining vulnerabilities trace to build-time dependencies:
 10. Safe Health Checks: PASS — no health/status endpoints expose tokens or internal config
 
 ## Fixes Applied
-- sharp and source-map-js updated via npm audit fix (package-lock.json)
+- None needed — no new vulnerabilities since last scan; all code security checks pass
 
 ## Manual Action Required
-- **tailwindcss v3 → v4 migration:** Would resolve all 7 remaining high and 2 moderate vulnerabilities. Major version upgrade with breaking changes to configuration format. Runtime risk is LOW since these are build-time-only dependencies.
+- **tailwindcss v3 → v4 migration:** Would resolve all 7 high and 2 moderate vulnerabilities. Major version upgrade with breaking config/class changes. Runtime risk is LOW since these are build-time-only dependencies.
 - **CSP hardening (optional):** CSP includes `'unsafe-inline' 'unsafe-eval'` in `script-src`, common in Next.js apps. Migrating to nonce-based scripts would strengthen CSP but requires Next.js configuration changes.
