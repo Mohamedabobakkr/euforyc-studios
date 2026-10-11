@@ -302,8 +302,9 @@ export default function Contact() {
               <div className="h-px w-16 bg-[#1a260e]/20"></div>
             </div>
             <p className="font-sans text-sm text-[#1a260e]/70 max-w-2xl mx-auto">
-              We're located in Edgware, easily accessible by public transport.
-              Just a short walk from Edgware Station on the Northern Line.
+              We're at 7 Holmstall Ave, Edgware HA8 5HX. The nearest Underground station is
+              Burnt Oak on the Northern line, around a 10-minute walk. Colindale station is
+              around 15 to 20 minutes on foot.
             </p>
             <p className="font-sans text-xs text-[#1a260e]/50 tracking-wider uppercase">
               Bus routes: 32 • 142 • 186 • 204

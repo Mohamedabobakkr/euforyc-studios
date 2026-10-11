@@ -51,20 +51,23 @@ export default function CompactClassRow({ event, showDate = false }: CompactClas
     const startDate = new Date(event.startTime);
     const endDate = new Date(event.endTime);
 
+    // Studio time, whatever the server's or visitor's own timezone
     const time = startDate.toLocaleTimeString('en-GB', {
+        timeZone: 'Europe/London',
         hour: '2-digit',
         minute: '2-digit',
         hour12: false,
     });
 
     const endTime = endDate.toLocaleTimeString('en-GB', {
+        timeZone: 'Europe/London',
         hour: '2-digit',
         minute: '2-digit',
         hour12: false,
     });
 
     const dateStr = showDate
-        ? startDate.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' })
+        ? startDate.toLocaleDateString('en-GB', { timeZone: 'Europe/London', weekday: 'short', day: 'numeric', month: 'short' })
         : null;
 
     // Capacity visualization

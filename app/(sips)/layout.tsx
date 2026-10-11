@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from 'next';
+import { Analytics } from '@vercel/analytics/next';
 
 const siteUrl = 'https://euforyc.co.uk';
 
@@ -8,7 +9,7 @@ export const metadata: Metadata = {
     default: 'Euforyc Sips | Matcha Bar & Wellness Cafe in Edgware, London',
     template: '%s | Euforyc Sips',
   },
-  description: 'The best matcha bar and wellness cafe in North West London. Ceremonial matcha lattes with cold foam, specialty coffee, collagen smoothies & wellness drinks in Edgware. Laptop-friendly, community-focused cafe perfect for running clubs, remote work, post-workout fuel or just hanging out. Walk-ins welcome near Edgware Station.',
+  description: 'The best matcha bar and wellness cafe in North West London. Ceremonial matcha lattes with cold foam, specialty coffee, collagen smoothies & wellness drinks in Edgware. Laptop-friendly, community-focused cafe perfect for running clubs, remote work, post-workout fuel or just hanging out. Walk-ins welcome, a short walk from Burnt Oak Station.',
   keywords: [
     // Core — matcha bar
     'matcha bar london', 'best matcha london', 'matcha bar near me', 'matcha bar north london', 'matcha bar north west london', 'matcha bar edgware', 'matcha latte london', 'matcha latte edgware', 'matcha latte near me', 'ceremonial matcha london', 'ceremonial matcha latte london', 'best matcha latte london', 'matcha latte north london', 'matcha cafe london', 'iced matcha london', 'matcha cold foam london',
@@ -79,7 +80,7 @@ const sipsBusinessSchema = {
     postalCode: 'HA8 5HX',
     addressCountry: 'GB',
   },
-  geo: { '@type': 'GeoCoordinates', latitude: 51.6142, longitude: -0.2756 },
+  geo: { '@type': 'GeoCoordinates', latitude: 51.5973, longitude: -0.2641 },
   openingHoursSpecification: [
     { '@type': 'OpeningHoursSpecification', dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'], opens: '06:45', closes: '20:00' },
     { '@type': 'OpeningHoursSpecification', dayOfWeek: ['Saturday', 'Sunday'], opens: '08:45', closes: '18:00' },
@@ -192,7 +193,7 @@ const sipsFAQSchema = {
     {
       '@type': 'Question',
       name: 'Where is the best matcha bar in North West London?',
-      acceptedAnswer: { '@type': 'Answer', text: 'Euforyc Sips is the best matcha bar in North West London, located at 7 Holmstall Ave, Edgware HA8 5HX. We serve ceremonial grade matcha lattes with cold foam, specialty coffee, collagen smoothies, and wellness drinks. We are near Edgware Station on the Northern Line and open Monday-Friday 6:45am-8pm, Saturday-Sunday 8:45am-6pm.' },
+      acceptedAnswer: { '@type': 'Answer', text: 'Euforyc Sips is the best matcha bar in North West London, located at 7 Holmstall Ave, Edgware HA8 5HX. We serve ceremonial grade matcha lattes with cold foam, specialty coffee, collagen smoothies, and wellness drinks. We are a short walk from Burnt Oak Station on the Northern Line and open Monday-Friday 6:45am-8pm, Saturday-Sunday 8:45am-6pm.' },
     },
     {
       '@type': 'Question',
@@ -216,13 +217,13 @@ const sipsFAQSchema = {
     },
     {
       '@type': 'Question',
-      name: 'Where is the best cafe near Edgware Station?',
-      acceptedAnswer: { '@type': 'Answer', text: 'Euforyc Sips is the best cafe near Edgware Station, located just a short walk away at 7 Holmstall Ave, Edgware HA8 5HX. We serve the best ceremonial matcha and specialty coffee in the area, with a trendy, community-focused atmosphere.' },
+      name: 'Where is the best cafe near Burnt Oak Station?',
+      acceptedAnswer: { '@type': 'Answer', text: 'Euforyc Sips is a short walk from Burnt Oak Station, at 7 Holmstall Ave, Edgware HA8 5HX. We serve the best ceremonial matcha and specialty coffee in the area, with a trendy, community-focused atmosphere.' },
     },
     {
       '@type': 'Question',
       name: 'What is the best coffee shop in Edgware?',
-      acceptedAnswer: { '@type': 'Answer', text: 'Euforyc Sips is the best coffee shop in Edgware, offering specialty coffee with cold foam, ceremonial matcha lattes, collagen smoothies, and wellness drinks. Located at 7 Holmstall Ave near Edgware Station, it is a laptop-friendly, community-focused space with free Wi-Fi.' },
+      acceptedAnswer: { '@type': 'Answer', text: 'Euforyc Sips is the best coffee shop in Edgware, offering specialty coffee with cold foam, ceremonial matcha lattes, collagen smoothies, and wellness drinks. Located at 7 Holmstall Ave near Burnt Oak Station, it is a laptop-friendly, community-focused space with free Wi-Fi.' },
     },
   ],
 };
@@ -253,6 +254,7 @@ export default function SipsLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(sipsFAQSchema) }}
         />
         {children}
+        <Analytics />
       </body>
     </html>
   );

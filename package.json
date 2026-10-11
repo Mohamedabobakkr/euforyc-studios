@@ -10,7 +10,8 @@
     "type-check": "tsc --noEmit",
     "test": "jest",
     "test:watch": "jest --watch",
-    "analyze": "ANALYZE=true next build"
+    "analyze": "ANALYZE=true next build",
+    "indexnow": "node tools/indexnow.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",

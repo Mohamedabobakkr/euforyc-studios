@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { Instagram, Mail } from 'lucide-react';
 import { TikTokIcon } from './icons/TikTokIcon';
+import { STUDIO } from '@/lib/site';
 
 const Footer = () => {
   return (
@@ -21,6 +22,30 @@ const Footer = () => {
               STUDIO
             </h4>
             <div className="space-y-2">
+              <Link
+                href="/classes"
+                className="block font-sans text-sm opacity-80 hover:opacity-100 transition-opacity"
+              >
+                Classes
+              </Link>
+              <Link
+                href="/schedule"
+                className="block font-sans text-sm opacity-80 hover:opacity-100 transition-opacity"
+              >
+                Timetable
+              </Link>
+              <Link
+                href="/pricing"
+                className="block font-sans text-sm opacity-80 hover:opacity-100 transition-opacity"
+              >
+                Prices
+              </Link>
+              <Link
+                href="/reviews"
+                className="block font-sans text-sm opacity-80 hover:opacity-100 transition-opacity"
+              >
+                Reviews
+              </Link>
               <Link
                 href="/about"
                 className="block font-sans text-sm opacity-80 hover:opacity-100 transition-opacity"
@@ -60,9 +85,17 @@ const Footer = () => {
               >
                 euforyc@gmail.com
               </a>
-              <p className="font-sans text-sm opacity-80">
-                London, UK
-              </p>
+              <a
+                href={`tel:${STUDIO.phoneE164}`}
+                className="block font-sans text-sm opacity-80 hover:opacity-100 transition-opacity"
+              >
+                {STUDIO.phoneDisplay}
+              </a>
+              <address className="font-sans text-sm opacity-80 not-italic">
+                {STUDIO.address.street}, {STUDIO.address.locality}
+                <br />
+                {STUDIO.address.region} {STUDIO.address.postcode}
+              </address>
               <div className="space-y-2">
                 <a
                   href="https://www.instagram.com/euforycstudios?igsh=b3A0aDNpbXEzczR2&utm_source=qr"

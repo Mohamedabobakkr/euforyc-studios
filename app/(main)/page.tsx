@@ -3,18 +3,26 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { MapPin, Clock } from 'lucide-react';
 import CircularText from '@/components/CircularText';
-import MomenceReviews from '@/components/MomenceReviews';
+import ReviewCards from '@/components/ReviewCards';
 import HeroSlideshow from '@/components/HeroSlideshow';
-import { Analytics } from '@vercel/analytics/next';
-import { SpeedInsights } from "@vercel/speed-insights/next"
+import { STUDIO, pageMetadata } from '@/lib/site';
+import { getReviews } from '@/lib/studio-data';
 
-export const metadata: Metadata = {
-  title: 'EUFORYC STUDIOS | Women\'s Pilates Studio London | Reformer & Hot Pilates Edgware',
-  description: 'London\'s premier women-only pilates studio in Edgware. Reformer pilates, hot infrared pilates, red light therapy, barre, dance & private 1:1 sessions. Small intimate classes. Try It All intro offer £60. Book now.',
-  alternates: { canonical: 'https://euforyc.co.uk' },
-};
+// Reviews refresh every 6 hours
+export const revalidate = 21600;
 
-export default function Home() {
+export const metadata: Metadata = pageMetadata({
+  title: 'Euforyc Studios | Women-Only Pilates Studio in Edgware, North West London',
+  description: 'Women-only boutique Pilates studio in Edgware, North West London. Reformer Pilates, infrared Hot Pilates, Red Light Hot Pilates, Sculpt, Barre, Belly Dance and private 1:1 sessions in classes of up to 8. First-time clients: 3 classes for £60.',
+  path: '/',
+  absoluteTitle: true,
+});
+
+export default async function Home() {
+  const { reviews, total: reviewCount } = await getReviews();
+  // Lead with reviews that say something specific
+  const featuredReviews = reviews.filter((review) => review.comment.length >= 80).slice(0, 6);
+
   return (
     <div>
       {/* Hero Section - Full Screen with Background Image */}
@@ -40,6 +48,33 @@ export default function Home() {
               </Link>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Studio at a glance */}
+      <section className="px-8 py-16 md:px-16 md:py-20 lg:px-24 xl:px-32 2xl:px-48 bg-[#fffcf2] border-b border-[#1a260e]/10">
+        <div className="container-width max-w-5xl text-center space-y-10">
+          <div className="space-y-5">
+            <h2 className="font-serif text-2xl md:text-3xl lg:text-4xl font-light text-[#1a260e] leading-tight">
+              Women-only Pilates in Edgware, North West London
+            </h2>
+            <p className="body-text max-w-3xl mx-auto">
+              {STUDIO.shortDescription} Find us at {STUDIO.addressLine}, a short walk from Burnt Oak station.
+            </p>
+          </div>
+          <dl className="grid grid-cols-2 md:grid-cols-4 gap-x-8 gap-y-8">
+            {[
+              { label: 'Class size', value: 'Up to 8' },
+              { label: 'Class length', value: '45 minutes' },
+              { label: 'Drop-in', value: 'From £20' },
+              { label: 'Intro offer', value: '3 classes for £60' },
+            ].map((fact) => (
+              <div key={fact.label}>
+                <dt className="font-sans text-[11px] tracking-[0.15em] uppercase text-[#1a260e]/50">{fact.label}</dt>
+                <dd className="font-serif text-xl md:text-2xl text-[#1a260e] mt-1">{fact.value}</dd>
+              </div>
+            ))}
+          </dl>
         </div>
       </section>
 
@@ -70,7 +105,7 @@ export default function Home() {
             <div className="relative h-[500px] bg-[#fffcf2]">
               <Image
                 src="/euforyc.jpg"
-                alt="Euforyc Studios pilates studio London Edgware boutique fitness"
+                alt="Euforyc Studios, a women-only Pilates studio in Edgware"
                 fill
                 className="object-contain"
                 quality={100}
@@ -92,11 +127,11 @@ export default function Home() {
           <div className="flex md:grid md:grid-cols-5 gap-5 overflow-x-auto md:overflow-visible snap-x snap-mandatory pb-6 md:pb-0 -mx-8 px-8 md:mx-0 md:px-0 scrollbar-hide">
 
             {/* Reformer Pilates */}
-            <Link href="/packages" className="group block min-w-[70vw] md:min-w-0 snap-center">
+            <Link href="/classes/reformer-pilates" className="group block min-w-[70vw] md:min-w-0 snap-center">
               <div className="relative overflow-hidden aspect-[3/4]">
                 <Image
                   src="/reformer-new.jpg"
-                  alt="Reformer pilates classes London Euforyc Studios"
+                  alt="A client in a pike position on a Pilates reformer at Euforyc Studios in Edgware"
                   fill
                   className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                   sizes="(max-width: 768px) 50vw, 20vw"
@@ -115,11 +150,11 @@ export default function Home() {
             </Link>
 
             {/* Hot Infrared Mat Pilates */}
-            <Link href="/packages" className="group block min-w-[70vw] md:min-w-0 snap-center">
+            <Link href="/classes/hot-pilates" className="group block min-w-[70vw] md:min-w-0 snap-center">
               <div className="relative overflow-hidden aspect-[3/4]">
                 <Image
                   src="/hotpilates-new.jpg"
-                  alt="Hot infrared heated mat pilates London Euforyc Studios"
+                  alt="The infrared-heated mat studio at Euforyc Studios with oval mats, arched mirrors and ceiling heaters"
                   fill
                   className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                   sizes="(max-width: 768px) 50vw, 20vw"
@@ -138,11 +173,11 @@ export default function Home() {
             </Link>
 
             {/* Redlight Mat Pilates */}
-            <Link href="/packages" className="group block min-w-[70vw] md:min-w-0 snap-center">
+            <Link href="/classes/red-light-pilates" className="group block min-w-[70vw] md:min-w-0 snap-center">
               <div className="relative overflow-hidden aspect-[3/4]">
                 <Image
                   src="/redlight-new.jpg"
-                  alt="Redlight mat pilates London Euforyc Studios"
+                  alt="Women in protective goggles hold a lunge on red light therapy mats at Euforyc Studios"
                   fill
                   className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                   sizes="(max-width: 768px) 50vw, 20vw"
@@ -161,11 +196,11 @@ export default function Home() {
             </Link>
 
             {/* Barre */}
-            <Link href="/packages" className="group block min-w-[70vw] md:min-w-0 snap-center">
+            <Link href="/classes/barre" className="group block min-w-[70vw] md:min-w-0 snap-center">
               <div className="relative overflow-hidden aspect-[3/4]">
                 <Image
                   src="/hero/IMG_8698.JPG"
-                  alt="Barre classes London Euforyc Studios"
+                  alt="A client extends one leg along the ballet barre in front of arched mirrors at Euforyc Studios"
                   fill
                   className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                   sizes="(max-width: 768px) 50vw, 20vw"
@@ -184,11 +219,11 @@ export default function Home() {
             </Link>
 
             {/* Dance */}
-            <Link href="/packages" className="group block min-w-[70vw] md:min-w-0 snap-center">
+            <Link href="/classes/belly-dance" className="group block min-w-[70vw] md:min-w-0 snap-center">
               <div className="relative overflow-hidden aspect-[3/4]">
                 <Image
                   src="/dance-new.jpg"
-                  alt="Dance classes London Euforyc Studios"
+                  alt="A belly dancer in a beaded costume leans back in a studio portrait"
                   fill
                   className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                   sizes="(max-width: 768px) 50vw, 20vw"
@@ -208,8 +243,11 @@ export default function Home() {
 
           </div>
 
-          <div className="text-center mt-16 md:mt-24">
-            <Link href="/book" className="btn-primary">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mt-16 md:mt-24">
+            <Link href="/classes" className="btn-secondary">
+              ALL CLASSES
+            </Link>
+            <Link href="/schedule" className="btn-primary">
               VIEW SCHEDULE
             </Link>
           </div>
@@ -224,7 +262,15 @@ export default function Home() {
             <p className="tagline">REAL REVIEWS FROM OUR CLIENTS</p>
           </div>
 
-          <MomenceReviews />
+          <ReviewCards reviews={featuredReviews} />
+
+          {reviewCount > 0 && (
+            <div className="text-center mt-14">
+              <Link href="/reviews" className="btn-minimal">
+                READ ALL {reviewCount} REVIEWS
+              </Link>
+            </div>
+          )}
         </div>
       </section>
 
@@ -276,7 +322,7 @@ export default function Home() {
                 </p>
               </div>
               <p className="text-[10px] md:text-xs text-[#1a260e]/60 text-center">
-                Serving North London: Edgware, Barnet, Mill Hill, Finchley & surrounding areas
+                Nearest station: Burnt Oak (Northern line). Close to Colindale, Queensbury, Kingsbury, Mill Hill and Hendon
               </p>
             </div>
 
@@ -345,8 +391,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-      <Analytics />
-      <SpeedInsights />
     </div>
   );
 }

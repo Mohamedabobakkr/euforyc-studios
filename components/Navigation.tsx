@@ -18,6 +18,7 @@ const Navigation = () => {
 
   const leftNavItems: NavItem[] = [
     { href: '/skin-studio', label: 'SKIN STUDIO' },
+    { href: '/classes', label: 'CLASSES' },
     { href: '/about', label: 'ABOUT' },
     { href: '/team', label: 'TEAM' },
     { href: '/gift-cards', label: 'GIFTING' },
@@ -40,7 +41,7 @@ const Navigation = () => {
           {/* Desktop Navigation */}
           <div className="hidden xl:grid grid-cols-[1fr_auto_1fr] items-center gap-3 xl:gap-6 2xl:gap-8">
             {/* Left Navigation */}
-            <div className="flex items-center justify-end space-x-2 lg:space-x-3 xl:space-x-4">
+            <div className="flex items-center justify-end space-x-2 lg:space-x-3 2xl:space-x-4">
               {leftNavItems.map((item) => (
                 item.external ? (
                   <a
@@ -90,20 +91,20 @@ const Navigation = () => {
               href="/"
               className="flex items-center justify-center group transition-all duration-300 hover:scale-105 px-2"
             >
-              <div className="relative w-[320px] lg:w-[380px] xl:w-[450px] h-[90px] lg:h-[110px] xl:h-[120px]">
+              <div className="relative w-[320px] lg:w-[380px] xl:w-[250px] h-[90px] lg:h-[110px] xl:h-[120px]">
                 <Image
                   src="/logo.png"
                   alt="Euforyc Studios - Premier Pilates Studio London Edgware"
                   fill
                   className="object-contain"
                   priority
-                  sizes="(max-width: 1024px) 320px, (max-width: 1280px) 380px, 450px"
+                  sizes="(max-width: 1024px) 320px, (max-width: 1280px) 380px, 250px"
                 />
               </div>
             </Link>
 
             {/* Right Navigation */}
-            <div className="flex items-center justify-start space-x-2 lg:space-x-3 xl:space-x-4">
+            <div className="flex items-center justify-start space-x-2 lg:space-x-3 2xl:space-x-4">
               {rightNavItems.map((item) => (
                 <Link
                   key={item.href}

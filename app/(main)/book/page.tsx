@@ -358,8 +358,9 @@ export default function Book() {
               </div>
               <h3 className="font-playfair text-lg font-light">What to Bring</h3>
               <p className="body-text text-sm">
-                Just bring yourself! We provide all equipment, mats, and towels.
-                Wear comfortable workout clothes and grip socks if you have them.
+                We provide all equipment and mats. Wear comfortable workout clothes.
+                Grip socks are mandatory for Reformer Pilates, and you need your own
+                towel for Hot Pilates. Both can be bought at the studio.
               </p>
             </div>
 

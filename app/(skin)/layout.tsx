@@ -7,6 +7,7 @@ import type { Metadata } from 'next';
 import { Nunito_Sans } from 'next/font/google';
 import Link from 'next/link';
 import Image from 'next/image';
+import { Analytics } from '@vercel/analytics/next';
 
 const nunito = Nunito_Sans({
     subsets: ['latin'],
@@ -67,7 +68,7 @@ const skinStudioSchema = {
     telephone: '+447375710370',
     email: 'euforyc@gmail.com',
     address: { '@type': 'PostalAddress', streetAddress: '7 Holmstall Ave', addressLocality: 'Edgware', addressRegion: 'London', postalCode: 'HA8 5HX', addressCountry: 'GB' },
-    geo: { '@type': 'GeoCoordinates', latitude: 51.6142, longitude: -0.2756 },
+    geo: { '@type': 'GeoCoordinates', latitude: 51.5973, longitude: -0.2641 },
     openingHoursSpecification: [
         { '@type': 'OpeningHoursSpecification', dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'], opens: '06:45', closes: '20:00' },
         { '@type': 'OpeningHoursSpecification', dayOfWeek: ['Saturday', 'Sunday'], opens: '08:45', closes: '18:00' },
@@ -208,6 +209,7 @@ export default function SkinStudioLayout({
                         </div>
                     </footer>
                 </div>
+                <Analytics />
             </body>
         </html>
     );

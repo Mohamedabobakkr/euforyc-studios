@@ -1,13 +1,10 @@
-import type { Metadata } from 'next';
+import { pageMetadata } from '@/lib/site';
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: 'About Us | Our Story & Philosophy',
-  description: 'Discover the story behind London\'s premier women-only pilates studio. Euforyc combines euphoria, you, and organic — creating a space where every woman discovers her strength through reformer pilates, hot pilates, and wellness in Edgware.',
-  keywords: ['about euforyc studios', 'women only pilates london story', 'pilates studio philosophy', 'boutique pilates edgware', 'euforyc meaning', 'pilates studio edgware about'],
-  alternates: {
-    canonical: 'https://euforyc.co.uk/about',
-  },
-};
+  description: 'The story behind Euforyc Studios, a women-only boutique Pilates studio in Edgware, North West London. Euforyc combines euphoria, you and organic: a space where every woman can build strength through Reformer Pilates, Hot Pilates and wellness.',
+  path: '/about',
+});
 
 export default function AboutLayout({ children }: { children: React.ReactNode }) {
   return children;

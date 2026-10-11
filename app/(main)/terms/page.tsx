@@ -1,9 +1,10 @@
-import type { Metadata } from 'next';
+import { pageMetadata } from '@/lib/site';
 
-export const metadata: Metadata = {
-  title: 'Terms of Service - Euforyc Studios',
-  description: 'Terms of Service and copyright information for Euforyc Studios website.',
-};
+export const metadata = pageMetadata({
+  title: 'Terms of Service',
+  description: 'Terms of Service and copyright information for the Euforyc Studios website.',
+  path: '/terms',
+});
 
 export default function Terms() {
   return (

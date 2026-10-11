@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect, Suspense, useRef } from 'react';
-import { useSearchParams } from 'next/navigation';
 import { Sparkles, Flame, Zap, Heart, Crown, ChevronRight, Dumbbell, Music } from 'lucide-react';
 
 // Services Schema for SEO
@@ -105,19 +104,18 @@ const getIcon = (icon: string, className?: string) => {
   }
 };
 
-// Intro section with useSearchParams
+// Intro section — reads ?offer= after mount so it can be rendered as static HTML
 function IntroOffersSection() {
-  const searchParams = useSearchParams();
   const [selectedOffer, setSelectedOffer] = useState<IntroOfferType>('try-all');
   const [fromAd, setFromAd] = useState(false);
 
   useEffect(() => {
-    const offer = searchParams.get('offer') as IntroOfferType | null;
+    const offer = new URLSearchParams(window.location.search).get('offer') as IntroOfferType | null;
     if (offer && ['try-all'].includes(offer)) {
       setSelectedOffer(offer);
       setFromAd(true);
     }
-  }, [searchParams]);
+  }, []);
 
   const introPackages = packages.intro.packages;
   const currentPackage = introPackages.find(pkg => pkg.id === selectedOffer) || introPackages[0];

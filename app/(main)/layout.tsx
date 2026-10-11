@@ -9,7 +9,12 @@ import { Inter, Playfair_Display } from 'next/font/google';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import PixelTracker from '@/components/PixelTracker';
+import JsonLd from '@/components/JsonLd';
 import Script from 'next/script';
+import { Analytics } from '@vercel/analytics/next';
+import { SpeedInsights } from '@vercel/speed-insights/next';
+import { ORDERED_CLASS_TYPES } from '@/lib/classes';
+import { DEFAULT_OG_IMAGE, ORGANIZATION_ID, SITE_URL, STUDIO, postalAddressSchema } from '@/lib/site';
 
 // Euforyc Pilates Facebook Pixel ID
 const EUFORYC_PIXEL_ID = '1085377523538304';
@@ -31,7 +36,7 @@ const playfairDisplay = Playfair_Display({
   preload: true,
 });
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://euforyc.co.uk';
+const siteUrl = SITE_URL;
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -39,7 +44,7 @@ export const metadata: Metadata = {
     default: 'EUFORYC STUDIOS • Pilates • Wellness • Strength',
     template: '%s | EUFORYC STUDIOS'
   },
-  description: 'The best women-only pilates studio in North West London. Reformer pilates, hot infrared pilates, red light therapy, barre, dance & private 1:1 sessions in Edgware. Small intimate classes, max 8. Try It All intro offer £60. Near Edgware Station.',
+  description: 'Women-only boutique Pilates studio in Edgware, North West London. Reformer Pilates, infrared Hot Pilates, Red Light Hot Pilates, Sculpt, Barre, Belly Dance and private 1:1 sessions in classes of up to 8. First-time clients: 3 classes for £60.',
   keywords: [
     // North West London — primary target
     'pilates north west london', 'pilates nw london', 'pilates studio north west london', 'reformer pilates north west london', 'best pilates north west london', 'hot pilates north west london', 'women only pilates north west london', 'pilates classes north west london', 'barre classes north west london', 'pilates studio nw london',
@@ -62,28 +67,21 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
+  // Page-level metadata (lib/site.ts pageMetadata) sets canonical and og:url;
+  // these are only fallbacks, so neither is set here.
   openGraph: {
-    title: 'EUFORYC STUDIOS | Best Women\'s Pilates Studio in North West London',
-    description: 'The best women-only pilates studio in North West London. Reformer pilates, hot infrared pilates, red light therapy, barre, dance & private 1:1 sessions in Edgware. Small intimate classes, max 8. Try It All intro offer £60.',
-    url: siteUrl,
+    title: 'Euforyc Studios | Women-Only Pilates Studio in Edgware, North West London',
+    description: 'Women-only boutique Pilates studio in Edgware, North West London. Reformer Pilates, infrared Hot Pilates, Red Light Hot Pilates, Sculpt, Barre, Belly Dance and private 1:1 sessions.',
     siteName: 'Euforyc Studios',
     locale: 'en_GB',
     type: 'website',
-    images: [
-      {
-        url: `${siteUrl}/logo.png`,
-        width: 600,
-        height: 600,
-        alt: 'Euforyc Studios - Women\'s Only Pilates Studio in London, Edgware',
-      }
-    ],
+    images: [DEFAULT_OG_IMAGE],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'EUFORYC STUDIOS | Best Women\'s Pilates Studio in North West London',
-    description: 'The best women-only pilates studio in North West London. Reformer pilates, hot infrared pilates, barre, dance & private sessions in Edgware. Try It All intro offer £60.',
-    site: '@euforycstudios',
-    images: [`${siteUrl}/logo.png`],
+    title: 'Euforyc Studios | Women-Only Pilates Studio in Edgware, North West London',
+    description: 'Reformer Pilates, infrared Hot Pilates, Red Light Hot Pilates, Sculpt, Barre and private sessions in Edgware. First-time clients: 3 classes for £60.',
+    images: [DEFAULT_OG_IMAGE.url],
   },
   robots: {
     index: true,
@@ -96,9 +94,6 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
-  alternates: {
-    canonical: siteUrl,
-  },
 };
 
 export const viewport: Viewport = {
@@ -108,51 +103,37 @@ export const viewport: Viewport = {
   themeColor: '#fffcf2',
 };
 
-// Enhanced Structured Data for Local Business
+// Structured data for the studio, built from the shared facts in lib/site.ts
 const structuredData = {
   '@context': 'https://schema.org',
   '@type': ['HealthAndBeautyBusiness', 'LocalBusiness', 'SportsActivityLocation'],
-  '@id': `${siteUrl}/#organization`,
-  name: 'Euforyc Studios',
+  '@id': ORGANIZATION_ID,
+  name: STUDIO.name,
   alternateName: 'Euforyc Pilates Studio',
-  description: 'London\'s premier women-only pilates studio in Edgware offering reformer pilates, hot infrared pilates, red light therapy, barre, dance and private 1:1 sessions. Small intimate classes with expert instructors.',
+  description: STUDIO.shortDescription,
   url: siteUrl,
-  telephone: '+447375710370',
-  email: 'euforyc@gmail.com',
-  address: {
-    '@type': 'PostalAddress',
-    streetAddress: '7 Holmstall Ave',
-    addressLocality: 'Edgware',
-    addressRegion: 'London',
-    postalCode: 'HA8 5HX',
-    addressCountry: 'GB'
-  },
+  telephone: STUDIO.phoneE164,
+  email: STUDIO.email,
+  address: postalAddressSchema,
   geo: {
     '@type': 'GeoCoordinates',
-    latitude: 51.6142,
-    longitude: -0.2756
+    latitude: STUDIO.geo.latitude,
+    longitude: STUDIO.geo.longitude,
   },
-  openingHoursSpecification: [
-    {
-      '@type': 'OpeningHoursSpecification',
-      dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
-      opens: '06:45',
-      closes: '20:00'
-    },
-    {
-      '@type': 'OpeningHoursSpecification',
-      dayOfWeek: ['Saturday', 'Sunday'],
-      opens: '08:45',
-      closes: '18:00'
-    }
-  ],
+  openingHoursSpecification: STUDIO.hours.map((period) => ({
+    '@type': 'OpeningHoursSpecification',
+    dayOfWeek: period.days,
+    opens: period.opens,
+    closes: period.closes,
+  })),
   priceRange: '££',
-  image: `${siteUrl}/logo.png`,
-  logo: `${siteUrl}/logo.png`,
-  sameAs: [
-    'https://www.instagram.com/euforycstudios',
-    'https://www.tiktok.com/@euforyc'
+  image: [
+    `${siteUrl}/og/euforyc-studios-shopfront-edgware.jpg`,
+    DEFAULT_OG_IMAGE.url,
+    `${siteUrl}/reformer-new.jpg`,
   ],
+  logo: `${siteUrl}/logo.png`,
+  sameAs: [STUDIO.social.instagram, STUDIO.social.tiktok],
   paymentAccepted: ['Cash', 'Credit Card', 'Debit Card', 'Apple Pay', 'Google Pay'],
   currenciesAccepted: 'GBP',
   amenityFeature: [
@@ -180,90 +161,17 @@ const structuredData = {
   hasOfferCatalog: {
     '@type': 'OfferCatalog',
     name: 'Pilates Classes and Services',
-    itemListElement: [
-      {
-        '@type': 'Offer',
-        itemOffered: {
-          '@type': 'Service',
-          name: 'Reformer Pilates Classes',
-          description: 'Equipment-based group pilates classes'
-        }
+    itemListElement: ORDERED_CLASS_TYPES.map((classType) => ({
+      '@type': 'Offer',
+      itemOffered: {
+        '@type': 'Service',
+        name: classType.name,
+        description: classType.tagline,
+        url: `${siteUrl}/classes/${classType.slug}`,
       },
-      {
-        '@type': 'Offer',
-        itemOffered: {
-          '@type': 'Service',
-          name: 'Hot Pilates Classes',
-          description: 'Dynamic heated mat pilates classes'
-        }
-      },
-      {
-        '@type': 'Offer',
-        itemOffered: {
-          '@type': 'Service',
-          name: '1-1 Private Cadillac Reformer Sessions',
-          description: 'One-on-one personalised pilates training on Cadillac Reformer with expert instructors, 60 min sessions'
-        }
-      },
-      {
-        '@type': 'Offer',
-        itemOffered: {
-          '@type': 'Service',
-          name: 'Red Light Hot Pilates',
-          description: 'Hot pilates combined with red light therapy for enhanced recovery and skin rejuvenation'
-        }
-      },
-      {
-        '@type': 'Offer',
-        itemOffered: {
-          '@type': 'Service',
-          name: 'Barre Classes',
-          description: 'Ballet-inspired movement classes that lengthen, tone, and define muscles'
-        }
-      },
-      {
-        '@type': 'Offer',
-        itemOffered: {
-          '@type': 'Service',
-          name: 'Dance Classes',
-          description: 'Belly Dance classes for self-expression through rhythm'
-        }
-      },
-      {
-        '@type': 'Offer',
-        itemOffered: {
-          '@type': 'Service',
-          name: 'Sculpt Mat Pilates',
-          description: 'Strength-focused mat work for toning and sculpting'
-        }
-      },
-      {
-        '@type': 'Offer',
-        itemOffered: {
-          '@type': 'Service',
-          name: "Women's Circle",
-          description: "Guided journaling sessions and women's circles — reflection, remembrance and sisterhood in a gentle women-only space"
-        }
-      }
-    ]
+    })),
   },
-  areaServed: [
-    { '@type': 'City', name: 'London' },
-    { '@type': 'City', name: 'North West London' },
-    { '@type': 'City', name: 'Edgware' },
-    { '@type': 'City', name: 'Barnet' },
-    { '@type': 'City', name: 'Mill Hill' },
-    { '@type': 'City', name: 'Finchley' },
-    { '@type': 'City', name: 'Burnt Oak' },
-    { '@type': 'City', name: 'Colindale' },
-    { '@type': 'City', name: 'Stanmore' },
-    { '@type': 'City', name: 'Harrow' },
-    { '@type': 'City', name: 'Hendon' },
-    { '@type': 'City', name: 'Kingsbury' },
-    { '@type': 'City', name: 'Wembley' },
-    { '@type': 'City', name: 'Canons Park' },
-    { '@type': 'City', name: 'Queensbury' }
-  ],
+  areaServed: STUDIO.areas.map((name) => ({ '@type': 'Place', name })),
   knowsAbout: [
     'Pilates',
     'Reformer Pilates',
@@ -271,14 +179,13 @@ const structuredData = {
     'Infrared Pilates',
     'Red Light Therapy',
     'Barre',
-    'Dance Fitness',
-    'Fitness',
-    'Wellness',
+    'Postnatal Pilates',
+    'Belly Dance',
     'Women\'s Health',
     'Core Strength',
     'Flexibility Training'
   ],
-  hasMap: 'https://maps.app.goo.gl/zZfyhD3X2BuS6SnL6',
+  hasMap: STUDIO.mapsUrl,
 };
 
 const websiteSchema = {
@@ -346,6 +253,26 @@ export default function RootLayout({
                 }
                 return id;
               } catch (e) { return null; }
+            })();
+
+            // Remember when a visit arrives from an AI assistant, so a booking made
+            // later in the session is credited to it in Momence rather than to Meta
+            var euforycAiSource = (function() {
+              try {
+                var stored = sessionStorage.getItem('euforyc_ai_source');
+                if (stored) return stored;
+                var assistants = ['chatgpt.com', 'chat.openai.com', 'perplexity.ai', 'gemini.google.com', 'copilot.microsoft.com', 'claude.ai', 'meta.ai', 'chat.mistral.ai', 'duck.ai'];
+                var candidates = [(new URLSearchParams(window.location.search).get('utm_source') || '').toLowerCase()];
+                if (document.referrer) candidates.push(new URL(document.referrer).hostname.toLowerCase());
+                for (var i = 0; i < candidates.length; i++) {
+                  var host = candidates[i].indexOf('www.') === 0 ? candidates[i].slice(4) : candidates[i];
+                  if (assistants.indexOf(host) !== -1) {
+                    sessionStorage.setItem('euforyc_ai_source', host);
+                    return host;
+                  }
+                }
+              } catch (e) {}
+              return null;
             })();
 
             function euforycReadCookie(name) {
@@ -442,6 +369,10 @@ export default function RootLayout({
                 var href = target.getAttribute('href');
                 if (href && href.indexOf('momence.com') !== -1) {
                   var url = new URL(href, window.location.origin);
+                  if (euforycAiSource) {
+                    if (!url.searchParams.has('utm_source')) url.searchParams.set('utm_source', euforycAiSource);
+                    if (!url.searchParams.has('utm_medium')) url.searchParams.set('utm_medium', 'ai_assistant');
+                  }
                   if (!url.searchParams.has('utm_source')) url.searchParams.set('utm_source', 'meta');
                   if (!url.searchParams.has('utm_medium')) url.searchParams.set('utm_medium', 'paid_social');
                   if (!url.searchParams.has('utm_campaign')) url.searchParams.set('utm_campaign', offerId);
@@ -509,15 +440,9 @@ export default function RootLayout({
         <link rel="preconnect" href="https://connect.facebook.net" />
 
         {/* Structured Data - Organization */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
-        />
+        <JsonLd data={structuredData} />
         {/* Structured Data - WebSite */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
-        />
+        <JsonLd data={websiteSchema} />
       </head>
       <body className="font-sans bg-[#fffcf2] text-[#1a260e] antialiased" suppressHydrationWarning>
         {/* Skip to content for accessibility */}
@@ -531,6 +456,8 @@ export default function RootLayout({
           {children}
         </main>
         <Footer />
+        <Analytics />
+        <SpeedInsights />
 
         {/* Copyright Protection */}
         <Script id="copyright-protection" strategy="afterInteractive">

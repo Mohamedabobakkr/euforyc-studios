@@ -1,13 +1,12 @@
-import type { Metadata } from 'next';
+import { pageMetadata } from '@/lib/site';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 
-export const metadata: Metadata = {
-  title: 'Pricing | Pilates Classes & Packages',
-  description: 'Transparent pricing at Euforyc Studios Edgware. Group class drop-ins £28 (Sculpt Mat Pilates & Belly Dance £20), Try It All intro offer 3 classes for £60, Euforyc Package from £105, MOVE package from £70, Euforyc Membership from £90/month.',
-  keywords: ['pilates prices london', 'reformer pilates cost london', 'hot pilates price edgware', 'pilates class cost near me', 'pilates membership london', 'pilates pricing uk'],
-  alternates: { canonical: 'https://euforyc.co.uk/pricing' },
-};
+export const metadata = pageMetadata({
+  title: 'Prices | Pilates Classes, Packages & Memberships',
+  description: 'Prices at Euforyc Studios in Edgware. Group class drop-ins £28 (Sculpt and Belly Dance £20), Try It All intro offer 3 classes for £60, Euforyc Package from £105, MOVE package from £70, Euforyc Membership from £90 a month, private 1:1 sessions £75.',
+  path: '/pricing',
+});
 
 export default function Pricing() {
   return (
