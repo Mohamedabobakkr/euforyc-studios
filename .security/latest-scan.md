@@ -1,11 +1,11 @@
 # Security Scan Report
 
-**Date:** 2026-10-12 03:30 UTC
+**Date:** 2026-10-12 11:30 UTC
 **Status:** FIXES_APPLIED
 
 ## npm audit
 - Critical: 0
-- High: 7 (all braces/micromatch via tailwindcss v3 — build-time only, requires semver-major upgrade to v4)
+- High: 7 (down from 9 — fixed sharp CVE-2026-96889 and source-map-js GHSA-68fv-2mgg-jv7q)
 - Moderate: 2 (postcss-selector-parser via tailwindcss v3 — build-time only)
 - Low: 0
 
@@ -36,8 +36,9 @@
 10. Safe Health Checks: PASS — no health/status endpoints expose tokens or internal config
 
 ## Fixes Applied
-- sharp and source-map-js updated to patched versions (applied in prior session, confirmed this scan)
+- sharp and source-map-js updated to patched versions (confirmed this scan and prior session today)
 
 ## Manual Action Required
 - **tailwindcss v3 → v4 migration:** Would resolve all 9 remaining vulnerabilities (7 high, 2 moderate). This is a major version upgrade with breaking changes to configuration format (tailwind.config.js → CSS-based config). Recommend scheduling as a planned migration sprint. Runtime risk is LOW since these are build-time-only dependencies.
 - **CSP hardening (optional):** CSP includes `'unsafe-inline' 'unsafe-eval'` in `script-src`, common in Next.js apps. Migrating to nonce-based scripts would strengthen CSP but requires Next.js configuration changes.
+- **Build environment**: `npm run build` fails due to missing `MOMENCE_API_TOKEN` environment variable — pre-existing issue unrelated to security.
