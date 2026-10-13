@@ -1,16 +1,16 @@
 # Security Scan Report
 
-**Date:** 2026-10-13 11:28 UTC
-**Status:** CLEAN
+**Date:** 2026-10-13 12:00 UTC
+**Status:** VULNERABILITIES_FOUND
 
 ## npm audit
 - Critical: 0
 - High: 7 (all build-time only, no upstream fix available without major version bump)
-- Moderate: 0
+- Medium: 0
 - Low: 0
 
-### Remaining Vulnerabilities (all build-time only)
-All 7 high vulnerabilities trace to `braces@3.0.3` (GHSA-vfj7-8cjw-p6xm — stack-exhaustion DoS via deeply nested glob patterns). Affected dependency chains:
+### Vulnerability Details
+All 7 high vulnerabilities trace to `braces@3.0.3` (GHSA-vfj7-8cjw-p6xm — stack-exhaustion DoS via deeply nested glob patterns). braces 3.0.3 is the latest release; no upstream fix exists. Affected dependency chains:
 - `tailwindcss@3.4.19` → `chokidar@3.6.0` → `braces@3.0.3`
 - `tailwindcss@3.4.19` → `micromatch@4.0.8` → `braces@3.0.3`
 - `tailwindcss@3.4.19` → `fast-glob@3.3.3` → `micromatch` → `braces`
@@ -36,9 +36,10 @@ All 7 high vulnerabilities trace to `braces@3.0.3` (GHSA-vfj7-8cjw-p6xm — stac
 10. Safe Health Checks: PASS — no health/status endpoints exist; no API routes expose tokens or internal config
 
 ## Fixes Applied
-- None needed — all code security checks passed; npm vulnerabilities have no safe auto-fix path
+- None — all 7 npm vulnerabilities require semver-major breaking changes; no non-breaking fix path available
 
 ## Manual Action Required
-- **tailwindcss v3 → v4 migration:** Would resolve 4 of 7 remaining high vulnerabilities (braces via chokidar/micromatch/fast-glob). Major breaking change (config format changes from JS to CSS-based). Recommend scheduling as a planned migration sprint.
+- **tailwindcss v3 → v4 migration:** Would resolve 4 of 7 remaining vulnerabilities. Major breaking change (config format changes from JS to CSS-based). Recommend scheduling as a planned migration sprint.
 - **eslint-config-next:** Monitor for a patched version that ships updated fast-glob/micromatch. Current v16.4.0 has no fix; suggested downgrade to v14.2.35 is incompatible with Next.js 16.
+- **Monitor braces:** Watch for a 3.0.4+ release that patches GHSA-vfj7-8cjw-p6xm — this would resolve all 7 without any breaking changes.
 - **Overall runtime risk is LOW** since all affected packages are build-time-only dependencies with no production exposure.
