@@ -1,6 +1,6 @@
 # Security Scan Report
 
-**Date:** 2026-10-13 03:23 UTC
+**Date:** 2026-10-13 11:28 UTC
 **Status:** CLEAN
 
 ## npm audit
@@ -14,7 +14,7 @@ All 7 high vulnerabilities trace to `braces@3.0.3` (GHSA-vfj7-8cjw-p6xm — stac
 - `tailwindcss@3.4.19` → `chokidar@3.6.0` → `braces@3.0.3`
 - `tailwindcss@3.4.19` → `micromatch@4.0.8` → `braces@3.0.3`
 - `tailwindcss@3.4.19` → `fast-glob@3.3.3` → `micromatch` → `braces`
-- `eslint-config-next` → `@next/eslint-plugin-next` → `fast-glob` → `micromatch` → `braces`
+- `eslint-config-next@16.4.0` → `@next/eslint-plugin-next` → `fast-glob` → `micromatch` → `braces`
 
 **Risk assessment:** LOW — these are build-time dependencies only (CSS compilation and linting). The braces vulnerability requires processing specially crafted glob patterns during `npm run build` or `npx tailwindcss`, never at runtime on the production server. No user input reaches these code paths.
 
@@ -36,7 +36,9 @@ All 7 high vulnerabilities trace to `braces@3.0.3` (GHSA-vfj7-8cjw-p6xm — stac
 10. Safe Health Checks: PASS — no health/status endpoints exist; no API routes expose tokens or internal config
 
 ## Fixes Applied
-- None needed this scan — all actionable vulnerabilities already resolved in prior scans
+- None needed — all code security checks passed; npm vulnerabilities have no safe auto-fix path
 
 ## Manual Action Required
-- **tailwindcss v3 → v4 migration:** Would resolve all 7 remaining high vulnerabilities. Major breaking change (config format changes from JS to CSS-based). Recommend scheduling as a planned migration sprint. Runtime risk is LOW since these are build-time-only dependencies with no production exposure.
+- **tailwindcss v3 → v4 migration:** Would resolve 4 of 7 remaining high vulnerabilities (braces via chokidar/micromatch/fast-glob). Major breaking change (config format changes from JS to CSS-based). Recommend scheduling as a planned migration sprint.
+- **eslint-config-next:** Monitor for a patched version that ships updated fast-glob/micromatch. Current v16.4.0 has no fix; suggested downgrade to v14.2.35 is incompatible with Next.js 16.
+- **Overall runtime risk is LOW** since all affected packages are build-time-only dependencies with no production exposure.
