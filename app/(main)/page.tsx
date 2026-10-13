@@ -3,13 +3,9 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { MapPin, Clock } from 'lucide-react';
 import CircularText from '@/components/CircularText';
-import ReviewCards from '@/components/ReviewCards';
+import MomenceReviews from '@/components/MomenceReviews';
 import HeroSlideshow from '@/components/HeroSlideshow';
-import { STUDIO, pageMetadata } from '@/lib/site';
-import { getReviews } from '@/lib/studio-data';
-
-// Reviews refresh every 6 hours
-export const revalidate = 21600;
+import { pageMetadata } from '@/lib/site';
 
 export const metadata: Metadata = pageMetadata({
   title: 'Euforyc Studios | Women-Only Pilates Studio in Edgware, North West London',
@@ -18,11 +14,7 @@ export const metadata: Metadata = pageMetadata({
   absoluteTitle: true,
 });
 
-export default async function Home() {
-  const { reviews, total: reviewCount } = await getReviews();
-  // Lead with reviews that say something specific
-  const featuredReviews = reviews.filter((review) => review.comment.length >= 80).slice(0, 6);
-
+export default function Home() {
   return (
     <div>
       {/* Hero Section - Full Screen with Background Image */}
@@ -48,33 +40,6 @@ export default async function Home() {
               </Link>
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* Studio at a glance */}
-      <section className="px-8 py-16 md:px-16 md:py-20 lg:px-24 xl:px-32 2xl:px-48 bg-[#fffcf2] border-b border-[#1a260e]/10">
-        <div className="container-width max-w-5xl text-center space-y-10">
-          <div className="space-y-5">
-            <h2 className="font-serif text-2xl md:text-3xl lg:text-4xl font-light text-[#1a260e] leading-tight">
-              Women-only Pilates in Edgware, North West London
-            </h2>
-            <p className="body-text max-w-3xl mx-auto">
-              {STUDIO.shortDescription} Find us at {STUDIO.addressLine}, a short walk from Burnt Oak station.
-            </p>
-          </div>
-          <dl className="grid grid-cols-2 md:grid-cols-4 gap-x-8 gap-y-8">
-            {[
-              { label: 'Class size', value: 'Up to 8' },
-              { label: 'Class length', value: '45 minutes' },
-              { label: 'Drop-in', value: 'From £20' },
-              { label: 'Intro offer', value: '3 classes for £60' },
-            ].map((fact) => (
-              <div key={fact.label}>
-                <dt className="font-sans text-[11px] tracking-[0.15em] uppercase text-[#1a260e]/50">{fact.label}</dt>
-                <dd className="font-serif text-xl md:text-2xl text-[#1a260e] mt-1">{fact.value}</dd>
-              </div>
-            ))}
-          </dl>
         </div>
       </section>
 
@@ -127,7 +92,7 @@ export default async function Home() {
           <div className="flex md:grid md:grid-cols-5 gap-5 overflow-x-auto md:overflow-visible snap-x snap-mandatory pb-6 md:pb-0 -mx-8 px-8 md:mx-0 md:px-0 scrollbar-hide">
 
             {/* Reformer Pilates */}
-            <Link href="/classes/reformer-pilates" className="group block min-w-[70vw] md:min-w-0 snap-center">
+            <Link href="/packages" className="group block min-w-[70vw] md:min-w-0 snap-center">
               <div className="relative overflow-hidden aspect-[3/4]">
                 <Image
                   src="/reformer-new.jpg"
@@ -150,7 +115,7 @@ export default async function Home() {
             </Link>
 
             {/* Hot Infrared Mat Pilates */}
-            <Link href="/classes/hot-pilates" className="group block min-w-[70vw] md:min-w-0 snap-center">
+            <Link href="/packages" className="group block min-w-[70vw] md:min-w-0 snap-center">
               <div className="relative overflow-hidden aspect-[3/4]">
                 <Image
                   src="/hotpilates-new.jpg"
@@ -173,7 +138,7 @@ export default async function Home() {
             </Link>
 
             {/* Redlight Mat Pilates */}
-            <Link href="/classes/red-light-pilates" className="group block min-w-[70vw] md:min-w-0 snap-center">
+            <Link href="/packages" className="group block min-w-[70vw] md:min-w-0 snap-center">
               <div className="relative overflow-hidden aspect-[3/4]">
                 <Image
                   src="/redlight-new.jpg"
@@ -196,7 +161,7 @@ export default async function Home() {
             </Link>
 
             {/* Barre */}
-            <Link href="/classes/barre" className="group block min-w-[70vw] md:min-w-0 snap-center">
+            <Link href="/packages" className="group block min-w-[70vw] md:min-w-0 snap-center">
               <div className="relative overflow-hidden aspect-[3/4]">
                 <Image
                   src="/hero/IMG_8698.JPG"
@@ -219,7 +184,7 @@ export default async function Home() {
             </Link>
 
             {/* Dance */}
-            <Link href="/classes/belly-dance" className="group block min-w-[70vw] md:min-w-0 snap-center">
+            <Link href="/packages" className="group block min-w-[70vw] md:min-w-0 snap-center">
               <div className="relative overflow-hidden aspect-[3/4]">
                 <Image
                   src="/dance-new.jpg"
@@ -243,11 +208,8 @@ export default async function Home() {
 
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mt-16 md:mt-24">
-            <Link href="/classes" className="btn-secondary">
-              ALL CLASSES
-            </Link>
-            <Link href="/schedule" className="btn-primary">
+          <div className="text-center mt-16 md:mt-24">
+            <Link href="/book" className="btn-primary">
               VIEW SCHEDULE
             </Link>
           </div>
@@ -262,15 +224,7 @@ export default async function Home() {
             <p className="tagline">REAL REVIEWS FROM OUR CLIENTS</p>
           </div>
 
-          <ReviewCards reviews={featuredReviews} />
-
-          {reviewCount > 0 && (
-            <div className="text-center mt-14">
-              <Link href="/reviews" className="btn-minimal">
-                READ ALL {reviewCount} REVIEWS
-              </Link>
-            </div>
-          )}
+          <MomenceReviews />
         </div>
       </section>
 
@@ -322,7 +276,7 @@ export default async function Home() {
                 </p>
               </div>
               <p className="text-[10px] md:text-xs text-[#1a260e]/60 text-center">
-                Nearest station: Burnt Oak (Northern line). Close to Colindale, Queensbury, Kingsbury, Mill Hill and Hendon
+                Serving North London: Edgware, Barnet, Mill Hill, Finchley & surrounding areas
               </p>
             </div>
 

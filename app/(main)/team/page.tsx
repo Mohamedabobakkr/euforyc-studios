@@ -1,23 +1,15 @@
 import Image from 'next/image';
-import Link from 'next/link';
 import JsonLd from '@/components/JsonLd';
 import { breadcrumbSchema, pageMetadata } from '@/lib/site';
-import { getReviews, getUpcomingEvents, summariseInstructors } from '@/lib/studio-data';
-
-// Instructors come from the live timetable, refreshed hourly
-export const revalidate = 3600;
 
 export const metadata = pageMetadata({
-  title: 'Our Team & Instructors',
+  title: 'Our Team',
   description:
-    'Meet the instructors teaching Reformer Pilates, Hot Pilates, Red Light Hot Pilates, Sculpt, Barre and Belly Dance at Euforyc Studios in Edgware, with the classes they teach and what clients say about them.',
+    'Meet the team behind Euforyc Studios, the women-only Pilates studio in Edgware, North West London.',
   path: '/team',
 });
 
-export default async function Team() {
-  const [events, { reviews }] = await Promise.all([getUpcomingEvents(), getReviews()]);
-  const instructors = summariseInstructors(events, reviews);
-
+export default function Team() {
   return (
     <div className="pt-32">
       <JsonLd data={breadcrumbSchema([{ name: 'Team', path: '/team' }])} />
@@ -27,7 +19,7 @@ export default async function Team() {
         <div className="container-width text-center">
           <h1 className="heading-primary mb-8">Meet Our Team</h1>
           <p className="body-text text-xl max-w-3xl mx-auto">
-            Our passionate instructors are dedicated to guiding you on your wellness journey with
+            Our passionate instructors are dedicated to guiding you on your wellness journey with 
             expertise, energy, and unwavering attention to your personal growth.
           </p>
         </div>
@@ -37,6 +29,7 @@ export default async function Team() {
       <section className="section-padding">
         <div className="container-width max-w-4xl">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+            {/* Image - Updated with correct file */}
             <div className="aspect-[3/4] relative overflow-hidden bg-[#1a260e]/5">
               <Image
                 src="/leadtrainer.jpg"
@@ -47,7 +40,7 @@ export default async function Team() {
                 sizes="(max-width: 768px) 100vw, 50vw"
               />
             </div>
-
+            
             {/* Content */}
             <div className="space-y-6">
               <div>
@@ -58,27 +51,27 @@ export default async function Team() {
                   Co-Founder & Master Pilates Instructor
                 </p>
               </div>
-
+              
               <blockquote className="font-playfair text-xl italic text-[#1a260e]/80 border-l-4 border-[#1a260e]/20 pl-6">
                 "Every movement matters, every detail counts, and every client deserves personalized excellence."
               </blockquote>
-
+              
               <div className="space-y-4">
                 <p className="body-text">
-                  With an unwavering commitment to precision and a genuine passion for helping others,
-                  our lead instructor brings exceptional energy and expertise to every session. Known for
-                  their meticulous attention to detail, they ensure each client receives personalized
+                  With an unwavering commitment to precision and a genuine passion for helping others, 
+                  our lead instructor brings exceptional energy and expertise to every session. Known for 
+                  their meticulous attention to detail, they ensure each client receives personalized 
                   guidance tailored to their unique needs and goals.
                 </p>
-
+                
                 <p className="body-text">
-                  Their approach combines technical excellence with infectious enthusiasm, creating an
-                  environment where clients feel supported, motivated, and empowered. Whether you're a
-                  beginner or advanced practitioner, you'll benefit from their helpful nature and ability
+                  Their approach combines technical excellence with infectious enthusiasm, creating an 
+                  environment where clients feel supported, motivated, and empowered. Whether you're a 
+                  beginner or advanced practitioner, you'll benefit from their helpful nature and ability 
                   to break down complex movements into achievable steps.
                 </p>
               </div>
-
+              
               {/* Key Qualities */}
               <div className="pt-6 space-y-3">
                 <h3 className="font-inter text-sm font-medium text-[#1a260e] uppercase tracking-wide">
@@ -100,12 +93,12 @@ export default async function Team() {
           </div>
         </div>
       </section>
-
+      
       {/* Divider */}
       <div className="container-width">
         <div className="w-full h-px bg-[#1a260e]/10 my-12"></div>
       </div>
-
+      
       {/* Co-founder Profile */}
       <section className="section-padding pt-0">
         <div className="container-width max-w-4xl">
@@ -120,27 +113,27 @@ export default async function Team() {
                   Business Director & Wellness Advocate
                 </p>
               </div>
-
+              
               <blockquote className="font-playfair text-xl italic text-[#1a260e]/80 border-l-4 border-[#1a260e]/20 pl-6">
                 "True wellness comes from balance - honoring both body and mind in equal measure."
               </blockquote>
-
+              
               <div className="space-y-4">
                 <p className="body-text">
-                  As the co-founder and business director, she brings vision and structure to our studio's
-                  growth. With a background in business and a deep passion for wellness, she ensures that
-                  Euforyc Studios maintains its commitment to excellence while fostering an inclusive
+                  As the co-founder and business director, she brings vision and structure to our studio's 
+                  growth. With a background in business and a deep passion for wellness, she ensures that 
+                  Euforyc Studios maintains its commitment to excellence while fostering an inclusive 
                   community.
                 </p>
-
+                
                 <p className="body-text">
-                  Her dedication to creating a supportive environment extends beyond the administrative
-                  aspects of the studio. She works tirelessly to ensure that each client's experience
-                  is seamless from booking to practice, and that our space remains a sanctuary for
+                  Her dedication to creating a supportive environment extends beyond the administrative 
+                  aspects of the studio. She works tirelessly to ensure that each client's experience 
+                  is seamless from booking to practice, and that our space remains a sanctuary for 
                   transformation and growth.
                 </p>
               </div>
-
+              
               {/* Key Qualities */}
               <div className="pt-6 space-y-3">
                 <h3 className="font-inter text-sm font-medium text-[#1a260e] uppercase tracking-wide">
@@ -159,7 +152,7 @@ export default async function Team() {
                 </div>
               </div>
             </div>
-
+            
             {/* Image - on the right side for desktop */}
             <div className="aspect-[3/4] relative overflow-hidden bg-[#1a260e]/5 order-1 md:order-2">
               <Image
@@ -174,70 +167,17 @@ export default async function Team() {
         </div>
       </section>
 
-      {/* Instructors on the timetable */}
-      {instructors.length > 0 && (
-        <section className="section-padding bg-[#fffcf2]">
-          <div className="container-width space-y-12">
-            <div className="text-center space-y-4">
-              <h2 className="heading-secondary">Our Instructors</h2>
-              <p className="body-text max-w-3xl mx-auto">
-                The instructors on the current Euforyc Studios timetable, the classes they lead, and what clients have said after their sessions.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-12">
-              {instructors.map((instructor) => (
-                <article key={instructor.name} className="border-t border-[#1a260e]/10 pt-6 space-y-4">
-                  <h3 className="font-serif text-2xl font-light text-[#1a260e]">{instructor.name}</h3>
-                  {instructor.classTypes.length > 0 && (
-                    <p className="font-sans text-sm font-light leading-relaxed text-[#1a260e]/80">
-                      Teaches{' '}
-                      {instructor.classTypes.map((classType, index) => (
-                        <span key={classType.slug}>
-                          {index > 0 && (index === instructor.classTypes.length - 1 ? ' and ' : ', ')}
-                          <Link
-                            href={`/classes/${classType.slug}`}
-                            className="underline underline-offset-4 decoration-[#1a260e]/30 hover:decoration-[#1a260e]"
-                          >
-                            {classType.name}
-                          </Link>
-                        </span>
-                      ))}
-                    </p>
-                  )}
-                  {instructor.latestReview && (
-                    <figure className="space-y-2">
-                      <blockquote className="font-sans text-sm font-light italic leading-relaxed text-[#1a260e]/70">
-                        “{instructor.latestReview.comment}”
-                      </blockquote>
-                      <figcaption className="font-sans text-[11px] tracking-[0.12em] uppercase text-[#1a260e]/50">
-                        {instructor.latestReview.reviewerName}
-                        {instructor.reviewCount > 1 ? ` · one of ${instructor.reviewCount} client reviews` : ''}
-                      </figcaption>
-                    </figure>
-                  )}
-                </article>
-              ))}
-            </div>
-
-            <div className="text-center">
-              <Link href="/reviews" className="btn-minimal">Read all reviews</Link>
-            </div>
-          </div>
-        </section>
-      )}
-
       {/* Experience the Difference */}
       <section className="section-padding bg-[#1a260e] text-[#fffcf2]">
         <div className="container-width text-center">
           <div className="max-w-3xl mx-auto space-y-8">
             <h2 className="heading-secondary text-[#fffcf2]">Experience the Difference</h2>
             <p className="body-text text-[#fffcf2]/80 text-lg">
-              Book a session today and discover how our team's personalized attention, expert guidance,
+              Book a session today and discover how our team's personalized attention, expert guidance, 
               and positive energy can transform your Pilates practice.
             </p>
-            <a
-              href="/book"
+            <a 
+              href="/book" 
               className="inline-block bg-[#fffcf2] text-[#1a260e] px-8 py-4 font-serif text-lg hover:bg-[#fffcf2]/90 transition-colors duration-200"
             >
               BOOK YOUR SESSION
