@@ -17,7 +17,7 @@ export const revalidate = 300;
 export const metadata: Metadata = pageMetadata({
   title: 'Class Timetable | Reformer, Hot & Red Light Pilates in Edgware',
   description:
-    'Live class timetable for Euforyc Studios in Edgware, North West London. See the next two weeks of Reformer Pilates, Hot Pilates, Red Light Hot Mat Pilates, Sculpt Mat Pilates and Belly Dance classes with instructors and spaces left, and book online.',
+    'Live class timetable for Euforyc Studios in Edgware, North West London. See the next two weeks of Reformer Pilates, Hot Pilates, Red Light Hot Mat Pilates, Sculpt Mat Pilates, Barre and Belly Dance classes with instructors and spaces left, and book online.',
   path: '/schedule',
 });
 

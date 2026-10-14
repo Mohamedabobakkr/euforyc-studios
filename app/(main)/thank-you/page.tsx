@@ -4,6 +4,7 @@ import { useEffect, useRef, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { resolveMomenceId } from '@/lib/momence-pricing';
+import { STUDIO } from '@/lib/site';
 
 function readParam(sp: URLSearchParams, keys: string[]): string {
   for (const k of keys) {
@@ -171,7 +172,7 @@ function ThankYouContent() {
               <p className="font-serif text-3xl mb-2 text-[#1a260e]/30">03</p>
               <h3 className="font-serif text-base mb-1.5">What to bring</h3>
               <p className="text-xs text-[#1a260e]/65 leading-relaxed">
-                Comfortable clothes you can move in. <strong className="text-[#1a260e]/85 font-medium">Grip socks</strong> are mandatory for Reformer &mdash; bring your own or buy a pair at the studio (one-time, reuse every class). For <strong className="text-[#1a260e]/85 font-medium">Hot Pilates</strong>, a towel is also mandatory &mdash; bring one or buy at the studio.
+                Comfortable clothes you can move in. <strong className="text-[#1a260e]/85 font-medium">Grip socks</strong> are mandatory for Reformer &mdash; bring your own or buy a pair at the studio (one-time, reuse every class). For <strong className="text-[#1a260e]/85 font-medium">Hot Pilates</strong> and <strong className="text-[#1a260e]/85 font-medium">Sculpt Mat Pilates</strong>, a towel is also mandatory &mdash; bring one or buy at the studio.
               </p>
             </div>
           </div>
@@ -219,6 +220,18 @@ function ThankYouContent() {
             className="inline-flex items-center gap-2 border border-[#1a260e]/20 text-[#1a260e] px-8 py-4 font-sans text-xs tracking-[0.2em] uppercase hover:bg-[#1a260e] hover:text-[#fffcf2] transition-colors"
           >
             @euforycstudios
+          </a>
+
+          <p className="text-sm text-[#1a260e]/65 max-w-md mx-auto mt-12 mb-8 leading-relaxed">
+            Loved your class? A quick Google review helps other women find us.
+          </p>
+          <a
+            href={STUDIO.googleReviewUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 border border-[#1a260e]/20 text-[#1a260e] px-8 py-4 font-sans text-xs tracking-[0.2em] uppercase hover:bg-[#1a260e] hover:text-[#fffcf2] transition-colors"
+          >
+            Leave a Google review
           </a>
 
           <div className="mt-12 pt-10 border-t border-[#1a260e]/10 space-y-2 text-xs text-[#1a260e]/60">

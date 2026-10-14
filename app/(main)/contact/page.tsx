@@ -302,7 +302,7 @@ export default function Contact() {
             </div>
             <p className="font-sans text-sm text-[#1a260e]/70 max-w-2xl mx-auto">
               We're located in Edgware, easily accessible by public transport.
-              Colindale station (Northern line) is around a 10-minute walk.
+              Colindale station (Northern line) is around a 10–15 minute walk.
             </p>
             <p className="font-sans text-xs text-[#1a260e]/50 tracking-wider uppercase">
               Bus routes: 32 • 142 • 186 • 204

@@ -57,7 +57,7 @@ export default function Pricing() {
               <div className="space-y-0">
                 <div className="flex justify-between items-center py-5 border-b border-[#1a260e]/10">
                   <div>
-                    <h3 className="font-serif text-xl md:text-2xl font-light">Reformer Pilates</h3>
+                    <h3 className="font-serif text-xl md:text-2xl font-light"><Link href="/classes/reformer-pilates">Reformer Pilates</Link></h3>
                   </div>
                   <div className="text-right">
                     <p className="font-serif text-2xl md:text-3xl font-light">£28</p>
@@ -66,7 +66,7 @@ export default function Pricing() {
 
                 <div className="flex justify-between items-center py-5 border-b border-[#1a260e]/10">
                   <div>
-                    <h3 className="font-serif text-xl md:text-2xl font-light">Hot Pilates</h3>
+                    <h3 className="font-serif text-xl md:text-2xl font-light"><Link href="/classes/hot-pilates">Hot Pilates</Link></h3>
                   </div>
                   <div className="text-right">
                     <p className="font-serif text-2xl md:text-3xl font-light">£28</p>
@@ -75,7 +75,7 @@ export default function Pricing() {
 
                 <div className="flex justify-between items-center py-5 border-b border-[#1a260e]/10">
                   <div>
-                    <h3 className="font-serif text-xl md:text-2xl font-light">Red Light Hot Pilates</h3>
+                    <h3 className="font-serif text-xl md:text-2xl font-light"><Link href="/classes/red-light-hot-mat-pilates">Red Light Hot Pilates</Link></h3>
                   </div>
                   <div className="text-right">
                     <p className="font-serif text-2xl md:text-3xl font-light">£28</p>
@@ -84,7 +84,7 @@ export default function Pricing() {
 
                 <div className="flex justify-between items-center py-5 border-b border-[#1a260e]/10">
                   <div>
-                    <h3 className="font-serif text-xl md:text-2xl font-light">Barre</h3>
+                    <h3 className="font-serif text-xl md:text-2xl font-light"><Link href="/classes/barre">Barre</Link></h3>
                   </div>
                   <div className="text-right">
                     <p className="font-serif text-2xl md:text-3xl font-light">£28</p>
@@ -102,7 +102,7 @@ export default function Pricing() {
 
                 <div className="flex justify-between items-center py-5 border-b border-[#1a260e]/10">
                   <div>
-                    <h3 className="font-serif text-xl md:text-2xl font-light">Sculpt Mat Pilates</h3>
+                    <h3 className="font-serif text-xl md:text-2xl font-light"><Link href="/classes/sculpt-mat-pilates">Sculpt Mat Pilates</Link></h3>
                   </div>
                   <div className="text-right">
                     <p className="font-serif text-2xl md:text-3xl font-light">£20</p>
@@ -111,7 +111,7 @@ export default function Pricing() {
 
                 <div className="flex justify-between items-center py-5 border-b border-[#1a260e]/10">
                   <div>
-                    <h3 className="font-serif text-xl md:text-2xl font-light">Belly Dance</h3>
+                    <h3 className="font-serif text-xl md:text-2xl font-light"><Link href="/classes/belly-dance">Belly Dance</Link></h3>
                   </div>
                   <div className="text-right">
                     <p className="font-serif text-2xl md:text-3xl font-light">£20</p>
@@ -255,7 +255,7 @@ export default function Pricing() {
             {/* 1-1 Private Cadillac Reformer Sessions */}
             <div className="space-y-8">
               <div className="text-center space-y-2">
-                <h2 className="heading-secondary">1-1 Private Cadillac Reformer</h2>
+                <h2 className="heading-secondary"><Link href="/classes/private-cadillac-reformer-pilates">1-1 Private Cadillac Reformer</Link></h2>
                 <p className="tagline text-[#1a260e]/60">CADILLAC REFORMER • PERSONALIZED TRAINING • 60 MIN</p>
               </div>
 

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { Calendar, Clock, Users, MapPin, ExternalLink, User, Package } from 'lucide-react';
 
 export default function Book() {
@@ -128,7 +129,7 @@ export default function Book() {
               <div className="space-y-6">
                 {/* Reformer Pilates */}
                 <div className="border-l-4 border-[#1a260e]/20 pl-6 space-y-2">
-                  <h3 className="font-playfair text-xl font-light">Reformer Pilates (Group)</h3>
+                  <h3 className="font-playfair text-xl font-light"><Link href="/classes/reformer-pilates">Reformer Pilates (Group)</Link></h3>
                   <div className="flex items-center space-x-4 text-sm text-[#1a260e]/80">
                     <div className="flex items-center space-x-1">
                       <Clock className="h-4 w-4" />
@@ -147,7 +148,7 @@ export default function Book() {
 
                 {/* Hot Pilates */}
                 <div className="border-l-4 border-[#1a260e]/20 pl-6 space-y-2">
-                  <h3 className="font-playfair text-xl font-light">Hot Pilates</h3>
+                  <h3 className="font-playfair text-xl font-light"><Link href="/classes/hot-pilates">Hot Pilates</Link></h3>
                   <div className="flex items-center space-x-4 text-sm text-[#1a260e]/80">
                     <div className="flex items-center space-x-1">
                       <Clock className="h-4 w-4" />
@@ -166,7 +167,7 @@ export default function Book() {
 
                 {/* 1:1 Sessions */}
                 <div className="border-l-4 border-[#1a260e]/20 pl-6 space-y-2">
-                  <h3 className="font-playfair text-xl font-light">1-1 Private Sessions</h3>
+                  <h3 className="font-playfair text-xl font-light"><Link href="/classes/private-reformer-pilates">1-1 Private Sessions</Link></h3>
                   <div className="flex items-center space-x-4 text-sm text-[#1a260e]/80">
                     <div className="flex items-center space-x-1">
                       <Clock className="h-4 w-4" />
@@ -359,7 +360,7 @@ export default function Book() {
               <p className="body-text text-sm">
                 We provide all equipment and mats. Wear comfortable workout clothes.
                 Grip socks are mandatory for Reformer Pilates, and you need your own
-                towel for Hot Pilates. Both can be bought at the studio.
+                towel for Hot Pilates and Sculpt Mat Pilates. Both can be bought at the studio.
               </p>
             </div>
 

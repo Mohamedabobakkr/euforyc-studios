@@ -48,6 +48,7 @@ ${ORDERED_CLASS_TYPES.map(
 - ${POLICIES.womenOnly}
 - ${POLICIES.gripSocks}
 - ${POLICIES.towel}
+- What to wear to Red Light Hot Mat Pilates: ${POLICIES.redLightWear}
 - ${POLICIES.cancellation}
 - ${POLICIES.arrival}
 

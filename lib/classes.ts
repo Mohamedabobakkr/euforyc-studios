@@ -7,6 +7,8 @@
  * matched to a class type by its title.
  */
 
+import { POLICIES } from './site';
+
 export interface ClassFaq {
   question: string;
   answer: string;
@@ -138,7 +140,11 @@ export const CLASS_TYPES: ClassType[] = [
       'A sweatier, full-body Pilates workout that stays low impact',
       'Anyone curious about combining Pilates with red light therapy',
     ],
-    bring: ['Your own towel (required)', 'Water', 'Comfortable, fitted workout clothes'],
+    bring: [
+      'Minimal, fitted activewear, like a sports bra with shorts or leggings',
+      'Clean skin, without creams, oils or makeup',
+      'Water',
+    ],
     faqs: [
       {
         question: 'What is Red Light Hot Mat Pilates?',
@@ -151,8 +157,8 @@ export const CLASS_TYPES: ClassType[] = [
           'Yes. The class is taught for all levels and instructors offer modifications. If you are new to heated classes, take breaks when you need them and drink plenty of water.',
       },
       {
-        question: 'What do I need to bring to a red light class?',
-        answer: 'Bring your own towel and water. Towels can be bought at the studio if you forget.',
+        question: 'What should I wear to Red Light Hot Mat Pilates?',
+        answer: POLICIES.redLightWear,
       },
     ],
     image: {
@@ -233,7 +239,7 @@ export const CLASS_TYPES: ClassType[] = [
       'Clients who like an upbeat class set to music',
       'Pairing with Reformer classes for a balanced week',
     ],
-    bring: ['Water', 'Comfortable, fitted workout clothes'],
+    bring: ['Your own towel (required)', 'Water', 'Comfortable, fitted workout clothes'],
     faqs: [
       {
         question: 'How much is a Sculpt Mat Pilates class at Euforyc Studios?',
@@ -307,18 +313,58 @@ export const CLASS_TYPES: ClassType[] = [
     match: { include: ['reformer', 'jumpboard'] },
   },
   {
+    slug: 'barre',
+    name: 'Barre',
+    tagline: 'Ballet-inspired, low-impact strength and balance.',
+    summary:
+      'Barre at Euforyc Studios is a 45-minute, low-impact class that blends ballet-inspired movement with Pilates and strength training to build flexibility, balance and core strength. Barre Essentials is beginner-friendly, needs no dance experience and has no more than 8 women per class.',
+    duration: '45 minutes',
+    level: 'Beginner-friendly',
+    groupSize: 'Up to 8 per class',
+    price: 28,
+    covered: GROUP_COVERAGE,
+    expect: [
+      'Classes use the ballet barre for support through small, controlled movements that work legs, glutes and core. The pace is steady and instructions are clear, so you can move at your own level.',
+    ],
+    goodFor: [
+      'Improving balance, posture and lower-body tone',
+      'Beginners and anyone new to Barre',
+      'A low-impact alternative to high-intensity classes',
+    ],
+    bring: ['Water', 'Fitted workout clothes'],
+    faqs: [
+      {
+        question: 'Do I need ballet or dance experience for Barre?',
+        answer:
+          'No. Barre Essentials at Euforyc Studios is designed for beginners. The movements are ballet-inspired, but no dance background is needed.',
+      },
+      {
+        question: 'How much is a Barre class at Euforyc Studios?',
+        answer:
+          'A single Barre class is £28. First-time clients can use the Try It All intro offer of 3 classes for £60.',
+      },
+    ],
+    image: {
+      src: '/hero/IMG_8698.JPG',
+      alt: 'A client extends one leg along the ballet barre in front of arched mirrors at Euforyc Studios',
+      width: 3648,
+      height: 5472,
+    },
+    match: { include: ['barre'] },
+  },
+  {
     slug: 'belly-dance',
     name: 'Belly Dance',
     tagline: 'Women-only belly dance classes for every level.',
     summary:
       'Belly Dance at Euforyc Studios is a women-only dance class for all levels, with no experience needed. Classes teach the foundations and playful combinations that build confidence, coordination and core strength, set to upbeat music.',
-    duration: '45 to 60 minutes',
+    duration: '60 minutes',
     level: 'All levels, no experience needed',
     groupSize: 'Up to 8 per class',
     price: 20,
     covered: MOVE_COVERAGE,
     expect: [
-      'Classes start with basic technique, then build short combinations to music, with space for freestyle. The atmosphere is relaxed and social, and the studio is women-only.',
+      'Classes teach playful combinations to upbeat music that build confidence, coordination and core strength, and they double as a cardio workout. The atmosphere is relaxed and social, and the studio is women-only.',
     ],
     goodFor: [
       'A fun way to get cardio in without a gym workout',
@@ -348,7 +394,9 @@ export const CLASS_TYPES: ClassType[] = [
       width: 1117,
       height: 1600,
     },
-    match: { include: ['belly'] },
+    // Bellydance Basics & Freestyle (£15) is a separate, occasional session
+    // that stays on the timetable only
+    match: { include: ['belly'], exclude: ['basics', 'freestyle'] },
   },
 ];
 
@@ -358,6 +406,7 @@ export const CLASS_ORDER = [
   'hot-pilates',
   'red-light-hot-mat-pilates',
   'sculpt-mat-pilates',
+  'barre',
   'belly-dance',
   'private-reformer-pilates',
   'private-cadillac-reformer-pilates',

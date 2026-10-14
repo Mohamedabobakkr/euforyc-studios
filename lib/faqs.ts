@@ -43,6 +43,10 @@ export const FAQS: Faq[] = [
     answer: `Wear comfortable, stretchy clothing that allows for full range of movement. Avoid loose clothing that might get caught in equipment. We recommend leggings and a fitted top. ${POLICIES.gripSocks} ${POLICIES.towel} Remove jewelry before class.`,
   },
   {
+    question: 'What should I wear to Red Light Hot Mat Pilates?',
+    answer: POLICIES.redLightWear,
+  },
+  {
     question: 'How often should I do pilates for best results?',
     answer:
       'For optimal results, we recommend 2-3 pilates sessions per week. This allows your body to build strength and flexibility while giving adequate recovery time. Many of our clients see improvements in posture, core strength, and overall well-being within 4-6 weeks of consistent practice.',

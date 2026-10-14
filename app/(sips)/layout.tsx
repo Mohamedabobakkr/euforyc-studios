@@ -9,7 +9,7 @@ export const metadata: Metadata = {
     default: 'Euforyc Sips | Matcha Bar & Wellness Cafe in Edgware, London',
     template: '%s | Euforyc Sips',
   },
-  description: 'The best matcha bar and wellness cafe in North West London. Ceremonial matcha lattes with cold foam, specialty coffee, collagen smoothies & wellness drinks in Edgware. Laptop-friendly, community-focused cafe perfect for running clubs, remote work, post-workout fuel or just hanging out. Walk-ins welcome, around a 10-minute walk from Colindale station.',
+  description: 'The best matcha bar and wellness cafe in North West London. Ceremonial matcha lattes with cold foam, specialty coffee, collagen smoothies & wellness drinks in Edgware. Laptop-friendly, community-focused cafe perfect for running clubs, remote work, post-workout fuel or just hanging out. Walk-ins welcome, around a 10–15 minute walk from Colindale station.',
   keywords: [
     // Core — matcha bar
     'matcha bar london', 'best matcha london', 'matcha bar near me', 'matcha bar north london', 'matcha bar north west london', 'matcha bar edgware', 'matcha latte london', 'matcha latte edgware', 'matcha latte near me', 'ceremonial matcha london', 'ceremonial matcha latte london', 'best matcha latte london', 'matcha latte north london', 'matcha cafe london', 'iced matcha london', 'matcha cold foam london',

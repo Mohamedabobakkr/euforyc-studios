@@ -606,7 +606,7 @@ function OffersContent() {
 
               <div className="border-b border-[#1a260e]/10 pb-4 md:pb-6">
                 <h3 className="font-serif text-lg md:text-xl font-light text-[#1a260e] mb-2 md:mb-3">What should I bring?</h3>
-                <p className="text-xs md:text-sm text-[#1a260e]/70">Comfortable workout clothes and water. We provide all equipment and mats. Grip socks are mandatory for Reformer Pilates, and you need your own towel for Hot Pilates. Both can be bought at the studio.</p>
+                <p className="text-xs md:text-sm text-[#1a260e]/70">Comfortable workout clothes and water. We provide all equipment and mats. Grip socks are mandatory for Reformer Pilates, and you need your own towel for Hot Pilates and Sculpt Mat Pilates. Both can be bought at the studio.</p>
               </div>
 
               <div className="border-b border-[#1a260e]/10 pb-4 md:pb-6">

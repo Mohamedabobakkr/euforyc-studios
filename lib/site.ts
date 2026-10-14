@@ -12,7 +12,7 @@ export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || 'https://euforyc.co
 export const STUDIO = {
   name: 'Euforyc Studios',
   shortDescription:
-    'Euforyc Studios is a women-only boutique Pilates studio in Edgware, North West London, offering small-group Reformer Pilates, Hot Pilates, Red Light Hot Mat Pilates, Sculpt Mat Pilates and Belly Dance classes, plus 1:1 Private Reformer Pilates and 1:1 Private Cadillac Reformer Pilates.',
+    'Euforyc Studios is a women-only boutique Pilates studio in Edgware, North West London, offering small-group Reformer Pilates, Hot Pilates, Red Light Hot Mat Pilates, Sculpt Mat Pilates, Barre and Belly Dance classes, plus 1:1 Private Reformer Pilates and 1:1 Private Cadillac Reformer Pilates.',
   phoneDisplay: '+44 7375 710370',
   phoneE164: '+447375710370',
   email: 'euforyc@gmail.com',
@@ -27,13 +27,15 @@ export const STUDIO = {
   // The pin on the studio's Google Maps listing (mapsUrl)
   geo: { latitude: 51.59727, longitude: -0.26388 },
   mapsUrl: 'https://maps.app.goo.gl/zZfyhD3X2BuS6SnL6',
+  // Opens the review form on the same Google listing (place ID ChIJI04kMQARdkgRZG4Fx7xSUec)
+  googleReviewUrl: 'https://search.google.com/local/writereview?placeid=ChIJI04kMQARdkgRZG4Fx7xSUec',
   hours: [
     { days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'], label: 'Monday to Friday', opens: '06:45', closes: '20:00' },
     { days: ['Saturday', 'Sunday'], label: 'Saturday and Sunday', opens: '08:45', closes: '18:00' },
   ],
   transport: {
     // The only station named on visible pages
-    station: 'Colindale station (Northern line) is around a 10-minute walk',
+    station: 'Colindale station (Northern line) is around a 10–15 minute walk',
     buses: ['32', '142', '186', '204'],
   },
   // Neighbourhoods the studio is realistically reachable from. Used only in
@@ -52,7 +54,9 @@ export const POLICIES = {
   gripSocks:
     'Grip socks are mandatory for Reformer Pilates. Bring your own or buy a pair at the studio.',
   towel:
-    'Bring your own towel to Hot Pilates and Red Light Hot Mat Pilates. Towels can be bought at the studio if you forget.',
+    'Bring your own towel to Hot Pilates and Sculpt Mat Pilates. Towels can be bought at the studio if you forget.',
+  redLightWear:
+    "Red light only reaches skin that isn't covered, so wear minimal, fitted activewear, like a sports bra with shorts or leggings. Come with clean skin, as creams, oils and makeup can block the light. You don't need a towel for this class.",
   cancellation: 'Cancel at least 24 hours before class to keep your credit.',
   arrival:
     'Arrive 10 to 15 minutes before your first class to check in. Late arrivals may not be admitted.',

@@ -9,7 +9,7 @@ import { pageMetadata } from '@/lib/site';
 
 export const metadata: Metadata = pageMetadata({
   title: 'Euforyc Studios | Women-Only Pilates Studio in Edgware, North West London',
-  description: 'Women-only boutique Pilates studio in Edgware, North West London. Reformer Pilates, Hot Pilates, Red Light Hot Mat Pilates, Sculpt Mat Pilates, Belly Dance and 1:1 private Reformer and Cadillac Reformer sessions. First-time clients: 3 classes for £60.',
+  description: 'Women-only boutique Pilates studio in Edgware, North West London. Reformer Pilates, Hot Pilates, Red Light Hot Mat Pilates, Sculpt Mat Pilates, Barre, Belly Dance and 1:1 private Reformer and Cadillac Reformer sessions. First-time clients: 3 classes for £60.',
   path: '/',
   absoluteTitle: true,
 });
@@ -54,13 +54,11 @@ export default function Home() {
               </h2>
               <div className="space-y-4">
                 <p className="body-text">
-                  Transformation is built with time, breath by breath. True strength is not rushed, 
-                  and real change does not happen overnight.
-                </p>
-                <p className="body-text">
-                  Every small movement, every mindful breath, layers into lasting growth. 
-                  Pilates teaches you to trust the process, to honor the pace of your own body, 
-                  and to find beauty in slow, steady progress.
+                  Euforyc Studios is a women-only Pilates and wellness studio at 7-8 Holmstall Parade,
+                  Edgware, a 10–15 minute walk from Colindale station. We teach Reformer, Hot, Red Light
+                  Hot Mat and Sculpt Mat Pilates, Barre and Belly Dance, with 1:1 private Reformer and
+                  Cadillac Reformer sessions. Small classes, expert teaching, and a space made for women
+                  to feel strong, calm and completely themselves.
                 </p>
               </div>
               <Link href="/about" className="btn-minimal inline-block">
@@ -92,7 +90,7 @@ export default function Home() {
           <div className="flex md:grid md:grid-cols-5 gap-5 overflow-x-auto md:overflow-visible snap-x snap-mandatory pb-6 md:pb-0 -mx-8 px-8 md:mx-0 md:px-0 scrollbar-hide">
 
             {/* Reformer Pilates */}
-            <Link href="/packages" className="group block min-w-[70vw] md:min-w-0 snap-center">
+            <Link href="/classes/reformer-pilates" className="group block min-w-[70vw] md:min-w-0 snap-center">
               <div className="relative overflow-hidden aspect-[3/4]">
                 <Image
                   src="/reformer-new.jpg"
@@ -115,7 +113,7 @@ export default function Home() {
             </Link>
 
             {/* Hot Infrared Mat Pilates */}
-            <Link href="/packages" className="group block min-w-[70vw] md:min-w-0 snap-center">
+            <Link href="/classes/hot-pilates" className="group block min-w-[70vw] md:min-w-0 snap-center">
               <div className="relative overflow-hidden aspect-[3/4]">
                 <Image
                   src="/hotpilates-new.jpg"
@@ -138,7 +136,7 @@ export default function Home() {
             </Link>
 
             {/* Redlight Mat Pilates */}
-            <Link href="/packages" className="group block min-w-[70vw] md:min-w-0 snap-center">
+            <Link href="/classes/red-light-hot-mat-pilates" className="group block min-w-[70vw] md:min-w-0 snap-center">
               <div className="relative overflow-hidden aspect-[3/4]">
                 <Image
                   src="/redlight-new.jpg"
@@ -161,7 +159,7 @@ export default function Home() {
             </Link>
 
             {/* Barre */}
-            <Link href="/packages" className="group block min-w-[70vw] md:min-w-0 snap-center">
+            <Link href="/classes/barre" className="group block min-w-[70vw] md:min-w-0 snap-center">
               <div className="relative overflow-hidden aspect-[3/4]">
                 <Image
                   src="/hero/IMG_8698.JPG"
@@ -184,7 +182,7 @@ export default function Home() {
             </Link>
 
             {/* Dance */}
-            <Link href="/packages" className="group block min-w-[70vw] md:min-w-0 snap-center">
+            <Link href="/classes/belly-dance" className="group block min-w-[70vw] md:min-w-0 snap-center">
               <div className="relative overflow-hidden aspect-[3/4]">
                 <Image
                   src="/dance-new.jpg"

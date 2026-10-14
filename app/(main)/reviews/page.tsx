@@ -12,7 +12,7 @@ export const revalidate = 21600;
 export const metadata = pageMetadata({
   title: 'Client Reviews | Women-Only Pilates Studio in Edgware',
   description:
-    'Read what clients say about Reformer Pilates, Hot Pilates, Red Light Hot Mat Pilates, Sculpt Mat Pilates, Belly Dance and 1:1 private sessions at Euforyc Studios in Edgware, North West London. Reviews are left by clients after class.',
+    'Read what clients say about Reformer Pilates, Hot Pilates, Red Light Hot Mat Pilates, Sculpt Mat Pilates, Barre, Belly Dance and 1:1 private sessions at Euforyc Studios in Edgware, North West London. Reviews are left by clients after class.',
   path: '/reviews',
 });
 

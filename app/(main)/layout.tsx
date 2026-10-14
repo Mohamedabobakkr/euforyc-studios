@@ -44,12 +44,12 @@ export const metadata: Metadata = {
     default: 'EUFORYC STUDIOS • Pilates • Wellness • Strength',
     template: '%s | EUFORYC STUDIOS'
   },
-  description: 'Women-only boutique Pilates studio in Edgware, North West London. Reformer Pilates, Hot Pilates, Red Light Hot Mat Pilates, Sculpt Mat Pilates, Belly Dance and 1:1 private Reformer and Cadillac Reformer sessions. First-time clients: 3 classes for £60.',
+  description: 'Women-only boutique Pilates studio in Edgware, North West London. Reformer Pilates, Hot Pilates, Red Light Hot Mat Pilates, Sculpt Mat Pilates, Barre, Belly Dance and 1:1 private Reformer and Cadillac Reformer sessions. First-time clients: 3 classes for £60.',
   keywords: [
     // North West London — primary target
-    'pilates north west london', 'pilates nw london', 'pilates studio north west london', 'reformer pilates north west london', 'best pilates north west london', 'hot pilates north west london', 'women only pilates north west london', 'pilates classes north west london', 'pilates studio nw london',
+    'pilates north west london', 'pilates nw london', 'pilates studio north west london', 'reformer pilates north west london', 'best pilates north west london', 'hot pilates north west london', 'women only pilates north west london', 'pilates classes north west london', 'barre classes north west london', 'pilates studio nw london',
     // London — general
-    'pilates london', 'reformer pilates london', 'pilates studio london', 'pilates classes london', 'hot pilates london', 'best pilates london', 'best pilates classes london', 'women only pilates london', 'boutique pilates studio', 'private pilates london', 'pilates booking london', 'pilates studio uk', 'pilates classes uk', 'boutique fitness london', 'red light therapy pilates', 'private pilates instructor london', 'pilates for women london', 'cadillac reformer pilates', 'wellness studio london', 'infrared pilates london', 'hot pilates uk', 'women only gym london',
+    'pilates london', 'reformer pilates london', 'pilates studio london', 'pilates classes london', 'hot pilates london', 'best pilates london', 'best pilates classes london', 'women only pilates london', 'boutique pilates studio', 'private pilates london', 'pilates booking london', 'pilates studio uk', 'pilates classes uk', 'boutique fitness london', 'barre classes london', 'red light therapy pilates', 'private pilates instructor london', 'pilates for women london', 'cadillac reformer pilates', 'wellness studio london', 'infrared pilates london', 'hot pilates uk', 'women only gym london',
     // Edgware & local
     'pilates edgware', 'reformer pilates edgware', 'pilates classes edgware', 'fitness classes edgware',
     // North London
@@ -71,7 +71,7 @@ export const metadata: Metadata = {
   // these are only fallbacks, so neither is set here.
   openGraph: {
     title: 'Euforyc Studios | Women-Only Pilates Studio in Edgware, North West London',
-    description: 'Women-only boutique Pilates studio in Edgware, North West London. Reformer Pilates, Hot Pilates, Red Light Hot Mat Pilates, Sculpt Mat Pilates, Belly Dance and 1:1 private Reformer and Cadillac Reformer sessions.',
+    description: 'Women-only boutique Pilates studio in Edgware, North West London. Reformer Pilates, Hot Pilates, Red Light Hot Mat Pilates, Sculpt Mat Pilates, Barre, Belly Dance and 1:1 private Reformer and Cadillac Reformer sessions.',
     siteName: 'Euforyc Studios',
     locale: 'en_GB',
     type: 'website',
@@ -80,7 +80,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Euforyc Studios | Women-Only Pilates Studio in Edgware, North West London',
-    description: 'Reformer Pilates, Hot Pilates, Red Light Hot Mat Pilates, Sculpt Mat Pilates, Belly Dance and 1:1 private sessions in Edgware. First-time clients: 3 classes for £60.',
+    description: 'Reformer Pilates, Hot Pilates, Red Light Hot Mat Pilates, Sculpt Mat Pilates, Barre, Belly Dance and 1:1 private sessions in Edgware. First-time clients: 3 classes for £60.',
     images: [DEFAULT_OG_IMAGE.url],
   },
   robots: {
@@ -180,6 +180,7 @@ const structuredData = {
     'Red Light Therapy',
     'Sculpt Mat Pilates',
     'Cadillac Reformer Pilates',
+    'Barre',
     'Belly Dance',
     'Women\'s Health',
     'Core Strength',
