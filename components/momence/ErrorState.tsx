@@ -6,6 +6,7 @@
 import React from 'react';
 import { AlertCircle, RefreshCcw, Home, Mail } from 'lucide-react';
 import Link from 'next/link';
+import scheduleStyles from './schedule.module.css';
 
 interface ErrorStateProps {
   title?: string;
@@ -66,55 +67,31 @@ export default function ErrorState({
 
   // Default variant - full featured
   return (
-    <div className="min-h-[50vh] flex items-center justify-center p-8">
-      <div className="max-w-md w-full text-center">
-        {/* Error icon */}
-        <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-red-50 to-orange-50 rounded-full mb-6 relative">
-          <div className="absolute inset-0 bg-gradient-to-br from-red-100/50 to-orange-100/50 rounded-full animate-ping" />
-          <AlertCircle className="w-10 h-10 text-red-600 relative z-10" />
-        </div>
-
-        {/* Error title */}
-        <h2 className="font-serif text-3xl font-light text-[#1a260e] mb-3">{title}</h2>
-
-        {/* Error message */}
-        <p className="text-[#1a260e]/70 mb-8 leading-relaxed">{message}</p>
-
-        {/* Action buttons */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-          {onRetry && (
-            <button
-              onClick={onRetry}
-              className="group inline-flex items-center gap-2 px-8 py-4 bg-[#1a260e] text-[#fffcf2] rounded-xl hover:bg-[#1a260e]/90 hover:-translate-y-1 hover:shadow-xl transition-all duration-300 font-medium w-full sm:w-auto"
-            >
-              <RefreshCcw className="w-5 h-5 group-hover:rotate-180 transition-transform duration-500" />
-              Try Again
-            </button>
-          )}
-
-          <Link
-            href="/"
-            className="inline-flex items-center gap-2 px-8 py-4 bg-white border-2 border-[#1a260e]/20 text-[#1a260e] rounded-xl hover:border-[#1a260e]/40 hover:-translate-y-1 hover:shadow-xl transition-all duration-300 font-medium w-full sm:w-auto"
-          >
-            <Home className="w-5 h-5" />
-            Go Home
-          </Link>
-        </div>
-
-        {/* Contact support */}
-        {showContactSupport && (
-          <div className="mt-8 pt-8 border-t border-[#1a260e]/10">
-            <p className="text-sm text-[#1a260e]/60 mb-3">Still having issues?</p>
-            <a
-              href="mailto:euforyc@gmail.com"
-              className="inline-flex items-center gap-2 text-sm font-medium text-[#1a260e] hover:text-[#1a260e]/70 transition-colors duration-200"
-            >
-              <Mail className="w-4 h-4" />
-              Contact Support
-            </a>
-          </div>
+    <div className={scheduleStyles.empty} role="alert">
+      <h2>{title}</h2>
+      <p>{message}</p>
+      <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+        {onRetry && (
+          <button type="button" onClick={onRetry} className="eu-btn eu-btn--ink">
+            <RefreshCcw className="w-4 h-4" aria-hidden="true" />
+            Try Again
+          </button>
         )}
+        <Link href="/" className="eu-btn eu-btn--line">
+          <Home className="w-4 h-4" aria-hidden="true" />
+          Go Home
+        </Link>
       </div>
+
+      {showContactSupport && (
+        <p style={{ marginTop: 28 }}>
+          Still having issues?{' '}
+          <a href="mailto:euforyc@gmail.com" className="underline underline-offset-4">
+            <Mail className="inline w-4 h-4 mr-1" aria-hidden="true" />
+            Contact Support
+          </a>
+        </p>
+      )}
     </div>
   );
 }
@@ -163,29 +140,15 @@ export function EmptyState({
   onAction?: () => void;
 }) {
   return (
-    <div className="min-h-[40vh] flex items-center justify-center p-8">
-      <div className="max-w-md w-full text-center">
-        {/* Icon */}
-        <div className="inline-flex items-center justify-center w-20 h-20 bg-[#1a260e]/5 rounded-full mb-6">
-          <Icon className="w-10 h-10 text-[#1a260e]/40" />
-        </div>
-
-        {/* Title */}
-        <h3 className="font-serif text-2xl font-light text-[#1a260e] mb-3">{title}</h3>
-
-        {/* Message */}
-        <p className="text-[#1a260e]/60 mb-6">{message}</p>
-
-        {/* Optional action */}
-        {actionLabel && onAction && (
-          <button
-            onClick={onAction}
-            className="inline-flex items-center gap-2 px-8 py-4 bg-[#1a260e] text-[#fffcf2] rounded-xl hover:bg-[#1a260e]/90 hover:-translate-y-1 hover:shadow-xl transition-all duration-300 font-medium"
-          >
-            {actionLabel}
-          </button>
-        )}
-      </div>
+    <div className={scheduleStyles.empty}>
+      <Icon className="w-8 h-8 mx-auto mb-4 text-[#2a3a21]" aria-hidden="true" />
+      <h3>{title}</h3>
+      <p>{message}</p>
+      {actionLabel && onAction && (
+        <button type="button" onClick={onAction} className="eu-btn eu-btn--ink">
+          {actionLabel}
+        </button>
+      )}
     </div>
   );
 }

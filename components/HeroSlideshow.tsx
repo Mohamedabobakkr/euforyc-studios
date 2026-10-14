@@ -91,7 +91,6 @@ export default function HeroSlideshow({ children, nextClass, rating }: HeroSlide
               sizes="100vw"
               priority={i === 0}
               loading={i === 0 ? undefined : 'eager'}
-              quality={70}
             />
           </div>
         ) : null

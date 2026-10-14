@@ -89,8 +89,8 @@ export function Philosophy() {
             </div>
           </div>
           <div className={styles.seal} aria-hidden="true">
-            <PauseOffscreen className="eu-spin">
-              <svg viewBox="0 0 120 120" width="116" height="116">
+            <PauseOffscreen className={`${styles.sealRing} eu-spin`}>
+              <svg viewBox="0 0 120 120" width="100%" height="100%">
                 <defs>
                   <path id="seal-path" d="M60,60 m-48,0 a48,48 0 1,1 96,0 a48,48 0 1,1 -96,0" />
                 </defs>
@@ -510,8 +510,8 @@ export function VisitTicket() {
             </div>
             <div className={styles.tkRow}>
               <dt className="eu-cap">Say hello</dt>
-              <dd>
-                <a href={`tel:${STUDIO.phoneE164}`}>{STUDIO.phoneDisplay}</a> ·{' '}
+              <dd className={styles.tkContact}>
+                <a href={`tel:${STUDIO.phoneE164}`}>{STUDIO.phoneDisplay}</a>
                 <a href={`mailto:${STUDIO.email}`}>{STUDIO.email}</a>
               </dd>
             </div>
