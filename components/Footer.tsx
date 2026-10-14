@@ -1,118 +1,109 @@
 import Link from 'next/link';
-import { Instagram, Mail } from 'lucide-react';
-import { TikTokIcon } from './icons/TikTokIcon';
+import Image from 'next/image';
+import PillLink from '@/components/euforyc/PillLink';
+import { STUDIO } from '@/lib/site';
+import styles from './Footer.module.css';
+
+type FooterLink = { href: string; label: string; external?: boolean };
+
+const columns: { title: string; links: FooterLink[] }[] = [
+  {
+    title: 'Book',
+    links: [
+      { href: '/schedule', label: 'Timetable' },
+      { href: '/book', label: 'Book a Class' },
+      { href: '/packages-memberships', label: 'Memberships & Packages' },
+      { href: '/offers', label: 'Intro Offer' },
+      { href: '/gift-cards', label: 'Gift cards' },
+    ],
+  },
+  {
+    title: 'Studio',
+    links: [
+      { href: '/about', label: 'About' },
+      { href: '/team', label: 'Team' },
+      { href: '/classes', label: 'Classes' },
+      { href: '/studio-hire', label: 'Studio Hire' },
+      { href: '/skin-studio', label: 'Skin Studio' },
+    ],
+  },
+  {
+    title: 'Help',
+    links: [
+      { href: '/faq', label: 'FAQ' },
+      { href: '/pricing', label: 'Price List' },
+      { href: '/reviews', label: 'Reviews' },
+      { href: '/shop', label: 'Shop' },
+      { href: '/contact', label: 'Contact' },
+    ],
+  },
+  {
+    title: 'Connect',
+    links: [
+      // The Instagram link the footer has always used
+      { href: 'https://www.instagram.com/euforycstudios?igsh=b3A0aDNpbXEzczR2&utm_source=qr', label: 'Instagram', external: true },
+      { href: STUDIO.social.tiktok, label: 'TikTok', external: true },
+      { href: `mailto:${STUDIO.email}`, label: STUDIO.email },
+      { href: `tel:${STUDIO.phoneE164}`, label: STUDIO.phoneDisplay },
+    ],
+  },
+];
 
 const Footer = () => {
   return (
-    <footer className="bg-[#1a260e] text-[#fffcf2] border-t border-[#fffcf2]/10">
-      <div className="container-width section-padding">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-          {/* Brand */}
-          <div className="space-y-4">
-            <h3 className="font-serif text-2xl tracking-wider">EUFORYC STUDIOS</h3>
-            <p className="font-sans text-xs tracking-[0.2em] opacity-80">
-              PILATES • WELLNESS • STRENGTH
-            </p>
-          </div>
-
-          {/* Quick Links */}
-          <div className="space-y-4">
-            <h4 className="font-sans text-xs tracking-[0.2em] uppercase">
-              STUDIO
-            </h4>
-            <div className="space-y-2">
-              <Link
-                href="/about"
-                className="block font-sans text-sm opacity-80 hover:opacity-100 transition-opacity"
-              >
-                About
-              </Link>
-              <Link
-                href="/shop"
-                className="block font-sans text-sm opacity-80 hover:opacity-100 transition-opacity"
-              >
-                Shop
-              </Link>
-              <Link
-                href="/book"
-                className="block font-sans text-sm opacity-80 hover:opacity-100 transition-opacity"
-              >
-                Book a Class
-              </Link>
-              <Link
-                href="/contact"
-                className="block font-sans text-sm opacity-80 hover:opacity-100 transition-opacity"
-              >
-                Contact
-              </Link>
-            </div>
-          </div>
-
-          {/* Contact & Social */}
-          <div className="space-y-4">
-            <h4 className="font-sans text-xs tracking-[0.2em] uppercase">
-              CONNECT
-            </h4>
-            <div className="space-y-2">
-              <a
-                href="mailto:euforyc@gmail.com"
-                className="block font-sans text-sm opacity-80 hover:opacity-100 transition-opacity"
-              >
-                euforyc@gmail.com
-              </a>
-              <p className="font-sans text-sm opacity-80">
-                London, UK
-              </p>
-              <div className="space-y-2">
-                <a
-                  href="https://www.instagram.com/euforycstudios?igsh=b3A0aDNpbXEzczR2&utm_source=qr"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center space-x-2 opacity-80 hover:opacity-100 transition-opacity"
-                >
-                  <Instagram className="h-4 w-4" />
-                  <span className="font-sans text-sm">@euforycstudios</span>
-                </a>
-                <a
-                  href="https://www.tiktok.com/@euforyc"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center space-x-2 opacity-80 hover:opacity-100 transition-opacity"
-                >
-                  <TikTokIcon className="h-4 w-4" />
-                  <span className="font-sans text-sm">@euforyc</span>
-                </a>
-              </div>
-            </div>
-          </div>
-
-          {/* Email */}
-          <div className="flex items-start space-x-4">
-            <Mail className="h-5 w-5 text-[#fffcf2] flex-shrink-0 mt-1" />
-            <div>
-              <h3 className="font-sans text-sm font-medium tracking-wider mb-1">EMAIL</h3>
-              <a
-                href="mailto:euforyc@gmail.com"
-                className="font-sans text-xs text-[#fffcf2]/80 hover:text-[#fffcf2] transition-colors"
-              >
-                euforyc@gmail.com
-              </a>
-            </div>
-          </div>
+    <footer className={`${styles.footer} eu-on-dark`}>
+      <div className="eu-wrap">
+        <div className={styles.top}>
+          <h2 className={styles.title}>
+            Your first class
+            <br />
+            is <em>waiting</em>.
+          </h2>
+          <PillLink href="/schedule" variant="cream" dot stretchMobile>
+            Book a class
+          </PillLink>
         </div>
 
-        <div className="border-t border-[#fffcf2]/20 mt-12 pt-8 text-center space-y-3">
-          <div className="space-y-2">
-            <Link
-              href="/terms"
-              className="font-sans text-xs opacity-80 hover:opacity-100 transition-opacity"
-            >
-              Terms of Service
+        <div className={styles.cols}>
+          <div className={styles.brand}>
+            <Link href="/" className={styles.logo} aria-label="Euforyc Studios home">
+              <Image src="/logo.png" alt="Euforyc Studios" width={625} height={313} sizes="176px" />
             </Link>
+            <p className={styles.about}>
+              A women-only space for Pilates, wellness and community in the heart of North West London.
+            </p>
+            <address className={styles.address}>{STUDIO.addressLine}</address>
           </div>
-          <p className="font-sans text-xs opacity-60 tracking-wider">
-            © {new Date().getFullYear()} EUFORYC STUDIOS. ALL RIGHTS RESERVED. All content, designs, graphics, and code are protected by copyright.
-            Unauthorized use, copying, or reproduction is strictly prohibited.
+
+          {columns.map((column) => (
+            <nav key={column.title} className={styles.col} aria-labelledby={`footer-${column.title.toLowerCase()}`}>
+              <h2 id={`footer-${column.title.toLowerCase()}`}>{column.title}</h2>
+              <ul>
+                {column.links.map((link) => (
+                  <li key={link.href}>
+                    {link.external ? (
+                      <a href={link.href} target="_blank" rel="noopener noreferrer">
+                        {link.label}
+                      </a>
+                    ) : link.href.startsWith('/') ? (
+                      <Link href={link.href}>{link.label}</Link>
+                    ) : (
+                      <a href={link.href}>{link.label}</a>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          ))}
+        </div>
+
+        <div className={`${styles.bottom} eu-cap`}>
+          <span>© {new Date().getFullYear()} Euforyc Studios</span>
+          <span>Pilates • Wellness • Strength</span>
+          <Link href="/terms">Terms of Service</Link>
+          <p className={styles.legal} style={{ textTransform: 'none', letterSpacing: 'normal' }}>
+            All rights reserved. All content, designs, graphics, and code are protected by copyright. Unauthorized
+            use, copying, or reproduction is strictly prohibited.
           </p>
         </div>
       </div>
