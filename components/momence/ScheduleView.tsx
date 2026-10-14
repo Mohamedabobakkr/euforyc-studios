@@ -15,13 +15,16 @@ import { DateGroupedEvents } from '@/lib/types/momence';
 
 interface ScheduleViewProps {
   initialData?: DateGroupedEvents[];
+  /** When the server rendered initialData — keeps the first client render identical to the server's */
+  renderedAt?: number;
 }
 
-export default function ScheduleView({ initialData }: ScheduleViewProps) {
+export default function ScheduleView({ initialData, renderedAt }: ScheduleViewProps) {
   // State
   const [groupedEvents, setGroupedEvents] = useState<DateGroupedEvents[]>(initialData || []);
   const [isLoading, setIsLoading] = useState(!initialData);
   const [error, setError] = useState<string | null>(null);
+  const [now, setNow] = useState<number>(() => renderedAt ?? Date.now());
 
   // Filters
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
@@ -74,6 +77,7 @@ export default function ScheduleView({ initialData }: ScheduleViewProps) {
         console.log('[Schedule] API Timestamp:', result.timestamp);
 
         setGroupedEvents(result.data);
+        setNow(Date.now());
       } else {
         throw new Error(result.error?.message || 'Failed to load schedule');
       }
@@ -86,12 +90,12 @@ export default function ScheduleView({ initialData }: ScheduleViewProps) {
   };
 
   /**
-   * Initial fetch on mount
+   * Fetch on mount. Server-rendered data may be a few minutes old, so it is
+   * always refreshed for live availability.
    */
   useEffect(() => {
-    if (!initialData) {
-      fetchEvents();
-    }
+    setNow(Date.now());
+    fetchEvents();
   }, []);
 
   /**
@@ -193,7 +197,6 @@ export default function ScheduleView({ initialData }: ScheduleViewProps) {
    * Filter events based on selected filters AND remove past classes
    */
   const filteredGroupedEvents = useMemo(() => {
-    const now = new Date();
     let privateCount = 0;
     let pastCount = 0;
     let totalBeforeFilter = 0;
@@ -210,7 +213,7 @@ export default function ScheduleView({ initialData }: ScheduleViewProps) {
           }
 
           // Filter out classes that have already started
-          const classStartTime = new Date(event.startTime);
+          const classStartTime = new Date(event.startTime).getTime();
           if (classStartTime <= now) {
             pastCount++;
             return false;
@@ -265,7 +268,7 @@ export default function ScheduleView({ initialData }: ScheduleViewProps) {
     });
 
     return filtered;
-  }, [groupedEvents, selectedCategory, selectedInstructor, searchQuery]);
+  }, [groupedEvents, selectedCategory, selectedInstructor, searchQuery, now]);
 
   /**
    * Clear all filters
@@ -287,7 +290,7 @@ export default function ScheduleView({ initialData }: ScheduleViewProps) {
   }
 
   // Error state
-  if (error) {
+  if (error && groupedEvents.length === 0) {
     return <ErrorState message={error} onRetry={fetchEvents} />;
   }
 

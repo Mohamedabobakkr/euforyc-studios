@@ -1,13 +1,12 @@
-import type { Metadata } from 'next';
+import { pageMetadata } from '@/lib/site';
 import Image from 'next/image';
 import { Gift, Heart, Sparkles, ExternalLink } from 'lucide-react';
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: 'Gift Cards | Pilates Gift Vouchers',
-  description: 'Give the gift of wellness. Euforyc Studios gift cards for reformer pilates, hot pilates, private sessions & more in Edgware, London. Perfect for birthdays, celebrations & self-care treats.',
-  keywords: ['pilates gift card london', 'pilates gift voucher', 'wellness gift card edgware', 'fitness gift voucher london', 'reformer pilates gift'],
-  alternates: { canonical: 'https://euforyc.co.uk/gift-cards' },
-};
+  description: 'Give the gift of wellness. Euforyc Studios gift cards for Reformer Pilates, Hot Pilates, private sessions and more in Edgware, London. For birthdays, celebrations and self-care treats.',
+  path: '/gift-cards',
+});
 
 export default function GiftCards() {
   return (

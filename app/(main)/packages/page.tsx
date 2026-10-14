@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect, Suspense, useRef } from 'react';
-import { useSearchParams } from 'next/navigation';
 import { Sparkles, Flame, Zap, Heart, Crown, ChevronRight, Dumbbell, Music } from 'lucide-react';
 
 // Services Schema for SEO
@@ -16,7 +15,7 @@ const servicesSchema = {
       position: 1,
       name: 'Reformer Pilates Classes',
       description: 'Equipment-based group pilates classes using professional reformer machines',
-      provider: { '@type': 'LocalBusiness', name: 'Euforyc Studios', address: '7 Holmstall Ave, Edgware HA8 5HX, London' },
+      provider: { '@type': 'LocalBusiness', name: 'Euforyc Studios', address: '7-8 Holmstall Parade, Edgware, HA8 5HX' },
       areaServed: 'London',
       offers: { '@type': 'AggregateOffer', lowPrice: '28', highPrice: '320', priceCurrency: 'GBP' }
     },
@@ -24,8 +23,8 @@ const servicesSchema = {
       '@type': 'Service',
       position: 2,
       name: 'Hot Pilates Classes',
-      description: 'Infrared-heated pilates classes for enhanced flexibility and detoxification',
-      provider: { '@type': 'LocalBusiness', name: 'Euforyc Studios', address: '7 Holmstall Ave, Edgware HA8 5HX, London' },
+      description: 'Infrared-heated pilates classes for a more intense, heated session',
+      provider: { '@type': 'LocalBusiness', name: 'Euforyc Studios', address: '7-8 Holmstall Parade, Edgware, HA8 5HX' },
       areaServed: 'London',
       offers: { '@type': 'AggregateOffer', lowPrice: '28', highPrice: '320', priceCurrency: 'GBP' }
     },
@@ -34,7 +33,7 @@ const servicesSchema = {
       position: 3,
       name: 'Private Pilates Sessions',
       description: 'One-on-one personalized pilates training with expert instructors',
-      provider: { '@type': 'LocalBusiness', name: 'Euforyc Studios', address: '7 Holmstall Ave, Edgware HA8 5HX, London' },
+      provider: { '@type': 'LocalBusiness', name: 'Euforyc Studios', address: '7-8 Holmstall Parade, Edgware, HA8 5HX' },
       areaServed: 'London',
       offers: { '@type': 'AggregateOffer', lowPrice: '250', highPrice: '700', priceCurrency: 'GBP' }
     }
@@ -105,19 +104,18 @@ const getIcon = (icon: string, className?: string) => {
   }
 };
 
-// Intro section with useSearchParams
+// Intro section — reads ?offer= after mount so it can be rendered as static HTML
 function IntroOffersSection() {
-  const searchParams = useSearchParams();
   const [selectedOffer, setSelectedOffer] = useState<IntroOfferType>('try-all');
   const [fromAd, setFromAd] = useState(false);
 
   useEffect(() => {
-    const offer = searchParams.get('offer') as IntroOfferType | null;
+    const offer = new URLSearchParams(window.location.search).get('offer') as IntroOfferType | null;
     if (offer && ['try-all'].includes(offer)) {
       setSelectedOffer(offer);
       setFromAd(true);
     }
-  }, [searchParams]);
+  }, []);
 
   const introPackages = packages.intro.packages;
   const currentPackage = introPackages.find(pkg => pkg.id === selectedOffer) || introPackages[0];

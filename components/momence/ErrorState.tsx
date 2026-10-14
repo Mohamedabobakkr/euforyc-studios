@@ -106,7 +106,7 @@ export default function ErrorState({
           <div className="mt-8 pt-8 border-t border-[#1a260e]/10">
             <p className="text-sm text-[#1a260e]/60 mb-3">Still having issues?</p>
             <a
-              href="mailto:info@euforyc.co.uk"
+              href="mailto:euforyc@gmail.com"
               className="inline-flex items-center gap-2 text-sm font-medium text-[#1a260e] hover:text-[#1a260e]/70 transition-colors duration-200"
             >
               <Mail className="w-4 h-4" />

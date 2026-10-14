@@ -442,8 +442,8 @@ export default function SipsLandingPage() {
               </p>
               <address className="location-address">
                 <p>euforyc studios</p>
-                <p>7 holmstall ave</p>
-                <p>edgware, london</p>
+                <p>7-8 holmstall parade</p>
+                <p>edgware, ha8 5hx</p>
               </address>
               <a href="https://maps.app.goo.gl/uQ7hPj7eD1sW9R2Y9" target="_blank" rel="noopener noreferrer" className="btn-outline location-btn">
                 get directions &rarr;
@@ -470,7 +470,7 @@ export default function SipsLandingPage() {
           <a href="https://instagram.com/euforycsips">@euforycsips</a>
           <a href="https://euforyc.co.uk/contact">contact</a>
         </div>
-        <p className="footer-copy">&copy; 2025 euforyc studios &middot; 7 holmstall ave, edgware, london</p>
+        <p className="footer-copy">&copy; 2025 euforyc studios &middot; 7-8 holmstall parade, edgware, ha8 5hx</p>
       </footer>
     </>
   );

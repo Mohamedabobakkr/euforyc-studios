@@ -7,6 +7,7 @@ import type { Metadata } from 'next';
 import { Nunito_Sans } from 'next/font/google';
 import Link from 'next/link';
 import Image from 'next/image';
+import { Analytics } from '@vercel/analytics/next';
 
 const nunito = Nunito_Sans({
     subsets: ['latin'],
@@ -66,8 +67,8 @@ const skinStudioSchema = {
     url: `${skinSiteUrl}/skin-studio`,
     telephone: '+447375710370',
     email: 'euforyc@gmail.com',
-    address: { '@type': 'PostalAddress', streetAddress: '7 Holmstall Ave', addressLocality: 'Edgware', addressRegion: 'London', postalCode: 'HA8 5HX', addressCountry: 'GB' },
-    geo: { '@type': 'GeoCoordinates', latitude: 51.6142, longitude: -0.2756 },
+    address: { '@type': 'PostalAddress', streetAddress: '7-8 Holmstall Parade', addressLocality: 'Edgware', postalCode: 'HA8 5HX', addressCountry: 'GB' },
+    geo: { '@type': 'GeoCoordinates', latitude: 51.59727, longitude: -0.26388 },
     openingHoursSpecification: [
         { '@type': 'OpeningHoursSpecification', dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'], opens: '06:45', closes: '20:00' },
         { '@type': 'OpeningHoursSpecification', dayOfWeek: ['Saturday', 'Sunday'], opens: '08:45', closes: '18:00' },
@@ -87,7 +88,7 @@ const skinStudioSchema = {
             { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Skin Boosters', description: 'Profhilo, Neofound, Lumi Eye, and Polynucleotides for deep skin hydration and rejuvenation. From £120.' } },
             { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Body Contouring', description: 'Non-surgical body sculpting including cavitation, RF skin tightening, EMS sculpt, and cellulite treatment. From £75.' } },
             { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Laser Hair Removal', description: 'Full body and face laser hair removal with professional-grade equipment. From £25.' } },
-            { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Dermalux Phototherapy', description: 'LED light therapy for skin rejuvenation, acne treatment, and anti-ageing.' } },
+            { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Dermalux Phototherapy', description: 'LED light therapy facials.' } },
         ],
     },
     paymentAccepted: ['Cash', 'Credit Card', 'Debit Card', 'Apple Pay', 'Google Pay'],
@@ -185,8 +186,8 @@ export default function SkinStudioLayout({
                                 <div>
                                     <h4 className="font-skin-serif text-lg mb-4 tracking-wide">Contact</h4>
                                     <ul className="space-y-2 text-sm text-skin-background/70">
-                                        <li>7 Holmstall Ave, Edgware</li>
-                                        <li>London HA8 5HX</li>
+                                        <li>7-8 Holmstall Parade,</li>
+                                        <li>Edgware, HA8 5HX</li>
                                         <li className="pt-2">
                                             <a href="mailto:euforyc@gmail.com" className="hover:text-skin-background transition-colors">
                                                 euforyc@gmail.com
@@ -208,6 +209,7 @@ export default function SkinStudioLayout({
                         </div>
                     </footer>
                 </div>
+                <Analytics />
             </body>
         </html>
     );

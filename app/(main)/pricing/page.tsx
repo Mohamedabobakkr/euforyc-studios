@@ -1,13 +1,12 @@
-import type { Metadata } from 'next';
+import { pageMetadata } from '@/lib/site';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 
-export const metadata: Metadata = {
-  title: 'Pricing | Pilates Classes & Packages',
-  description: 'Transparent pricing at Euforyc Studios Edgware. Group class drop-ins £28 (Sculpt Mat Pilates & Belly Dance £20), Try It All intro offer 3 classes for £60, Euforyc Package from £105, MOVE package from £70, Euforyc Membership from £90/month.',
-  keywords: ['pilates prices london', 'reformer pilates cost london', 'hot pilates price edgware', 'pilates class cost near me', 'pilates membership london', 'pilates pricing uk'],
-  alternates: { canonical: 'https://euforyc.co.uk/pricing' },
-};
+export const metadata = pageMetadata({
+  title: 'Prices | Pilates Classes, Packages & Memberships',
+  description: 'Prices at Euforyc Studios in Edgware. Group class drop-ins £28 (Sculpt Mat Pilates and Belly Dance £20), Try It All intro offer 3 classes for £60, Euforyc Package from £105, MOVE package from £70, Euforyc Membership from £90 a month, private 1:1 sessions £75.',
+  path: '/pricing',
+});
 
 export default function Pricing() {
   return (
@@ -58,7 +57,7 @@ export default function Pricing() {
               <div className="space-y-0">
                 <div className="flex justify-between items-center py-5 border-b border-[#1a260e]/10">
                   <div>
-                    <h3 className="font-serif text-xl md:text-2xl font-light">Reformer Pilates</h3>
+                    <h3 className="font-serif text-xl md:text-2xl font-light"><Link href="/classes/reformer-pilates">Reformer Pilates</Link></h3>
                   </div>
                   <div className="text-right">
                     <p className="font-serif text-2xl md:text-3xl font-light">£28</p>
@@ -67,7 +66,7 @@ export default function Pricing() {
 
                 <div className="flex justify-between items-center py-5 border-b border-[#1a260e]/10">
                   <div>
-                    <h3 className="font-serif text-xl md:text-2xl font-light">Hot Pilates</h3>
+                    <h3 className="font-serif text-xl md:text-2xl font-light"><Link href="/classes/hot-pilates">Hot Pilates</Link></h3>
                   </div>
                   <div className="text-right">
                     <p className="font-serif text-2xl md:text-3xl font-light">£28</p>
@@ -76,7 +75,7 @@ export default function Pricing() {
 
                 <div className="flex justify-between items-center py-5 border-b border-[#1a260e]/10">
                   <div>
-                    <h3 className="font-serif text-xl md:text-2xl font-light">Red Light Hot Pilates</h3>
+                    <h3 className="font-serif text-xl md:text-2xl font-light"><Link href="/classes/red-light-hot-mat-pilates">Red Light Hot Pilates</Link></h3>
                   </div>
                   <div className="text-right">
                     <p className="font-serif text-2xl md:text-3xl font-light">£28</p>
@@ -85,7 +84,7 @@ export default function Pricing() {
 
                 <div className="flex justify-between items-center py-5 border-b border-[#1a260e]/10">
                   <div>
-                    <h3 className="font-serif text-xl md:text-2xl font-light">Barre</h3>
+                    <h3 className="font-serif text-xl md:text-2xl font-light"><Link href="/classes/barre">Barre</Link></h3>
                   </div>
                   <div className="text-right">
                     <p className="font-serif text-2xl md:text-3xl font-light">£28</p>
@@ -94,16 +93,7 @@ export default function Pricing() {
 
                 <div className="flex justify-between items-center py-5 border-b border-[#1a260e]/10">
                   <div>
-                    <h3 className="font-serif text-xl md:text-2xl font-light">Mat Pilates</h3>
-                  </div>
-                  <div className="text-right">
-                    <p className="font-serif text-2xl md:text-3xl font-light">£28</p>
-                  </div>
-                </div>
-
-                <div className="flex justify-between items-center py-5 border-b border-[#1a260e]/10">
-                  <div>
-                    <h3 className="font-serif text-xl md:text-2xl font-light">Sculpt Mat Pilates</h3>
+                    <h3 className="font-serif text-xl md:text-2xl font-light"><Link href="/classes/sculpt-mat-pilates">Sculpt Mat Pilates</Link></h3>
                   </div>
                   <div className="text-right">
                     <p className="font-serif text-2xl md:text-3xl font-light">£20</p>
@@ -112,7 +102,7 @@ export default function Pricing() {
 
                 <div className="flex justify-between items-center py-5 border-b border-[#1a260e]/10">
                   <div>
-                    <h3 className="font-serif text-xl md:text-2xl font-light">Belly Dance</h3>
+                    <h3 className="font-serif text-xl md:text-2xl font-light"><Link href="/classes/belly-dance">Belly Dance</Link></h3>
                   </div>
                   <div className="text-right">
                     <p className="font-serif text-2xl md:text-3xl font-light">£20</p>
@@ -256,7 +246,7 @@ export default function Pricing() {
             {/* 1-1 Private Cadillac Reformer Sessions */}
             <div className="space-y-8">
               <div className="text-center space-y-2">
-                <h2 className="heading-secondary">1-1 Private Cadillac Reformer</h2>
+                <h2 className="heading-secondary"><Link href="/classes/private-cadillac-reformer-pilates">1-1 Private Cadillac Reformer</Link></h2>
                 <p className="tagline text-[#1a260e]/60">CADILLAC REFORMER • PERSONALIZED TRAINING • 60 MIN</p>
               </div>
 
@@ -312,38 +302,6 @@ export default function Pricing() {
                   VIEW PACKAGES
                   <ArrowRight className="h-4 w-4" />
                 </Link>
-              </div>
-            </div>
-
-            {/* Women's Circle Section */}
-            <div className="space-y-8">
-              <div className="text-center space-y-2">
-                <h2 className="heading-secondary">Women&apos;s Circle</h2>
-                <p className="tagline text-[#1a260e]/60">JOURNALING • REFLECTION • SISTERHOOD</p>
-              </div>
-
-              <div className="space-y-0">
-                <div className="flex justify-between items-center py-5 border-b border-[#1a260e]/10">
-                  <div>
-                    <h3 className="font-serif text-xl md:text-2xl font-light">Guided Journaling</h3>
-                    <p className="text-xs text-[#1a260e]/60">Tuesdays 9–9.45pm • 15 spaces</p>
-                  </div>
-                  <div className="text-right">
-                    <p className="font-serif text-2xl md:text-3xl font-light">£18</p>
-                    <p className="text-xs text-[#1a260e]/60">per class</p>
-                  </div>
-                </div>
-
-                <div className="flex justify-between items-center py-5 border-b border-[#1a260e]/10">
-                  <div>
-                    <h3 className="font-serif text-xl md:text-2xl font-light">Women&apos;s Circle</h3>
-                    <p className="text-xs text-[#1a260e]/60">Sundays 4pm • 15 spaces</p>
-                  </div>
-                  <div className="text-right">
-                    <p className="font-serif text-2xl md:text-3xl font-light">£25</p>
-                    <p className="text-xs text-[#1a260e]/60">per circle</p>
-                  </div>
-                </div>
               </div>
             </div>
 

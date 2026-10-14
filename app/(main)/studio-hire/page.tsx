@@ -1432,7 +1432,7 @@ export default function StudioHire() {
               {/* Location tag */}
               <div className="flex items-center justify-center gap-2 pt-6 text-[#fffcf2]/20 text-xs">
                 <MapPin className="h-3 w-3" />
-                <span className="tracking-wider">7 Holmstall Ave, Edgware HA8 5HX</span>
+                <span className="tracking-wider">7-8 Holmstall Parade, Edgware, HA8 5HX</span>
               </div>
             </div>
           </Reveal>

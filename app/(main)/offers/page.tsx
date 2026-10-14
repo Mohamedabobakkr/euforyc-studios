@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect, Suspense } from 'react';
-import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { ExternalLink, CheckCircle2, Music, ArrowRight, Sparkles, Users, Clock, MapPin, Timer, Crown, Copy, Check } from 'lucide-react';
 
@@ -151,18 +150,18 @@ const offerIds: OfferId[] = ['try-all'];
 
 // Main content component
 function OffersContent() {
-  const searchParams = useSearchParams();
   const [selectedOffer, setSelectedOffer] = useState<OfferId>('try-all');
   const [copied, setCopied] = useState(false);
   const timeLeft = useCountdown(PROMO_ENDS_AT);
   const promoActive = timeLeft !== null;
 
+  // Read ?offer= after mount so the page itself can be rendered as static HTML
   useEffect(() => {
-    const offerParam = searchParams.get('offer') as OfferId | null;
+    const offerParam = new URLSearchParams(window.location.search).get('offer') as OfferId | null;
     if (offerParam && introOffers[offerParam]) {
       setSelectedOffer(offerParam);
     }
-  }, [searchParams]);
+  }, []);
 
   useEffect(() => {
     if (!copied) return;
@@ -372,7 +371,7 @@ function OffersContent() {
               {/* Real deadline: 30 November 2026, 23:59 UK time */}
               <div className="inline-flex items-center gap-2 bg-orange-500/10 border border-orange-400/20 rounded-full px-4 py-2 mt-6">
                 <Timer className="h-4 w-4 text-orange-500" />
-                <span className="text-sm text-orange-600 font-medium">
+                <span className="text-sm text-orange-600 font-medium" suppressHydrationWarning>
                   OFFER ENDS IN: {timeLeft.days}d {timeLeft.hours}h {timeLeft.minutes}m
                 </span>
               </div>
@@ -607,7 +606,7 @@ function OffersContent() {
 
               <div className="border-b border-[#1a260e]/10 pb-4 md:pb-6">
                 <h3 className="font-serif text-lg md:text-xl font-light text-[#1a260e] mb-2 md:mb-3">What should I bring?</h3>
-                <p className="text-xs md:text-sm text-[#1a260e]/70">Just yourself in comfortable workout clothes. We provide all equipment, mats, and towels. Grip socks are available to purchase at the studio.</p>
+                <p className="text-xs md:text-sm text-[#1a260e]/70">Comfortable workout clothes and water. We provide all equipment and mats. Grip socks are mandatory for Reformer Pilates, and you need your own towel for Hot Pilates and Sculpt Mat Pilates. Both can be bought at the studio.</p>
               </div>
 
               <div className="border-b border-[#1a260e]/10 pb-4 md:pb-6">

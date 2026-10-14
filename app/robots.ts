@@ -1,37 +1,20 @@
 import { MetadataRoute } from 'next';
 
+/**
+ * One rule set for every crawler, search and AI alike.
+ *
+ * A crawler that has its own named group ignores the "*" group entirely, so
+ * naming bots individually only creates gaps. Nothing under /_next/ is
+ * blocked: that is where the site's images, CSS and JavaScript are served.
+ */
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: [
       {
         userAgent: '*',
-        allow: [
-          '/',
-          '/packages',
-          '/memberships',
-          '/about',
-          '/book',
-          '/contact',
-          '/sips',
-          '/skin-studio',
-          '/schedule',
-          '/pricing',
-          '/faq',
-          '/gift-cards',
-          '/offers',
-        ],
-        disallow: ['/admin', '/_next/', '/api/'],
+        allow: '/',
+        disallow: ['/api/'],
       },
-      { userAgent: 'GPTBot', allow: '/' },
-      { userAgent: 'ChatGPT-User', allow: '/' },
-      { userAgent: 'Claude-Web', allow: '/' },
-      { userAgent: 'PerplexityBot', allow: '/' },
-      { userAgent: 'Applebot-Extended', allow: '/' },
-      { userAgent: 'anthropic-ai', allow: '/' },
-      { userAgent: 'cohere-ai', allow: '/' },
-      { userAgent: 'Google-Extended', allow: '/' },
-      { userAgent: 'Googlebot', allow: '/' },
-      { userAgent: 'Bingbot', allow: '/' },
     ],
     sitemap: 'https://euforyc.co.uk/sitemap.xml',
   };

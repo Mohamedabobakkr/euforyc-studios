@@ -5,14 +5,14 @@ import { MapPin, Clock } from 'lucide-react';
 import CircularText from '@/components/CircularText';
 import MomenceReviews from '@/components/MomenceReviews';
 import HeroSlideshow from '@/components/HeroSlideshow';
-import { Analytics } from '@vercel/analytics/next';
-import { SpeedInsights } from "@vercel/speed-insights/next"
+import { pageMetadata } from '@/lib/site';
 
-export const metadata: Metadata = {
-  title: 'EUFORYC STUDIOS | Women\'s Pilates Studio London | Reformer & Hot Pilates Edgware',
-  description: 'London\'s premier women-only pilates studio in Edgware. Reformer pilates, hot infrared pilates, red light therapy, barre, dance & private 1:1 sessions. Small intimate classes. Try It All intro offer £60. Book now.',
-  alternates: { canonical: 'https://euforyc.co.uk' },
-};
+export const metadata: Metadata = pageMetadata({
+  title: 'Euforyc Studios | Women-Only Pilates Studio in Edgware, North West London',
+  description: 'Women-only boutique Pilates studio in Edgware, North West London. Reformer Pilates, Hot Pilates, Red Light Hot Mat Pilates, Sculpt Mat Pilates, Barre, Belly Dance and 1:1 private Reformer and Cadillac Reformer sessions. First-time clients: 3 classes for £60.',
+  path: '/',
+  absoluteTitle: true,
+});
 
 export default function Home() {
   return (
@@ -54,13 +54,11 @@ export default function Home() {
               </h2>
               <div className="space-y-4">
                 <p className="body-text">
-                  Transformation is built with time, breath by breath. True strength is not rushed, 
-                  and real change does not happen overnight.
-                </p>
-                <p className="body-text">
-                  Every small movement, every mindful breath, layers into lasting growth. 
-                  Pilates teaches you to trust the process, to honor the pace of your own body, 
-                  and to find beauty in slow, steady progress.
+                  Euforyc Studios is a women-only Pilates and wellness studio at 7-8 Holmstall Parade,
+                  Edgware, a 10–15 minute walk from Colindale station. We teach Reformer, Hot, Red Light
+                  Hot Mat and Sculpt Mat Pilates, Barre and Belly Dance, with 1:1 private Reformer and
+                  Cadillac Reformer sessions. Small classes, expert teaching, and a space made for women
+                  to feel strong, calm and completely themselves.
                 </p>
               </div>
               <Link href="/about" className="btn-minimal inline-block">
@@ -70,7 +68,7 @@ export default function Home() {
             <div className="relative h-[500px] bg-[#fffcf2]">
               <Image
                 src="/euforyc.jpg"
-                alt="Euforyc Studios pilates studio London Edgware boutique fitness"
+                alt="Euforyc Studios, a women-only Pilates studio in Edgware"
                 fill
                 className="object-contain"
                 quality={100}
@@ -92,11 +90,11 @@ export default function Home() {
           <div className="flex md:grid md:grid-cols-5 gap-5 overflow-x-auto md:overflow-visible snap-x snap-mandatory pb-6 md:pb-0 -mx-8 px-8 md:mx-0 md:px-0 scrollbar-hide">
 
             {/* Reformer Pilates */}
-            <Link href="/packages" className="group block min-w-[70vw] md:min-w-0 snap-center">
+            <Link href="/classes/reformer-pilates" className="group block min-w-[70vw] md:min-w-0 snap-center">
               <div className="relative overflow-hidden aspect-[3/4]">
                 <Image
                   src="/reformer-new.jpg"
-                  alt="Reformer pilates classes London Euforyc Studios"
+                  alt="A client in a pike position on a Pilates reformer at Euforyc Studios in Edgware"
                   fill
                   className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                   sizes="(max-width: 768px) 50vw, 20vw"
@@ -115,11 +113,11 @@ export default function Home() {
             </Link>
 
             {/* Hot Infrared Mat Pilates */}
-            <Link href="/packages" className="group block min-w-[70vw] md:min-w-0 snap-center">
+            <Link href="/classes/hot-pilates" className="group block min-w-[70vw] md:min-w-0 snap-center">
               <div className="relative overflow-hidden aspect-[3/4]">
                 <Image
                   src="/hotpilates-new.jpg"
-                  alt="Hot infrared heated mat pilates London Euforyc Studios"
+                  alt="The infrared-heated mat studio at Euforyc Studios with oval mats, arched mirrors and ceiling heaters"
                   fill
                   className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                   sizes="(max-width: 768px) 50vw, 20vw"
@@ -138,11 +136,11 @@ export default function Home() {
             </Link>
 
             {/* Redlight Mat Pilates */}
-            <Link href="/packages" className="group block min-w-[70vw] md:min-w-0 snap-center">
+            <Link href="/classes/red-light-hot-mat-pilates" className="group block min-w-[70vw] md:min-w-0 snap-center">
               <div className="relative overflow-hidden aspect-[3/4]">
                 <Image
                   src="/redlight-new.jpg"
-                  alt="Redlight mat pilates London Euforyc Studios"
+                  alt="Women in protective goggles hold a lunge on red light therapy mats at Euforyc Studios"
                   fill
                   className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                   sizes="(max-width: 768px) 50vw, 20vw"
@@ -155,17 +153,17 @@ export default function Home() {
                   Redlight Pilates
                 </h3>
                 <p className="font-sans text-xs text-[#1a260e]/50 font-light leading-relaxed">
-                  Red light therapy meets mindful mat pilates for total rejuvenation.
+                  Mindful mat Pilates in a heated studio under red light.
                 </p>
               </div>
             </Link>
 
             {/* Barre */}
-            <Link href="/packages" className="group block min-w-[70vw] md:min-w-0 snap-center">
+            <Link href="/classes/barre" className="group block min-w-[70vw] md:min-w-0 snap-center">
               <div className="relative overflow-hidden aspect-[3/4]">
                 <Image
                   src="/hero/IMG_8698.JPG"
-                  alt="Barre classes London Euforyc Studios"
+                  alt="A client extends one leg along the ballet barre in front of arched mirrors at Euforyc Studios"
                   fill
                   className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                   sizes="(max-width: 768px) 50vw, 20vw"
@@ -184,11 +182,11 @@ export default function Home() {
             </Link>
 
             {/* Dance */}
-            <Link href="/packages" className="group block min-w-[70vw] md:min-w-0 snap-center">
+            <Link href="/classes/belly-dance" className="group block min-w-[70vw] md:min-w-0 snap-center">
               <div className="relative overflow-hidden aspect-[3/4]">
                 <Image
                   src="/dance-new.jpg"
-                  alt="Dance classes London Euforyc Studios"
+                  alt="A belly dancer in a beaded costume leans back in a studio portrait"
                   fill
                   className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                   sizes="(max-width: 768px) 50vw, 20vw"
@@ -271,7 +269,7 @@ export default function Home() {
                 <MapPin className="h-4 w-4 md:h-5 md:w-5 flex-shrink-0" />
                 <p className="font-sans text-xs md:text-sm tracking-wider">
                   <Link href="/contact" className="hover:underline">
-                    7 Holmstall Ave, Edgware HA8 5HX, London, United Kingdom
+                    7-8 Holmstall Parade, Edgware, HA8 5HX
                   </Link>
                 </p>
               </div>
@@ -345,8 +343,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-      <Analytics />
-      <SpeedInsights />
     </div>
   );
 }

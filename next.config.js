@@ -127,10 +127,11 @@ const nextConfig = {
         destination: '/',
         permanent: true,
       },
+      // Summer challenge retired
       {
         source: '/summer-challenge',
-        destination: '/memberships',
-        permanent: true,
+        destination: '/offers',
+        statusCode: 301,
       },
       // EMS Sculpt landing page retired — EMS is offered through Skin Studio
       {

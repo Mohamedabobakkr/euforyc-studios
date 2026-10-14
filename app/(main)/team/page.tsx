@@ -1,14 +1,19 @@
-import type { Metadata } from 'next';
 import Image from 'next/image';
+import JsonLd from '@/components/JsonLd';
+import { breadcrumbSchema, pageMetadata } from '@/lib/site';
 
-export const metadata: Metadata = {
-  title: 'Our Team - Euforyc Studios',
-  description: 'Meet our experienced and certified Pilates instructors dedicated to your wellness journey.',
-};
+export const metadata = pageMetadata({
+  title: 'Our Team',
+  description:
+    'Meet the team behind Euforyc Studios, the women-only Pilates studio in Edgware, North West London.',
+  path: '/team',
+});
 
 export default function Team() {
   return (
     <div className="pt-32">
+      <JsonLd data={breadcrumbSchema([{ name: 'Team', path: '/team' }])} />
+
       {/* Hero Section */}
       <section className="section-padding py-24">
         <div className="container-width text-center">
@@ -28,7 +33,7 @@ export default function Team() {
             <div className="aspect-[3/4] relative overflow-hidden bg-[#1a260e]/5">
               <Image
                 src="/leadtrainer.jpg"
-                alt="Lead Instructor"
+                alt="The lead instructor and co-founder of Euforyc Studios"
                 fill
                 className="object-cover"
                 priority
@@ -152,7 +157,7 @@ export default function Team() {
             <div className="aspect-[3/4] relative overflow-hidden bg-[#1a260e]/5 order-1 md:order-2">
               <Image
                 src="/cofounder.jpg"
-                alt="Co-Founder"
+                alt="The co-founder and business director of Euforyc Studios"
                 fill
                 className="object-cover"
                 sizes="(max-width: 768px) 100vw, 50vw"

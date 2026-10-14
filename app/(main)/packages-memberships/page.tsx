@@ -1,11 +1,12 @@
-import type { Metadata } from 'next';
+import { pageMetadata } from '@/lib/site';
 import Link from 'next/link';
 import { Package, Calendar, Crown, Sparkles } from 'lucide-react';
 
-export const metadata: Metadata = {
-  title: 'Packages & Memberships - Euforyc Studios',
-  description: 'Choose between flexible class packages or ongoing membership contracts for your Pilates journey.',
-};
+export const metadata = pageMetadata({
+  title: 'Packages & Memberships',
+  description: 'Compare flexible class packages with monthly memberships at Euforyc Studios in Edgware. Packages from £105 with no contract, memberships from £90 a month.',
+  path: '/packages-memberships',
+});
 
 export default function PackagesMemberships() {
   return (

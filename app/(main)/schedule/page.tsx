@@ -7,31 +7,25 @@ import React from 'react';
 import { Metadata } from 'next';
 import { MapPin } from 'lucide-react';
 import ScheduleView from '@/components/momence/ScheduleView';
+import { STUDIO, pageMetadata } from '@/lib/site';
+import { getUpcomingEvents, groupByLondonDay } from '@/lib/studio-data';
 
-export const metadata: Metadata = {
-  title: 'Live Class Schedule | Book Reformer Pilates & Hot Pilates Edgware',
+// The timetable is rendered into the page HTML and refreshed every 5 minutes;
+// the browser then keeps availability live.
+export const revalidate = 300;
+
+export const metadata: Metadata = pageMetadata({
+  title: 'Class Timetable | Reformer, Hot & Red Light Pilates in Edgware',
   description:
-    'View our live class schedule with real-time availability. Book reformer pilates, hot infrared pilates, barre, dance & private sessions at Euforyc Studios Edgware. Small intimate classes. Secure your spot today.',
-  keywords: [
-    'pilates schedule edgware',
-    'reformer pilates classes london',
-    'hot pilates timetable',
-    'book pilates class edgware',
-    'edgware fitness schedule',
-    'barre class times london',
-    'pilates class schedule near me',
-    'pilates timetable north london',
-  ],
-  openGraph: {
-    title: 'Live Class Schedule | Euforyc Studios Edgware',
-    description:
-      'Browse our live class schedule and book your spot. Real-time availability for reformer pilates, hot pilates, barre & dance at Euforyc Studios Edgware.',
-    type: 'website',
-  },
-  alternates: { canonical: 'https://euforyc.co.uk/schedule' },
-};
+    'Live class timetable for Euforyc Studios in Edgware, North West London. See the next two weeks of Reformer Pilates, Hot Pilates, Red Light Hot Mat Pilates, Sculpt Mat Pilates, Barre and Belly Dance classes with instructors and spaces left, and book online.',
+  path: '/schedule',
+});
 
-export default function SchedulePage() {
+export default async function SchedulePage() {
+  const events = await getUpcomingEvents();
+  const initialData = events.length > 0 ? groupByLondonDay(events, 14) : undefined;
+  const renderedAt = Date.now();
+
   return (
     <main className="min-h-screen bg-[#fffcf2]">
       {/* Dramatic Header Section */}
@@ -80,7 +74,7 @@ export default function SchedulePage() {
       {/* Schedule Section - Maximum Space */}
       <section className="pb-20 px-6 md:px-12 lg:px-16">
         <div className="max-w-7xl mx-auto">
-          <ScheduleView />
+          <ScheduleView initialData={initialData} renderedAt={renderedAt} />
         </div>
       </section>
 
@@ -103,14 +97,14 @@ export default function SchedulePage() {
               </div>
               <div>
                 <p className="font-serif text-xl font-light mb-1">Euforyc Studios</p>
-                <p className="text-sm text-white/50 font-light tracking-wide">161 Hale Lane, Edgware HA8 9QP</p>
+                <p className="text-sm text-white/50 font-light tracking-wide">{STUDIO.addressLine}</p>
               </div>
             </div>
 
             {/* Quick Links */}
             <div className="flex flex-wrap items-center gap-3 text-sm">
               <a
-                href="https://maps.google.com/?q=Euforyc+Studios,+161+Hale+Lane,+Edgware,+HA8+9QP"
+                href={STUDIO.mapsUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="px-5 py-3 bg-white/10 backdrop-blur-sm rounded-xl hover:bg-white/20 hover:shadow-lg
@@ -119,17 +113,17 @@ export default function SchedulePage() {
                 Get Directions
               </a>
               <a
-                href="tel:+442089510057"
+                href={`tel:${STUDIO.phoneE164}`}
                 className="px-5 py-3 bg-white/10 backdrop-blur-sm rounded-xl hover:bg-white/20 hover:shadow-lg
                   transition-all duration-300 font-medium border border-white/10"
               >
-                020 8951 0057
+                {STUDIO.phoneDisplay}
               </a>
               <a
-                href="mailto:info@euforyc.co.uk"
+                href={`mailto:${STUDIO.email}`}
                 className="text-white/60 hover:text-white transition-all duration-200 font-medium px-2"
               >
-                info@euforyc.co.uk
+                {STUDIO.email}
               </a>
             </div>
           </div>

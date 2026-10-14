@@ -767,7 +767,7 @@ function OrderPageInner() {
             <a href="tel:07375710385" className="store-link"><PhoneIcon />07375 710385</a>
             <a href="https://euforyc.co.uk/sips" target="_blank" rel="noopener noreferrer" className="store-link"><LinkIcon />euforyc.co.uk/sips</a>
             <a href="https://instagram.com/euforycsips" target="_blank" rel="noopener noreferrer" className="store-link"><InstagramIcon />@euforycsips</a>
-            <a href="https://share.google/AA0qk3eCG3kwpucSc" target="_blank" rel="noopener noreferrer" className="store-link"><MapPinIcon />Inside euforyc studios, 7 Holmstall Parade, Edgware, London, HA8 5HX</a>
+            <a href="https://share.google/AA0qk3eCG3kwpucSc" target="_blank" rel="noopener noreferrer" className="store-link"><MapPinIcon />Inside euforyc studios, 7-8 Holmstall Parade, Edgware, HA8 5HX</a>
           </div>
         </div>
         <div className="store-header-right">

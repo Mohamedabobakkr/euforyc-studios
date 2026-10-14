@@ -15,6 +15,7 @@ import {
   EventFilters,
   DateGroupedEvents,
 } from './types/momence';
+import { STUDIO } from './site';
 
 // ============================================================================
 // Configuration
@@ -404,7 +405,7 @@ export class MomenceApiClient {
         // Location is a string in Momence API
         location: {
           name: event.location || 'Euforyc Studios',
-          address: '161 Hale Lane, Edgware, London HA8 9QP',
+          address: STUDIO.addressLine,
           room: undefined,
         },
 

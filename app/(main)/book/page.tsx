@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { Calendar, Clock, Users, MapPin, ExternalLink, User, Package } from 'lucide-react';
 
 export default function Book() {
@@ -128,7 +129,7 @@ export default function Book() {
               <div className="space-y-6">
                 {/* Reformer Pilates */}
                 <div className="border-l-4 border-[#1a260e]/20 pl-6 space-y-2">
-                  <h3 className="font-playfair text-xl font-light">Reformer Pilates (Group)</h3>
+                  <h3 className="font-playfair text-xl font-light"><Link href="/classes/reformer-pilates">Reformer Pilates (Group)</Link></h3>
                   <div className="flex items-center space-x-4 text-sm text-[#1a260e]/80">
                     <div className="flex items-center space-x-1">
                       <Clock className="h-4 w-4" />
@@ -147,7 +148,7 @@ export default function Book() {
 
                 {/* Hot Pilates */}
                 <div className="border-l-4 border-[#1a260e]/20 pl-6 space-y-2">
-                  <h3 className="font-playfair text-xl font-light">Hot Pilates</h3>
+                  <h3 className="font-playfair text-xl font-light"><Link href="/classes/hot-pilates">Hot Pilates</Link></h3>
                   <div className="flex items-center space-x-4 text-sm text-[#1a260e]/80">
                     <div className="flex items-center space-x-1">
                       <Clock className="h-4 w-4" />
@@ -155,18 +156,18 @@ export default function Book() {
                     </div>
                     <div className="flex items-center space-x-1">
                       <Users className="h-4 w-4" />
-                      <span>Max 7 people</span>
+                      <span>Max 6 people</span>
                     </div>
                   </div>
                   <p className="body-text">
                     Dynamic mat-based Pilates in our heated studio. High energy,
-                    low impact workout for enhanced flexibility and detoxification.
+                    low impact workout for a more intense, heated session.
                   </p>
                 </div>
 
                 {/* 1:1 Sessions */}
                 <div className="border-l-4 border-[#1a260e]/20 pl-6 space-y-2">
-                  <h3 className="font-playfair text-xl font-light">1-1 Private Sessions</h3>
+                  <h3 className="font-playfair text-xl font-light"><Link href="/classes/private-reformer-pilates">1-1 Private Sessions</Link></h3>
                   <div className="flex items-center space-x-4 text-sm text-[#1a260e]/80">
                     <div className="flex items-center space-x-1">
                       <Clock className="h-4 w-4" />
@@ -180,45 +181,6 @@ export default function Book() {
                   <p className="body-text">
                     Personalized sessions tailored to your specific goals and needs.
                     Ideal for beginners, rehabilitation, or advanced practitioners.
-                  </p>
-                </div>
-
-                {/* Guided Journaling */}
-                <div className="border-l-4 border-[#1a260e]/20 pl-6 space-y-2">
-                  <h3 className="font-playfair text-xl font-light">Guided Journaling</h3>
-                  <div className="flex items-center space-x-4 text-sm text-[#1a260e]/80">
-                    <div className="flex items-center space-x-1">
-                      <Clock className="h-4 w-4" />
-                      <span>Tuesdays 9–9.45pm</span>
-                    </div>
-                    <div className="flex items-center space-x-1">
-                      <Users className="h-4 w-4" />
-                      <span>15 spaces</span>
-                    </div>
-                  </div>
-                  <p className="body-text">
-                    A gentle space to slow down and return to yourself. Guided journaling,
-                    gentle spiritual reflection, dua&apos;a and affirmations, with optional sharing.
-                  </p>
-                </div>
-
-                {/* Women's Circle */}
-                <div className="border-l-4 border-[#1a260e]/20 pl-6 space-y-2">
-                  <h3 className="font-playfair text-xl font-light">Women&apos;s Circle</h3>
-                  <div className="flex items-center space-x-4 text-sm text-[#1a260e]/80">
-                    <div className="flex items-center space-x-1">
-                      <Clock className="h-4 w-4" />
-                      <span>Sundays 4pm</span>
-                    </div>
-                    <div className="flex items-center space-x-1">
-                      <Users className="h-4 w-4" />
-                      <span>15 spaces</span>
-                    </div>
-                  </div>
-                  <p className="body-text">
-                    For women who long to slow down and return to themselves — a workshop of
-                    reflection, remembrance and sisterhood. A place to pause, to be seen,
-                    held and softened.
                   </p>
                 </div>
               </div>
@@ -235,9 +197,8 @@ export default function Book() {
                   <h3 className="font-playfair text-xl font-light">Studio Location</h3>
                 </div>
                 <p className="body-text mb-2">
-                  7 Holmstall Ave<br />
-                  Edgware HA8 5HX<br />
-                  United Kingdom
+                  7-8 Holmstall Parade,<br />
+                  Edgware, HA8 5HX
                 </p>
                 <p className="font-inter text-sm text-[#1a260e]/80">
                   Free parking available
@@ -358,8 +319,9 @@ export default function Book() {
               </div>
               <h3 className="font-playfair text-lg font-light">What to Bring</h3>
               <p className="body-text text-sm">
-                Just bring yourself! We provide all equipment, mats, and towels.
-                Wear comfortable workout clothes and grip socks if you have them.
+                We provide all equipment and mats. Wear comfortable workout clothes.
+                Grip socks are mandatory for Reformer Pilates, and you need your own
+                towel for Hot Pilates and Sculpt Mat Pilates. Both can be bought at the studio.
               </p>
             </div>
 
