@@ -3,36 +3,37 @@
 import { Plus, Minus } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
+import PillLink from '@/components/euforyc/PillLink';
 import { FAQS, type Faq } from '@/lib/faqs';
 
 const FAQItem = ({ faq }: { faq: Faq }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="border-b border-[#1a260e]/10 last:border-b-0">
+    <div className="border-b border-[#1a260e]/15">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full py-8 px-0 flex items-center justify-between text-left hover:opacity-70 transition-all duration-500 group"
+        className="group flex min-h-[72px] w-full items-center justify-between gap-5 px-0 py-6 text-left md:py-8"
       >
-        <h3 className="font-serif text-xl md:text-2xl font-light text-[#1a260e] pr-6 leading-relaxed">
+        <h3 className="font-serif text-[21px] font-normal leading-[1.3] text-eu-ink transition-transform duration-500 ease-eu group-hover:translate-x-1 md:text-[27px]">
           {faq.question}
         </h3>
-        <div className="flex-shrink-0 w-8 h-8 flex items-center justify-center">
+        <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-full border border-[#1a260e]/25 text-eu-ink transition-colors duration-300 group-hover:border-eu-ink group-hover:bg-eu-ink group-hover:text-eu-cream">
           {isOpen ? (
-            <Minus className="h-5 w-5 text-[#1a260e] transition-all duration-500 transform rotate-0" />
+            <Minus strokeWidth={1.5} className="h-5 w-5 transform transition-transform duration-500 rotate-0" />
           ) : (
-            <Plus className="h-5 w-5 text-[#1a260e] transition-all duration-500 transform rotate-0 group-hover:rotate-90" />
+            <Plus strokeWidth={1.5} className="h-5 w-5 transform transition-transform duration-500 rotate-0 group-hover:rotate-90" />
           )}
         </div>
       </button>
 
       <div
-        className={`overflow-hidden transition-all duration-700 ease-in-out ${
-          isOpen ? 'max-h-[1000px] pb-8' : 'max-h-0'
+        className={`overflow-hidden transition-opacity duration-500 ease-eu ${
+          isOpen ? 'max-h-[1000px] pb-8 opacity-100' : 'max-h-0 opacity-0'
         }`}
       >
-        <div className="pr-14">
-          <p className="body-text text-[#1a260e]/80 leading-relaxed text-base">
+        <div className="max-w-3xl md:pr-16">
+          <p className="body-text">
             {faq.answer}
           </p>
         </div>
@@ -43,19 +44,19 @@ const FAQItem = ({ faq }: { faq: Faq }) => {
 
 export default function FAQ() {
   return (
-    <div className="pt-32">
+    <div className="eu-page-top">
       {/* Hero Section */}
-      <section className="min-h-[60vh] flex items-center justify-center relative bg-[#fffcf2]">
-        <div className="container-width text-center">
-          <div className="space-y-8 animate-fade-up">
-            <h1 className="font-serif text-5xl md:text-6xl lg:text-7xl text-[#1a260e] tracking-wider leading-[0.9] font-light">
+      <section className="eu-wrap pb-[clamp(48px,6vw,96px)] pt-[clamp(48px,6vw,96px)]">
+        <div className="text-center">
+          <div className="eu-fade-in mx-auto max-w-5xl space-y-6">
+            <h1 className="font-serif text-[clamp(52px,8.2vw,124px)] font-normal leading-[0.95] tracking-[-0.035em] text-eu-ink">
               Frequently Asked
             </h1>
-            <p className="font-serif text-5xl md:text-6xl lg:text-7xl text-[#1a260e] tracking-wider leading-[0.9] font-light italic">
+            <p className="font-serif text-[clamp(52px,8.2vw,124px)] font-normal italic leading-[0.95] tracking-[-0.035em] text-eu-ink">
               Questions
             </p>
-            <div className="w-32 h-[1px] bg-[#1a260e]/20 mx-auto mt-8"></div>
-            <p className="body-text text-lg max-w-2xl mx-auto text-[#1a260e]/70 leading-relaxed">
+            <div className="mx-auto !mt-10 h-px w-24 bg-[#1a260e]/20"></div>
+            <p className="eu-lede !mx-auto max-w-2xl">
               Everything you need to know about pilates classes, our studio, and getting started
               at Euforyc Studios in Edgware, North West London.
             </p>
@@ -64,9 +65,9 @@ export default function FAQ() {
       </section>
 
       {/* FAQ Section */}
-      <section className="section-padding bg-[#fffcf2]">
-        <div className="container-width">
-          <div className="max-w-4xl mx-auto">
+      <section className="eu-wrap pb-[clamp(64px,8vw,120px)]">
+        <div>
+          <div className="mx-auto max-w-4xl border-t border-[#1a260e]/15">
             {FAQS.map((faq, index) => (
               <FAQItem key={index} faq={faq} />
             ))}
@@ -75,38 +76,32 @@ export default function FAQ() {
       </section>
 
       {/* Philosophy Section */}
-      <section className="section-padding bg-[#fffcf2]">
-        <div className="container-width">
-          <div className="max-w-3xl mx-auto text-center space-y-8">
-            <div className="space-y-4">
-              <p className="body-text text-lg text-[#1a260e]/80 leading-relaxed">
+      <section className="eu-wrap pb-[clamp(56px,7vw,110px)]">
+        <div className="mx-auto max-w-5xl rounded-eu-lg bg-eu-beige px-6 py-14 md:px-16 md:py-20">
+          <div className="mx-auto max-w-3xl space-y-8 text-center">
+            <div className="space-y-5">
+              <p className="body-text">
                 Still have questions? We're here to help you start your pilates journey with confidence.
                 Every question is a step closer to discovering what your body can achieve.
               </p>
-              <p className="font-serif text-2xl md:text-3xl text-[#1a260e] italic opacity-90">
+              <p className="font-serif text-[clamp(30px,3.4vw,48px)] italic leading-[1.15] text-eu-ink">
                 everything is euforyc
               </p>
             </div>
 
-            <div className="pt-8">
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Link
-                  href="/packages"
-                  className="inline-block bg-[#1a260e] text-[#fffcf2] px-12 py-4 font-sans text-sm tracking-[0.2em] uppercase transition-all duration-500 hover:bg-[#1a260e]/90 hover:scale-[1.02]"
-                >
+            <div className="pt-4">
+              <div className="flex flex-col justify-center gap-3 sm:flex-row">
+                <PillLink href="/packages" variant="ink" dot stretchMobile>
                   VIEW PACKAGES
-                </Link>
-                <Link
-                  href="/contact"
-                  className="inline-block border border-[#1a260e] text-[#1a260e] px-12 py-4 font-sans text-sm tracking-[0.2em] uppercase transition-all duration-500 hover:bg-[#1a260e] hover:text-[#fffcf2] hover:scale-[1.02]"
-                >
+                </PillLink>
+                <PillLink href="/contact" variant="line" stretchMobile>
                   CONTACT US
-                </Link>
+                </PillLink>
               </div>
-              <p className="text-xs text-[#1a260e]/60 text-center mt-4">
-                <Link href="/book" className="hover:underline">Book your first class</Link> |
-                <Link href="/about" className="hover:underline"> Learn our story</Link> |
-                <Link href="/team" className="hover:underline"> Meet our team</Link>
+              <p className="mt-6 text-center text-[15px] leading-[2.9] text-eu-sage">
+                <Link href="/book" className="py-[14px] text-eu-ink underline-offset-4 hover:underline">Book your first class</Link> |
+                <Link href="/about" className="py-[14px] text-eu-ink underline-offset-4 hover:underline"> Learn our story</Link> |
+                <Link href="/team" className="py-[14px] text-eu-ink underline-offset-4 hover:underline"> Meet our team</Link>
               </p>
             </div>
           </div>

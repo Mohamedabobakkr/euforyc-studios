@@ -1,6 +1,8 @@
 import Link from 'next/link';
 import JsonLd from '@/components/JsonLd';
 import ReviewCards from '@/components/ReviewCards';
+import Arrow from '@/components/euforyc/Arrow';
+import PillLink from '@/components/euforyc/PillLink';
 import { ORDERED_CLASS_TYPES } from '@/lib/classes';
 import { STUDIO, breadcrumbSchema, pageMetadata } from '@/lib/site';
 import { getReviews, reviewsFor } from '@/lib/studio-data';
@@ -8,6 +10,9 @@ import { classTypeForTitle } from '@/lib/classes';
 
 // Reviews refresh every 6 hours
 export const revalidate = 21600;
+
+const H2 = 'font-serif text-[clamp(34px,4vw,60px)] font-normal leading-[1.04] tracking-[-0.02em] text-eu-ink';
+const SECTION_TOP = 'pt-[clamp(56px,7vw,110px)]';
 
 export const metadata = pageMetadata({
   title: 'Client Reviews | Women-Only Pilates Studio in Edgware',
@@ -30,14 +35,16 @@ export default async function ReviewsPage() {
   );
 
   return (
-    <div className="pt-32">
+    <div className="eu-page-top">
       <JsonLd data={breadcrumbSchema([{ name: 'Reviews', path: '/reviews' }])} />
 
-      <section className="section-padding pb-12 bg-[#fffcf2]">
-        <div className="container-width text-center space-y-6">
-          <p className="tagline">In our clients’ words</p>
-          <h1 className="heading-primary">Reviews</h1>
-          <p className="body-text max-w-3xl mx-auto">
+      <section className="eu-wrap pb-[clamp(24px,3vw,40px)] pt-[clamp(48px,6vw,96px)]">
+        <div className="grid grid-cols-1 gap-y-6 lg:grid-cols-12 lg:items-end lg:gap-x-6">
+          <div className="eu-fade-in lg:col-span-6">
+            <p className="eu-cap eu-cap-num text-eu-green">In our clients’ words</p>
+            <h1 className="eu-h1 !mt-6">Reviews</h1>
+          </div>
+          <p className="body-text eu-fade-in lg:col-span-5 lg:col-start-8" style={{ animationDelay: '.15s' }}>
             {total > 0
               ? `Clients have left ${total} written reviews of classes at ${STUDIO.name}. `
               : ''}
@@ -47,24 +54,24 @@ export default async function ReviewsPage() {
       </section>
 
       {sections.length === 0 ? (
-        <section className="section-padding bg-[#fffcf2]">
-          <div className="container-width text-center">
+        <section className={`eu-wrap ${SECTION_TOP}`}>
+          <div className="rounded-eu-lg bg-eu-beige px-6 py-16 text-center">
             <p className="body-text">Reviews are loading. Please check back shortly.</p>
           </div>
         </section>
       ) : (
         sections.map(({ classType, reviews: classReviews }) => (
-          <section key={classType.slug} className="section-padding bg-[#fffcf2]">
-            <div className="container-width space-y-12">
-              <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
-                <div className="space-y-2">
-                  <h2 className="heading-secondary">{classType.name} reviews</h2>
-                  <p className="font-sans text-[11px] tracking-[0.15em] uppercase text-[#1a260e]/50">
+          <section key={classType.slug} className={`eu-wrap ${SECTION_TOP}`}>
+            <div className="space-y-10 border-t border-[#1a260e]/15 pt-[clamp(32px,4vw,56px)]">
+              <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+                <div className="space-y-3">
+                  <h2 className={H2}>{classType.name} reviews</h2>
+                  <p className="eu-cap text-eu-sage">
                     {classReviews.length} written {classReviews.length === 1 ? 'review' : 'reviews'}
                   </p>
                 </div>
-                <Link href={`/classes/${classType.slug}`} className="btn-minimal">
-                  About {classType.name}
+                <Link href={`/classes/${classType.slug}`} className="eu-ulink self-start text-eu-ink md:self-auto">
+                  About {classType.name} <Arrow size={14} />
                 </Link>
               </div>
               <ReviewCards reviews={classReviews} />
@@ -74,11 +81,11 @@ export default async function ReviewsPage() {
       )}
 
       {otherReviews.length > 0 && (
-        <section className="section-padding bg-[#fffcf2]">
-          <div className="container-width space-y-12">
-            <div className="space-y-2">
-              <h2 className="heading-secondary">Other sessions and events</h2>
-              <p className="font-sans text-[11px] tracking-[0.15em] uppercase text-[#1a260e]/50">
+        <section className={`eu-wrap ${SECTION_TOP}`}>
+          <div className="space-y-10 border-t border-[#1a260e]/15 pt-[clamp(32px,4vw,56px)]">
+            <div className="space-y-3">
+              <h2 className={H2}>Other sessions and events</h2>
+              <p className="eu-cap text-eu-sage">
                 {otherReviews.length} written {otherReviews.length === 1 ? 'review' : 'reviews'}
               </p>
             </div>
@@ -87,25 +94,21 @@ export default async function ReviewsPage() {
         </section>
       )}
 
-      <section className="section-padding bg-[#1a260e] text-[#fffcf2]">
-        <div className="container-width max-w-3xl text-center space-y-8">
-          <h2 className="heading-secondary text-[#fffcf2]">Come and see for yourself</h2>
-          <p className="font-sans text-base md:text-lg font-light leading-relaxed text-[#fffcf2]/80">
+      <section className="eu-on-dark mx-[clamp(10px,1.5vw,24px)] mb-[clamp(56px,7vw,110px)] mt-[clamp(80px,10vw,150px)] rounded-eu-xl bg-eu-ink py-[clamp(72px,9vw,140px)] text-eu-cream">
+        <div className="mx-auto max-w-3xl px-5 text-center">
+          <h2 className="eu-h2">
+            Come and see for <em>yourself</em>
+          </h2>
+          <p className="mx-auto mt-7 max-w-xl text-[17px] leading-[1.75] text-eu-beige md:text-[18px]">
             First-time clients can try any three group classes for £60.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              href="/packages"
-              className="inline-block bg-[#fffcf2] text-[#1a260e] px-10 py-4 font-sans text-sm tracking-[0.15em] uppercase transition-all duration-500 hover:bg-[#fffcf2]/90"
-            >
+          <div className="mt-10 flex flex-col justify-center gap-3 sm:flex-row">
+            <PillLink href="/packages" variant="cream" dot stretchMobile>
               Intro offer
-            </Link>
-            <Link
-              href="/classes"
-              className="inline-block border border-[#fffcf2] text-[#fffcf2] px-10 py-4 font-sans text-sm tracking-[0.15em] uppercase transition-all duration-500 hover:bg-[#fffcf2] hover:text-[#1a260e]"
-            >
+            </PillLink>
+            <PillLink href="/classes" variant="ghost" stretchMobile>
               Explore classes
-            </Link>
+            </PillLink>
           </div>
         </div>
       </section>

@@ -40,11 +40,9 @@ export default function ClassCard({ event, isPopular = false }: ClassCardProps) 
   const showPopularBadge = isPopular && !event.isSoldOut;
 
   return (
-    <div className="group relative rounded-3xl p-8 md:p-10 bg-white
-      shadow-[0_4px_20px_rgba(26,38,14,0.08)]
-      hover:shadow-[0_20px_60px_rgba(26,38,14,0.15)]
-      hover:-translate-y-3 hover:scale-[1.02]
-      border border-[#1a260e]/5
+    <div className="group relative rounded-eu-md p-8 md:p-10 bg-eu-cream
+      hover:-translate-y-1
+      border border-[#1a260e]/15
       transition-all duration-500 ease-out
       overflow-hidden
       before:absolute before:inset-0 before:bg-gradient-to-br before:from-[#1a260e]/[0.02] before:to-transparent before:opacity-0 before:transition-opacity before:duration-500
@@ -60,7 +58,7 @@ export default function ClassCard({ event, isPopular = false }: ClassCardProps) 
       {/* Popular Badge */}
       {showPopularBadge && (
         <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-10 animate-fade-down">
-          <div className="bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 text-white px-5 py-2.5 rounded-full text-xs font-bold tracking-[0.1em] uppercase flex items-center shadow-[0_8px_20px_rgba(234,179,8,0.3)]">
+          <div className="bg-eu-ink text-eu-cream px-5 py-2.5 rounded-full text-xs font-normal tracking-[0.14em] uppercase flex items-center">
             <Crown className="w-4 h-4 mr-2" />
             Popular
           </div>
@@ -70,7 +68,7 @@ export default function ClassCard({ event, isPopular = false }: ClassCardProps) 
       {/* Sold Out Badge */}
       {showSoldOutBadge && (
         <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-10 animate-fade-down">
-          <div className="bg-gradient-to-r from-red-500 via-red-600 to-red-700 text-white px-5 py-2.5 rounded-full text-xs font-bold tracking-[0.1em] uppercase flex items-center shadow-[0_8px_20px_rgba(220,38,38,0.3)]">
+          <div className="bg-eu-beige text-eu-ink border border-[#1a260e]/20 px-5 py-2.5 rounded-full text-xs font-normal tracking-[0.14em] uppercase flex items-center">
             <AlertCircle className="w-4 h-4 mr-2" />
             Sold Out
           </div>
@@ -80,7 +78,7 @@ export default function ClassCard({ event, isPopular = false }: ClassCardProps) 
       {/* Low Capacity Badge */}
       {showLowCapacityBadge && (
         <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-10 animate-fade-down">
-          <div className="bg-gradient-to-r from-orange-400 via-orange-500 to-orange-600 text-white px-5 py-2.5 rounded-full text-xs font-bold tracking-[0.1em] uppercase flex items-center shadow-[0_8px_20px_rgba(249,115,22,0.3)]">
+          <div className="bg-eu-green text-eu-cream px-5 py-2.5 rounded-full text-xs font-normal tracking-[0.14em] uppercase flex items-center">
             <Users className="w-4 h-4 mr-2" />
             Filling Fast
           </div>
@@ -90,30 +88,30 @@ export default function ClassCard({ event, isPopular = false }: ClassCardProps) 
       {/* Category/Type Badge */}
       {event.category && (
         <div className="inline-block mb-4">
-          <span className="text-xs font-bold tracking-[0.15em] uppercase text-[#1a260e]/70 bg-[#1a260e]/5 px-4 py-2 rounded-full border border-[#1a260e]/10">
+          <span className="text-xs font-normal tracking-[0.15em] uppercase text-eu-green bg-eu-beige px-4 py-2 rounded-full border border-[#1a260e]/15">
             {event.category}
           </span>
         </div>
       )}
 
       {/* Class Title */}
-      <h3 className="font-serif text-3xl md:text-4xl font-light text-[#1a260e] mb-4 leading-[1.1] tracking-tight
-        group-hover:text-[#2a3a21] transition-colors duration-300">
+      <h3 className="font-serif text-3xl md:text-4xl font-normal text-eu-ink mb-4 leading-[1.1] tracking-tight
+        group-hover:text-eu-green transition-colors duration-300">
         {event.title}
       </h3>
 
       {/* Description */}
       {event.description && (
-        <p className="text-base text-[#1a260e]/60 mb-5 line-clamp-2 leading-relaxed font-light">
+        <p className="text-base text-eu-green mb-5 line-clamp-2 leading-relaxed font-light">
           {event.description}
         </p>
       )}
 
       {/* Date & Time */}
-      <div className="space-y-3 mb-6 p-4 bg-[#fffcf2]/80 rounded-xl border border-[#1a260e]/5">
+      <div className="space-y-3 mb-6 p-4 bg-eu-beige rounded-eu-sm">
         <div className="flex items-center gap-3 text-base text-[#1a260e]">
           <div className="w-9 h-9 rounded-full bg-[#1a260e]/5 flex items-center justify-center">
-            <Calendar className="w-4 h-4 text-[#1a260e]/60" />
+            <Calendar className="w-4 h-4 text-eu-green" strokeWidth={1.5} />
           </div>
           <span className="font-medium tracking-tight">
             {dayName}, {date}
@@ -121,23 +119,23 @@ export default function ClassCard({ event, isPopular = false }: ClassCardProps) 
         </div>
         <div className="flex items-center gap-3 text-base text-[#1a260e]">
           <div className="w-9 h-9 rounded-full bg-[#1a260e]/5 flex items-center justify-center">
-            <Clock className="w-4 h-4 text-[#1a260e]/60" />
+            <Clock className="w-4 h-4 text-eu-green" strokeWidth={1.5} />
           </div>
           <span className="font-light">
             {startTime} - {endTime}
           </span>
-          {event.duration && <span className="text-sm text-[#1a260e]/50 font-medium">({event.duration} min)</span>}
+          {event.duration && <span className="text-sm text-eu-sage font-medium">({event.duration} min)</span>}
         </div>
       </div>
 
       {/* Instructor */}
       {event.instructor && (
-        <div className="flex items-center gap-3 mb-5 p-3 bg-gradient-to-r from-[#1a260e]/[0.03] to-transparent rounded-lg">
+        <div className="flex items-center gap-3 mb-5 p-3 bg-eu-beige rounded-eu-sm">
           <div className="w-8 h-8 rounded-full bg-[#1a260e]/10 flex items-center justify-center">
-            <User className="w-4 h-4 text-[#1a260e]/60" />
+            <User className="w-4 h-4 text-eu-green" strokeWidth={1.5} />
           </div>
-          <span className="text-sm text-[#1a260e]/70 font-light">
-            with <span className="font-medium text-[#1a260e]">{event.instructor.name}</span>
+          <span className="text-sm text-eu-green font-light">
+            with <span className="font-medium text-eu-ink">{event.instructor.name}</span>
           </span>
         </div>
       )}
@@ -145,14 +143,14 @@ export default function ClassCard({ event, isPopular = false }: ClassCardProps) 
       {/* Level */}
       {event.level && event.level !== 'All Levels' && (
         <div className="mb-5">
-          <span className="text-xs font-semibold tracking-wider uppercase text-[#1a260e]/60 bg-[#1a260e]/5 px-3 py-1.5 rounded-full border border-[#1a260e]/10">
+          <span className="text-xs font-normal tracking-wider uppercase text-eu-green bg-eu-beige px-3 py-1.5 rounded-full border border-[#1a260e]/15">
             {event.level}
           </span>
         </div>
       )}
 
       {/* Divider */}
-      <div className="h-px bg-gradient-to-r from-transparent via-[#1a260e]/10 to-transparent my-7" />
+      <div className="h-px bg-[#1a260e]/15 my-7" />
 
       {/* Capacity Bar */}
       {event.capacity > 0 && (
@@ -160,9 +158,9 @@ export default function ClassCard({ event, isPopular = false }: ClassCardProps) 
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2.5">
               <div className="w-8 h-8 rounded-full bg-[#1a260e]/5 flex items-center justify-center">
-                <Users className="w-4 h-4 text-[#1a260e]/60" />
+                <Users className="w-4 h-4 text-eu-green" strokeWidth={1.5} />
               </div>
-              <span className="text-sm font-medium text-[#1a260e] tracking-tight">
+              <span className="text-sm font-medium text-eu-ink tracking-tight">
                 {event.isSoldOut ? (
                   'Fully Booked'
                 ) : (
@@ -172,19 +170,19 @@ export default function ClassCard({ event, isPopular = false }: ClassCardProps) 
                 )}
               </span>
             </div>
-            <span className="text-sm text-[#1a260e]/50 font-medium">
+            <span className="text-sm text-eu-sage font-medium">
               {event.spotsBooked}/{event.capacity}
             </span>
           </div>
           {/* Refined progress bar with glow */}
-          <div className="w-full h-2 bg-[#1a260e]/5 rounded-full overflow-hidden backdrop-blur-sm">
+          <div className="w-full h-2 bg-eu-beige rounded-full overflow-hidden">
             <div
               className={`h-full rounded-full transition-all duration-700 ${
                 capacityPercentage >= 90
-                  ? 'bg-gradient-to-r from-red-500 to-red-600 shadow-[0_0_8px_rgba(239,68,68,0.4)]'
+                  ? 'bg-eu-ink'
                   : capacityPercentage >= 75
-                  ? 'bg-gradient-to-r from-orange-400 to-orange-500 shadow-[0_0_8px_rgba(251,146,60,0.4)]'
-                  : 'bg-gradient-to-r from-green-500 to-green-600 shadow-[0_0_8px_rgba(34,197,94,0.4)]'
+                  ? 'bg-eu-green'
+                  : 'bg-eu-live'
               }`}
               style={{ width: `${capacityPercentage}%` }}
             />
@@ -194,11 +192,11 @@ export default function ClassCard({ event, isPopular = false }: ClassCardProps) 
 
       {/* Waitlist Info */}
       {event.isSoldOut && event.waitlistEnabled && (
-        <div className="mb-5 p-4 bg-gradient-to-r from-orange-50 to-orange-50/50 border border-orange-200/50 rounded-xl backdrop-blur-sm">
-          <p className="text-sm text-orange-900">
+        <div className="mb-5 p-4 bg-eu-beige rounded-eu-sm">
+          <p className="text-sm text-eu-ink">
             <span className="font-semibold">Waitlist Available</span>
             {event.waitlistCount && event.waitlistCount > 0 && (
-              <span className="text-orange-700"> — {event.waitlistCount} on list</span>
+              <span className="text-eu-green"> — {event.waitlistCount} on list</span>
             )}
           </p>
         </div>
@@ -209,13 +207,13 @@ export default function ClassCard({ event, isPopular = false }: ClassCardProps) 
         <div>
           {event.price > 0 ? (
             <>
-              <p className="text-xs font-semibold tracking-wider uppercase text-[#1a260e]/50 mb-2">Drop-in Price</p>
-              <p className="font-serif text-4xl md:text-5xl font-light text-[#1a260e] tracking-tight">
+              <p className="text-xs font-normal tracking-wider uppercase text-eu-sage mb-2">Drop-in Price</p>
+              <p className="font-serif text-4xl md:text-5xl font-normal text-eu-ink tracking-tight">
                 £{event.price.toFixed(2)}
               </p>
             </>
           ) : (
-            <p className="font-serif text-3xl font-light text-green-700">Complimentary</p>
+            <p className="font-serif text-3xl font-normal text-eu-green">Complimentary</p>
           )}
         </div>
 
@@ -225,14 +223,14 @@ export default function ClassCard({ event, isPopular = false }: ClassCardProps) 
           target="_blank"
           rel="noopener noreferrer"
           className={`
-            inline-flex items-center gap-2.5 px-7 py-4 rounded-2xl font-semibold text-sm tracking-wide uppercase
-            transition-all duration-500 group/btn shadow-lg
+            inline-flex items-center gap-2.5 px-7 min-h-[52px] rounded-full font-normal text-xs tracking-[0.18em] uppercase
+            transition-colors duration-500 group/btn
             ${
               event.isSoldOut
                 ? event.waitlistEnabled
-                  ? 'bg-orange-600 text-white hover:bg-orange-700 hover:shadow-[0_12px_30px_rgba(234,88,12,0.3)] hover:scale-105'
-                  : 'bg-[#1a260e]/10 text-[#1a260e]/40 cursor-not-allowed'
-                : 'bg-[#1a260e] text-white hover:bg-[#2a3a21] hover:shadow-[0_12px_30px_rgba(26,38,14,0.25)] hover:scale-105 hover:-translate-y-1'
+                  ? 'bg-eu-green text-eu-cream hover:bg-eu-ink'
+                  : 'bg-eu-beige text-eu-sage cursor-not-allowed'
+                : 'bg-eu-ink text-eu-cream hover:bg-eu-green'
             }
           `}
           aria-label={event.isSoldOut ? 'Join waitlist' : 'Book this class'}
@@ -258,12 +256,12 @@ export default function ClassCard({ event, isPopular = false }: ClassCardProps) 
 
       {/* Cancelled Indicator */}
       {event.isCancelled && (
-        <div className="absolute inset-0 bg-white/95 rounded-2xl flex items-center justify-center backdrop-blur-sm">
+        <div className="absolute inset-0 bg-eu-cream/95 rounded-eu-md flex items-center justify-center">
           <div className="text-center">
-            <AlertCircle className="w-12 h-12 text-red-600 mx-auto mb-3" />
-            <p className="font-serif text-xl font-light text-[#1a260e] mb-1">Class Cancelled</p>
+            <AlertCircle className="w-12 h-12 text-eu-ink mx-auto mb-3" strokeWidth={1.5} />
+            <p className="font-serif text-xl font-normal text-eu-ink mb-1">Class Cancelled</p>
             {event.cancellationReason && (
-              <p className="text-sm text-[#1a260e]/70">{event.cancellationReason}</p>
+              <p className="text-sm text-eu-green">{event.cancellationReason}</p>
             )}
           </div>
         </div>
@@ -288,32 +286,32 @@ export function CompactClassCard({ event }: { event: MomenceEvent }) {
       href={event.bookingUrl}
       target="_blank"
       rel="noopener noreferrer"
-      className="group block p-4 bg-white border border-[#1a260e]/10 rounded-xl hover:border-[#1a260e]/20 hover:shadow-lg transition-all duration-200"
+      className="group block p-4 bg-eu-cream border border-[#1a260e]/15 rounded-eu-sm hover:border-[#1a260e]/40 transition-colors duration-200"
     >
       <div className="flex items-start gap-3">
         {/* Time */}
         <div className="flex-shrink-0 text-center">
-          <p className="text-xs text-[#1a260e]/60 mb-1">
+          <p className="text-xs text-eu-sage mb-1">
             {startDate.toLocaleDateString('en-GB', { month: 'short', day: 'numeric' })}
           </p>
-          <p className="font-serif text-lg font-light text-[#1a260e]">{startTime}</p>
+          <p className="font-serif text-lg font-normal text-eu-ink">{startTime}</p>
         </div>
 
-        <div className="w-px h-full bg-[#1a260e]/10" />
+        <div className="w-px h-full bg-[#1a260e]/15" />
 
         {/* Details */}
         <div className="flex-1 min-w-0">
-          <h4 className="font-serif text-base font-light text-[#1a260e] mb-1 truncate">
+          <h4 className="font-serif text-base font-normal text-eu-ink mb-1 truncate">
             {event.title}
           </h4>
           {event.instructor && (
-            <p className="text-xs text-[#1a260e]/60 truncate">{event.instructor.name}</p>
+            <p className="text-xs text-eu-sage truncate">{event.instructor.name}</p>
           )}
           <div className="flex items-center gap-2 mt-2">
             {event.isSoldOut ? (
-              <span className="text-xs font-semibold text-red-600">Sold Out</span>
+              <span className="text-xs font-medium text-eu-ink">Sold Out</span>
             ) : (
-              <span className="text-xs text-[#1a260e]/60">
+              <span className="text-xs text-eu-sage">
                 {event.spotsAvailable} spots left
               </span>
             )}
@@ -321,7 +319,7 @@ export function CompactClassCard({ event }: { event: MomenceEvent }) {
         </div>
 
         {/* Arrow */}
-        <ExternalLink className="w-4 h-4 text-[#1a260e]/30 group-hover:text-[#1a260e] group-hover:translate-x-1 transition-all duration-200" />
+        <ExternalLink className="w-4 h-4 text-eu-sage group-hover:text-eu-ink group-hover:translate-x-1 transition-all duration-200" />
       </div>
     </a>
   );

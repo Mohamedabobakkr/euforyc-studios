@@ -22,23 +22,23 @@ export default function ReviewCards({ reviews }: { reviews: StudioReview[] }) {
   if (reviews.length === 0) return null;
 
   return (
-    <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-10">
+    <ul className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
       {reviews.map((review) => (
-        <li key={review.id}>
-          <figure className="h-full flex flex-col border-t border-[#1a260e]/10 pt-6">
+        <li key={review.id} className="flex">
+          <figure className="flex h-full w-full flex-col rounded-eu-md bg-eu-beige p-7 md:p-8">
             <p
-              className="font-sans text-xs tracking-[0.3em] text-[#1a260e]"
+              className="eu-stars text-eu-ink"
               role="img"
               aria-label={`Rated ${review.grade} out of 5`}
             >
               {'★'.repeat(review.grade)}
             </p>
-            <blockquote className="font-sans text-base font-light leading-relaxed text-[#1a260e]/80 mt-4 flex-1">
+            <blockquote className="mt-5 flex-1 font-serif text-[18px] leading-[1.55] text-eu-ink md:text-[19px]">
               “{review.comment}”
             </blockquote>
-            <figcaption className="mt-6">
-              <span className="block font-serif text-lg text-[#1a260e]">{review.reviewerName}</span>
-              <span className="block font-sans text-[11px] tracking-[0.12em] uppercase text-[#1a260e]/50 mt-1">
+            <figcaption className="mt-7 border-t border-[#1a260e]/15 pt-5">
+              <span className="block font-serif text-[19px] text-eu-ink">{review.reviewerName}</span>
+              <span className="mt-1.5 block font-sans text-[11.5px] uppercase leading-[1.5] tracking-[0.14em] text-eu-sage">
                 {reviewContext(review)}
               </span>
             </figcaption>

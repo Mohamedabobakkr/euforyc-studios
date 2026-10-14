@@ -421,7 +421,6 @@ body {
   font-size: clamp(52px, 8.2vw, 132px);
   line-height: 0.93;
   letter-spacing: -0.035em;
-  margin: 0;
 }
 
 .eu-h2 {
@@ -430,7 +429,6 @@ body {
   font-size: clamp(42px, 5.6vw, 88px);
   line-height: 1;
   letter-spacing: -0.025em;
-  margin: 0;
 }
 
 .eu-h3 {
@@ -438,14 +436,12 @@ body {
   font-weight: 400;
   font-size: clamp(26px, 2.4vw, 34px);
   line-height: 1.15;
-  margin: 0;
 }
 
 .eu-lede {
   font-size: 17px;
   line-height: 1.75;
   color: var(--eu-green);
-  margin: 0;
 }
 
 .eu-on-dark .eu-lede {

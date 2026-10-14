@@ -3,6 +3,7 @@
 import { useEffect, useRef, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
+import PillLink from '@/components/euforyc/PillLink';
 import { resolveMomenceId } from '@/lib/momence-pricing';
 
 function readParam(sp: URLSearchParams, keys: string[]): string {
@@ -97,19 +98,19 @@ function ThankYouContent() {
   const orderId = searchParams.get('order_id') || searchParams.get('booking_id') || '';
 
   return (
-    <div className="min-h-screen bg-[#fffcf2] text-[#1a260e]">
+    <div className="eu-page-top min-h-screen bg-eu-cream text-eu-ink">
       {/* Hero */}
-      <section className="pt-24 pb-12 md:pt-32 md:pb-16 px-6">
-        <div className="max-w-2xl mx-auto text-center">
-          <p className="text-xs md:text-sm tracking-[0.3em] uppercase text-[#1a260e]/50 mb-6">
+      <section className="px-5 pb-[clamp(40px,5vw,64px)] pt-[clamp(48px,6vw,96px)]">
+        <div className="eu-fade-in mx-auto max-w-3xl text-center">
+          <p className="eu-cap mb-6 text-eu-green">
             Welcome to Euforyc
           </p>
-          <h1 className="font-serif font-light text-4xl md:text-6xl leading-[1.1] mb-6">
-            Your practice
+          <h1 className="mb-7 font-serif text-[clamp(48px,7vw,104px)] font-normal leading-[0.98] tracking-[-0.03em]">
+            Your practice{' '}
             <br />
             <span className="italic">starts now</span>
           </h1>
-          <p className="text-base md:text-lg text-[#1a260e]/70 max-w-lg mx-auto leading-relaxed">
+          <p className="eu-lede !mx-auto max-w-lg">
             Your booking is confirmed. A confirmation email is on its way with everything you need to know.
           </p>
         </div>
@@ -117,26 +118,26 @@ function ThankYouContent() {
 
       {/* Order Summary (only if Momence passes us details) */}
       {(service || value || orderId) && (
-        <section className="px-6 pb-12">
-          <div className="max-w-xl mx-auto bg-white border border-[#1a260e]/10 rounded-2xl p-6 md:p-8">
-            <p className="text-xs tracking-[0.2em] uppercase text-[#1a260e]/50 mb-4">Confirmation</p>
-            <dl className="space-y-3 text-sm">
+        <section className="px-5 pb-12">
+          <div className="mx-auto max-w-xl rounded-eu-md bg-eu-beige p-6 md:p-8">
+            <p className="eu-cap mb-4 text-eu-green">Confirmation</p>
+            <dl className="space-y-3 text-[15px]">
               {service && (
-                <div className="flex justify-between gap-4 border-b border-[#1a260e]/5 pb-3">
-                  <dt className="text-[#1a260e]/60">Service</dt>
-                  <dd className="font-medium text-right">{service}</dd>
+                <div className="flex justify-between gap-4 border-b border-[#1a260e]/15 pb-3">
+                  <dt className="text-eu-sage">Service</dt>
+                  <dd className="text-right font-medium">{service}</dd>
                 </div>
               )}
               {value && (
-                <div className="flex justify-between gap-4 border-b border-[#1a260e]/5 pb-3">
-                  <dt className="text-[#1a260e]/60">Amount</dt>
-                  <dd className="font-medium text-right">£{String(value).replace(/[^0-9.]/g, '')}</dd>
+                <div className="flex justify-between gap-4 border-b border-[#1a260e]/15 pb-3">
+                  <dt className="text-eu-sage">Amount</dt>
+                  <dd className="text-right font-medium">£{String(value).replace(/[^0-9.]/g, '')}</dd>
                 </div>
               )}
               {orderId && (
                 <div className="flex justify-between gap-4">
-                  <dt className="text-[#1a260e]/60">Booking reference</dt>
-                  <dd className="font-mono text-xs text-[#1a260e]/80 text-right break-all">{orderId}</dd>
+                  <dt className="text-eu-sage">Booking reference</dt>
+                  <dd className="break-all text-right font-mono text-[13px] text-eu-ink">{orderId}</dd>
                 </div>
               )}
             </dl>
@@ -145,33 +146,33 @@ function ThankYouContent() {
       )}
 
       {/* What happens next */}
-      <section className="px-6 pb-16 md:pb-20">
-        <div className="max-w-2xl mx-auto">
-          <div className="text-center mb-10 md:mb-12">
-            <p className="text-xs md:text-sm tracking-[0.3em] uppercase text-[#1a260e]/50 mb-3">Next steps</p>
-            <h2 className="font-serif font-light text-2xl md:text-3xl">A few things to know</h2>
+      <section className="px-5 pb-[clamp(64px,8vw,110px)]">
+        <div className="mx-auto max-w-5xl">
+          <div className="mb-10 text-center md:mb-12">
+            <p className="eu-cap mb-4 text-eu-green">Next steps</p>
+            <h2 className="font-serif text-[clamp(32px,3.6vw,52px)] font-normal leading-[1.08] tracking-[-0.02em]">A few things to know</h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-            <div className="bg-white border border-[#1a260e]/10 rounded-xl p-5">
-              <p className="font-serif text-3xl mb-2 text-[#1a260e]/30">01</p>
-              <h3 className="font-serif text-base mb-1.5">Check your email</h3>
-              <p className="text-xs text-[#1a260e]/65 leading-relaxed">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+            <div className="rounded-eu-md bg-eu-beige p-6 md:p-7">
+              <p className="mb-3 font-serif text-[40px] italic leading-none text-eu-green">01</p>
+              <h3 className="mb-2 font-serif text-[22px] leading-[1.2]">Check your email</h3>
+              <p className="text-[15px] leading-[1.65] text-eu-green">
                 Confirmation + booking link arrive within 2 minutes. Check spam if you don&apos;t see it.
               </p>
             </div>
-            <div className="bg-white border border-[#1a260e]/10 rounded-xl p-5">
-              <p className="font-serif text-3xl mb-2 text-[#1a260e]/30">02</p>
-              <h3 className="font-serif text-base mb-1.5">Book your classes</h3>
-              <p className="text-xs text-[#1a260e]/65 leading-relaxed">
+            <div className="rounded-eu-md bg-eu-beige p-6 md:p-7">
+              <p className="mb-3 font-serif text-[40px] italic leading-none text-eu-green">02</p>
+              <h3 className="mb-2 font-serif text-[22px] leading-[1.2]">Book your classes</h3>
+              <p className="text-[15px] leading-[1.65] text-eu-green">
                 Reserve your slots through the booking link. Morning classes fill fastest — book ahead.
               </p>
             </div>
-            <div className="bg-white border border-[#1a260e]/10 rounded-xl p-5">
-              <p className="font-serif text-3xl mb-2 text-[#1a260e]/30">03</p>
-              <h3 className="font-serif text-base mb-1.5">What to bring</h3>
-              <p className="text-xs text-[#1a260e]/65 leading-relaxed">
-                Comfortable clothes you can move in. <strong className="text-[#1a260e]/85 font-medium">Grip socks</strong> are mandatory for Reformer &mdash; bring your own or buy a pair at the studio (one-time, reuse every class). For <strong className="text-[#1a260e]/85 font-medium">Hot Pilates</strong> and <strong className="text-[#1a260e]/85 font-medium">Sculpt Mat Pilates</strong>, a towel is also mandatory &mdash; bring one or buy at the studio.
+            <div className="rounded-eu-md bg-eu-beige p-6 md:p-7">
+              <p className="mb-3 font-serif text-[40px] italic leading-none text-eu-green">03</p>
+              <h3 className="mb-2 font-serif text-[22px] leading-[1.2]">What to bring</h3>
+              <p className="text-[15px] leading-[1.65] text-eu-green">
+                Comfortable clothes you can move in. <strong className="font-medium text-eu-ink">Grip socks</strong> are mandatory for Reformer &mdash; bring your own or buy a pair at the studio (one-time, reuse every class). For <strong className="font-medium text-eu-ink">Hot Pilates</strong> and <strong className="font-medium text-eu-ink">Sculpt Mat Pilates</strong>, a towel is also mandatory &mdash; bring one or buy at the studio.
               </p>
             </div>
           </div>
@@ -179,61 +180,56 @@ function ThankYouContent() {
       </section>
 
       {/* Membership Upsell — high-emotion conversion moment */}
-      <section className="bg-[#1a260e] text-[#fffcf2] px-6 py-16 md:py-20">
-        <div className="max-w-2xl mx-auto text-center">
-          <p className="text-xs md:text-sm tracking-[0.3em] uppercase text-[#fffcf2]/50 mb-5">
+      <section className="eu-on-dark mx-[clamp(10px,1.5vw,24px)] rounded-eu-xl bg-eu-ink px-5 py-[clamp(72px,9vw,130px)] text-eu-cream">
+        <div className="mx-auto max-w-2xl text-center">
+          <p className="eu-cap mb-5 text-eu-beige">
             For your practice to last
           </p>
-          <h2 className="font-serif font-light text-3xl md:text-4xl leading-[1.15] mb-5">
-            Become a member,
+          <h2 className="mb-6 font-serif text-[clamp(36px,4.6vw,68px)] font-normal leading-[1.05] tracking-[-0.02em]">
+            Become a member,{' '}
             <br />
             <span className="italic">save on every class</span>
           </h2>
-          <p className="text-sm md:text-base text-[#fffcf2]/75 leading-relaxed max-w-md mx-auto mb-8">
+          <p className="mx-auto mb-9 max-w-md text-[16px] leading-[1.7] text-eu-beige md:text-[17px]">
             The Euforyc Membership starts from £90/mo, with credits that work across the whole timetable. Go Unlimited for priority booking and exclusive perks.
           </p>
-          <Link
-            href="/memberships"
-            className="inline-flex items-center gap-2 bg-[#fffcf2] text-[#1a260e] px-8 py-4 font-sans text-xs tracking-[0.2em] uppercase hover:scale-[1.02] transition-transform"
-          >
+          <PillLink href="/memberships" variant="cream" dot stretchMobile>
             View memberships
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M5 12h14M12 5l7 7-7 7" />
-            </svg>
-          </Link>
+          </PillLink>
         </div>
       </section>
 
       {/* Community + Contact */}
-      <section className="px-6 py-16 md:py-20">
-        <div className="max-w-2xl mx-auto text-center">
-          <p className="text-xs md:text-sm tracking-[0.3em] uppercase text-[#1a260e]/50 mb-3">Stay close</p>
-          <h2 className="font-serif font-light text-2xl md:text-3xl mb-6">Follow the journey</h2>
-          <p className="text-sm text-[#1a260e]/65 max-w-md mx-auto mb-8 leading-relaxed">
+      <section className="px-5 py-[clamp(64px,8vw,110px)]">
+        <div className="mx-auto max-w-2xl text-center">
+          <p className="eu-cap mb-4 text-eu-green">Stay close</p>
+          <h2 className="mb-6 font-serif text-[clamp(32px,3.6vw,52px)] font-normal leading-[1.08] tracking-[-0.02em]">Follow the journey</h2>
+          <p className="mx-auto mb-8 max-w-md text-[16px] leading-[1.7] text-eu-green">
             Class previews, member moments, studio news. Join us on Instagram.
           </p>
-          <a
+          <PillLink
             href="https://instagram.com/euforycstudios"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 border border-[#1a260e]/20 text-[#1a260e] px-8 py-4 font-sans text-xs tracking-[0.2em] uppercase hover:bg-[#1a260e] hover:text-[#fffcf2] transition-colors"
+            variant="line"
+            className="!text-[14px] !normal-case !tracking-[0.06em]"
           >
             @euforycstudios
-          </a>
+          </PillLink>
 
-          <div className="mt-12 pt-10 border-t border-[#1a260e]/10 space-y-2 text-xs text-[#1a260e]/60">
+          <div className="mt-12 space-y-2 border-t border-[#1a260e]/15 pt-10 text-[15px] text-eu-sage">
             <p>Questions? We&apos;re here.</p>
             <p>
-              <a href="mailto:euforyc@gmail.com" className="underline underline-offset-2 hover:text-[#1a260e]">
+              <a href="mailto:euforyc@gmail.com" className="inline-block py-2.5 text-eu-ink underline decoration-[#1a260e]/35 underline-offset-4 hover:decoration-[#1a260e]">
                 euforyc@gmail.com
               </a>
               <span className="mx-2">·</span>
-              <a href="tel:+447375710370" className="underline underline-offset-2 hover:text-[#1a260e]">
+              <a href="tel:+447375710370" className="inline-block py-2.5 text-eu-ink underline decoration-[#1a260e]/35 underline-offset-4 hover:decoration-[#1a260e]">
                 +44 7375 710370
               </a>
             </p>
             <p className="pt-2">
-              <Link href="/" className="underline underline-offset-2 hover:text-[#1a260e]">
+              <Link href="/" className="inline-block py-2.5 text-eu-ink underline decoration-[#1a260e]/35 underline-offset-4 hover:decoration-[#1a260e]">
                 Back to euforyc.co.uk
               </Link>
             </p>
@@ -247,8 +243,8 @@ function ThankYouContent() {
 export default function ThankYouPage() {
   return (
     <Suspense fallback={
-      <div className="min-h-screen bg-[#fffcf2] flex items-center justify-center">
-        <div className="animate-spin rounded-full h-10 w-10 border-2 border-[#1a260e]/20 border-t-[#1a260e]" />
+      <div className="eu-page-top flex min-h-screen items-center justify-center bg-eu-cream">
+        <div className="h-10 w-10 animate-spin rounded-full border-2 border-[#1a260e]/20 border-t-[#1a260e]" />
       </div>
     }>
       <ThankYouContent />
