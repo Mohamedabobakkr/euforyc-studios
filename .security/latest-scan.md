@@ -1,6 +1,6 @@
 # Security Scan Report
 
-**Date:** 2026-10-14 06:00 UTC
+**Date:** 2026-10-14 11:23 UTC
 **Status:** CLEAN
 
 ## npm audit
@@ -27,7 +27,7 @@ All 7 high vulnerabilities trace to `braces@3.0.3` (GHSA-vfj7-8cjw-p6xm — stac
 6. Image Hostnames: PASS — specific domains only (squarecdn.com, euforyc.co.uk, momence.com, specific S3 bucket, localhost); no wildcard
 7. No Hardcoded Secrets: PASS — all secrets accessed via `process.env`; no `sk-`, `pk_live`, or hardcoded passwords in app/, lib/, or components/
 8. No localStorage Credentials: PASS — barista sessions use HttpOnly cookies exclusively
-9. No Error Leaks: PASS — API routes return generic messages; `error.details` only in development mode; detailed errors logged server-side only
+9. No Error Leaks: PASS — API routes return generic messages; detailed errors logged server-side only
 10. Safe Health Checks: PASS — no health/status endpoints exist; no API routes expose tokens or internal config
 
 ## Fixes Applied
