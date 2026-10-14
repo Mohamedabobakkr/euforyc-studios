@@ -1,9 +1,7 @@
 'use client';
 
-import { useState, useEffect, useMemo, useRef } from 'react';
-import Link from 'next/link';
+import { useState, useEffect, useMemo } from 'react';
 import {
-  ArrowRight,
   CheckCircle2,
   Clock,
   MapPin,
@@ -23,6 +21,8 @@ import {
   CupSoda,
   Users,
 } from 'lucide-react';
+import Arrow from '@/components/euforyc/Arrow';
+import PillLink from '@/components/euforyc/PillLink';
 
 // ═══════════════════════════════════════════════════════════════
 // EDITABLE CONSTANTS — update pricing here before launch
@@ -134,58 +134,34 @@ function getEndOfMonth() {
   return new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59);
 }
 
-// ─── Intersection Observer Reveal ─────────────────────────────
-function useInView(threshold = 0.15) {
-  const ref = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(false);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) setVisible(true); }, { threshold });
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, [threshold]);
-
-  return { ref, visible };
-}
-
-function Reveal({ children, className = '', delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) {
-  const { ref, visible } = useInView();
-  return (
-    <div
-      ref={ref}
-      className={className}
-      style={{
-        opacity: visible ? 1 : 0,
-        transform: visible ? 'translateY(0)' : 'translateY(28px)',
-        transition: `opacity 0.8s cubic-bezier(.22,1,.36,1) ${delay}s, transform 0.8s cubic-bezier(.22,1,.36,1) ${delay}s`,
-      }}
-    >
-      {children}
-    </div>
-  );
+// ─── Scroll Reveal ────────────────────────────────────────────
+// CSS-only (eu-rv): content is always rendered visible, and only animates
+// where scroll-driven animations are supported and motion is allowed.
+function Reveal({ children, className = '' }: { children: React.ReactNode; className?: string; delay?: number }) {
+  return <div className={`eu-rv ${className}`}>{children}</div>;
 }
 
 // ─── FAQ Item ─────────────────────────────────────────────────
 function FaqItem({ q, a }: { q: string; a: string }) {
   const [open, setOpen] = useState(false);
   return (
-    <div className="border-b border-[#1a260e]/10">
+    <div className="border-b border-[#1a260e]/15">
       <button
         onClick={() => setOpen(!open)}
-        className="w-full flex items-center justify-between py-5 md:py-6 text-left group"
+        className="w-full min-h-[72px] flex items-center justify-between gap-5 py-5 md:py-6 text-left group"
       >
-        <h3 className="font-serif text-lg md:text-xl font-light text-[#1a260e] pr-6">{q}</h3>
-        <ChevronDown
-          className={`h-5 w-5 text-[#1a260e]/40 flex-shrink-0 transition-transform duration-300 ${open ? 'rotate-180' : ''}`}
-        />
+        <h3 className="font-serif text-xl md:text-2xl font-normal leading-snug text-eu-ink">{q}</h3>
+        <span
+          className={`grid place-items-center w-10 h-10 rounded-full border border-[#1a260e]/25 text-eu-ink flex-shrink-0 transition-[transform,background-color,color] duration-500 ease-eu group-hover:bg-eu-ink group-hover:text-eu-cream ${open ? 'rotate-180' : ''}`}
+        >
+          <ChevronDown className="h-4 w-4" strokeWidth={1.5} />
+        </span>
       </button>
       <div
-        className="overflow-hidden transition-all duration-400"
-        style={{ maxHeight: open ? '260px' : '0', opacity: open ? 1 : 0 }}
+        className="overflow-hidden transition-all duration-500"
+        style={{ maxHeight: open ? '420px' : '0', opacity: open ? 1 : 0 }}
       >
-        <p className="text-sm text-[#1a260e]/70 pb-5 md:pb-6 leading-relaxed">{a}</p>
+        <p className="text-[15px] text-eu-green pb-6 leading-[1.7] max-w-[62ch]">{a}</p>
       </div>
     </div>
   );
@@ -303,125 +279,95 @@ export default function MassagePage() {
   };
 
   return (
-    <div className="pt-24 xl:pt-40 pb-24 md:pb-0 bg-[#fffcf2]">
+    <div className="pb-24 md:pb-0 bg-eu-cream">
 
       {/* ════════════════════════════════════════════════════════
           PROMO BANNER — today-only discount code
+          (sits under the fixed header, together with the hero below)
          ════════════════════════════════════════════════════════ */}
-      <div className="relative overflow-hidden bg-[#1a260e] text-[#fffcf2] border-b border-[#fffcf2]/10">
-        {/* subtle warm glow */}
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(244,194,194,0.12)_0%,_transparent_65%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_right,_rgba(217,181,148,0.10)_0%,_transparent_55%)]" />
+      <div className="relative bg-eu-ink text-eu-cream pt-[var(--eu-header-space)] eu-on-dark">
+        <div className="eu-wrap">
+          <div className="py-4 md:py-5 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-6 text-center border-b border-[#fffcf2]/15">
+            <div className="eu-cap flex items-center gap-2 text-eu-beige">
+              <Sparkles className="w-3.5 h-3.5" strokeWidth={1.5} />
+              <span className="font-medium">Today Only</span>
+              <Sparkles className="w-3.5 h-3.5" strokeWidth={1.5} />
+            </div>
 
-        <div className="relative max-w-6xl mx-auto px-4 py-3 md:py-3.5 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-5 text-center">
-          <div className="flex items-center gap-2 text-[11px] sm:text-xs uppercase tracking-[0.18em] text-[#f4c2c2]">
-            <Sparkles className="w-3.5 h-3.5" />
-            <span className="font-medium">Today Only</span>
-            <Sparkles className="w-3.5 h-3.5" />
+            <p className="text-[15px] leading-snug text-eu-cream">
+              Apply at checkout for an <span className="font-medium text-eu-cream underline decoration-[#fffcf2]/50 underline-offset-4">additional 10% off</span> —
+            </p>
+
+            <button
+              type="button"
+              onClick={copyCode}
+              aria-label="Copy discount code MASSAGE10"
+              className="group relative inline-flex items-center gap-3 min-h-[44px] pl-5 pr-1.5 py-1.5 rounded-full border border-dashed border-[#fffcf2]/60 hover:bg-[#fffcf2]/10 transition-colors"
+            >
+              <span className="font-mono text-[15px] font-semibold tracking-[0.25em] text-eu-cream">
+                MASSAGE10
+              </span>
+              <span className="inline-flex items-center min-h-[32px] px-3.5 rounded-full bg-eu-cream text-eu-ink text-[10.5px] uppercase tracking-[0.16em] font-medium">
+                {copied ? 'Copied ✓' : 'Tap to copy'}
+              </span>
+            </button>
           </div>
-
-          <p className="text-sm sm:text-[15px] leading-snug font-light">
-            Apply at checkout for an <span className="font-medium text-[#f4c2c2]">additional 10% off</span> —
-          </p>
-
-          <button
-            type="button"
-            onClick={copyCode}
-            aria-label="Copy discount code MASSAGE10"
-            className="group relative inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-dashed border-[#f4c2c2]/70 bg-[#fffcf2]/5 hover:bg-[#fffcf2]/10 transition-colors"
-          >
-            <span className="font-mono text-sm sm:text-[15px] font-semibold tracking-[0.25em] text-[#fffcf2]">
-              MASSAGE10
-            </span>
-            <span className="text-[10px] uppercase tracking-widest text-[#f4c2c2] group-hover:text-[#fffcf2] transition-colors">
-              {copied ? 'Copied ✓' : 'Tap to copy'}
-            </span>
-          </button>
         </div>
       </div>
 
       {/* ════════════════════════════════════════════════════════
           HERO
          ════════════════════════════════════════════════════════ */}
-      <section className="relative min-h-[90vh] md:min-h-[92vh] flex items-center justify-center overflow-hidden">
-        {/* Layered atmospheric background */}
-        <div className="absolute inset-0">
-          {/* Deep green base */}
-          <div className="absolute inset-0 bg-gradient-to-b from-[#1a260e] via-[#1d2a11] to-[#2a2418]" />
-
-          {/* Warm rose + gold glow */}
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_rgba(244,194,194,0.14)_0%,_transparent_55%)]" />
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,_rgba(217,181,148,0.10)_0%,_transparent_50%)]" />
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(255,220,200,0.04)_0%,_transparent_70%)]" />
-
-          {/* Fine grain texture */}
-          <div className="absolute inset-0 opacity-[0.04]" style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
-          }} />
-
-          {/* Concentric ritual circles */}
-          <div className="absolute -top-40 -right-40 w-[520px] h-[520px] rounded-full border border-[#fffcf2]/[0.04]" />
-          <div className="absolute -bottom-48 -left-48 w-[620px] h-[620px] rounded-full border border-[#fffcf2]/[0.03]" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[820px] h-[820px] rounded-full border border-[#fffcf2]/[0.02]" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1100px] h-[1100px] rounded-full border border-[#fffcf2]/[0.015]" />
-        </div>
-
-        <div className="relative z-10 container-width text-center px-6">
+      <section className="relative overflow-hidden bg-eu-ink text-eu-cream rounded-b-[32px] md:rounded-b-eu-xl eu-on-dark">
+        <div className="relative z-10 eu-wrap text-center pt-12 pb-32 md:pt-20 md:pb-40">
           {/* Urgency + social proof row */}
           <Reveal>
-            <div className="flex flex-wrap justify-center gap-2 mb-6 md:mb-8">
-              <div className="inline-flex items-center gap-2 bg-rose-300/10 backdrop-blur-sm border border-rose-200/20 rounded-full px-3 py-1.5 md:px-5 md:py-2">
-                <Timer className="h-3.5 w-3.5 md:h-4 md:w-4 text-rose-200" />
-                <span className="text-xs md:text-sm text-rose-100 tracking-wider font-medium">
+            <div className="flex flex-wrap justify-center gap-2 mb-8 md:mb-10">
+              <div className="eu-chip">
+                <Timer className="h-4 w-4" strokeWidth={1.5} />
+                <span className="text-[12px] tracking-[0.12em] font-medium">
                   OFFER ENDS IN {timeLeft.days}d {timeLeft.hours}h {timeLeft.minutes}m
                 </span>
               </div>
 
-              <div className="inline-flex items-center gap-2 bg-[#fffcf2]/[0.06] backdrop-blur-sm border border-[#fffcf2]/15 rounded-full px-3 py-1.5 md:px-5 md:py-2">
-                <Sparkles className="h-3.5 w-3.5 md:h-4 md:w-4 text-amber-200" />
-                <span className="text-xs md:text-sm text-[#fffcf2]/85 tracking-wider">NEW AT EUFORYC</span>
+              <div className="eu-chip">
+                <Sparkles className="h-4 w-4" strokeWidth={1.5} />
+                <span className="text-[12px] tracking-[0.12em]">NEW AT EUFORYC</span>
               </div>
             </div>
           </Reveal>
 
           {/* Overline */}
           <Reveal delay={0.08}>
-            <p className="text-[#fffcf2]/45 text-xs md:text-sm tracking-[0.35em] uppercase mb-5 md:mb-7 font-light">
+            <p className="eu-cap text-eu-beige mb-6 md:mb-8">
               The Euforyc &nbsp;·&nbsp; Edgware, London
             </p>
           </Reveal>
 
           {/* Main headline */}
           <Reveal delay={0.15}>
-            <h1 className="font-serif text-[3rem] leading-[1] md:text-7xl lg:text-[8rem] text-[#fffcf2] tracking-tight mb-6 md:mb-8">
-              Massage<br />
-              <span className="italic bg-gradient-to-r from-rose-100 via-amber-100 to-rose-200 bg-clip-text text-transparent">
+            <h1 className="font-serif font-normal text-[clamp(60px,10.4vw,168px)] leading-[0.9] tracking-[-0.03em] text-eu-cream mb-8 md:mb-10">
+              Massage{' '}<br />
+              <em className="italic text-eu-beige">
                 Ritual
-              </span>
+              </em>
             </h1>
           </Reveal>
 
           <Reveal delay={0.22}>
-            <p className="text-[#fffcf2]/75 text-base md:text-xl lg:text-2xl max-w-2xl mx-auto mb-8 md:mb-12 font-light leading-relaxed">
+            <p className="text-eu-beige text-[17px] md:text-xl leading-relaxed max-w-2xl mx-auto mb-10 md:mb-12">
               Three sessions. One slow, deliberate return to yourself.<br className="hidden md:block" />
-              <span className="text-[#fffcf2]/55 text-sm md:text-base italic">Melt tension. Restore calm. Leave lighter.</span>
+              <span className="block mt-2 font-serif italic text-eu-cream text-lg md:text-2xl">Melt tension. Restore calm. Leave lighter.</span>
             </p>
           </Reveal>
 
           {/* CTA */}
           <Reveal delay={0.3}>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <a
-                href="#packages"
-                className="group inline-flex items-center gap-3 bg-gradient-to-r from-rose-200 via-amber-100 to-rose-200 text-[#1a260e] px-9 md:px-11 py-4 md:py-5 font-sans text-sm tracking-[0.18em] uppercase font-semibold transition-all duration-500 hover:scale-[1.03] hover:shadow-[0_8px_40px_rgba(244,194,194,0.25)] rounded-sm"
-              >
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-8 justify-center items-center">
+              <PillLink href="#packages" variant="cream" dot className="w-full sm:w-auto !justify-between">
                 CHOOSE YOUR RITUAL
-                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-              </a>
-              <a
-                href="#the-ritual"
-                className="text-[#fffcf2]/55 text-sm tracking-wider hover:text-[#fffcf2] transition-colors"
-              >
+              </PillLink>
+              <a href="#the-ritual" className="eu-ulink">
                 What to expect →
               </a>
             </div>
@@ -429,11 +375,11 @@ export default function MassagePage() {
 
           {/* Trust row */}
           <Reveal delay={0.4}>
-            <div className="mt-14 md:mt-20 pt-6 md:pt-8 border-t border-[#fffcf2]/[0.08]">
-              <div className="flex flex-wrap justify-center gap-6 md:gap-10 text-[#fffcf2]/45 text-xs md:text-sm">
+            <div className="mt-14 md:mt-20 pt-6 md:pt-8 border-t border-[#fffcf2]/15 max-w-3xl mx-auto">
+              <div className="flex flex-wrap justify-center gap-x-8 gap-y-3 text-eu-beige text-[13px] md:text-sm">
                 {trust.map(({ icon: Icon, label }) => (
-                  <div key={label} className="flex items-center gap-1.5">
-                    <Icon className="h-3.5 w-3.5" />
+                  <div key={label} className="flex items-center gap-2">
+                    <Icon className="h-4 w-4" strokeWidth={1.5} />
                     <span>{label}</span>
                   </div>
                 ))}
@@ -443,31 +389,31 @@ export default function MassagePage() {
         </div>
 
         {/* Scroll indicator */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-[#fffcf2]/30">
-          <span className="text-[10px] tracking-[0.3em] uppercase">Scroll</span>
-          <div className="w-px h-10 bg-gradient-to-b from-[#fffcf2]/30 to-transparent" />
+        <div className="absolute bottom-7 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-eu-beige">
+          <span className="text-[10.5px] tracking-[0.3em] uppercase">Scroll</span>
+          <div className="w-px h-10 bg-gradient-to-b from-[#fffcf2]/50 to-transparent" />
         </div>
       </section>
 
       {/* ════════════════════════════════════════════════════════
           EMOTIONAL PITCH
          ════════════════════════════════════════════════════════ */}
-      <section className="section-padding bg-[#fffcf2]">
+      <section className="section-padding bg-eu-cream">
         <div className="container-width">
           <div className="max-w-3xl mx-auto text-center">
             <Reveal>
-              <p className="tagline text-[#1a260e]/50 mb-5">A DEEP BREATH, MADE PHYSICAL</p>
+              <p className="eu-cap text-eu-green mb-6">A DEEP BREATH, MADE PHYSICAL</p>
             </Reveal>
 
             <Reveal delay={0.05}>
-              <h2 className="font-serif text-2xl md:text-3xl lg:text-[2.75rem] text-[#1a260e] font-light leading-[1.2] mb-7 md:mb-9">
+              <h2 className="font-serif font-normal text-[clamp(38px,5vw,72px)] leading-[1.02] tracking-[-0.025em] text-eu-ink mb-8 md:mb-10">
                 You&apos;ve been carrying<br />
-                <span className="italic">more than you realise</span>
+                <em className="italic">more than you realise</em>
               </h2>
             </Reveal>
 
             <Reveal delay={0.1}>
-              <div className="space-y-5 text-[#1a260e]/75 text-sm md:text-lg font-light leading-relaxed max-w-2xl mx-auto">
+              <div className="space-y-5 text-eu-green text-[17px] md:text-lg leading-[1.75] max-w-2xl mx-auto">
                 <p>
                   The shoulders that sit somewhere near your ears. The jaw you unclench at red lights.
                   The knot between your shoulder blades that&apos;s been there since &mdash; when, exactly?
@@ -475,17 +421,17 @@ export default function MassagePage() {
                 <p>
                   You tell yourself you&apos;ll book something. You keep not. Life keeps happening.
                 </p>
-                <p className="text-[#1a260e]/90 font-normal italic">
+                <p className="font-serif text-eu-ink italic text-xl md:text-2xl leading-snug pt-2">
                   This is the part where you stop putting yourself last.
                 </p>
               </div>
             </Reveal>
 
             <Reveal delay={0.18}>
-              <div className="mt-9 md:mt-12 inline-flex items-center gap-3 bg-[#1a260e]/[0.04] rounded-full px-5 py-2.5">
-                <Heart className="h-4 w-4 text-rose-500" />
-                <span className="text-sm text-[#1a260e]/65 tracking-wide">
-                  Rest isn&apos;t a reward. <strong className="text-[#1a260e] font-medium">It&apos;s maintenance.</strong>
+              <div className="mt-10 md:mt-12 inline-flex items-center gap-3 bg-eu-beige rounded-[28px] px-6 py-3 min-h-[52px]">
+                <Heart className="h-4 w-4 text-eu-green flex-shrink-0" strokeWidth={1.5} />
+                <span className="text-[15px] text-eu-green">
+                  Rest isn&apos;t a reward. <strong className="text-eu-ink font-medium">It&apos;s maintenance.</strong>
                 </span>
               </div>
             </Reveal>
@@ -496,19 +442,18 @@ export default function MassagePage() {
       {/* ════════════════════════════════════════════════════════
           THE RITUAL — step by step walkthrough
          ════════════════════════════════════════════════════════ */}
-      <section id="the-ritual" className="section-padding bg-[#1a260e] text-[#fffcf2] relative overflow-hidden">
-        {/* Atmospheric glow */}
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_rgba(244,194,194,0.06)_0%,_transparent_50%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom,_rgba(217,181,148,0.05)_0%,_transparent_50%)]" />
-
+      <section
+        id="the-ritual"
+        className="section-padding bg-eu-ink text-eu-cream relative overflow-hidden rounded-[32px] md:rounded-eu-xl mx-[clamp(10px,1.5vw,24px)] scroll-mt-[calc(var(--eu-header-space)_+_12px)] eu-on-dark"
+      >
         <div className="relative container-width">
           <Reveal>
-            <div className="text-center mb-12 md:mb-20">
-              <p className="text-[#fffcf2]/40 text-xs tracking-[0.3em] uppercase mb-4">WHAT TO EXPECT</p>
-              <h2 className="font-serif text-2xl md:text-3xl lg:text-5xl font-light mb-5">
-                The <span className="italic bg-gradient-to-r from-rose-100 to-amber-100 bg-clip-text text-transparent">Ritual</span>
+            <div className="text-center mb-14 md:mb-20">
+              <p className="eu-cap text-eu-beige mb-5">WHAT TO EXPECT</p>
+              <h2 className="font-serif font-normal text-[clamp(42px,5.6vw,88px)] leading-none tracking-[-0.025em] mb-6">
+                The <em className="italic">Ritual</em>
               </h2>
-              <p className="text-[#fffcf2]/55 text-sm md:text-base max-w-xl mx-auto">
+              <p className="text-eu-beige text-[17px] leading-[1.75] max-w-xl mx-auto">
                 Every session unfolds the same way &mdash; a designed moment of stillness, from the second you arrive to the moment you leave.
               </p>
             </div>
@@ -517,29 +462,28 @@ export default function MassagePage() {
           <div className="max-w-4xl mx-auto">
             <div className="relative">
               {/* Vertical spine */}
-              <div className="absolute left-[27px] md:left-[31px] top-4 bottom-4 w-px bg-gradient-to-b from-rose-200/30 via-amber-200/20 to-rose-200/10" />
+              <div className="absolute left-[27px] md:left-[31px] top-4 bottom-4 w-px bg-[#fffcf2]/20" />
 
               <div className="space-y-10 md:space-y-14">
-                {ritual.map((step, i) => (
-                  <Reveal key={step.step} delay={i * 0.06}>
+                {ritual.map((step) => (
+                  <Reveal key={step.step}>
                     <div className="flex gap-5 md:gap-8">
                       {/* Step circle */}
                       <div className="relative flex-shrink-0">
-                        <div className="w-[55px] h-[55px] md:w-[63px] md:h-[63px] rounded-full border border-rose-200/30 flex items-center justify-center bg-[#1a260e] backdrop-blur-sm relative">
-                          <div className="absolute inset-1 rounded-full bg-gradient-to-br from-rose-200/10 to-amber-200/5" />
-                          <step.icon className="relative h-5 w-5 md:h-6 md:w-6 text-rose-100/80" />
+                        <div className="w-[55px] h-[55px] md:w-[63px] md:h-[63px] rounded-full border border-[#fffcf2]/30 flex items-center justify-center bg-eu-ink relative">
+                          <step.icon className="relative h-5 w-5 md:h-6 md:w-6 text-eu-beige" strokeWidth={1.5} />
                         </div>
-                        <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 text-[10px] tracking-[0.25em] text-rose-200/60 font-medium">
+                        <span className="absolute -bottom-2.5 left-1/2 -translate-x-1/2 px-1.5 bg-eu-ink font-serif italic text-[13px] leading-none text-eu-beige">
                           {step.step}
                         </span>
                       </div>
 
                       {/* Content */}
                       <div className="pt-2 pb-4 md:pt-3">
-                        <h3 className="font-serif text-xl md:text-2xl lg:text-3xl font-light text-[#fffcf2] mb-2 md:mb-3">
+                        <h3 className="font-serif font-normal text-[26px] md:text-3xl lg:text-[34px] leading-tight text-eu-cream mb-2 md:mb-3">
                           {step.title}
                         </h3>
-                        <p className="text-sm md:text-base text-[#fffcf2]/60 leading-relaxed max-w-xl">
+                        <p className="text-[15px] md:text-base text-eu-beige leading-relaxed max-w-xl">
                           {step.desc}
                         </p>
                       </div>
@@ -555,13 +499,13 @@ export default function MassagePage() {
       {/* ════════════════════════════════════════════════════════
           PACKAGES — the conversion section
          ════════════════════════════════════════════════════════ */}
-      <section id="packages" className="section-padding bg-[#fffcf2]">
+      <section id="packages" className="section-padding bg-eu-cream scroll-mt-[var(--eu-header-space)]">
         <div className="container-width">
           <Reveal>
             <div className="text-center mb-10 md:mb-14">
-              <p className="tagline text-[#1a260e]/50 mb-4">CHOOSE YOUR LENGTH</p>
+              <p className="eu-cap text-eu-green mb-5">CHOOSE YOUR LENGTH</p>
               <h2 className="heading-secondary">
-                Three Rituals. <span className="italic">One for every kind of day.</span>
+                Three Rituals. <em className="italic">One for every kind of day.</em>
               </h2>
               <p className="body-text max-w-2xl mx-auto mt-5">
                 Each pack is three sessions &mdash; enough to make rest a habit, not a one-off.
@@ -571,7 +515,7 @@ export default function MassagePage() {
 
           {/* Selector Pills */}
           <Reveal delay={0.05}>
-            <div className="flex flex-wrap justify-center gap-3 mb-8 md:mb-12">
+            <div className="flex flex-wrap justify-center gap-2.5 mb-8 md:mb-12">
               {PACKAGE_IDS.map((id) => {
                 const p = PACKAGES[id];
                 const isActive = selected === id;
@@ -579,17 +523,17 @@ export default function MassagePage() {
                   <button
                     key={id}
                     onClick={() => setSelected(id)}
-                    className={`px-5 py-2.5 md:px-6 md:py-3 rounded-full font-sans text-xs md:text-sm tracking-wider transition-all duration-300 flex items-center gap-2 ${
+                    className={`min-h-[48px] px-5 md:px-6 rounded-full border font-sans text-[13px] md:text-sm tracking-[0.08em] transition-colors duration-300 flex items-center gap-2 ${
                       isActive
-                        ? 'bg-[#1a260e] text-[#fffcf2] scale-[1.02]'
-                        : 'bg-transparent border border-[#1a260e]/20 text-[#1a260e]/70 hover:border-[#1a260e]/40 hover:text-[#1a260e]'
+                        ? 'bg-eu-ink border-eu-ink text-eu-cream'
+                        : 'bg-transparent border-[#1a260e]/25 text-eu-green hover:border-eu-ink hover:text-eu-ink'
                     }`}
                   >
-                    <Clock className="h-3.5 w-3.5" />
+                    <Clock className="h-4 w-4" strokeWidth={1.5} />
                     <span>{p.label}</span>
                     {p.highlight && (
-                      <span className={`text-[10px] px-2 py-0.5 rounded-full tracking-wider ${
-                        isActive ? 'bg-rose-200/20 text-rose-100' : 'bg-rose-100/60 text-rose-700'
+                      <span className={`text-[10.5px] px-2.5 py-1 rounded-full tracking-[0.12em] ${
+                        isActive ? 'bg-[#fffcf2]/15 text-eu-cream' : 'bg-eu-beige text-eu-green'
                       }`}>
                         MOST LOVED
                       </span>
@@ -607,101 +551,98 @@ export default function MassagePage() {
                 href={pkg.momenceUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group block relative rounded-2xl overflow-hidden transition-all duration-500 hover:-translate-y-1 hover:shadow-2xl"
+                className="group block relative rounded-[28px] md:rounded-eu-lg overflow-hidden bg-eu-ink text-eu-cream transition-transform duration-500 ease-eu hover:-translate-y-1"
               >
-                {/* Background */}
-                <div className="absolute inset-0 bg-gradient-to-br from-[#1a260e] via-[#1d2a11] to-[#2a2418]" />
-                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_rgba(244,194,194,0.12)_0%,_transparent_60%)]" />
-                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,_rgba(217,181,148,0.08)_0%,_transparent_50%)]" />
-
-                <div className="relative p-7 md:p-10">
+                <div className="relative p-6 sm:p-8 md:p-10 eu-on-dark">
                   {/* Top: badge + title + price */}
-                  <div className="flex justify-between items-start gap-4 mb-5 md:mb-6">
+                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-5 sm:gap-4 mb-6">
                     <div className="flex-1 min-w-0">
-                      <div className="inline-flex items-center gap-2 bg-rose-200/10 border border-rose-200/20 rounded-full px-3 py-1 mb-4">
-                        <Sparkles className="h-3.5 w-3.5 text-rose-100" />
-                        <span className="text-xs text-rose-100 tracking-wider font-medium">{pkg.savings.toUpperCase()}</span>
+                      <div className="eu-chip mb-5">
+                        <Sparkles className="h-3.5 w-3.5" strokeWidth={1.5} />
+                        <span className="text-xs tracking-[0.14em] font-medium">{pkg.savings.toUpperCase()}</span>
                       </div>
-                      <div className="flex items-start gap-3 mb-1">
-                        <div className="w-12 h-12 md:w-14 md:h-14 rounded-xl bg-gradient-to-br from-rose-200/15 to-amber-200/10 flex items-center justify-center flex-shrink-0">
-                          <pkg.icon className="h-6 w-6 md:h-7 md:w-7 text-rose-100" />
+                      <div className="flex items-center gap-4 mb-1">
+                        <div className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-[#fffcf2]/10 flex items-center justify-center flex-shrink-0">
+                          <pkg.icon className="h-5 w-5 md:h-6 md:w-6 text-eu-beige" strokeWidth={1.5} />
                         </div>
                         <div className="min-w-0">
-                          <p className="text-xs tracking-[0.25em] uppercase text-[#fffcf2]/45 mb-1">{pkg.tagline}</p>
-                          <h3 className="font-serif text-2xl md:text-3xl text-[#fffcf2] font-light leading-tight">
+                          <p className="eu-cap text-eu-beige mb-1.5">{pkg.tagline}</p>
+                          <h3 className="font-serif font-normal text-[28px] md:text-4xl text-eu-cream leading-[1.05]">
                             {pkg.label} Massage
                           </h3>
                         </div>
                       </div>
                     </div>
 
-                    <div className="text-right flex-shrink-0">
-                      <div className="flex items-baseline gap-2 justify-end">
-                        <span className="font-serif text-3xl md:text-5xl text-[#fffcf2] font-light">{pkg.price}</span>
+                    <div className="flex items-baseline gap-x-4 gap-y-1 flex-wrap sm:block sm:text-right flex-shrink-0">
+                      <div className="flex items-baseline gap-2 sm:justify-end">
+                        <span className="font-serif text-5xl md:text-6xl text-eu-cream leading-none">{pkg.price}</span>
                       </div>
-                      <p className="text-sm text-[#fffcf2]/40 mt-0.5">
+                      <p className="text-sm text-eu-beige sm:mt-2">
                         <span className="line-through">{pkg.regularPrice}</span>
                       </p>
-                      <p className="text-xs text-rose-200/70 mt-1">
+                      <p className="text-sm text-eu-beige sm:mt-1">
                         {pkg.perSession} / session
                       </p>
                     </div>
                   </div>
 
                   {/* Description */}
-                  <p className="text-sm md:text-base text-[#fffcf2]/70 leading-relaxed mb-6 md:mb-7">
+                  <p className="text-[15px] md:text-base text-eu-beige leading-relaxed mb-6 md:mb-7">
                     {pkg.description}
                   </p>
 
                   {/* Best for chips */}
                   <div className="flex flex-wrap gap-2 mb-7">
                     {pkg.bestFor.split(' · ').map((item) => (
-                      <span key={item} className="px-3 py-1.5 rounded-full border border-[#fffcf2]/10 text-xs text-[#fffcf2]/60 tracking-wide">
+                      <span key={item} className="eu-chip">
                         {item}
                       </span>
                     ))}
                   </div>
 
                   {/* Includes */}
-                  <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 mb-7 pt-6 border-t border-[#fffcf2]/10">
+                  <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-8 pt-6 border-t border-[#fffcf2]/15">
                     {pkg.includes.map((item) => (
-                      <li key={item} className="flex items-start gap-2.5">
-                        <CheckCircle2 className="h-4 w-4 text-rose-200 mt-0.5 flex-shrink-0" />
-                        <span className="text-sm text-[#fffcf2]/80">{item}</span>
+                      <li key={item} className="flex items-start gap-3">
+                        <CheckCircle2 className="h-4 w-4 text-eu-live mt-1 flex-shrink-0" strokeWidth={1.5} />
+                        <span className="text-[15px] text-eu-cream">{item}</span>
                       </li>
                     ))}
                   </ul>
 
                   {/* CTA */}
-                  <div className="flex items-center justify-center gap-3 bg-gradient-to-r from-rose-100 via-amber-100 to-rose-100 text-[#1a260e] py-5 px-8 rounded-xl font-semibold text-sm md:text-base tracking-[0.15em] uppercase transition-all duration-500 group-hover:shadow-[0_8px_40px_rgba(244,194,194,0.25)] group-hover:scale-[1.02]">
+                  <div className="eu-btn eu-btn--cream eu-btn--block !whitespace-normal !text-left !leading-snug !tracking-[0.14em] group-hover:!bg-eu-beige">
                     <span>Book {pkg.label} Ritual &mdash; {pkg.price}</span>
-                    <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
+                    <span className="eu-btn__dot group-hover:-rotate-45">
+                      <Arrow />
+                    </span>
                   </div>
 
-                  <p className="text-center text-xs text-[#fffcf2]/35 mt-3 tracking-wider">
+                  <p className="text-center text-xs text-eu-beige mt-4 tracking-[0.14em]">
                     3 sessions &nbsp;·&nbsp; Edgware, London
                   </p>
                 </div>
               </a>
 
               {/* Package comparison teaser */}
-              <div className="mt-5 grid grid-cols-3 gap-2 md:gap-3">
+              <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-3">
                 {PACKAGE_IDS.filter((id) => id !== selected).map((id) => {
                   const p = PACKAGES[id];
                   return (
                     <button
                       key={id}
                       onClick={() => setSelected(id)}
-                      className="group col-span-3 md:col-span-1 text-left p-4 rounded-xl border border-[#1a260e]/10 hover:border-[#1a260e]/25 transition-all bg-white/40 hover:bg-white"
+                      className="group text-left p-5 min-h-[76px] rounded-eu-sm border border-[#1a260e]/15 bg-eu-cream hover:bg-eu-beige hover:border-[#1a260e]/30 transition-colors duration-300"
                     >
                       <div className="flex items-center justify-between gap-3">
                         <div>
-                          <p className="text-xs tracking-[0.2em] uppercase text-[#1a260e]/50 mb-1">{p.tagline}</p>
-                          <p className="font-serif text-lg text-[#1a260e] font-light">{p.label}</p>
+                          <p className="eu-cap text-eu-sage mb-1.5">{p.tagline}</p>
+                          <p className="font-serif text-xl text-eu-ink">{p.label}</p>
                         </div>
                         <div className="text-right">
-                          <p className="font-serif text-lg text-[#1a260e]">{p.price}</p>
-                          <p className="text-[10px] text-[#1a260e]/45 tracking-wider group-hover:text-[#1a260e] transition-colors">
+                          <p className="font-serif text-xl text-eu-ink">{p.price}</p>
+                          <p className="text-[11px] text-eu-green tracking-[0.16em] mt-1">
                             VIEW →
                           </p>
                         </div>
@@ -718,38 +659,37 @@ export default function MassagePage() {
       {/* ════════════════════════════════════════════════════════
           DROP-IN — just testing the waters?
          ════════════════════════════════════════════════════════ */}
-      <section className="py-12 md:py-20 bg-[#fffcf2]">
-        <div className="container-width px-6">
+      <section className="pb-12 md:pb-20 bg-eu-cream">
+        <div className="eu-wrap">
           <Reveal>
             <div className="max-w-3xl mx-auto">
-              <div className="relative rounded-2xl overflow-hidden border border-[#1a260e]/10 bg-gradient-to-br from-white via-rose-50/40 to-amber-50/30">
-                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_rgba(244,194,194,0.18)_0%,_transparent_55%)]" />
-
+              <div className="relative rounded-[28px] md:rounded-eu-lg bg-eu-beige">
                 <div className="relative p-7 md:p-10 md:flex md:items-center md:justify-between gap-8">
-                  <div className="flex-1 mb-6 md:mb-0">
-                    <p className="text-xs tracking-[0.25em] uppercase text-[#1a260e]/50 mb-3">
+                  <div className="flex-1 mb-7 md:mb-0">
+                    <p className="eu-cap text-eu-green mb-4">
                       NOT READY FOR A PACK?
                     </p>
-                    <h3 className="font-serif text-2xl md:text-3xl text-[#1a260e] font-light leading-tight mb-3">
-                      Try a single session <span className="italic">first</span>
+                    <h3 className="font-serif font-normal text-[30px] md:text-4xl text-eu-ink leading-[1.08] mb-3">
+                      Try a single session <em className="italic">first</em>
                     </h3>
-                    <p className="text-sm md:text-base text-[#1a260e]/65 leading-relaxed max-w-md">
+                    <p className="text-[15px] md:text-base text-eu-green leading-relaxed max-w-md">
                       Want to feel it before committing to three? Book a one-off drop-in
                       and see why our regulars keep coming back.
                     </p>
                   </div>
 
                   <div className="flex-shrink-0">
-                    <a
+                    <PillLink
                       href={DROP_IN_URL}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="group inline-flex items-center gap-3 bg-[#1a260e] text-[#fffcf2] px-7 md:px-8 py-4 md:py-5 font-sans text-xs md:text-sm tracking-[0.15em] uppercase font-medium transition-all duration-300 hover:scale-[1.02] hover:shadow-xl rounded-sm w-full md:w-auto justify-center"
+                      variant="ink"
+                      dot
+                      className="w-full md:w-auto !justify-between"
                     >
                       BOOK A DROP-IN
-                      <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-                    </a>
-                    <p className="text-[10px] md:text-xs text-[#1a260e]/40 tracking-wider text-center mt-2.5">
+                    </PillLink>
+                    <p className="text-xs text-eu-sage tracking-[0.12em] text-center mt-3">
                       Single session · All lengths
                     </p>
                   </div>
@@ -763,26 +703,26 @@ export default function MassagePage() {
       {/* ════════════════════════════════════════════════════════
           BENEFITS GRID
          ════════════════════════════════════════════════════════ */}
-      <section className="section-padding bg-[#fffcf2]">
+      <section className="section-padding bg-eu-cream">
         <div className="container-width">
           <Reveal>
             <div className="text-center mb-10 md:mb-14">
-              <p className="tagline text-[#1a260e]/50 mb-4">THE SCIENCE OF STILLNESS</p>
+              <p className="eu-cap text-eu-green mb-5">THE SCIENCE OF STILLNESS</p>
               <h2 className="heading-secondary">
-                What happens <span className="italic">when you finally rest</span>
+                What happens <em className="italic">when you finally rest</em>
               </h2>
             </div>
           </Reveal>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5 max-w-5xl mx-auto">
             {benefits.map((b, i) => (
-              <Reveal key={b.title} delay={i * 0.05}>
-                <div className="group relative p-6 md:p-7 rounded-2xl border border-[#1a260e]/10 bg-white/50 hover:bg-white hover:border-[#1a260e]/20 transition-all duration-500 h-full">
-                  <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-rose-100 to-amber-50 flex items-center justify-center mb-4 group-hover:scale-105 transition-transform">
-                    <b.icon className="h-5 w-5 text-[#1a260e]/70" />
+              <Reveal key={b.title} delay={i * 0.05} className="h-full">
+                <div className="group relative p-7 rounded-eu-md border border-[#1a260e]/15 bg-eu-cream hover:bg-eu-beige transition-colors duration-500 h-full">
+                  <div className="w-12 h-12 rounded-full bg-eu-beige group-hover:bg-eu-cream flex items-center justify-center mb-5 transition-colors duration-500">
+                    <b.icon className="h-5 w-5 text-eu-green" strokeWidth={1.5} />
                   </div>
-                  <h3 className="font-serif text-lg md:text-xl font-light text-[#1a260e] mb-2">{b.title}</h3>
-                  <p className="text-sm text-[#1a260e]/65 leading-relaxed">{b.desc}</p>
+                  <h3 className="font-serif font-normal text-[22px] md:text-2xl leading-snug text-eu-ink mb-2">{b.title}</h3>
+                  <p className="text-[15px] text-eu-green leading-relaxed">{b.desc}</p>
                 </div>
               </Reveal>
             ))}
@@ -793,12 +733,12 @@ export default function MassagePage() {
       {/* ════════════════════════════════════════════════════════
           THIS IS FOR YOU
          ════════════════════════════════════════════════════════ */}
-      <section className="section-padding bg-[#fffcf2]">
+      <section className="section-padding !pt-0 bg-eu-cream">
         <div className="container-width">
           <div className="max-w-4xl mx-auto">
             <Reveal>
               <div className="text-center mb-10 md:mb-12">
-                <p className="tagline text-[#1a260e]/50 mb-4">IS THIS FOR ME?</p>
+                <p className="eu-cap text-eu-green mb-5">IS THIS FOR ME?</p>
                 <h2 className="heading-secondary">
                   You&apos;ll love this if&hellip;
                 </h2>
@@ -806,13 +746,13 @@ export default function MassagePage() {
             </Reveal>
 
             <Reveal delay={0.05}>
-              <ul className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5">
+              <ul className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
                 {forYou.map((item, i) => (
-                  <li key={i} className="flex items-start gap-3 p-5 md:p-6 rounded-xl bg-white/60 border border-[#1a260e]/8">
-                    <div className="w-7 h-7 rounded-full bg-gradient-to-br from-rose-100 to-amber-50 flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <CheckCircle2 className="h-4 w-4 text-[#1a260e]/70" />
+                  <li key={i} className="flex items-start gap-4 p-5 md:p-6 rounded-eu-sm bg-eu-beige">
+                    <div className="w-8 h-8 rounded-full bg-eu-cream flex items-center justify-center flex-shrink-0">
+                      <CheckCircle2 className="h-4 w-4 text-eu-green" strokeWidth={1.5} />
                     </div>
-                    <span className="text-sm md:text-base text-[#1a260e]/80 leading-relaxed">{item}</span>
+                    <span className="text-[15px] md:text-base text-eu-ink leading-relaxed pt-1">{item}</span>
                   </li>
                 ))}
               </ul>
@@ -824,54 +764,52 @@ export default function MassagePage() {
       {/* ════════════════════════════════════════════════════════
           WHY EUFORYC — trust section
          ════════════════════════════════════════════════════════ */}
-      <section className="section-padding bg-[#1a260e] text-[#fffcf2] relative overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(244,194,194,0.04)_0%,_transparent_60%)]" />
-
+      <section className="section-padding bg-eu-ink text-eu-cream relative overflow-hidden rounded-[32px] md:rounded-eu-xl mx-[clamp(10px,1.5vw,24px)] eu-on-dark">
         <div className="relative container-width">
           <div className="max-w-3xl mx-auto text-center">
             <Reveal>
-              <p className="text-[#fffcf2]/40 text-xs tracking-[0.3em] uppercase mb-4">WHY EUFORYC</p>
+              <p className="eu-cap text-eu-beige mb-5">WHY EUFORYC</p>
             </Reveal>
             <Reveal delay={0.05}>
-              <h2 className="font-serif text-2xl md:text-3xl lg:text-5xl font-light mb-6 md:mb-8">
-                A wellness home, <span className="italic">not another clinical room</span>
+              <h2 className="font-serif font-normal text-[clamp(36px,4.6vw,68px)] leading-[1.04] tracking-[-0.02em] mb-7 md:mb-9">
+                A wellness home, <em className="italic">not another clinical room</em>
               </h2>
             </Reveal>
             <Reveal delay={0.1}>
-              <p className="text-[#fffcf2]/70 text-sm md:text-lg leading-relaxed mb-10 md:mb-14">
+              <p className="text-eu-beige text-[17px] md:text-lg leading-[1.75] mb-12 md:mb-14">
                 Edgware&apos;s only multi-wellness destination &mdash; where massage, pilates, skin, and a beautiful café
                 live under one roof. Arrive early for a matcha. Stay after for a treatment. Make it a whole afternoon.
               </p>
             </Reveal>
 
             <Reveal delay={0.15}>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
                 {[
                   { title: 'Expert Therapists', desc: 'Trained, licensed, deeply intuitive' },
                   { title: 'Beautifully Designed', desc: 'Calm spaces, soft lighting, warm scents' },
                   { title: 'Totally Tailored', desc: 'Every session shaped around you' },
                   { title: 'Local to Edgware', desc: 'Easy parking, 5 min from the tube' },
                 ].map((item, i) => (
-                  <div key={i} className="p-5 rounded-xl border border-[#fffcf2]/10 bg-[#fffcf2]/[0.03]">
-                    <h3 className="font-serif text-base md:text-lg font-light text-[#fffcf2] mb-2">{item.title}</h3>
-                    <p className="text-xs md:text-sm text-[#fffcf2]/55 leading-relaxed">{item.desc}</p>
+                  <div key={i} className="p-5 rounded-eu-sm border border-[#fffcf2]/15 bg-[#fffcf2]/[0.04]">
+                    <h3 className="font-serif font-normal text-lg md:text-xl leading-snug text-eu-cream mb-2">{item.title}</h3>
+                    <p className="text-sm text-eu-beige leading-relaxed">{item.desc}</p>
                   </div>
                 ))}
               </div>
             </Reveal>
 
             <Reveal delay={0.22}>
-              <div className="mt-10 md:mt-14 flex flex-wrap justify-center gap-5 md:gap-8 text-[#fffcf2]/50 text-xs md:text-sm">
+              <div className="mt-12 md:mt-14 flex flex-wrap justify-center gap-x-8 gap-y-3 text-eu-beige text-sm">
                 <div className="flex items-center gap-2">
-                  <MapPin className="h-4 w-4" />
+                  <MapPin className="h-4 w-4" strokeWidth={1.5} />
                   <span>Edgware, London</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Star className="h-4 w-4" />
+                  <Star className="h-4 w-4" strokeWidth={1.5} />
                   <span>Loved by our community</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Shield className="h-4 w-4" />
+                  <Shield className="h-4 w-4" strokeWidth={1.5} />
                   <span>Private treatment rooms</span>
                 </div>
               </div>
@@ -883,18 +821,18 @@ export default function MassagePage() {
       {/* ════════════════════════════════════════════════════════
           FAQ
          ════════════════════════════════════════════════════════ */}
-      <section className="section-padding bg-[#fffcf2]">
+      <section className="section-padding bg-eu-cream">
         <div className="container-width">
           <div className="max-w-3xl mx-auto">
             <Reveal>
               <div className="text-center mb-10 md:mb-12">
-                <p className="tagline text-[#1a260e]/50 mb-4">QUESTIONS, ANSWERED</p>
+                <p className="eu-cap text-eu-green mb-5">QUESTIONS, ANSWERED</p>
                 <h2 className="heading-secondary">Before you book</h2>
               </div>
             </Reveal>
 
             <Reveal delay={0.05}>
-              <div>
+              <div className="border-t border-[#1a260e]/15">
                 {faqs.map((faq) => (
                   <FaqItem key={faq.q} q={faq.q} a={faq.a} />
                 ))}
@@ -903,10 +841,10 @@ export default function MassagePage() {
 
             <Reveal delay={0.1}>
               <div className="text-center mt-10 md:mt-14">
-                <p className="text-sm text-[#1a260e]/50 mb-4">Still wondering about something?</p>
-                <Link href="/contact" className="btn-minimal">
+                <p className="text-[15px] text-eu-green mb-4">Still wondering about something?</p>
+                <PillLink href="/contact" variant="line">
                   GET IN TOUCH
-                </Link>
+                </PillLink>
               </div>
             </Reveal>
           </div>
@@ -916,50 +854,38 @@ export default function MassagePage() {
       {/* ════════════════════════════════════════════════════════
           FINAL CTA
          ════════════════════════════════════════════════════════ */}
-      <section className="relative py-20 md:py-32 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-[#1a260e] via-[#1d2a11] to-[#2a2418]" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_rgba(244,194,194,0.10)_0%,_transparent_60%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,_rgba(217,181,148,0.08)_0%,_transparent_50%)]" />
-
-        {/* Decorative circles */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full border border-[#fffcf2]/[0.03]" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[900px] rounded-full border border-[#fffcf2]/[0.02]" />
-
-        <div className="relative z-10 container-width text-center px-6">
+      <section className="relative py-20 md:py-32 overflow-hidden bg-eu-ink text-eu-cream rounded-[32px] md:rounded-eu-xl mx-[clamp(10px,1.5vw,24px)] mb-6 eu-on-dark">
+        <div className="relative z-10 eu-wrap text-center">
           <Reveal>
-            <div className="max-w-2xl mx-auto space-y-6 md:space-y-8">
-              <div className="inline-flex items-center gap-2 bg-rose-200/10 border border-rose-200/20 rounded-full px-4 py-2">
-                <Timer className="h-4 w-4 text-rose-200" />
-                <span className="text-sm text-rose-100 font-medium">
+            <div className="max-w-2xl mx-auto space-y-7 md:space-y-8">
+              <div className="eu-chip">
+                <Timer className="h-4 w-4" strokeWidth={1.5} />
+                <span className="text-sm">
                   {timeLeft.days > 0
                     ? `${timeLeft.days} days left on this offer`
                     : 'Last chance — offer ending soon'}
                 </span>
               </div>
 
-              <h2 className="font-serif text-3xl md:text-4xl lg:text-6xl text-[#fffcf2] font-light leading-[1.05]">
+              <h2 className="font-serif font-normal text-[clamp(42px,5.6vw,88px)] text-eu-cream leading-none tracking-[-0.025em]">
                 Book the thing.<br />
-                <span className="italic bg-gradient-to-r from-rose-100 to-amber-100 bg-clip-text text-transparent">
+                <em className="italic text-eu-beige">
                   Feel like yourself again.
-                </span>
+                </em>
               </h2>
 
-              <p className="text-[#fffcf2]/65 text-sm md:text-lg max-w-lg mx-auto leading-relaxed">
+              <p className="text-eu-beige text-[17px] md:text-lg max-w-lg mx-auto leading-relaxed">
                 Three sessions. One ritual. A slower, softer version of yourself
                 on the other side of it.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-2">
-                <a
-                  href="#packages"
-                  className="group inline-flex items-center gap-3 bg-gradient-to-r from-rose-100 via-amber-100 to-rose-100 text-[#1a260e] px-9 md:px-11 py-4 md:py-5 font-sans text-sm tracking-[0.18em] uppercase font-semibold transition-all duration-500 hover:scale-[1.03] hover:shadow-[0_8px_40px_rgba(244,194,194,0.3)] rounded-sm"
-                >
+                <PillLink href="#packages" variant="cream" dot className="w-full sm:w-auto !justify-between">
                   CHOOSE YOUR RITUAL
-                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-                </a>
+                </PillLink>
               </div>
 
-              <p className="text-[#fffcf2]/35 text-xs tracking-wider pt-2">
+              <p className="text-eu-beige text-xs tracking-[0.14em] pt-2">
                 Edgware, London &nbsp;·&nbsp; Private rooms &nbsp;·&nbsp; Tailored to you
               </p>
             </div>
@@ -970,15 +896,17 @@ export default function MassagePage() {
       {/* ════════════════════════════════════════════════════════
           STICKY MOBILE CTA
          ════════════════════════════════════════════════════════ */}
-      <div className="fixed bottom-0 left-0 right-0 p-3 bg-[#fffcf2]/95 backdrop-blur-md border-t border-[#1a260e]/10 md:hidden z-50">
+      <div className="fixed left-3 right-3 bottom-[calc(12px_+_env(safe-area-inset-bottom,0px))] md:hidden z-50">
         <a
           href={pkg.momenceUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center justify-center gap-2 bg-gradient-to-r from-rose-200 via-amber-100 to-rose-200 text-[#1a260e] w-full py-4 text-sm tracking-[0.12em] uppercase rounded-lg active:scale-[0.98] transition-transform font-semibold"
+          className="flex items-center justify-between gap-3 bg-eu-ink text-eu-cream w-full min-h-[60px] pl-6 pr-2 py-2 text-[12px] tracking-[0.16em] uppercase rounded-full shadow-[0_24px_50px_-20px_rgba(26,38,14,0.7)] active:scale-[0.98] transition-transform"
         >
           BOOK {pkg.label.toUpperCase()} — {pkg.price}
-          <ArrowRight className="h-4 w-4" />
+          <span className="eu-btn__dot bg-eu-cream text-eu-ink">
+            <Arrow />
+          </span>
         </a>
       </div>
     </div>
