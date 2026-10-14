@@ -109,7 +109,7 @@ const services = [
     },
     {
         title: 'Lasers & Light',
-        description: 'Advanced laser hair removal and light therapy treatments for smooth, rejuvenated skin.',
+        description: 'Advanced laser hair removal and LED light therapy treatments.',
         items: [
             { name: 'Full Body Laser Hair Removal', price: '£180', duration: '1 hr 30 mins' },
             { name: 'Face Laser', price: '£40', duration: '15 mins' },

@@ -93,15 +93,6 @@ export default function Pricing() {
 
                 <div className="flex justify-between items-center py-5 border-b border-[#1a260e]/10">
                   <div>
-                    <h3 className="font-serif text-xl md:text-2xl font-light">Mat Pilates</h3>
-                  </div>
-                  <div className="text-right">
-                    <p className="font-serif text-2xl md:text-3xl font-light">£28</p>
-                  </div>
-                </div>
-
-                <div className="flex justify-between items-center py-5 border-b border-[#1a260e]/10">
-                  <div>
                     <h3 className="font-serif text-xl md:text-2xl font-light"><Link href="/classes/sculpt-mat-pilates">Sculpt Mat Pilates</Link></h3>
                   </div>
                   <div className="text-right">
@@ -311,38 +302,6 @@ export default function Pricing() {
                   VIEW PACKAGES
                   <ArrowRight className="h-4 w-4" />
                 </Link>
-              </div>
-            </div>
-
-            {/* Women's Circle Section */}
-            <div className="space-y-8">
-              <div className="text-center space-y-2">
-                <h2 className="heading-secondary">Women&apos;s Circle</h2>
-                <p className="tagline text-[#1a260e]/60">JOURNALING • REFLECTION • SISTERHOOD</p>
-              </div>
-
-              <div className="space-y-0">
-                <div className="flex justify-between items-center py-5 border-b border-[#1a260e]/10">
-                  <div>
-                    <h3 className="font-serif text-xl md:text-2xl font-light">Guided Journaling</h3>
-                    <p className="text-xs text-[#1a260e]/60">Tuesdays 9–9.45pm • 15 spaces</p>
-                  </div>
-                  <div className="text-right">
-                    <p className="font-serif text-2xl md:text-3xl font-light">£18</p>
-                    <p className="text-xs text-[#1a260e]/60">per class</p>
-                  </div>
-                </div>
-
-                <div className="flex justify-between items-center py-5 border-b border-[#1a260e]/10">
-                  <div>
-                    <h3 className="font-serif text-xl md:text-2xl font-light">Women&apos;s Circle</h3>
-                    <p className="text-xs text-[#1a260e]/60">Sundays 4pm • 15 spaces</p>
-                  </div>
-                  <div className="text-right">
-                    <p className="font-serif text-2xl md:text-3xl font-light">£25</p>
-                    <p className="text-xs text-[#1a260e]/60">per circle</p>
-                  </div>
-                </div>
               </div>
             </div>
 

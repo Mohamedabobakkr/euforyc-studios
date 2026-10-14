@@ -27,8 +27,6 @@ export const STUDIO = {
   // The pin on the studio's Google Maps listing (mapsUrl)
   geo: { latitude: 51.59727, longitude: -0.26388 },
   mapsUrl: 'https://maps.app.goo.gl/zZfyhD3X2BuS6SnL6',
-  // Opens the review form on the same Google listing (place ID ChIJI04kMQARdkgRZG4Fx7xSUec)
-  googleReviewUrl: 'https://search.google.com/local/writereview?placeid=ChIJI04kMQARdkgRZG4Fx7xSUec',
   hours: [
     { days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'], label: 'Monday to Friday', opens: '06:45', closes: '20:00' },
     { days: ['Saturday', 'Sunday'], label: 'Saturday and Sunday', opens: '08:45', closes: '18:00' },

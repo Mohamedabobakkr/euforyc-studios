@@ -153,7 +153,7 @@ export default function Home() {
                   Redlight Pilates
                 </h3>
                 <p className="font-sans text-xs text-[#1a260e]/50 font-light leading-relaxed">
-                  Red light therapy meets mindful mat pilates for total rejuvenation.
+                  Mindful mat Pilates in a heated studio under red light.
                 </p>
               </div>
             </Link>

@@ -23,7 +23,7 @@ const servicesSchema = {
       '@type': 'Service',
       position: 2,
       name: 'Hot Pilates Classes',
-      description: 'Infrared-heated pilates classes for enhanced flexibility and detoxification',
+      description: 'Infrared-heated pilates classes for a more intense, heated session',
       provider: { '@type': 'LocalBusiness', name: 'Euforyc Studios', address: '7-8 Holmstall Parade, Edgware, HA8 5HX' },
       areaServed: 'London',
       offers: { '@type': 'AggregateOffer', lowPrice: '28', highPrice: '320', priceCurrency: 'GBP' }

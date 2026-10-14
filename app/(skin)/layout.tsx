@@ -88,7 +88,7 @@ const skinStudioSchema = {
             { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Skin Boosters', description: 'Profhilo, Neofound, Lumi Eye, and Polynucleotides for deep skin hydration and rejuvenation. From £120.' } },
             { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Body Contouring', description: 'Non-surgical body sculpting including cavitation, RF skin tightening, EMS sculpt, and cellulite treatment. From £75.' } },
             { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Laser Hair Removal', description: 'Full body and face laser hair removal with professional-grade equipment. From £25.' } },
-            { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Dermalux Phototherapy', description: 'LED light therapy for skin rejuvenation, acne treatment, and anti-ageing.' } },
+            { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Dermalux Phototherapy', description: 'LED light therapy facials.' } },
         ],
     },
     paymentAccepted: ['Cash', 'Credit Card', 'Debit Card', 'Apple Pay', 'Google Pay'],

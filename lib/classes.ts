@@ -167,8 +167,54 @@ export const CLASS_TYPES: ClassType[] = [
       width: 2400,
       height: 1600,
     },
-    // Red Light Stretch & Mobility is a separate recovery class, not this one
+    // Red Light Stretch & Mobility is a separate class with its own page
     match: { include: ['red light', 'redlight'], exclude: ['stretch'] },
+  },
+  {
+    slug: 'red-light-stretch-mobility',
+    name: 'Red Light Stretch & Mobility',
+    tagline: 'A low-intensity stretch and mobility class on red light therapy mats.',
+    summary:
+      'Red Light Stretch & Mobility at Euforyc Studios is a 45-minute, low-intensity class of guided mobility, deep stretching, breathwork and gentle release work on red light therapy mats. It is beginner-friendly and open to all levels, with no more than 6 women per class.',
+    duration: '45 minutes',
+    level: 'All levels, beginner-friendly',
+    groupSize: 'Up to 6 per class',
+    price: 28,
+    covered: GROUP_COVERAGE,
+    expect: [
+      'The class is slow and low intensity: guided mobility, deep stretching, breathwork and gentle release work, with attention on the hips, hamstrings, back and shoulders.',
+      'Each client works on a red light therapy mat. It is a separate class from Red Light Hot Mat Pilates, which is a full-body Pilates workout.',
+    ],
+    goodFor: [
+      'A slower, low-intensity class',
+      'Beginners and all levels',
+      'Pairing with Reformer, Hot or Sculpt Mat classes for a balanced week',
+    ],
+    bring: ['Comfortable, fitted workout clothes', 'Water'],
+    faqs: [
+      {
+        question: 'What is Red Light Stretch & Mobility?',
+        answer:
+          'A 45-minute, low-intensity class of guided mobility, deep stretching, breathwork and gentle release work, taught on red light therapy mats. It is open to all levels.',
+      },
+      {
+        question: 'Is it the same as Red Light Hot Mat Pilates?',
+        answer:
+          'No. Red Light Hot Mat Pilates is a full-body Pilates workout. Red Light Stretch & Mobility is a separate, slower class built around stretching and mobility.',
+      },
+      {
+        question: 'How much is a Red Light Stretch & Mobility class?',
+        answer:
+          'A single class is £28. First-time clients can use the Try It All intro offer of 3 classes for £60.',
+      },
+    ],
+    image: {
+      src: '/about-redlight.jpg',
+      alt: 'Three women in protective goggles kneel on red light therapy mats in the red light room at Euforyc Studios',
+      width: 1320,
+      height: 728,
+    },
+    match: { include: ['red light stretch', 'redlight stretch'] },
   },
   {
     slug: 'hot-pilates',
@@ -405,6 +451,7 @@ export const CLASS_ORDER = [
   'reformer-pilates',
   'hot-pilates',
   'red-light-hot-mat-pilates',
+  'red-light-stretch-mobility',
   'sculpt-mat-pilates',
   'barre',
   'belly-dance',

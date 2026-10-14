@@ -23,7 +23,7 @@ const products: Product[] = [
   {
     name: 'EPS Grip Socks',
     tagline: 'Move with confidence and control',
-    description: 'Soft, secure and made for every class. Designed to keep you grounded in Reformer, mat Pilates, Barre and yoga.',
+    description: 'Soft, secure and made for every class. Designed to keep you grounded in Reformer and Barre.',
     price: '£10.99',
     image: '/gripsocks.png',
     momenceUrl: 'https://momence.com/euforyc/product/EPS-Grip-Socks/342282',

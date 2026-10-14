@@ -64,7 +64,7 @@ interface Membership {
   note?: string;
 }
 
-const CLASS_TYPES = 'Reformer, Hot Pilates, Red Light, Mat Pilates, Barre & Dance';
+const CLASS_TYPES = 'Reformer, Hot Pilates, Red Light, Sculpt Mat Pilates, Barre & Belly Dance';
 
 const memberships: Membership[] = [
   {
@@ -444,7 +444,7 @@ export default function Memberships() {
               {
                 number: '01',
                 title: 'One Membership, the Whole Timetable',
-                body: 'Your credits work across every Euforyc group class — Reformer, Hot Pilates, Red Light, Mat Pilates, Barre and Dance. Mix it up however you like.',
+                body: 'Your credits work across every Euforyc group class — Reformer, Hot Pilates, Red Light, Sculpt Mat Pilates, Barre and Belly Dance. Mix it up however you like.',
               },
               {
                 number: '02',

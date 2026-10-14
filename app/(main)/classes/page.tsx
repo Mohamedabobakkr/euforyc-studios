@@ -6,7 +6,7 @@ import { POLICIES, SITE_URL, STUDIO, breadcrumbSchema, pageMetadata } from '@/li
 export const metadata = pageMetadata({
   title: 'Pilates Classes in Edgware | Reformer, Hot, Red Light & Sculpt Mat',
   description:
-    'Every class at Euforyc Studios, a women-only Pilates studio in Edgware, North West London: Reformer Pilates, Hot Pilates, Red Light Hot Mat Pilates, Sculpt Mat Pilates, Barre, Belly Dance, 1:1 Private Reformer Pilates and 1:1 Private Cadillac Reformer Pilates.',
+    'Every class at Euforyc Studios, a women-only Pilates studio in Edgware, North West London: Reformer Pilates, Hot Pilates, Red Light Hot Mat Pilates, Red Light Stretch & Mobility, Sculpt Mat Pilates, Barre, Belly Dance, 1:1 Private Reformer Pilates and 1:1 Private Cadillac Reformer Pilates.',
   path: '/classes',
 });
 
