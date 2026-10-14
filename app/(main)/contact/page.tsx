@@ -90,7 +90,6 @@ export default function Contact() {
           </h1>
           <p
             className="eu-rise mt-7 max-w-xl font-sans text-[17px] leading-[1.75] text-eu-green lg:col-span-4 lg:col-start-9 lg:mt-0"
-            style={{ animationDelay: '.15s' }}
           >
             Have questions about our classes, membership options, or want to learn more
             about the Euforyc experience? We'd love to hear from you.

@@ -37,7 +37,7 @@ export default function PackagesMemberships() {
               <em>Memberships</em>
             </h1>
           </div>
-          <div className={`${styles.heroR} eu-rise`} style={{ animationDelay: '.15s' }}>
+          <div className={`${styles.heroR} eu-rise`}>
             <p>
               Choose the perfect option for your fitness journey. Select from flexible class packages
               or ongoing membership contracts designed to support your long-term wellness goals.

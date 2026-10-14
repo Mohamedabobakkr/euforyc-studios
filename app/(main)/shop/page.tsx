@@ -94,7 +94,6 @@ export default function Shop() {
 
             <p
               className="eu-rise max-w-xl font-sans text-[17px] leading-[1.75] text-eu-green md:text-lg lg:col-span-4 lg:col-start-9"
-              style={{ animationDelay: '.15s' }}
             >
               Thoughtfully curated essentials for your pilates practice
             </p>

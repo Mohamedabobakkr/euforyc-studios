@@ -44,7 +44,7 @@ export default async function ReviewsPage() {
             <p className="eu-cap eu-cap-num text-eu-green">In our clients’ words</p>
             <h1 className="eu-h1 !mt-6">Reviews</h1>
           </div>
-          <p className="body-text eu-rise lg:col-span-5 lg:col-start-8" style={{ animationDelay: '.15s' }}>
+          <p className="body-text eu-rise lg:col-span-5 lg:col-start-8">
             {total > 0
               ? `Clients have left ${total} written reviews of classes at ${STUDIO.name}. `
               : ''}

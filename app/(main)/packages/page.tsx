@@ -490,7 +490,7 @@ export default function Packages() {
                 <em className="tracking-[-0.035em]">your pace</em>
               </h1>
             </div>
-            <div className="col-span-12 lg:col-start-9 lg:col-span-4 mt-7 lg:mt-0 eu-rise" style={{ animationDelay: '.15s' }}>
+            <div className="col-span-12 lg:col-start-9 lg:col-span-4 mt-7 lg:mt-0 eu-rise">
               <p className="text-[16px] md:text-[17px] text-eu-green leading-[1.7]">
                 Choose the package that fits your lifestyle. Start anytime, move at your own rhythm.
               </p>

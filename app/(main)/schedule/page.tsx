@@ -61,7 +61,7 @@ export default async function SchedulePage() {
               Class <em>Schedule</em>
             </h1>
           </div>
-          <div className={`${styles.headR} eu-rise`} style={{ animationDelay: '.15s' }}>
+          <div className={`${styles.headR} eu-rise`}>
             <span className={styles.pill}>
               <span className="eu-live-dot eu-live-dot--dark" aria-hidden="true" />
               Updated live from Momence

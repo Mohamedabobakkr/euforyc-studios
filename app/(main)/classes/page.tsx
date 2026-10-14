@@ -46,7 +46,7 @@ export default function ClassesPage() {
               Our <em>Classes</em>
             </h1>
           </div>
-          <p className="eu-lede eu-rise max-w-xl lg:col-span-5 lg:col-start-8" style={{ animationDelay: '.15s' }}>
+          <p className="eu-lede eu-rise max-w-xl lg:col-span-5 lg:col-start-8">
             {STUDIO.shortDescription} Group classes run for 45 to 60 minutes with no more than 8 people, and first-time clients can try any three for £60.
           </p>
         </div>

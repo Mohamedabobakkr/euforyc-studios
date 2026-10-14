@@ -249,7 +249,7 @@ export default function Memberships() {
           </h1>
         </div>
 
-        <div className="col-span-12 lg:col-start-9 lg:col-span-4 mt-7 lg:mt-0 eu-rise" style={{ animationDelay: '.15s' }}>
+        <div className="col-span-12 lg:col-start-9 lg:col-span-4 mt-7 lg:mt-0 eu-rise">
           <p className="text-[16px] md:text-[17px] leading-[1.7] text-eu-green">
             One membership, the whole timetable. Use your credits across every
             Euforyc group class, or go Unlimited for our most exclusive perks.
