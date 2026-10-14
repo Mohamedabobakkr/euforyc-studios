@@ -886,7 +886,7 @@ export default function SipsPage() {
                 <h3 className="card-name">euforyc blue radiance</h3>
                 <p className="card-tagline">&ldquo;reset, restore, radiate.&rdquo;</p>
                 <div className="card-rule" />
-                <p className="card-desc">spirulina detoxifies, pineapple restores and avocado nourishes &mdash; your full-body reset in every sip.</p>
+                <p className="card-desc">blue spirulina, sweet pineapple, banana and creamy avocado blended with coconut milk and a touch of honey &mdash; tropical, smooth and bright blue.</p>
                 <p className="ing-lbl">ingredients</p>
                 <p className="ings">coconut milk &middot; organic pineapple &middot; organic banana &middot; organic avocado &middot; blue spirulina &middot; organic coconut cream or greek yoghurt &middot; honey &middot; grass-fed vanilla collagen</p>
               </div>

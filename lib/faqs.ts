@@ -53,7 +53,7 @@ export const FAQS: Faq[] = [
   },
   {
     question: 'What is hot pilates and what are the benefits?',
-    answer: `Hot pilates is performed in our infrared-heated room (around 32-35°C). The heat makes the class more intense, and your muscles feel warm for stretching. It's perfect for those who enjoy a more intense, sweat-inducing workout while still maintaining pilates' focus on controlled movement. ${POLICIES.towel}`,
+    answer: `Hot pilates is performed in our infrared-heated room (around 32-35°C). The heat warms your muscles and makes it a sweatier, more intense workout. ${POLICIES.towel}`,
   },
   {
     question: 'Is pilates suitable for pregnant women?',
