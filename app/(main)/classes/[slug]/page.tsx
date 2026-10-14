@@ -54,11 +54,6 @@ export async function generateMetadata({
   });
 }
 
-function formatPrice(range: { min: number; max: number } | null, fallback: string): string {
-  if (!range) return fallback;
-  return range.min === range.max ? `£${range.min}` : `£${range.min} to £${range.max}`;
-}
-
 export default async function ClassTypePage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const classType = getClassType(slug);
@@ -67,21 +62,16 @@ export default async function ClassTypePage({ params }: { params: Promise<{ slug
   const [events, { reviews }] = await Promise.all([getUpcomingEvents(), getReviews()]);
   const live = liveFactsFor(classType, events);
   const classReviews = reviewsFor(classType, reviews);
-  const isPrivate = classType.slug === 'private-pilates';
+  const isPrivate = classType.slug.startsWith('private-');
   const renderedAt = Date.now();
 
-  const dropIn = formatPrice(live.priceRange, classType.fallbackDropIn);
-  const groupSize = isPrivate
-    ? classType.fallbackGroupSize
-    : live.maxCapacity
-      ? `Up to ${live.maxCapacity} per class`
-      : classType.fallbackGroupSize;
+  const dropIn = `£${classType.price}`;
 
   const facts = [
     { label: 'Duration', value: classType.duration },
-    { label: 'Class size', value: groupSize },
+    { label: 'Class size', value: classType.groupSize },
     { label: 'Level', value: classType.level },
-    { label: 'Drop-in', value: dropIn },
+    { label: isPrivate ? 'Single session' : 'Drop-in', value: dropIn },
     { label: 'Studio', value: 'Women-only' },
   ];
 
@@ -101,17 +91,13 @@ export default async function ClassTypePage({ params }: { params: Promise<{ slug
     provider: { '@id': ORGANIZATION_ID },
     areaServed: STUDIO.areas.map((name) => ({ '@type': 'Place', name })),
     audience: { '@type': 'PeopleAudience', suggestedGender: 'female' },
-    ...(live.priceRange
-      ? {
-          offers: {
-            '@type': 'Offer',
-            price: live.priceRange.min,
-            priceCurrency: 'GBP',
-            url: STUDIO.bookingUrl,
-            description: 'Single drop-in class',
-          },
-        }
-      : {}),
+    offers: {
+      '@type': 'Offer',
+      price: classType.price,
+      priceCurrency: 'GBP',
+      url: STUDIO.bookingUrl,
+      description: isPrivate ? 'Single session' : 'Single drop-in class',
+    },
   };
 
   const eventSchema = nextSessions.slice(0, 5).map((session) => ({
@@ -135,7 +121,7 @@ export default async function ClassTypePage({ params }: { params: Promise<{ slug
       : {}),
     offers: {
       '@type': 'Offer',
-      price: session.price,
+      price: classType.price,
       priceCurrency: 'GBP',
       url: session.bookingUrl,
       availability: session.isSoldOut ? 'https://schema.org/SoldOut' : 'https://schema.org/InStock',
@@ -357,7 +343,7 @@ export default async function ClassTypePage({ params }: { params: Promise<{ slug
           <div className="space-y-5">
             <h2 className="heading-secondary">Where we are</h2>
             <p className="body-text">
-              {STUDIO.name} is at {STUDIO.addressLine}. The nearest Underground station is {STUDIO.transport.nearestStation}. {STUDIO.transport.otherStations}. Buses {STUDIO.transport.buses.join(', ')} stop nearby.
+              {STUDIO.name} is at {STUDIO.addressLine}. {STUDIO.transport.station}, and buses {STUDIO.transport.buses.join(', ')} stop nearby.
             </p>
             <p className="body-text">{POLICIES.womenOnly}</p>
             <Link href="/contact" className="btn-minimal">Map and directions</Link>

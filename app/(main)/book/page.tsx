@@ -155,7 +155,7 @@ export default function Book() {
                     </div>
                     <div className="flex items-center space-x-1">
                       <Users className="h-4 w-4" />
-                      <span>Max 7 people</span>
+                      <span>Max 6 people</span>
                     </div>
                   </div>
                   <p className="body-text">
@@ -235,9 +235,8 @@ export default function Book() {
                   <h3 className="font-playfair text-xl font-light">Studio Location</h3>
                 </div>
                 <p className="body-text mb-2">
-                  7 Holmstall Ave<br />
-                  Edgware HA8 5HX<br />
-                  United Kingdom
+                  7-8 Holmstall Parade,<br />
+                  Edgware, HA8 5HX
                 </p>
                 <p className="font-inter text-sm text-[#1a260e]/80">
                   Free parking available

@@ -67,8 +67,8 @@ const skinStudioSchema = {
     url: `${skinSiteUrl}/skin-studio`,
     telephone: '+447375710370',
     email: 'euforyc@gmail.com',
-    address: { '@type': 'PostalAddress', streetAddress: '7 Holmstall Ave', addressLocality: 'Edgware', addressRegion: 'London', postalCode: 'HA8 5HX', addressCountry: 'GB' },
-    geo: { '@type': 'GeoCoordinates', latitude: 51.5973, longitude: -0.2641 },
+    address: { '@type': 'PostalAddress', streetAddress: '7-8 Holmstall Parade', addressLocality: 'Edgware', postalCode: 'HA8 5HX', addressCountry: 'GB' },
+    geo: { '@type': 'GeoCoordinates', latitude: 51.59727, longitude: -0.26388 },
     openingHoursSpecification: [
         { '@type': 'OpeningHoursSpecification', dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'], opens: '06:45', closes: '20:00' },
         { '@type': 'OpeningHoursSpecification', dayOfWeek: ['Saturday', 'Sunday'], opens: '08:45', closes: '18:00' },
@@ -186,8 +186,8 @@ export default function SkinStudioLayout({
                                 <div>
                                     <h4 className="font-skin-serif text-lg mb-4 tracking-wide">Contact</h4>
                                     <ul className="space-y-2 text-sm text-skin-background/70">
-                                        <li>7 Holmstall Ave, Edgware</li>
-                                        <li>London HA8 5HX</li>
+                                        <li>7-8 Holmstall Parade,</li>
+                                        <li>Edgware, HA8 5HX</li>
                                         <li className="pt-2">
                                             <a href="mailto:euforyc@gmail.com" className="hover:text-skin-background transition-colors">
                                                 euforyc@gmail.com

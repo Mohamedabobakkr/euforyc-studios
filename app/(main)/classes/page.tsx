@@ -3,29 +3,18 @@ import Link from 'next/link';
 import JsonLd from '@/components/JsonLd';
 import { ORDERED_CLASS_TYPES } from '@/lib/classes';
 import { POLICIES, SITE_URL, STUDIO, breadcrumbSchema, pageMetadata } from '@/lib/site';
-import { getUpcomingEvents, liveFactsFor } from '@/lib/studio-data';
-
-export const revalidate = 600;
-
 export const metadata = pageMetadata({
-  title: 'Pilates Classes in Edgware | Reformer, Hot, Red Light, Sculpt & Barre',
+  title: 'Pilates Classes in Edgware | Reformer, Hot, Red Light & Sculpt Mat',
   description:
-    'Every class at Euforyc Studios, a women-only Pilates studio in Edgware, North West London: Reformer Pilates, Hot Pilates, Red Light Hot Pilates, Tone & Sculpt, Barre, Belly Dance, mum and baby Pilates and private 1:1 sessions.',
+    'Every class at Euforyc Studios, a women-only Pilates studio in Edgware, North West London: Reformer Pilates, Hot Pilates, Red Light Hot Mat Pilates, Sculpt Mat Pilates, Belly Dance, 1:1 Private Reformer Pilates and 1:1 Private Cadillac Reformer Pilates.',
   path: '/classes',
 });
 
-export default async function ClassesPage() {
-  const events = await getUpcomingEvents();
-
-  const classes = ORDERED_CLASS_TYPES.map((classType) => {
-    const live = liveFactsFor(classType, events);
-    const price = live.priceRange
-      ? live.priceRange.min === live.priceRange.max
-        ? `£${live.priceRange.min}`
-        : `From £${live.priceRange.min}`
-      : classType.fallbackDropIn;
-    return { classType, price };
-  });
+export default function ClassesPage() {
+  const classes = ORDERED_CLASS_TYPES.map((classType) => ({
+    classType,
+    price: `£${classType.price}`,
+  }));
 
   const listSchema = {
     '@context': 'https://schema.org',
@@ -49,7 +38,7 @@ export default async function ClassesPage() {
           <p className="tagline">Women-only · Edgware, North West London</p>
           <h1 className="heading-primary">Our Classes</h1>
           <p className="body-text max-w-3xl mx-auto">
-            {STUDIO.shortDescription} Most group classes run for 45 minutes with no more than 8 people, and first-time clients can try any three for £60.
+            {STUDIO.shortDescription} Group classes run for 45 to 60 minutes with no more than 8 people, and first-time clients can try any three for £60.
           </p>
         </div>
       </section>

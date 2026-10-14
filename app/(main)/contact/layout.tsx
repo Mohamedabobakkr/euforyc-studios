@@ -1,8 +1,8 @@
-import { STUDIO, pageMetadata } from '@/lib/site';
+import { STUDIO, pageMetadata, postalAddressSchema } from '@/lib/site';
 
 export const metadata = pageMetadata({
   title: 'Contact & Directions | Edgware, North West London',
-  description: `Contact ${STUDIO.name} at ${STUDIO.addressLine}. Call ${STUDIO.phoneDisplay} or email ${STUDIO.email}. Nearest station: ${STUDIO.transport.nearestStation}.`,
+  description: `Contact ${STUDIO.name} at ${STUDIO.addressLine}. Call ${STUDIO.phoneDisplay} or email ${STUDIO.email}. ${STUDIO.transport.station}.`,
   path: '/contact',
 });
 
@@ -18,14 +18,7 @@ const contactSchema = {
     name: 'Euforyc Studios',
     telephone: '+447375710370',
     email: 'euforyc@gmail.com',
-    address: {
-      '@type': 'PostalAddress',
-      streetAddress: '7 Holmstall Ave',
-      addressLocality: 'Edgware',
-      addressRegion: 'London',
-      postalCode: 'HA8 5HX',
-      addressCountry: 'GB',
-    },
+    address: postalAddressSchema,
   },
 };
 

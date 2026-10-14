@@ -1246,7 +1246,7 @@ export default function SipsPage() {
           <a href="https://instagram.com/euforycsips">@euforycsips</a>
           <a href="https://euforyc.co.uk/contact">contact</a>
         </div>
-        <p className="footer-copy">&copy; 2025 euforyc studios &middot; 7 holmstall ave, edgware, london</p>
+        <p className="footer-copy">&copy; 2025 euforyc studios &middot; 7-8 holmstall parade, edgware, ha8 5hx</p>
       </footer>
     </>
   );

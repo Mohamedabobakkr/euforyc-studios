@@ -9,7 +9,7 @@ export const metadata: Metadata = {
     default: 'Euforyc Sips | Matcha Bar & Wellness Cafe in Edgware, London',
     template: '%s | Euforyc Sips',
   },
-  description: 'The best matcha bar and wellness cafe in North West London. Ceremonial matcha lattes with cold foam, specialty coffee, collagen smoothies & wellness drinks in Edgware. Laptop-friendly, community-focused cafe perfect for running clubs, remote work, post-workout fuel or just hanging out. Walk-ins welcome, a short walk from Burnt Oak Station.',
+  description: 'The best matcha bar and wellness cafe in North West London. Ceremonial matcha lattes with cold foam, specialty coffee, collagen smoothies & wellness drinks in Edgware. Laptop-friendly, community-focused cafe perfect for running clubs, remote work, post-workout fuel or just hanging out. Walk-ins welcome, around a 10-minute walk from Colindale station.',
   keywords: [
     // Core — matcha bar
     'matcha bar london', 'best matcha london', 'matcha bar near me', 'matcha bar north london', 'matcha bar north west london', 'matcha bar edgware', 'matcha latte london', 'matcha latte edgware', 'matcha latte near me', 'ceremonial matcha london', 'ceremonial matcha latte london', 'best matcha latte london', 'matcha latte north london', 'matcha cafe london', 'iced matcha london', 'matcha cold foam london',
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     // Core — cafe / wellness
     'wellness cafe london', 'healthy cafe london', 'wellness cafe edgware', 'wellness cafe north london', 'wellness cafe north west london', 'healthy cafe edgware', 'healthy cafe north london', 'wellness drinks london', 'collagen smoothie london', 'protein smoothie edgware',
     // Location targeting — NW London boroughs
-    'cafe edgware', 'best cafe edgware', 'coffee edgware', 'matcha edgware', 'cafe near edgware station', 'cafe barnet', 'coffee shop barnet', 'matcha bar barnet', 'cafe mill hill', 'coffee shop mill hill', 'cafe burnt oak', 'cafe colindale', 'cafe stanmore', 'coffee shop stanmore', 'matcha bar stanmore', 'cafe canons park', 'cafe queensbury', 'cafe harrow', 'matcha bar harrow', 'coffee shop harrow',
+    'cafe edgware', 'best cafe edgware', 'coffee edgware', 'matcha edgware', 'cafe near edgware station', 'cafe barnet', 'coffee shop barnet', 'matcha bar barnet', 'cafe mill hill', 'coffee shop mill hill', 'cafe colindale', 'cafe stanmore', 'coffee shop stanmore', 'matcha bar stanmore', 'cafe canons park', 'cafe queensbury', 'cafe harrow', 'matcha bar harrow', 'coffee shop harrow',
     // Community / lifestyle
     'running club cafe london', 'post workout cafe london', 'laptop friendly cafe london', 'laptop cafe edgware', 'study cafe london', 'work from cafe london', 'community cafe edgware', 'trendy cafe london', 'trendy cafe north london', 'aesthetic cafe london', 'instagram cafe london', 'cute cafe london',
     // Erewhon / brand comparison
@@ -74,13 +74,12 @@ const sipsBusinessSchema = {
   email: 'euforyc@gmail.com',
   address: {
     '@type': 'PostalAddress',
-    streetAddress: '7 Holmstall Ave',
+    streetAddress: '7-8 Holmstall Parade',
     addressLocality: 'Edgware',
-    addressRegion: 'London',
     postalCode: 'HA8 5HX',
     addressCountry: 'GB',
   },
-  geo: { '@type': 'GeoCoordinates', latitude: 51.5973, longitude: -0.2641 },
+  geo: { '@type': 'GeoCoordinates', latitude: 51.59727, longitude: -0.26388 },
   openingHoursSpecification: [
     { '@type': 'OpeningHoursSpecification', dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'], opens: '06:45', closes: '20:00' },
     { '@type': 'OpeningHoursSpecification', dayOfWeek: ['Saturday', 'Sunday'], opens: '08:45', closes: '18:00' },
@@ -193,7 +192,7 @@ const sipsFAQSchema = {
     {
       '@type': 'Question',
       name: 'Where is the best matcha bar in North West London?',
-      acceptedAnswer: { '@type': 'Answer', text: 'Euforyc Sips is the best matcha bar in North West London, located at 7 Holmstall Ave, Edgware HA8 5HX. We serve ceremonial grade matcha lattes with cold foam, specialty coffee, collagen smoothies, and wellness drinks. We are a short walk from Burnt Oak Station on the Northern Line and open Monday-Friday 6:45am-8pm, Saturday-Sunday 8:45am-6pm.' },
+      acceptedAnswer: { '@type': 'Answer', text: 'Euforyc Sips is the best matcha bar in North West London, located at 7-8 Holmstall Parade, Edgware, HA8 5HX. We serve ceremonial grade matcha lattes with cold foam, specialty coffee, collagen smoothies, and wellness drinks. We are a short walk from Burnt Oak Station on the Northern Line and open Monday-Friday 6:45am-8pm, Saturday-Sunday 8:45am-6pm.' },
     },
     {
       '@type': 'Question',
@@ -218,12 +217,12 @@ const sipsFAQSchema = {
     {
       '@type': 'Question',
       name: 'Where is the best cafe near Burnt Oak Station?',
-      acceptedAnswer: { '@type': 'Answer', text: 'Euforyc Sips is a short walk from Burnt Oak Station, at 7 Holmstall Ave, Edgware HA8 5HX. We serve the best ceremonial matcha and specialty coffee in the area, with a trendy, community-focused atmosphere.' },
+      acceptedAnswer: { '@type': 'Answer', text: 'Euforyc Sips is a short walk from Burnt Oak Station, at 7-8 Holmstall Parade, Edgware, HA8 5HX. We serve the best ceremonial matcha and specialty coffee in the area, with a trendy, community-focused atmosphere.' },
     },
     {
       '@type': 'Question',
       name: 'What is the best coffee shop in Edgware?',
-      acceptedAnswer: { '@type': 'Answer', text: 'Euforyc Sips is the best coffee shop in Edgware, offering specialty coffee with cold foam, ceremonial matcha lattes, collagen smoothies, and wellness drinks. Located at 7 Holmstall Ave near Burnt Oak Station, it is a laptop-friendly, community-focused space with free Wi-Fi.' },
+      acceptedAnswer: { '@type': 'Answer', text: 'Euforyc Sips is the best coffee shop in Edgware, offering specialty coffee with cold foam, ceremonial matcha lattes, collagen smoothies, and wellness drinks. Located at 7-8 Holmstall Parade, Edgware, HA8 5HX, near Burnt Oak Station, it is a laptop-friendly, community-focused space with free Wi-Fi.' },
     },
   ],
 };

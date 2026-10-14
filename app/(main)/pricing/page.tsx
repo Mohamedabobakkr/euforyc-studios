@@ -4,7 +4,7 @@ import { ArrowRight } from 'lucide-react';
 
 export const metadata = pageMetadata({
   title: 'Prices | Pilates Classes, Packages & Memberships',
-  description: 'Prices at Euforyc Studios in Edgware. Group class drop-ins £28 (Sculpt and Belly Dance £20), Try It All intro offer 3 classes for £60, Euforyc Package from £105, MOVE package from £70, Euforyc Membership from £90 a month, private 1:1 sessions £75.',
+  description: 'Prices at Euforyc Studios in Edgware. Group class drop-ins £28 (Sculpt Mat Pilates and Belly Dance £20), Try It All intro offer 3 classes for £60, Euforyc Package from £105, MOVE package from £70, Euforyc Membership from £90 a month, private 1:1 sessions £75.',
   path: '/pricing',
 });
 

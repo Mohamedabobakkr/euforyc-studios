@@ -17,9 +17,9 @@ export function GET() {
 
 > ${STUDIO.shortDescription}
 
-- Address: ${STUDIO.addressLine}, United Kingdom
-- Nearest station: ${STUDIO.transport.nearestStation}. ${STUDIO.transport.otherStations}
-- Buses: ${STUDIO.transport.buses.join(', ')}
+- Address: ${STUDIO.addressLine}
+- Getting here: ${STUDIO.transport.station}. Buses ${STUDIO.transport.buses.join(', ')}
+- Nearby areas: ${STUDIO.areas.join(', ')}
 - Phone: ${STUDIO.phoneDisplay}
 - Email: ${STUDIO.email}
 - Opening hours: ${STUDIO.hours.map((period) => `${period.label} ${period.opens} to ${period.closes}`).join('; ')}
@@ -30,17 +30,17 @@ export function GET() {
 ## Classes
 
 ${ORDERED_CLASS_TYPES.map(
-  (classType) => `- [${classType.name}](${SITE_URL}/classes/${classType.slug}): ${classType.summary}`
+  (classType) => `- [${classType.name}](${SITE_URL}/classes/${classType.slug}): ${classType.summary} ${classType.slug.startsWith('private-') ? 'Single session' : 'Single class'} £${classType.price}.`
 ).join('\n')}
 
 ## Prices
 
-- Drop-in group class: £${PRICING.dropIn.standard}. Sculpt and Belly Dance: £${PRICING.dropIn.move}
+- Drop-in group class: £${PRICING.dropIn.standard}. Sculpt Mat Pilates and Belly Dance: £${PRICING.dropIn.move}
 - ${PRICING.introOffer.name} intro offer: ${PRICING.introOffer.classes} classes for £${PRICING.introOffer.price}. ${PRICING.introOffer.note}
 - Euforyc Package: ${tiers(PRICING.euforycPackage.tiers)}. ${PRICING.euforycPackage.note}
 - MOVE package: ${tiers(PRICING.movePackage.tiers)}. ${PRICING.movePackage.note}
 - Euforyc Membership (per month): ${tiers(PRICING.membership.tiers)}. ${PRICING.membership.note}
-- Private 1:1 Pilates: ${tiers(PRICING.privateSession.tiers)}. ${PRICING.privateSession.note}
+- 1:1 Private Reformer Pilates and 1:1 Private Cadillac Reformer Pilates: ${tiers(PRICING.privateSession.tiers)}. ${PRICING.privateSession.note}
 - [Full price list](${SITE_URL}/pricing)
 
 ## Good to know
@@ -58,8 +58,8 @@ ${ORDERED_CLASS_TYPES.map(
 - [Client reviews](${SITE_URL}/reviews): written reviews left by clients after class
 - [Class packages](${SITE_URL}/packages): Try It All intro offer, Euforyc Package and MOVE
 - [Memberships](${SITE_URL}/memberships): monthly memberships and what each includes
-- [FAQ](${SITE_URL}/faq): booking, cancellation, what to bring, pregnancy and postnatal classes
-- [Team](${SITE_URL}/team): instructors and the classes they teach
+- [FAQ](${SITE_URL}/faq): booking, cancellation, what to bring and pregnancy
+- [Team](${SITE_URL}/team): the founders of Euforyc Studios
 - [Contact and directions](${SITE_URL}/contact)
 - [Studio hire](${SITE_URL}/studio-hire): private events and group Pilates, open to everyone
 - [Gift cards](${SITE_URL}/gift-cards)

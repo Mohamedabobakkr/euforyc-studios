@@ -15,7 +15,7 @@ const servicesSchema = {
       position: 1,
       name: 'Reformer Pilates Classes',
       description: 'Equipment-based group pilates classes using professional reformer machines',
-      provider: { '@type': 'LocalBusiness', name: 'Euforyc Studios', address: '7 Holmstall Ave, Edgware HA8 5HX, London' },
+      provider: { '@type': 'LocalBusiness', name: 'Euforyc Studios', address: '7-8 Holmstall Parade, Edgware, HA8 5HX' },
       areaServed: 'London',
       offers: { '@type': 'AggregateOffer', lowPrice: '28', highPrice: '320', priceCurrency: 'GBP' }
     },
@@ -24,7 +24,7 @@ const servicesSchema = {
       position: 2,
       name: 'Hot Pilates Classes',
       description: 'Infrared-heated pilates classes for enhanced flexibility and detoxification',
-      provider: { '@type': 'LocalBusiness', name: 'Euforyc Studios', address: '7 Holmstall Ave, Edgware HA8 5HX, London' },
+      provider: { '@type': 'LocalBusiness', name: 'Euforyc Studios', address: '7-8 Holmstall Parade, Edgware, HA8 5HX' },
       areaServed: 'London',
       offers: { '@type': 'AggregateOffer', lowPrice: '28', highPrice: '320', priceCurrency: 'GBP' }
     },
@@ -33,7 +33,7 @@ const servicesSchema = {
       position: 3,
       name: 'Private Pilates Sessions',
       description: 'One-on-one personalized pilates training with expert instructors',
-      provider: { '@type': 'LocalBusiness', name: 'Euforyc Studios', address: '7 Holmstall Ave, Edgware HA8 5HX, London' },
+      provider: { '@type': 'LocalBusiness', name: 'Euforyc Studios', address: '7-8 Holmstall Parade, Edgware, HA8 5HX' },
       areaServed: 'London',
       offers: { '@type': 'AggregateOffer', lowPrice: '250', highPrice: '700', priceCurrency: 'GBP' }
     }

@@ -117,14 +117,12 @@ export interface ClassFormat {
   instructors: string[];
 }
 
+// Class size and price come from lib/classes.ts (the studio price list), not
+// from Momence, so every page shows the same figures.
 export interface LiveClassFacts {
   sessions: MomenceEvent[];
   formats: ClassFormat[];
   instructors: string[];
-  /** Largest class size on the current timetable, if known */
-  maxCapacity: number | null;
-  /** Lowest and highest drop-in price on the current timetable */
-  priceRange: { min: number; max: number } | null;
 }
 
 function cleanName(name: string): string {
@@ -150,15 +148,10 @@ export function liveFactsFor(classType: ClassType, events: MomenceEvent[]): Live
     }
   }
 
-  const capacities = sessions.map((s) => s.capacity).filter((c) => c > 0);
-  const prices = sessions.map((s) => s.price).filter((p) => p > 0);
-
   return {
     sessions,
     formats: Array.from(formats.values()),
     instructors: Array.from(instructors).sort(),
-    maxCapacity: capacities.length ? Math.max(...capacities) : null,
-    priceRange: prices.length ? { min: Math.min(...prices), max: Math.max(...prices) } : null,
   };
 }
 
@@ -179,6 +172,16 @@ export interface StudioReview {
 interface ReviewsResult {
   reviews: StudioReview[];
   total: number;
+}
+
+/** "Sarah Johnson" becomes "Sarah J." — reviewers are shown by first name and last initial only */
+export function shortReviewerName(fullName: string | null | undefined): string {
+  const parts = cleanName(fullName || '').split(' ').filter(Boolean);
+  if (parts.length === 0) return 'Euforyc client';
+  const first = parts[0].charAt(0).toUpperCase() + parts[0].slice(1);
+  if (parts.length === 1) return first;
+  const lastInitial = parts[parts.length - 1].charAt(0).toUpperCase();
+  return `${first} ${lastInitial}.`;
 }
 
 async function fetchReviewPage(page: number): Promise<{ payload: any[]; totalCount: number }> {
@@ -208,7 +211,7 @@ async function fetchReviewPage(page: number): Promise<{ payload: any[]; totalCou
 export async function getReviews(): Promise<ReviewsResult> {
   try {
     const first = await fetchReviewPage(0);
-    const pageCount = Math.min(Math.ceil(first.totalCount / 100), 5);
+    const pageCount = Math.min(Math.ceil(first.totalCount / 100), 10);
     const rest = await Promise.all(
       Array.from({ length: Math.max(pageCount - 1, 0) }, (_, i) => fetchReviewPage(i + 1))
     );
@@ -224,7 +227,7 @@ export async function getReviews(): Promise<ReviewsResult> {
         comment,
         grade: raw.grade,
         createdAt: raw.createdAt,
-        reviewerName: cleanName(raw.reviewerName || 'Euforyc client'),
+        reviewerName: shortReviewerName(raw.reviewerName),
         sessionName: raw.sessionName ? cleanName(raw.sessionName) : null,
         teacherName: raw.teacherFullName ? cleanName(raw.teacherFullName) : null,
       });

@@ -4,26 +4,30 @@ import ReviewCards from '@/components/ReviewCards';
 import { ORDERED_CLASS_TYPES } from '@/lib/classes';
 import { STUDIO, breadcrumbSchema, pageMetadata } from '@/lib/site';
 import { getReviews, reviewsFor } from '@/lib/studio-data';
+import { classTypeForTitle } from '@/lib/classes';
 
 // Reviews refresh every 6 hours
 export const revalidate = 21600;
 
-const REVIEWS_PER_CLASS = 18;
-
 export const metadata = pageMetadata({
   title: 'Client Reviews | Women-Only Pilates Studio in Edgware',
   description:
-    'Read what clients say about Reformer Pilates, Hot Pilates, Red Light Pilates, Sculpt, Barre and Belly Dance classes at Euforyc Studios in Edgware, North West London. Reviews are left by clients after class.',
+    'Read what clients say about Reformer Pilates, Hot Pilates, Red Light Hot Mat Pilates, Sculpt Mat Pilates, Belly Dance and 1:1 private sessions at Euforyc Studios in Edgware, North West London. Reviews are left by clients after class.',
   path: '/reviews',
 });
 
 export default async function ReviewsPage() {
   const { reviews, total } = await getReviews();
 
+  // Every written review from the Momence feed appears once: grouped by class,
+  // then any left for other sessions
   const sections = ORDERED_CLASS_TYPES.map((classType) => ({
     classType,
     reviews: reviewsFor(classType, reviews),
   })).filter((section) => section.reviews.length > 0);
+  const otherReviews = reviews.filter(
+    (review) => !review.sessionName || !classTypeForTitle(review.sessionName)
+  );
 
   return (
     <div className="pt-32">
@@ -37,7 +41,7 @@ export default async function ReviewsPage() {
             {total > 0
               ? `Clients have left ${total} written reviews of classes at ${STUDIO.name}. `
               : ''}
-            Every review here was written by a client through Momence, our booking system, after attending a class. They are shown as written, grouped by class, with the most recent first.
+            Every review here was written by a client through Momence, our booking system, after attending a class. They are shown as written, grouped by class, with the most recent first. Reviewers are named by first name and last initial.
           </p>
         </div>
       </section>
@@ -57,17 +61,30 @@ export default async function ReviewsPage() {
                   <h2 className="heading-secondary">{classType.name} reviews</h2>
                   <p className="font-sans text-[11px] tracking-[0.15em] uppercase text-[#1a260e]/50">
                     {classReviews.length} written {classReviews.length === 1 ? 'review' : 'reviews'}
-                    {classReviews.length > REVIEWS_PER_CLASS ? `, latest ${REVIEWS_PER_CLASS} shown` : ''}
                   </p>
                 </div>
                 <Link href={`/classes/${classType.slug}`} className="btn-minimal">
                   About {classType.name}
                 </Link>
               </div>
-              <ReviewCards reviews={classReviews.slice(0, REVIEWS_PER_CLASS)} />
+              <ReviewCards reviews={classReviews} />
             </div>
           </section>
         ))
+      )}
+
+      {otherReviews.length > 0 && (
+        <section className="section-padding bg-[#fffcf2]">
+          <div className="container-width space-y-12">
+            <div className="space-y-2">
+              <h2 className="heading-secondary">Other sessions and events</h2>
+              <p className="font-sans text-[11px] tracking-[0.15em] uppercase text-[#1a260e]/50">
+                {otherReviews.length} written {otherReviews.length === 1 ? 'review' : 'reviews'}
+              </p>
+            </div>
+            <ReviewCards reviews={otherReviews} />
+          </div>
+        </section>
       )}
 
       <section className="section-padding bg-[#1a260e] text-[#fffcf2]">

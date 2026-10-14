@@ -285,7 +285,7 @@ export default function SkinStudioPage() {
                             LONDON
                         </p>
                         <p className="text-[10px] tracking-[0.2em] opacity-60 mt-2 uppercase">
-                            Holmstall Ave • Edgware
+                            Holmstall Parade • Edgware
                         </p>
                     </div>
                 </div>

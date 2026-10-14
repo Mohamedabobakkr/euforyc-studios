@@ -12,31 +12,32 @@ export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || 'https://euforyc.co
 export const STUDIO = {
   name: 'Euforyc Studios',
   shortDescription:
-    'Euforyc Studios is a women-only boutique Pilates studio in Edgware, North West London, offering Reformer Pilates, infrared Hot Pilates, Red Light Hot Pilates, Sculpt, Barre, Belly Dance and private 1:1 sessions in small groups.',
+    'Euforyc Studios is a women-only boutique Pilates studio in Edgware, North West London, offering small-group Reformer Pilates, Hot Pilates, Red Light Hot Mat Pilates, Sculpt Mat Pilates and Belly Dance classes, plus 1:1 Private Reformer Pilates and 1:1 Private Cadillac Reformer Pilates.',
   phoneDisplay: '+44 7375 710370',
   phoneE164: '+447375710370',
   email: 'euforyc@gmail.com',
+  // The address is written exactly like this everywhere on the site
   address: {
-    street: '7 Holmstall Ave',
+    street: '7-8 Holmstall Parade',
     locality: 'Edgware',
-    region: 'London',
     postcode: 'HA8 5HX',
     country: 'GB',
   },
-  addressLine: '7 Holmstall Ave, Edgware, London HA8 5HX',
-  // Postcode centroid for HA8 5HX (ONS data)
-  geo: { latitude: 51.5973, longitude: -0.2641 },
+  addressLine: '7-8 Holmstall Parade, Edgware, HA8 5HX',
+  // The pin on the studio's Google Maps listing (mapsUrl)
+  geo: { latitude: 51.59727, longitude: -0.26388 },
   mapsUrl: 'https://maps.app.goo.gl/zZfyhD3X2BuS6SnL6',
   hours: [
     { days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'], label: 'Monday to Friday', opens: '06:45', closes: '20:00' },
     { days: ['Saturday', 'Sunday'], label: 'Saturday and Sunday', opens: '08:45', closes: '18:00' },
   ],
   transport: {
-    nearestStation: 'Burnt Oak (Northern line), around a 10-minute walk',
-    otherStations: 'Colindale (Northern line) is around a 15 to 20 minute walk; Edgware station is about 2 km away',
+    // The only station named on visible pages
+    station: 'Colindale station (Northern line) is around a 10-minute walk',
     buses: ['32', '142', '186', '204'],
   },
-  // Neighbourhoods the studio is realistically reachable from
+  // Neighbourhoods the studio is realistically reachable from. Used only in
+  // structured data and llms.txt, never as visible page text.
   areas: ['Edgware', 'Burnt Oak', 'Colindale', 'Queensbury', 'Kingsbury', 'Mill Hill', 'Hendon', 'Stanmore', 'Canons Park', 'Harrow', 'Wembley', 'Barnet', 'Finchley'],
   social: {
     instagram: 'https://www.instagram.com/euforycstudios',
@@ -51,7 +52,7 @@ export const POLICIES = {
   gripSocks:
     'Grip socks are mandatory for Reformer Pilates. Bring your own or buy a pair at the studio.',
   towel:
-    'Bring your own towel to Hot Pilates and Red Light Hot Pilates. Towels can be bought at the studio if you forget.',
+    'Bring your own towel to Hot Pilates and Red Light Hot Mat Pilates. Towels can be bought at the studio if you forget.',
   cancellation: 'Cancel at least 24 hours before class to keep your credit.',
   arrival:
     'Arrive 10 to 15 minutes before your first class to check in. Late arrivals may not be admitted.',
@@ -59,6 +60,7 @@ export const POLICIES = {
 
 export const PRICING = {
   introOffer: { name: 'Try It All', classes: 3, price: 60, note: 'First-time clients only, usable across all group classes, valid 20 days from your first class' },
+  // Single class prices. Sculpt Mat Pilates and Belly Dance are £20.
   dropIn: { standard: 28, move: 20 },
   euforycPackage: {
     note: 'All group classes, no contract, valid 30 days from your first class',
@@ -70,7 +72,7 @@ export const PRICING = {
     ],
   },
   movePackage: {
-    note: 'Sculpt and Belly Dance classes only, no contract, valid 30 days from your first class',
+    note: 'Sculpt Mat Pilates and Belly Dance classes only, no contract, valid 30 days from your first class',
     tiers: [
       { name: '4 classes', price: 70 },
       { name: '8 classes', price: 135 },
@@ -86,7 +88,7 @@ export const PRICING = {
     ],
   },
   privateSession: {
-    note: '60-minute 1:1 Reformer or Cadillac session; packs valid 90 days',
+    note: '60-minute 1:1 Private Reformer Pilates or 1:1 Private Cadillac Reformer Pilates session; packs valid 90 days',
     tiers: [
       { name: 'Single session', price: 75 },
       { name: '4 sessions', price: 250 },
@@ -161,7 +163,6 @@ export const postalAddressSchema = {
   '@type': 'PostalAddress',
   streetAddress: STUDIO.address.street,
   addressLocality: STUDIO.address.locality,
-  addressRegion: STUDIO.address.region,
   postalCode: STUDIO.address.postcode,
   addressCountry: STUDIO.address.country,
 } as const;

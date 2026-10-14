@@ -45,8 +45,8 @@ export default function Map() {
           <div className="text-center space-y-6">
             <MapPin className="h-16 w-16 text-[#1a260e]/20 mx-auto" />
             <p className="font-sans text-sm text-[#1a260e]/80 leading-relaxed">
-              7 Holmstall Ave<br />
-              Edgware HA8 5HX
+              7-8 Holmstall Parade,<br />
+              Edgware, HA8 5HX
             </p>
             <a
               href={googleMapsLink}
@@ -123,9 +123,8 @@ export default function Map() {
             
             <div className="space-y-2">
               <p className="font-sans text-sm text-[#1a260e]/80 leading-relaxed">
-                7 Holmstall Ave<br />
-                Edgware HA8 5HX<br />
-                United Kingdom
+                7-8 Holmstall Parade,<br />
+                Edgware, HA8 5HX
               </p>
             </div>
             

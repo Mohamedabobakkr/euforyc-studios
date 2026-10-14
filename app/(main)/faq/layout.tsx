@@ -5,7 +5,7 @@ import { breadcrumbSchema, pageMetadata } from '@/lib/site';
 export const metadata = pageMetadata({
   title: 'FAQ | Classes, Prices, Booking & What to Bring',
   description:
-    'Answers to common questions about Euforyc Studios, a women-only Pilates studio in Edgware: class types, prices, the Try It All intro offer, booking and cancellation, what to wear, parking, pregnancy and postnatal classes.',
+    'Answers to common questions about Euforyc Studios, a women-only Pilates studio in Edgware: class types, prices, the Try It All intro offer, booking and cancellation, what to wear, parking and pregnancy.',
   path: '/faq',
 });
 

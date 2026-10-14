@@ -15,13 +15,13 @@ export const FAQS: Faq[] = [
     answer: `Yes. ${POLICIES.womenOnly}`,
   },
   {
-    question: 'Where is Euforyc Studios and what is the nearest station?',
-    answer: `We are at ${STUDIO.addressLine}. The nearest Underground station is ${STUDIO.transport.nearestStation}. ${STUDIO.transport.otherStations}. Bus routes ${STUDIO.transport.buses.join(', ')} stop nearby.`,
+    question: 'Where is Euforyc Studios and how do I get there?',
+    answer: `We are at ${STUDIO.addressLine}. ${STUDIO.transport.station}, and bus routes ${STUDIO.transport.buses.join(', ')} stop nearby.`,
   },
   {
     question: 'How much do classes cost?',
     answer:
-      'Drop-in group classes are £28, and Sculpt and Belly Dance classes are £20. First-time clients can buy Try It All: 3 classes for £60. The Euforyc Package is £105 for 4 classes, £190 for 8, £270 for 12, or £320 for 30 Days Unlimited. Memberships start at £90 a month for 4 classes, and private 1:1 sessions are £75.',
+      'Drop-in group classes are £28, and Sculpt Mat Pilates and Belly Dance classes are £20. First-time clients can buy Try It All: 3 classes for £60. The Euforyc Package is £105 for 4 classes, £190 for 8, £270 for 12, or £320 for 30 Days Unlimited. Memberships start at £90 a month for 4 classes, and private 1:1 sessions are £75.',
   },
   {
     question: 'What is reformer pilates and how is it different from mat pilates?',
@@ -36,7 +36,7 @@ export const FAQS: Faq[] = [
   {
     question: "What's the difference between Try It All, the Euforyc Package, and memberships? Which one is best for me?",
     answer:
-      "Try It All (3 classes for £60, first-time clients only, valid for 20 days from your first class) is perfect for first-timers to experience our studio and teaching style across all our group classes. The Euforyc Package (4, 8 or 12 classes from £105, or 30 Days Unlimited for £320) is a flexible pay-as-you-go option with no contract, usable across all group classes and valid for 30 days from your first class (not purchase date), ideal for occasional practice or trying different class types. We also offer MOVE (4 classes £70 or 8 classes £135) for Sculpt and Belly Dance classes, valid 30 days from your first class. The Euforyc Membership has a 6-month minimum term (then rolling monthly) and offers the best value, with credits that work across our whole group timetable. Which is best for you? It depends on your goals and schedule - if you're new, start with Try It All. If you plan to attend regularly (2+ times per week), a membership offers the best value. For occasional practice or flexibility, packages are your best choice.",
+      "Try It All (3 classes for £60, first-time clients only, valid for 20 days from your first class) is perfect for first-timers to experience our studio and teaching style across all our group classes. The Euforyc Package (4, 8 or 12 classes from £105, or 30 Days Unlimited for £320) is a flexible pay-as-you-go option with no contract, usable across all group classes and valid for 30 days from your first class (not purchase date), ideal for occasional practice or trying different class types. We also offer MOVE (4 classes £70 or 8 classes £135) for Sculpt Mat Pilates and Belly Dance, valid 30 days from your first class. The Euforyc Membership has a 6-month minimum term (then rolling monthly) and offers the best value, with credits that work across our whole group timetable. Which is best for you? It depends on your goals and schedule - if you're new, start with Try It All. If you plan to attend regularly (2+ times per week), a membership offers the best value. For occasional practice or flexibility, packages are your best choice.",
   },
   {
     question: 'What should I wear to pilates classes?',
@@ -57,11 +57,6 @@ export const FAQS: Faq[] = [
       'Pilates can be excellent for pregnancy when properly modified. However, we require medical clearance from your healthcare provider before joining classes. Our instructors can provide pregnancy-safe modifications. We recommend private sessions during pregnancy for personalized attention and safety.',
   },
   {
-    question: 'Do you offer postnatal or mum and baby Pilates?',
-    answer:
-      'Yes. Mommy + Me Mat Pilates is a gentle postnatal class where your baby stays beside you. It is suitable from around 6 weeks postpartum once you have been cleared to exercise, and babies are welcome until they are confidently crawling.',
-  },
-  {
     question: 'How do I book pilates classes at your Edgware studio?',
     answer:
       'You can book classes online through our booking system or by calling us directly. We recommend booking in advance as our small class sizes (maximum 8 people) fill up quickly. First-time clients should start with our Try It All intro offer for the best value.',
@@ -72,7 +67,7 @@ export const FAQS: Faq[] = [
   },
   {
     question: 'Do you have parking available at the studio?',
-    answer: `Yes, we have convenient parking available for all clients. We are at ${STUDIO.addressLine}, easily accessible by car and public transport from Burnt Oak, Colindale, Queensbury, Kingsbury, Mill Hill and Hendon.`,
+    answer: `Yes, we have convenient parking available for all clients. Our Edgware location at ${STUDIO.addressLine} is easily accessible by car and public transport, serving North London areas including Barnet, Mill Hill, and Finchley.`,
   },
   {
     question: 'What makes your pilates studio different from others in London?',
@@ -87,11 +82,11 @@ export const FAQS: Faq[] = [
   {
     question: 'What is the difference between your packages and memberships?',
     answer:
-      "The Euforyc Package is pay-as-you-go with no contract: 4, 8 or 12 classes (from £105) or 30 Days Unlimited (£320), usable across all group classes and valid for 30 days starting from your first class, perfect for trying our classes or occasional practice. We also offer MOVE (4 classes £70 or 8 classes £135) for Sculpt and Belly Dance classes, valid 30 days from your first class. The Euforyc Membership is billed monthly with a 6-month minimum term, then continues monthly until cancelled with two full billing cycles' notice. Choose Euforyc 4, 8 or 12 (from £90/month), with credits you can use across the whole group timetable, or Euforyc Unlimited (£280/month) for unlimited classes plus priority booking, a monthly massage, a guest pass and more. Memberships can be frozen for up to 4 weeks per 6 months.",
+      "The Euforyc Package is pay-as-you-go with no contract: 4, 8 or 12 classes (from £105) or 30 Days Unlimited (£320), usable across all group classes and valid for 30 days starting from your first class, perfect for trying our classes or occasional practice. We also offer MOVE (4 classes £70 or 8 classes £135) for Sculpt Mat Pilates and Belly Dance, valid 30 days from your first class. The Euforyc Membership is billed monthly with a 6-month minimum term, then continues monthly until cancelled with two full billing cycles' notice. Choose Euforyc 4, 8 or 12 (from £90/month), with credits you can use across the whole group timetable, or Euforyc Unlimited (£280/month) for unlimited classes plus priority booking, a monthly massage, a guest pass and more. Memberships can be frozen for up to 4 weeks per 6 months.",
   },
   {
     question: 'Do you offer private pilates sessions?',
     answer:
-      'Yes, we offer one-on-one private pilates sessions tailored to your specific goals and needs. Private sessions are 60 minutes on the Reformer or Cadillac and cost £75, with packs of 4, 8 and 12 sessions available at a lower price per session. They are perfect for beginners, those with injuries, or anyone wanting personalized attention.',
+      'Yes, we offer one-on-one private pilates sessions tailored to your specific goals and needs. Choose 1:1 Private Reformer Pilates or 1:1 Private Cadillac Reformer Pilates: sessions are 60 minutes and cost £75, with packs of 4, 8 and 12 sessions available at a lower price per session. They are perfect for beginners, those with injuries, or anyone wanting personalized attention.',
   },
 ];

@@ -293,7 +293,7 @@ export default function MenuPage() {
           euforyc <span>sips</span>
         </p>
         <address className="menu-footer-address">
-          7-8 Holmstall Parade, Edgware, England, HA8 5HX
+          7-8 Holmstall Parade, Edgware, HA8 5HX
           <br />
           euforyc.co.uk/sips
         </address>

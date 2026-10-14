@@ -9,7 +9,7 @@ import { pageMetadata } from '@/lib/site';
 
 export const metadata: Metadata = pageMetadata({
   title: 'Euforyc Studios | Women-Only Pilates Studio in Edgware, North West London',
-  description: 'Women-only boutique Pilates studio in Edgware, North West London. Reformer Pilates, infrared Hot Pilates, Red Light Hot Pilates, Sculpt, Barre, Belly Dance and private 1:1 sessions in classes of up to 8. First-time clients: 3 classes for £60.',
+  description: 'Women-only boutique Pilates studio in Edgware, North West London. Reformer Pilates, Hot Pilates, Red Light Hot Mat Pilates, Sculpt Mat Pilates, Belly Dance and 1:1 private Reformer and Cadillac Reformer sessions. First-time clients: 3 classes for £60.',
   path: '/',
   absoluteTitle: true,
 });
@@ -271,7 +271,7 @@ export default function Home() {
                 <MapPin className="h-4 w-4 md:h-5 md:w-5 flex-shrink-0" />
                 <p className="font-sans text-xs md:text-sm tracking-wider">
                   <Link href="/contact" className="hover:underline">
-                    7 Holmstall Ave, Edgware HA8 5HX, London, United Kingdom
+                    7-8 Holmstall Parade, Edgware, HA8 5HX
                   </Link>
                 </p>
               </div>
