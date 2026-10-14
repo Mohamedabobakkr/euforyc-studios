@@ -165,7 +165,7 @@ export function UnderOneRoof() {
             Under one roof
           </span>
           <h2 id="roof-title" className={styles.roofH}>
-            Your daily class.
+            Your daily class.{' '}
             <br />
             Your friends. Your <em>peace</em>.
           </h2>

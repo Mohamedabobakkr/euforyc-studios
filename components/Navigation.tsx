@@ -228,7 +228,7 @@ const Navigation = () => {
                   Visit us
                 </span>
                 <span className={styles.megaCardTitle} style={{ display: 'block' }}>
-                  {STUDIO.address.street},
+                  {STUDIO.address.street},{' '}
                   <br />
                   {STUDIO.address.locality}, {STUDIO.address.postcode}
                 </span>

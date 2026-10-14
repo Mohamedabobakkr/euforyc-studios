@@ -87,7 +87,7 @@ export default async function Home() {
               <strong>{score.average}</strong>
               <span className={styles.stars} aria-hidden="true">
                 ★★★★★
-              </span>
+              </span>{' '}
               <br />
               {score.count} client reviews
             </div>
@@ -173,7 +173,7 @@ export default async function Home() {
                   <span className={styles.scoreMeta}>
                     <span className="eu-stars" role="img" aria-label={`Average rating ${score.average} out of 5`}>
                       ★★★★★
-                    </span>
+                    </span>{' '}
                     <br />
                     {score.count} written reviews on Momence
                     {score.allFiveStars ? ' — every single one five stars.' : '.'}

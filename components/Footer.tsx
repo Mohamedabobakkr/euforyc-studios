@@ -55,7 +55,7 @@ const Footer = () => {
       <div className="eu-wrap">
         <div className={styles.top}>
           <h2 className={styles.title}>
-            Your first class
+            Your first class{' '}
             <br />
             is <em>waiting</em>.
           </h2>
