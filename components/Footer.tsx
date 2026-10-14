@@ -13,6 +13,7 @@ const columns: { title: string; links: FooterLink[] }[] = [
       { href: '/schedule', label: 'Timetable' },
       { href: '/book', label: 'Book a Class' },
       { href: '/packages-memberships', label: 'Memberships & Packages' },
+      { href: '/packages', label: 'Class Packages' },
       { href: '/offers', label: 'Intro Offer' },
       { href: '/gift-cards', label: 'Gift cards' },
     ],
