@@ -20,6 +20,18 @@ const config: Config = {
           black: '#1A1A1A',       // Soft black
           'black-light': '#2A2A2A', // Lighter black for subtle elements
         },
+        // Studio design system (main site). Mirrors the --eu-* custom
+        // properties in app/globals.css.
+        eu: {
+          cream: '#fffcf2',   // dominant background
+          ink: '#1a260e',     // text and dark surfaces
+          green: '#2a3a21',   // primary green
+          beige: '#F5F0E8',   // soft panels
+          sage: '#3d4a33',    // muted text
+          stone: '#6b6450',   // softer muted text
+          live: '#a9c79a',    // "live" dot on dark
+          skin: '#e7e3dd',    // Skin Studio link
+        },
         // Skin Studio sub-brand colors
         skin: {
           background: '#e7e3dd',  // Warm neutral background
@@ -70,11 +82,17 @@ const config: Config = {
         },
       },
       fontFamily: {
-        'serif': ['Playfair Display', 'serif'],
-        'sans': ['Inter', 'sans-serif'],
-        'playfair': ['Playfair Display', 'serif'],
+        // Self-hosted next/font faces (app/(main)/layout.tsx). Pages without
+        // those variables fall back to the same family names as before.
+        'serif': ['var(--font-playfair, "Playfair Display")', 'serif'],
+        'sans': ['var(--font-inter, "Inter")', 'sans-serif'],
+        'playfair': ['var(--font-playfair, "Playfair Display")', 'serif'],
         'skin-serif': ['"Times New Roman"', 'Georgia', 'serif'],
         'skin-sans': ['"Nunito Sans"', 'sans-serif'],
+        // next/font variables from app/(main)/layout.tsx, with the same
+        // families as fallbacks where those variables are not defined
+        display: ['var(--font-playfair, "Playfair Display")', 'Georgia', 'serif'],
+        body: ['var(--font-inter, "Inter")', 'system-ui', 'sans-serif'],
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
@@ -85,6 +103,16 @@ const config: Config = {
         lg: 'var(--radius)',
         md: 'calc(var(--radius) - 2px)',
         sm: 'calc(var(--radius) - 4px)',
+        'eu-sm': '22px',
+        'eu-md': '28px',
+        'eu-lg': '36px',
+        'eu-xl': '44px',
+      },
+      maxWidth: {
+        eu: '1440px',
+      },
+      transitionTimingFunction: {
+        eu: 'cubic-bezier(.2,.8,.2,1)',
       },
       keyframes: {
         'accordion-down': {
