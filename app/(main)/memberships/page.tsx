@@ -1,52 +1,29 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { Crown, CheckCircle, ArrowRight } from 'lucide-react';
+import { Crown } from 'lucide-react';
+import Arrow from '@/components/euforyc/Arrow';
+import PillLink from '@/components/euforyc/PillLink';
 
-// ─── Reveal Animation (matches /about) ───────────────────────────────────────
+// ─── Reveal (CSS scroll reveal; content stays visible without support) ───────
 
-function useInView(threshold = 0.12) {
-  const ref = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(false);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) setVisible(true); }, { threshold });
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, [threshold]);
-  return { ref, visible };
+function Reveal({ children, className = '' }: { children: React.ReactNode; className?: string; delay?: number }) {
+  return <div className={`eu-rv ${className}`}>{children}</div>;
 }
 
-function Reveal({ children, className = '', delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) {
-  const { ref, visible } = useInView();
+function Divider() {
   return (
-    <div
-      ref={ref}
-      className={className}
-      style={{
-        opacity: visible ? 1 : 0,
-        transform: visible ? 'translateY(0)' : 'translateY(32px)',
-        transition: `opacity 0.8s cubic-bezier(.22,1,.36,1) ${delay}s, transform 0.8s cubic-bezier(.22,1,.36,1) ${delay}s`,
-      }}
-    >
-      {children}
+    <div className="eu-wrap">
+      <div className="h-px bg-[#1a260e]/15" />
     </div>
   );
 }
 
-function Divider() {
-  const { ref, visible } = useInView(0.5);
+function Check() {
   return (
-    <div ref={ref} className="container-width px-6">
-      <div
-        className="h-px bg-[#1a260e]/10 mx-auto"
-        style={{
-          maxWidth: visible ? '100%' : '0%',
-          transition: 'max-width 1.2s cubic-bezier(.22,1,.36,1)',
-        }}
-      />
-    </div>
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} aria-hidden="true" className="mt-[3px] flex-shrink-0">
+      <path d="M5 12l5 5 9-10" />
+    </svg>
   );
 }
 
@@ -155,45 +132,54 @@ export default function Memberships() {
   }, [sortedMemberships.length]);
 
   // Render a single membership card
-  const renderCard = (m: Membership, isMobile = false) => (
+  const renderCard = (m: Membership, isMobile = false) => {
+    // On tablet and desktop the Unlimited card spans the full row, with its perks beside the price
+    const wide = m.popular && !isMobile;
+    // Three tier cards side by side on tablet: tighter padding and a dot-less button until lg
+    const compact = !isMobile && !wide;
+    return (
     <>
       {/* Popular badge */}
       {m.popular && (
-        <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-10">
-          <div className="bg-gradient-to-r from-amber-400 to-amber-500 text-white px-4 py-1.5 rounded-full text-[10px] font-semibold tracking-[0.15em] uppercase flex items-center gap-1.5 shadow-lg shadow-amber-400/20">
-            <Crown className="w-3 h-3" />
+        <div className="absolute -top-4 left-1/2 -translate-x-1/2 z-10">
+          <div className="bg-eu-cream text-eu-ink border border-eu-ink px-4 py-2 rounded-full text-[11px] font-medium tracking-[0.16em] uppercase flex items-center gap-2 whitespace-nowrap">
+            <Crown className="w-3.5 h-3.5" strokeWidth={1.5} aria-hidden="true" />
             BEST VALUE
           </div>
         </div>
       )}
 
-      <div className={`${isMobile ? 'p-6' : 'p-7 md:p-8'} flex flex-col flex-1`}>
+      <div className={`${isMobile ? 'px-6 pt-8 pb-6' : compact ? 'p-5 lg:p-7 xl:p-8' : 'p-7'} flex flex-col flex-1 ${
+        wide ? 'md:grid md:grid-cols-[minmax(0,1fr)_minmax(0,1.3fr)] md:grid-rows-[auto_auto_1fr] md:gap-x-12 lg:gap-x-16 md:p-10 xl:p-14' : ''
+      }`}>
         {/* Tier header */}
-        <div className={isMobile ? 'mb-5' : 'mb-8'}>
-          <p className={`text-[10px] tracking-[0.25em] uppercase mb-2.5 ${
-            m.popular ? 'text-[#fffcf2]/30' : 'text-[#1a260e]/25'
-          }`}>
+        <div className={`${isMobile ? 'mb-5' : 'mb-7'} ${wide ? 'md:col-start-1 md:row-start-1' : ''}`}>
+          <p className={`eu-cap mb-3 ${compact ? 'md:min-h-[36px] lg:min-h-0' : ''} ${m.popular ? 'text-[#F5F0E8]' : 'text-eu-green'}`}>
             {m.description}
           </p>
-          <h3 className="font-serif text-[1.5rem] font-light leading-tight">{m.name}</h3>
+          <h3 className={`font-serif font-normal leading-[1.1] tracking-[-0.01em] ${
+            wide ? 'text-[30px] md:text-[clamp(34px,3.4vw,48px)]' : 'text-[28px] xl:text-[30px]'
+          }`}>{m.name}</h3>
         </div>
 
         {/* Price */}
-        <div className={isMobile ? 'mb-5' : 'mb-8'}>
-          <div className="flex items-baseline gap-1.5">
-            <span className={`font-serif font-light tracking-tight leading-none ${isMobile ? 'text-[2.2rem]' : 'text-4xl md:text-[2.8rem]'}`}>{m.monthlyPrice}</span>
-            <span className={`text-xs font-light ${m.popular ? 'text-[#fffcf2]/30' : 'text-[#1a260e]/30'}`}>/mo</span>
+        <div className={`${isMobile ? 'mb-6' : 'mb-7'} ${wide ? 'md:col-start-1 md:row-start-2' : ''}`}>
+          <div className="flex items-baseline gap-2">
+            <span className={`font-serif font-normal tracking-[-0.03em] leading-[0.9] ${
+              isMobile ? 'text-[56px]' : wide ? 'text-[56px] md:text-[clamp(64px,6.4vw,96px)]' : 'text-[52px] xl:text-[60px]'
+            }`}>{m.monthlyPrice}</span>
+            <span className={`text-[15px] ${m.popular ? 'text-[#F5F0E8]' : 'text-eu-sage'}`}>/mo</span>
           </div>
           {m.perClass && (
-            <p className={`text-[11px] tracking-wide mt-1.5 ${
-              m.popular ? 'text-[#fffcf2]/25' : 'text-[#1a260e]/25'
+            <p className={`text-[14px] mt-3 ${
+              m.popular ? 'text-[#F5F0E8]' : 'text-eu-sage'
             }`}>
               {m.perClass}
             </p>
           )}
           {m.savings && (
-            <p className={`text-[11px] font-medium tracking-wide mt-1 ${
-              m.popular ? 'text-green-400/80' : 'text-green-600/80'
+            <p className={`text-[14px] font-medium mt-1 ${
+              m.popular ? 'text-[#F5F0E8]' : 'text-eu-green'
             }`}>
               {m.savings}
             </p>
@@ -201,25 +187,23 @@ export default function Memberships() {
         </div>
 
         {/* Divider */}
-        <div className={`h-px ${isMobile ? 'mb-5' : 'mb-7'} ${m.popular ? 'bg-[#fffcf2]/[0.06]' : 'bg-[#1a260e]/[0.05]'}`} />
+        <div className={`h-px ${isMobile ? 'mb-5' : 'mb-6'} ${m.popular ? 'bg-[#fffcf2]/[0.16]' : 'bg-[#1a260e]/15'} ${wide ? 'md:hidden' : ''}`} />
 
         {/* Features */}
-        <div className={`${isMobile ? 'space-y-2.5' : 'space-y-3'} flex-1`}>
+        <div className={`space-y-3 flex-1 ${
+          wide ? 'md:col-start-2 md:row-start-1 md:row-span-3 md:border-t md:border-[#fffcf2]/[0.16] md:pt-6 xl:grid xl:grid-cols-2 xl:gap-x-8 xl:gap-y-3.5 xl:space-y-0 xl:content-start' : ''
+        }`}>
           {m.features.map((f, fi) => (
-            <div key={fi} className="flex items-start gap-2">
-              <CheckCircle className={`h-3.5 w-3.5 mt-[2px] flex-shrink-0 ${
-                m.popular ? 'text-[#fffcf2]/25' : 'text-[#1a260e]/20'
-              }`} />
-              <span className={`text-[12.5px] font-light leading-snug ${
-                m.popular ? 'text-[#fffcf2]/60' : 'text-[#1a260e]/50'
-              }`}>
+            <div key={fi} className={`flex items-start gap-2.5 ${m.popular ? 'text-eu-cream' : 'text-eu-green'}`}>
+              <Check />
+              <span className="text-[15px] leading-[1.5]">
                 {f}
               </span>
             </div>
           ))}
           {m.note && (
-            <p className={`text-[11px] font-light leading-snug pt-2 ${
-              m.popular ? 'text-[#fffcf2]/30' : 'text-[#1a260e]/30'
+            <p className={`text-[13.5px] leading-[1.55] pt-2 ${wide ? 'xl:col-span-2 xl:pt-3' : ''} ${
+              m.popular ? 'text-[#F5F0E8]' : 'text-eu-sage'
             }`}>
               {m.note}
             </p>
@@ -227,92 +211,80 @@ export default function Memberships() {
         </div>
 
         {/* CTA — touch-optimized 48px+ height */}
-        <div className={`${isMobile ? 'mt-6' : 'mt-8'} flex items-center justify-center gap-2 py-4 text-[11px] tracking-[0.14em] uppercase font-medium transition-all duration-300 active:scale-[0.98] ${
+        <div className={`${isMobile ? 'mt-7' : 'mt-8'} flex items-center gap-3 min-h-[56px] rounded-full py-1.5 text-[12px] uppercase font-medium transition-colors duration-300 ${
+          compact ? 'justify-center lg:justify-between px-4 lg:pl-6 lg:pr-1.5 tracking-[0.12em] lg:tracking-[0.16em]' : 'justify-between pl-6 pr-1.5 tracking-[0.16em]'
+        } ${
+          wide ? 'md:col-start-1 md:row-start-3 md:self-end md:mt-10' : ''
+        } ${
           m.popular
-            ? 'bg-[#fffcf2] text-[#1a260e]'
-            : 'bg-[#1a260e] text-[#fffcf2]'
+            ? 'bg-eu-cream text-eu-ink group-hover:bg-eu-beige'
+            : 'bg-eu-ink text-eu-cream group-hover:bg-eu-green'
         }`}>
           Start Membership
-          <ArrowRight className="h-3.5 w-3.5" />
+          <span className={`${compact ? 'hidden lg:grid' : 'grid'} place-items-center w-11 h-11 rounded-full flex-none transition-transform duration-500 ease-eu group-hover:-rotate-45 ${
+            m.popular ? 'bg-eu-ink text-eu-cream' : 'bg-eu-cream text-eu-ink'
+          }`}>
+            <Arrow size={15} />
+          </span>
         </div>
       </div>
     </>
-  );
+    );
+  };
 
   return (
-    <div className="bg-[#fffcf2]">
+    <div className="bg-eu-cream eu-page-top">
 
       {/* ════════════════════════════════════════════════════════════
-          HERO — Cinematic editorial opening
+          HERO — Editorial opening
          ════════════════════════════════════════════════════════════ */}
-      <section className="relative overflow-hidden bg-[#1a260e] text-[#fffcf2] pt-32">
-        {/* Decorative light */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute -top-40 right-1/4 w-[600px] h-[600px] bg-[#fffcf2]/[0.015] rounded-full blur-3xl" />
-          <div className="absolute bottom-0 -left-32 w-[400px] h-[400px] bg-[#fffcf2]/[0.01] rounded-full blur-3xl" />
+      <section className="eu-wrap grid grid-cols-12 gap-x-6 items-end pt-[clamp(48px,6vw,96px)] pb-[clamp(8px,2vw,24px)]">
+        <div className="col-span-12 lg:col-span-8 eu-fade-in">
+          <p className="eu-cap eu-cap-num text-eu-green">
+            THE EUFORYC MEMBERSHIP
+          </p>
+          <h1 className="font-serif font-normal text-[clamp(46px,7.4vw,120px)] leading-[0.93] tracking-[-0.035em] mt-6 md:mt-7">
+            Make movement{' '}<br />
+            a <em>lifestyle</em>
+          </h1>
         </div>
 
-        <div className="relative py-14 md:py-28 lg:py-36 px-5 md:px-6">
-          <div className="container-width text-center max-w-3xl mx-auto">
-            <Reveal>
-              <p className="text-[#fffcf2]/30 text-[10px] md:text-xs tracking-[0.35em] uppercase mb-4 md:mb-6">
-                THE EUFORYC MEMBERSHIP
-              </p>
-            </Reveal>
+        <div className="col-span-12 lg:col-start-9 lg:col-span-4 mt-7 lg:mt-0 eu-fade-in" style={{ animationDelay: '.15s' }}>
+          <p className="text-[16px] md:text-[17px] leading-[1.7] text-eu-green">
+            One membership, the whole timetable. Use your credits across every
+            Euforyc group class, or go Unlimited for our most exclusive perks.
+          </p>
 
-            <Reveal delay={0.08}>
-              <h1 className="font-serif text-[2.2rem] md:text-6xl lg:text-[5rem] font-light tracking-wide leading-[1.1] md:leading-[1.08] mb-5 md:mb-7">
-                Make movement<br />
-                a <span className="italic">lifestyle</span>
-              </h1>
-            </Reveal>
-
-            <Reveal delay={0.15}>
-              <p className="text-[#fffcf2]/50 text-[15px] md:text-lg font-light leading-relaxed max-w-xl mx-auto">
-                One membership, the whole timetable. Use your credits across every
-                Euforyc group class, or go Unlimited for our most exclusive perks.
-              </p>
-            </Reveal>
-
-            {/* Trust signals — stack vertically on mobile */}
-            <Reveal delay={0.22}>
-              <div className="flex flex-col lg:flex-row lg:flex-nowrap lg:-mx-20 justify-center items-center gap-2 md:gap-x-6 md:gap-y-2 mt-8 md:mt-12 text-[10px] md:text-[11px] tracking-[0.15em] uppercase text-[#fffcf2]/20">
-                {['6-month minimum, then monthly rolling', 'Monthly card billing', 'Freeze up to 4 weeks per 6 months'].map((s, i) => (
-                  <span key={i} className="flex items-center gap-3">
-                    {i > 0 && <span className="hidden lg:inline w-1 h-1 rounded-full bg-[#fffcf2]/15" />}
-                    {s}
-                  </span>
-                ))}
-              </div>
-            </Reveal>
+          {/* Trust signals */}
+          <div className="flex flex-wrap gap-2 mt-6">
+            {['6-month minimum, then monthly rolling', 'Monthly card billing', 'Freeze up to 4 weeks per 6 months'].map((s, i) => (
+              <span key={i} className="eu-chip">
+                {s}
+              </span>
+            ))}
           </div>
         </div>
-
-        {/* Bottom fade into cream */}
-        <div className="h-px bg-gradient-to-r from-transparent via-[#fffcf2]/10 to-transparent" />
       </section>
 
       {/* ════════════════════════════════════════════════════════════
           CATEGORY CONTENT — Editorial pricing cards
          ════════════════════════════════════════════════════════════ */}
-      <section className="py-10 md:py-24">
-        <div className="container-width px-5 md:px-6">
-          <div className="max-w-6xl mx-auto">
+      <section className="pt-[clamp(56px,7vw,110px)] pb-[clamp(64px,8vw,120px)]">
+        <div className="eu-wrap">
+          <div>
 
             {/* Category header — editorial style */}
-            <div className="text-center mb-10 md:mb-20">
+            <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-5 lg:gap-12 mb-8 md:mb-14">
               <Reveal>
-                <p className="text-[#1a260e]/25 text-[10px] md:text-xs tracking-[0.35em] uppercase mb-3 md:mb-5">
+                <p className="eu-cap eu-cap-num text-eu-green">
                   ONE MEMBERSHIP, EVERY CLASS
                 </p>
-              </Reveal>
-              <Reveal delay={0.05}>
-                <h2 className="font-serif text-[1.75rem] md:text-4xl lg:text-5xl font-light text-[#1a260e] leading-tight">
-                  Euforyc <span className="italic">Membership</span>
+                <h2 className="font-serif font-normal text-[clamp(40px,5vw,80px)] leading-[1] tracking-[-0.022em] text-eu-ink mt-5">
+                  Euforyc <em>Membership</em>
                 </h2>
               </Reveal>
-              <Reveal delay={0.1}>
-                <p className="text-[#1a260e]/40 text-[13px] md:text-base font-light mt-3 md:mt-4 max-w-lg mx-auto">
+              <Reveal className="lg:max-w-[440px]">
+                <p className="text-[16px] leading-[1.7] text-eu-green">
                   Credits work across the whole Euforyc group class timetable — {CLASS_TYPES}.
                 </p>
               </Reveal>
@@ -322,8 +294,15 @@ export default function Memberships() {
             <div className="md:hidden">
               <div
                 ref={carouselRef}
-                className="flex gap-4 overflow-x-auto snap-x snap-mandatory -mx-5 px-5 pt-5 pb-4"
-                style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', WebkitOverflowScrolling: 'touch' }}
+                className="flex items-start gap-4 overflow-x-auto snap-x snap-mandatory pt-6 pb-4"
+                style={{
+                  scrollbarWidth: 'none',
+                  msOverflowStyle: 'none',
+                  WebkitOverflowScrolling: 'touch',
+                  marginInline: 'calc(-1 * var(--eu-gutter))',
+                  paddingInline: 'var(--eu-gutter)',
+                  scrollPaddingInline: 'var(--eu-gutter)',
+                }}
               >
                 {sortedMemberships.map((m, i) => (
                   <a
@@ -337,10 +316,10 @@ export default function Memberships() {
                     data-content-category="/memberships"
                     data-value={String(m.monthlyPrice || '').replace(/[^0-9.]/g, '')}
                     data-currency="GBP"
-                    className={`group relative flex flex-col flex-shrink-0 w-[76vw] max-w-[320px] snap-start rounded-sm transition-all duration-300 ${
+                    className={`group relative flex flex-col flex-shrink-0 w-[76vw] max-w-[320px] snap-start rounded-eu-md transition-transform duration-300 active:scale-[0.99] ${
                       m.popular
-                        ? 'bg-[#1a260e] text-[#fffcf2] shadow-lg shadow-[#1a260e]/20'
-                        : 'bg-white text-[#1a260e] ring-1 ring-[#1a260e]/[0.06]'
+                        ? 'bg-eu-ink text-eu-cream border border-eu-ink'
+                        : 'bg-eu-cream text-eu-ink border border-[#1a260e]/15'
                     }`}
                   >
                     {renderCard(m, true)}
@@ -352,43 +331,50 @@ export default function Memberships() {
 
               {/* Dot indicators */}
               {sortedMemberships.length > 1 && (
-                <div className="flex justify-center gap-1.5 mt-5">
+                <div className="flex justify-center mt-2">
                   {sortedMemberships.map((_, i) => (
                     <button
                       key={i}
+                      type="button"
                       aria-label={`Go to card ${i + 1}`}
+                      aria-current={activeSlide === i ? 'true' : undefined}
                       onClick={() => {
                         if (!carouselRef.current) return;
                         const cardWidth = carouselRef.current.offsetWidth * 0.76;
                         const gap = 16;
                         carouselRef.current.scrollTo({ left: i * (cardWidth + gap), behavior: 'smooth' });
                       }}
-                      className={`rounded-full transition-all duration-300 ${
-                        activeSlide === i
-                          ? 'w-5 h-1.5 bg-[#1a260e]'
-                          : 'w-1.5 h-1.5 bg-[#1a260e]/15'
-                      }`}
-                    />
+                      className="grid place-items-center w-9 h-11"
+                    >
+                      <span
+                        aria-hidden="true"
+                        className={`block rounded-full transition-all duration-300 ${
+                          activeSlide === i
+                            ? 'w-6 h-2 bg-eu-ink'
+                            : 'w-2 h-2 border border-eu-ink/50'
+                        }`}
+                      />
+                    </button>
                   ))}
                 </div>
               )}
 
               {/* Swipe hint */}
-              <p className="text-center text-[10px] tracking-[0.15em] uppercase text-[#1a260e]/20 mt-3">
+              <p className="eu-cap text-center text-eu-sage mt-1">
                 Swipe to explore
               </p>
             </div>
 
             {/* ── Desktop: Grid layout ── */}
-            <div className={`hidden md:grid gap-5 ${
+            <div className={`hidden md:grid gap-4 ${
               memberships.length <= 2
                 ? 'grid-cols-2 max-w-3xl mx-auto'
                 : memberships.length === 3
                   ? 'grid-cols-3 max-w-5xl mx-auto'
-                  : 'grid-cols-2 lg:grid-cols-4'
+                  : 'grid-cols-3 gap-y-8'
             }`}>
               {memberships.map((m, i) => (
-                <Reveal key={`desktop-${i}`} delay={i * 0.06}>
+                <Reveal key={`desktop-${i}`} delay={i * 0.06} className={`flex flex-col ${m.popular && memberships.length > 3 ? 'col-span-3 mt-4' : ''}`}>
                   <a
                     href={m.momenceUrl}
                     target="_blank"
@@ -399,10 +385,10 @@ export default function Memberships() {
                     data-content-category="/memberships"
                     data-value={String(m.monthlyPrice || '').replace(/[^0-9.]/g, '')}
                     data-currency="GBP"
-                    className={`group relative flex flex-col h-full rounded-sm transition-all duration-500 hover:-translate-y-1 ${
+                    className={`group relative flex flex-col flex-1 h-full rounded-eu-md transition-[transform,box-shadow] duration-500 ease-eu hover:-translate-y-1.5 hover:shadow-[0_30px_60px_-40px_rgba(26,38,14,0.5)] ${
                       m.popular
-                        ? 'bg-[#1a260e] text-[#fffcf2]'
-                        : 'bg-white text-[#1a260e] ring-1 ring-[#1a260e]/[0.06] hover:ring-[#1a260e]/[0.12] hover:shadow-xl hover:shadow-[#1a260e]/[0.04]'
+                        ? 'bg-eu-ink text-eu-cream border border-eu-ink rounded-eu-lg'
+                        : 'bg-eu-cream text-eu-ink border border-[#1a260e]/15 hover:border-[#1a260e]/40'
                     }`}
                   >
                     {renderCard(m)}
@@ -413,7 +399,7 @@ export default function Memberships() {
 
             {/* Inclusions note */}
             <Reveal>
-              <p className="text-center text-[11px] md:text-xs font-light leading-relaxed text-[#1a260e]/40 mt-8 md:mt-12 max-w-2xl mx-auto">
+              <p className="text-left md:text-center text-[14px] leading-[1.65] text-eu-sage mt-8 md:mt-10 max-w-2xl md:mx-auto">
                 All memberships: 6-month minimum term, then continues monthly until cancelled.
                 Unused credits don&apos;t roll over. Excludes 1-1 privates, massages, treatments,
                 workshops and events, except where listed as an Unlimited benefit.
@@ -428,18 +414,18 @@ export default function Memberships() {
       {/* ════════════════════════════════════════════════════════════
           BENEFITS — Editorial numbered grid
          ════════════════════════════════════════════════════════════ */}
-      <section className="py-16 md:py-36 px-5 md:px-6">
-        <div className="container-width">
+      <section className="py-[clamp(80px,9vw,140px)]">
+        <div className="eu-wrap">
           <Reveal>
-            <div className="text-center mb-10 md:mb-24">
-              <p className="text-[#1a260e]/25 text-[10px] md:text-xs tracking-[0.35em] uppercase mb-3 md:mb-5">WHY MEMBERSHIP</p>
-              <h2 className="font-serif text-[1.75rem] md:text-4xl lg:text-5xl text-[#1a260e] font-light">
-                Built for Those Who <span className="italic">Show Up</span>
+            <div className="mb-10 md:mb-16 max-w-3xl">
+              <p className="eu-cap eu-cap-num text-eu-green">WHY MEMBERSHIP</p>
+              <h2 className="font-serif font-normal text-[clamp(40px,5vw,80px)] leading-[1.02] tracking-[-0.022em] text-eu-ink mt-5">
+                Built for Those Who <em>Show Up</em>
               </h2>
             </div>
           </Reveal>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-0 border-t border-[#1a260e]/10 max-w-5xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-6">
             {[
               {
                 number: '01',
@@ -458,10 +444,10 @@ export default function Memberships() {
               },
             ].map((value, i) => (
               <Reveal key={value.number} delay={i * 0.08}>
-                <div className={`py-8 md:py-14 md:px-10 ${i < 2 ? 'md:border-r border-b md:border-b-0 border-[#1a260e]/10' : ''}`}>
-                  <span className="text-[10px] md:text-xs tracking-[0.3em] text-[#1a260e]/20 font-medium">{value.number}</span>
-                  <h3 className="font-serif text-xl md:text-3xl font-light text-[#1a260e] mt-3 md:mt-4 mb-3 md:mb-5">{value.title}</h3>
-                  <p className="text-[13px] md:text-sm text-[#1a260e]/45 font-light leading-[1.7] md:leading-[1.8]">{value.body}</p>
+                <div className="border-t border-eu-ink pt-7">
+                  <span className="block font-serif italic text-[56px] md:text-[64px] leading-none text-eu-green">{value.number}</span>
+                  <h3 className="font-serif font-normal text-[26px] md:text-[30px] leading-[1.15] text-eu-ink mt-6">{value.title}</h3>
+                  <p className="text-[16px] text-eu-green leading-[1.7] mt-3.5 max-w-[380px]">{value.body}</p>
                 </div>
               </Reveal>
             ))}
@@ -472,41 +458,38 @@ export default function Memberships() {
       {/* ════════════════════════════════════════════════════════════
           TERMS + CTA — Dark closing section
          ════════════════════════════════════════════════════════════ */}
-      <section className="py-16 md:py-28 px-5 md:px-6 bg-[#1a260e] text-[#fffcf2]">
-        <div className="container-width">
+      <div className="eu-wrap pb-[clamp(80px,9vw,140px)]">
+      <section className="eu-on-dark rounded-eu-lg md:rounded-eu-xl bg-eu-ink text-eu-cream px-6 py-14 md:px-12 md:py-24">
+        <div>
           <div className="max-w-3xl mx-auto text-center">
             <Reveal>
-              <h2 className="font-serif text-[1.6rem] md:text-4xl font-light mb-8 md:mb-12 leading-tight">
-                Not sure which<br />membership is <span className="italic">right?</span>
+              <h2 className="font-serif font-normal text-[clamp(38px,5vw,76px)] leading-[1.02] tracking-[-0.022em] mb-9 md:mb-12">
+                Not sure which{' '}<br />membership is <em>right?</em>
               </h2>
             </Reveal>
 
             <Reveal delay={0.08}>
-              <a
-                href="/contact"
-                className="group inline-flex items-center justify-center gap-2.5 bg-[#fffcf2] text-[#1a260e] w-full md:w-auto px-10 py-4 min-h-[52px] text-[11px] md:text-[12px] tracking-[0.15em] uppercase font-medium transition-all duration-300 hover:scale-[1.02] hover:shadow-xl active:scale-[0.98]"
-              >
+              <PillLink href="/contact" variant="cream" dot stretchMobile>
                 SPEAK TO OUR TEAM
-                <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
-              </a>
+              </PillLink>
             </Reveal>
 
             {/* Terms */}
             <Reveal delay={0.15}>
-              <div className="mt-12 md:mt-16 pt-8 md:pt-12 border-t border-[#fffcf2]/[0.05]">
-                <p className="text-[9px] md:text-[10px] tracking-[0.25em] uppercase text-[#fffcf2]/15 mb-4 md:mb-6">MEMBERSHIP TERMS</p>
-                <div className="flex flex-col md:flex-row flex-wrap lg:flex-nowrap lg:-mx-24 justify-center gap-1.5 md:gap-x-6 md:gap-y-2 text-[10px] md:text-[11px] text-[#fffcf2]/20 font-light">
-                  <span>6-month minimum term, then monthly rolling</span>
-                  <span className="hidden md:inline text-[#fffcf2]/10">|</span>
-                  <span>Monthly card billing</span>
-                  <span className="hidden md:inline text-[#fffcf2]/10">|</span>
-                  <span>Two full billing cycles&apos; notice to cancel</span>
-                  <span className="hidden md:inline text-[#fffcf2]/10">|</span>
-                  <span>Freeze up to 4 weeks per 6 months</span>
+              <div className="mt-12 md:mt-16 pt-8 md:pt-12 border-t border-[#fffcf2]/[0.16]">
+                <p className="eu-cap text-[#F5F0E8] mb-5 md:mb-6">MEMBERSHIP TERMS</p>
+                <div className="flex flex-wrap justify-center gap-2">
+                  <span className="eu-chip">6-month minimum term, then monthly rolling</span>
+                  <span className="hidden">|</span>
+                  <span className="eu-chip">Monthly card billing</span>
+                  <span className="hidden">|</span>
+                  <span className="eu-chip">Two full billing cycles&apos; notice to cancel</span>
+                  <span className="hidden">|</span>
+                  <span className="eu-chip">Freeze up to 4 weeks per 6 months</span>
                 </div>
-                <p className="text-[10px] md:text-[11px] text-[#fffcf2]/20 font-light mt-3">
+                <p className="text-[15px] text-[#F5F0E8] mt-6">
                   To cancel, email{' '}
-                  <a href="mailto:euforyc@gmail.com" className="underline underline-offset-2 hover:text-[#fffcf2]/50 transition-colors">
+                  <a href="mailto:euforyc@gmail.com" className="inline-block py-2 text-eu-cream underline underline-offset-4 decoration-[#fffcf2]/60 hover:decoration-eu-cream transition-colors">
                     euforyc@gmail.com
                   </a>
                 </p>
@@ -515,6 +498,7 @@ export default function Memberships() {
           </div>
         </div>
       </section>
+      </div>
     </div>
   );
 }
