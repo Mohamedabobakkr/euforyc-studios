@@ -151,7 +151,7 @@ export default function PricingTabs({
                     {dark && plan.features.length > 4 && (
                       <li>
                         <Tick />
-                        <a href="#unlimited-title" className="underline underline-offset-4">
+                        <a href="#unlimited-title" className="underline underline-offset-4 inline-flex items-center min-h-[44px] -my-3">
                           And {plan.features.length - 4} more Unlimited perks
                         </a>
                       </li>
