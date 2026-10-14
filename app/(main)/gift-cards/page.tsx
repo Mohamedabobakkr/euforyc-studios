@@ -1,6 +1,8 @@
 import { pageMetadata } from '@/lib/site';
 import Image from 'next/image';
-import { Gift, Heart, Sparkles, ExternalLink } from 'lucide-react';
+import { Gift, Heart, Sparkles } from 'lucide-react';
+import Arrow from '@/components/euforyc/Arrow';
+import PillLink from '@/components/euforyc/PillLink';
 
 export const metadata = pageMetadata({
   title: 'Gift Cards | Pilates Gift Vouchers',
@@ -8,45 +10,48 @@ export const metadata = pageMetadata({
   path: '/gift-cards',
 });
 
+// Section headings share the homepage's display type
+const H2_CLASS = 'font-serif text-[clamp(38px,4.8vw,72px)] font-normal leading-[1.02] tracking-[-0.02em] text-eu-ink';
+
 export default function GiftCards() {
   return (
     <>
-      <div className="pt-32">
+      <div className="eu-page-top">
         {/* Hero Section */}
-        <section className="min-h-[70vh] flex items-center justify-center relative overflow-hidden bg-gradient-to-br from-[#fffcf2] via-[#f5f1e8] to-[#fffcf2]">
+        <section className="relative">
           {/* Content */}
-          <div className="container-width z-10 relative px-4">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <div className="eu-wrap pb-[clamp(72px,9vw,140px)] pt-[clamp(40px,5vw,80px)]">
+            <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-12 lg:gap-x-6">
               {/* Left: Text Content */}
-              <div className="space-y-6 animate-fade-up text-center lg:text-left">
-                <div className="inline-flex items-center justify-center w-20 h-20 bg-[#1a260e]/10 backdrop-blur-sm rounded-full mb-4">
-                  <Gift className="h-10 w-10 text-[#1a260e]" />
+              <div className="eu-fade-in text-center lg:col-span-6 lg:text-left">
+                <div className="mb-8 inline-flex h-16 w-16 items-center justify-center rounded-full border border-[#1a260e]/20">
+                  <Gift className="h-7 w-7 text-eu-ink" strokeWidth={1.5} aria-hidden="true" />
                 </div>
-                <h1 className="font-serif text-5xl md:text-7xl text-[#1a260e] tracking-wider">
-                  GIVE THE GIFT
-                  <span className="block mt-2">OF EUFORYC</span>
+                <h1 className="font-serif text-[clamp(40px,5.6vw,96px)] font-normal leading-[0.98] tracking-[0.02em] text-eu-ink">
+                  GIVE THE GIFT{' '}
+                  <span className="mt-2 block">OF <em>EUFORYC</em></span>
                 </h1>
-                <p className="tagline text-[#1a260e]/70 text-base md:text-lg max-w-2xl mx-auto lg:mx-0">
+                <p className="mx-auto mt-7 max-w-xl font-serif text-[clamp(20px,1.8vw,26px)] italic leading-[1.4] text-eu-green lg:mx-0">
                   Share the transformative power of Pilates with someone special
                 </p>
               </div>
 
               {/* Right: Gift Card Image */}
-              <div className="relative w-full max-w-lg mx-auto lg:mx-0">
+              <div className="relative mx-auto w-full max-w-xl lg:col-span-6 lg:max-w-none">
                 <a
                   href="https://momence.com/euforyc/gift-card-checkout/75303"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="block cursor-pointer"
+                  className="group block cursor-pointer rounded-[28px] bg-eu-beige px-[clamp(24px,6vw,80px)] py-[clamp(40px,7vw,96px)] md:rounded-eu-xl"
                 >
-                  <div className="relative aspect-[1.586/1] w-full transform transition-all duration-500 hover:scale-105 hover:shadow-2xl">
+                  <div className="relative aspect-[1320/915] w-full -rotate-2 overflow-hidden rounded-[14px] shadow-[0_34px_60px_-30px_rgba(26,38,14,0.55)] transition-transform duration-700 ease-eu group-hover:rotate-0 group-hover:scale-[1.03]">
                     <Image
                       src="/giftcardfront.jpg"
                       alt="Euforyc Studios gift card front"
                       fill
-                      className="object-contain drop-shadow-2xl"
+                      className="object-cover"
+                      sizes="(max-width: 1023px) 80vw, 520px"
                       priority
-                      quality={100}
                     />
                   </div>
                 </a>
@@ -56,71 +61,69 @@ export default function GiftCards() {
         </section>
 
         {/* Introduction Section */}
-        <section className="section-padding bg-[#fffcf2]">
-          <div className="container-width">
-            <div className="max-w-3xl mx-auto text-center space-y-6">
-              <h2 className="heading-secondary">The Perfect Gift</h2>
-              <p className="body-text text-lg">
-                A Euforyc Studios gift card is more than just a present, it is an invitation to transformation,
-                self-care, and strength. Whether it is for a birthday, celebration, or simply showing you care,
-                give the gift of mindful movement and lasting wellness.
-              </p>
-            </div>
+        <section className="eu-wrap pb-[clamp(72px,9vw,140px)]">
+          <div className="grid grid-cols-1 items-end gap-y-6 border-t border-[#1a260e]/15 pt-[clamp(48px,5vw,72px)] lg:grid-cols-12 lg:gap-x-6">
+            <h2 className={`${H2_CLASS} lg:col-span-6`}>The Perfect <em>Gift</em></h2>
+            <p className="font-sans text-[17px] leading-[1.75] text-eu-green md:text-lg lg:col-span-5 lg:col-start-8">
+              A Euforyc Studios gift card is more than just a present, it is an invitation to transformation,
+              self-care, and strength. Whether it is for a birthday, celebration, or simply showing you care,
+              give the gift of mindful movement and lasting wellness.
+            </p>
           </div>
         </section>
 
         {/* Gift Card Options Section */}
-        <section className="section-padding bg-gradient-to-b from-[#fffcf2] to-[#f5f1e8]">
-          <div className="container-width">
-            <div className="max-w-4xl mx-auto">
-              <div className="text-center mb-12">
-                <h2 className="heading-secondary mb-4">Choose Your Amount</h2>
-                <p className="tagline text-[#1a260e]/60">Flexible gift card values for any occasion</p>
+        <section className="mx-[clamp(10px,1.5vw,24px)] rounded-[32px] bg-eu-beige py-[clamp(72px,9vw,140px)] md:rounded-eu-xl">
+          <div className="eu-wrap">
+            <div className="mx-auto max-w-[1180px]">
+              <div className="mb-12 text-center md:mb-16">
+                <h2 className={`${H2_CLASS} mb-5`}>Choose Your <em>Amount</em></h2>
+                <p className="eu-tagline">Flexible gift card values for any occasion</p>
               </div>
 
               {/* Gift Card Display */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+              <div className="mb-14 grid grid-cols-1 gap-12 md:grid-cols-2 md:gap-10 lg:gap-16">
                 {/* Left: Gift Card Images - Front & Back */}
-                <div className="space-y-6">
+                <div className="grid grid-cols-2 gap-4 md:grid-cols-1 md:gap-8">
                   <a
                     href="https://momence.com/euforyc/gift-card-checkout/75303"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="block relative group cursor-pointer"
+                    className="group relative block cursor-pointer"
                   >
-                    <div className="relative aspect-[1.586/1] w-full transform transition-all duration-500 hover:scale-105 hover:shadow-2xl">
+                    <div className="relative aspect-[1320/915] w-full overflow-hidden rounded-[10px] shadow-[0_24px_44px_-26px_rgba(26,38,14,0.55)] transition-transform duration-500 ease-eu group-hover:-translate-y-1 md:rounded-[14px]">
                       <Image
                         src="/giftcardfront.jpg"
                         alt="Euforyc Studios gift card front design"
                         fill
-                        className="object-contain drop-shadow-2xl rounded-lg"
-                        quality={100}
+                        className="object-cover"
+                        sizes="(max-width: 767px) 45vw, 560px"
                       />
                     </div>
-                    <p className="text-center text-sm text-[#1a260e]/60 mt-3 font-sans tracking-wide">FRONT</p>
+                    <p className="mt-3 text-center font-sans text-[12px] uppercase tracking-[0.22em] text-eu-sage">FRONT</p>
                   </a>
                   <a
                     href="https://momence.com/euforyc/gift-card-checkout/75303"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="block relative group cursor-pointer"
+                    className="group relative block cursor-pointer"
                   >
-                    <div className="relative aspect-[1.586/1] w-full transform transition-all duration-500 hover:scale-105 hover:shadow-2xl">
+                    <div className="relative aspect-[1320/915] w-full overflow-hidden rounded-[10px] shadow-[0_24px_44px_-26px_rgba(26,38,14,0.55)] transition-transform duration-500 ease-eu group-hover:-translate-y-1 md:rounded-[14px]">
                       <Image
                         src="/giftcardback.jpg"
                         alt="Euforyc Studios gift card back design"
                         fill
-                        className="object-contain drop-shadow-2xl rounded-lg"
-                        quality={100}
+                        className="object-cover"
+                        sizes="(max-width: 767px) 45vw, 560px"
                       />
                     </div>
-                    <p className="text-center text-sm text-[#1a260e]/60 mt-3 font-sans tracking-wide">BACK</p>
+                    <p className="mt-3 text-center font-sans text-[12px] uppercase tracking-[0.22em] text-eu-sage">BACK</p>
                   </a>
                 </div>
 
                 {/* Right: Popular Amounts */}
-                <div className="space-y-4">
-                  <h3 className="font-serif text-2xl mb-6 text-[#1a260e]">Popular Amounts</h3>
+                <div className="min-w-0">
+                  <h3 className="mb-6 font-serif text-[clamp(26px,2.4vw,34px)] font-normal text-eu-ink">Popular Amounts</h3>
                   <div className="space-y-3">
                     {[
                       { amount: '£60', description: 'Perfect for a 3-class intro package' },
@@ -134,17 +137,22 @@ export default function GiftCards() {
                         href="https://momence.com/euforyc/gift-card-checkout/75303"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center justify-between p-4 bg-white/60 backdrop-blur-sm rounded-lg border border-[#1a260e]/10 hover:bg-white/80 transition-all duration-300 group/item cursor-pointer hover:shadow-lg hover:-translate-y-0.5"
+                        className="group/item flex min-h-[80px] cursor-pointer items-center justify-between gap-4 rounded-eu-sm border border-[#1a260e]/15 bg-eu-cream py-4 pl-6 pr-4 transition-colors duration-300 hover:border-eu-ink"
                       >
-                        <div>
-                          <p className="font-serif text-xl text-[#1a260e] group-hover/item:scale-105 transition-transform duration-300">
+                        <div className="min-w-0">
+                          <p className="font-serif text-[28px] leading-none text-eu-ink">
                             {option.amount}
                           </p>
-                          <p className="text-sm text-[#1a260e]/60 mt-1">
+                          <p className="mt-2 font-sans text-[15px] leading-snug text-eu-green">
                             {option.description}
                           </p>
                         </div>
-                        <Sparkles className="h-5 w-5 text-[#1a260e]/40 opacity-0 group-hover/item:opacity-100 transition-opacity" />
+                        <span
+                          className="grid h-11 w-11 flex-none place-items-center rounded-full border border-[#1a260e]/25 text-eu-ink transition-[transform,background-color,color] duration-500 ease-eu group-hover/item:-rotate-45 group-hover/item:border-eu-ink group-hover/item:bg-eu-ink group-hover/item:text-eu-cream"
+                          aria-hidden="true"
+                        >
+                          <Arrow />
+                        </span>
                       </a>
                     ))}
                   </div>
@@ -153,17 +161,17 @@ export default function GiftCards() {
 
               {/* CTA Button */}
               <div className="text-center">
-                <a
+                <PillLink
                   href="https://momence.com/euforyc/gift-card-checkout/75303"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group inline-flex items-center gap-3 bg-[#1a260e] text-[#fffcf2] px-12 py-5 font-sans text-sm tracking-[0.2em] uppercase transition-all duration-500 hover:bg-[#1a260e]/90 hover:scale-[1.02] hover:shadow-xl"
+                  variant="ink"
+                  dot
+                  stretchMobile
                 >
-                  <Gift className="h-5 w-5 group-hover:rotate-12 transition-transform duration-300" />
                   PURCHASE GIFT CARD
-                  <ExternalLink className="h-4 w-4 opacity-60" />
-                </a>
-                <p className="text-sm text-[#1a260e]/60 mt-4">
+                </PillLink>
+                <p className="mt-4 font-sans text-[14px] text-eu-sage">
                   Secure checkout powered by Momence
                 </p>
               </div>
@@ -172,123 +180,119 @@ export default function GiftCards() {
         </section>
 
         {/* How It Works Section */}
-        <section className="section-padding bg-[#fffcf2]">
-          <div className="container-width">
-            <div className="max-w-5xl mx-auto">
-              <div className="text-center mb-12">
-                <h2 className="heading-secondary">How It Works</h2>
+        <section className="eu-wrap py-[clamp(72px,9vw,140px)]">
+          <div className="mx-auto max-w-[1180px]">
+            <div className="mb-12 text-center md:mb-16">
+              <h2 className={H2_CLASS}>How It <em>Works</em></h2>
+            </div>
+
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+              <div className="group space-y-3 rounded-eu-md border border-[#1a260e]/15 p-7 md:p-8">
+                <div className="mb-4">
+                  <span className="font-serif text-[52px] italic leading-none text-eu-green">1</span>
+                </div>
+                <h3 className="font-serif text-[26px] font-normal leading-tight text-eu-ink">Choose Your Amount</h3>
+                <p className="font-sans text-[15.5px] leading-[1.65] text-eu-green">
+                  Select from our popular amounts or choose a custom value that is perfect for your recipient
+                </p>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div className="text-center space-y-4 group">
-                  <div className="inline-flex items-center justify-center w-16 h-16 bg-[#1a260e] rounded-full mb-2 group-hover:scale-110 transition-transform duration-300">
-                    <span className="font-serif text-2xl text-[#fffcf2]">1</span>
-                  </div>
-                  <h3 className="font-serif text-xl">Choose Your Amount</h3>
-                  <p className="text-sm text-[#1a260e]/70">
-                    Select from our popular amounts or choose a custom value that is perfect for your recipient
-                  </p>
+              <div className="group space-y-3 rounded-eu-md border border-[#1a260e]/15 p-7 md:p-8">
+                <div className="mb-4">
+                  <span className="font-serif text-[52px] italic leading-none text-eu-green">2</span>
                 </div>
+                <h3 className="font-serif text-[26px] font-normal leading-tight text-eu-ink">Personalize Your Gift</h3>
+                <p className="font-sans text-[15.5px] leading-[1.65] text-eu-green">
+                  Add a personal message and choose when you would like the gift card delivered via email
+                </p>
+              </div>
 
-                <div className="text-center space-y-4 group">
-                  <div className="inline-flex items-center justify-center w-16 h-16 bg-[#1a260e] rounded-full mb-2 group-hover:scale-110 transition-transform duration-300">
-                    <span className="font-serif text-2xl text-[#fffcf2]">2</span>
-                  </div>
-                  <h3 className="font-serif text-xl">Personalize Your Gift</h3>
-                  <p className="text-sm text-[#1a260e]/70">
-                    Add a personal message and choose when you would like the gift card delivered via email
-                  </p>
+              <div className="group space-y-3 rounded-eu-md border border-[#1a260e]/15 p-7 md:p-8">
+                <div className="mb-4">
+                  <span className="font-serif text-[52px] italic leading-none text-eu-green">3</span>
                 </div>
-
-                <div className="text-center space-y-4 group">
-                  <div className="inline-flex items-center justify-center w-16 h-16 bg-[#1a260e] rounded-full mb-2 group-hover:scale-110 transition-transform duration-300">
-                    <span className="font-serif text-2xl text-[#fffcf2]">3</span>
-                  </div>
-                  <h3 className="font-serif text-xl">They Start Their Journey</h3>
-                  <p className="text-sm text-[#1a260e]/70">
-                    Your recipient can redeem their gift card for any classes or packages at Euforyc Studios
-                  </p>
-                </div>
+                <h3 className="font-serif text-[26px] font-normal leading-tight text-eu-ink">They Start Their Journey</h3>
+                <p className="font-sans text-[15.5px] leading-[1.65] text-eu-green">
+                  Your recipient can redeem their gift card for any classes or packages at Euforyc Studios
+                </p>
               </div>
             </div>
           </div>
         </section>
 
         {/* Benefits Section */}
-        <section className="section-padding bg-gradient-to-b from-[#fffcf2] to-[#f5f1e8]">
-          <div className="container-width">
-            <div className="max-w-4xl mx-auto">
-              <div className="text-center mb-12">
-                <h2 className="heading-secondary">Why Choose Our Gift Cards</h2>
-              </div>
+        <section className="eu-wrap pb-[clamp(72px,9vw,140px)]">
+          <div className="mx-auto max-w-[1180px] border-t border-[#1a260e]/15 pt-[clamp(56px,7vw,110px)]">
+            <div className="mb-12 text-center md:mb-16">
+              <h2 className={H2_CLASS}>Why Choose Our Gift <em>Cards</em></h2>
+            </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {[
-                  {
-                    icon: Heart,
-                    title: 'Thoughtful & Meaningful',
-                    description: 'Give the gift of self-care, strength, and transformation'
-                  },
-                  {
-                    icon: Sparkles,
-                    title: 'Flexible & Convenient',
-                    description: 'Redeemable for any class type or package at Euforyc Studios'
-                  },
-                  {
-                    icon: Gift,
-                    title: 'Instant Delivery',
-                    description: 'Digital gift cards delivered instantly or scheduled for a special date'
-                  },
-                  {
-                    icon: Heart,
-                    title: 'Valid for 90 Days',
-                    description: 'Gift cards are valid for 90 days from the date of purchase'
-                  }
-                ].map((benefit, index) => (
-                  <div
-                    key={index}
-                    className="flex gap-4 p-6 bg-white/60 backdrop-blur-sm rounded-lg hover:bg-white/80 transition-all duration-300 hover:shadow-lg group"
-                  >
-                    <div className="flex-shrink-0">
-                      <div className="w-12 h-12 bg-[#1a260e] rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                        <benefit.icon className="h-6 w-6 text-[#fffcf2]" />
-                      </div>
-                    </div>
-                    <div>
-                      <h3 className="font-serif text-lg mb-2">{benefit.title}</h3>
-                      <p className="text-sm text-[#1a260e]/70">{benefit.description}</p>
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+              {[
+                {
+                  icon: Heart,
+                  title: 'Thoughtful & Meaningful',
+                  description: 'Give the gift of self-care, strength, and transformation'
+                },
+                {
+                  icon: Sparkles,
+                  title: 'Flexible & Convenient',
+                  description: 'Redeemable for any class type or package at Euforyc Studios'
+                },
+                {
+                  icon: Gift,
+                  title: 'Instant Delivery',
+                  description: 'Digital gift cards delivered instantly or scheduled for a special date'
+                },
+                {
+                  icon: Heart,
+                  title: 'Valid for 90 Days',
+                  description: 'Gift cards are valid for 90 days from the date of purchase'
+                }
+              ].map((benefit, index) => (
+                <div
+                  key={index}
+                  className="group flex gap-5 rounded-eu-md bg-eu-beige p-6 md:p-8"
+                >
+                  <div className="flex-shrink-0">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-full bg-eu-ink">
+                      <benefit.icon className="h-5 w-5 text-eu-cream" strokeWidth={1.5} aria-hidden="true" />
                     </div>
                   </div>
-                ))}
-              </div>
+                  <div className="min-w-0">
+                    <h3 className="mb-2 font-serif text-[22px] font-normal leading-tight text-eu-ink">{benefit.title}</h3>
+                    <p className="font-sans text-[15.5px] leading-[1.6] text-eu-green">{benefit.description}</p>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </section>
 
         {/* Final CTA Section */}
-        <section className="section-padding bg-[#1a260e] text-[#fffcf2]">
-          <div className="container-width">
-            <div className="max-w-3xl mx-auto text-center space-y-8">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-[#fffcf2]/10 backdrop-blur-sm rounded-full">
-                <Gift className="h-8 w-8 text-[#fffcf2]" />
+        <section className="eu-on-dark mx-[clamp(10px,1.5vw,24px)] mb-[clamp(64px,8vw,120px)] rounded-[32px] bg-eu-ink px-[clamp(20px,4.5vw,72px)] py-[clamp(72px,9vw,140px)] text-eu-cream md:rounded-eu-xl">
+          <div className="mx-auto max-w-3xl">
+            <div className="mx-auto max-w-3xl space-y-8 text-center">
+              <div className="inline-flex h-16 w-16 items-center justify-center rounded-full border border-[#fffcf2]/30">
+                <Gift className="h-7 w-7 text-eu-cream" strokeWidth={1.5} aria-hidden="true" />
               </div>
-              <h2 className="font-serif text-4xl md:text-5xl">
-                Ready to Give the Gift of Wellness?
+              <h2 className="font-serif text-[clamp(38px,5vw,76px)] font-normal leading-[1.02] tracking-[-0.02em] text-eu-cream">
+                Ready to Give the Gift of <em>Wellness</em>?
               </h2>
-              <p className="text-[#fffcf2]/80 text-lg">
+              <p className="mx-auto max-w-xl font-sans text-[17px] leading-[1.7] text-[#F5F0E8] md:text-lg">
                 Purchase a gift card today and share the transformative power of Pilates with someone you care about.
               </p>
-              <div className="pt-4">
-                <a
+              <div className="pt-2">
+                <PillLink
                   href="https://momence.com/euforyc/gift-card-checkout/75303"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group inline-flex items-center gap-3 bg-[#fffcf2] text-[#1a260e] px-12 py-5 font-sans text-sm tracking-[0.2em] uppercase transition-all duration-500 hover:bg-[#fffcf2]/90 hover:scale-[1.02] hover:shadow-xl"
+                  variant="cream"
+                  dot
+                  stretchMobile
                 >
-                  <Gift className="h-5 w-5 group-hover:rotate-12 transition-transform duration-300" />
                   PURCHASE GIFT CARD
-                  <ExternalLink className="h-4 w-4 opacity-60" />
-                </a>
+                </PillLink>
               </div>
             </div>
           </div>
