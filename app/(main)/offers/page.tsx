@@ -1,10 +1,16 @@
 'use client';
 
 import { useState, useEffect, Suspense } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
-import { ExternalLink, CheckCircle2, Music, ArrowRight, Sparkles, Users, Clock, MapPin, Timer, Crown, Copy, Check } from 'lucide-react';
+import { CheckCircle2, Sparkles, Timer, Copy, Check } from 'lucide-react';
 
 import MomenceReviews from '@/components/MomenceReviews';
+import Arrow from '@/components/euforyc/Arrow';
+import PillLink from '@/components/euforyc/PillLink';
+import styles from '@/components/pricing/offers.module.css';
+import { ORDERED_CLASS_TYPES } from '@/lib/classes';
+import { STUDIO } from '@/lib/site';
 
 // Membership promo code (set up in Momence checkout)
 const PROMO_CODE = 'EUFORYC5';
@@ -148,6 +154,114 @@ const moveClasses = ['Sculpt Mat Pilates', 'Belly Dance'];
 type OfferId = keyof typeof introOffers;
 const offerIds: OfferId[] = ['try-all'];
 
+// Classes that Try It All covers, for "Build your three"
+const BUILDER_CLASSES = ORDERED_CLASS_TYPES.filter((classType) => !classType.slug.startsWith('private')).map(
+  (classType) => ({ slug: classType.slug, name: classType.name, image: classType.image })
+);
+
+const ROMAN = ['i.', 'ii.', 'iii.', 'iv.'];
+
+// "Build your three": plan an intro across the group classes
+function BuildYourThree({ offer }: { offer: (typeof introOffers)[OfferId] }) {
+  const [picked, setPicked] = useState<string[]>(['reformer-pilates', 'hot-pilates']);
+
+  const toggle = (slug: string) =>
+    setPicked((current) =>
+      current.includes(slug)
+        ? current.filter((item) => item !== slug)
+        : [...(current.length >= 3 ? current.slice(1) : current), slug]
+    );
+
+  const left = 3 - picked.length;
+  const summaryA = left === 0 ? 'Your three are set.' : left === 3 ? 'Pick three to begin —' : `Choose ${left} more —`;
+  const summaryB = left === 0 ? 'Now book them in.' : `all for ${offer.price}.`;
+
+  return (
+    <section className={`${styles.section} ${styles.sectionBeige}`} id="build" aria-labelledby="build-title">
+      <div className="eu-wrap">
+        <div className={`${styles.head} eu-rv`}>
+          <div>
+            <div className="eu-cap eu-cap-num" style={{ color: '#2a3a21' }}>
+              Build your three
+            </div>
+            <h2 id="build-title" className={`eu-h2 ${styles.h2}`}>
+              Which classes{' '}
+              <br />
+              are <em>calling</em> you?
+            </h2>
+          </div>
+          <p>
+            Pick up to three to plan your intro. Change your mind as often as you like — you choose on the timetable
+            when you book.
+          </p>
+        </div>
+
+        <div className={styles.picks} role="group" aria-label="Choose classes">
+          {BUILDER_CLASSES.map((item) => {
+            const on = picked.includes(item.slug);
+            return (
+              <button key={item.slug} type="button" className={styles.pick} aria-pressed={on} onClick={() => toggle(item.slug)}>
+                <span className={styles.pickBox} aria-hidden="true">
+                  {on && (
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.4}>
+                      <path d="M5 12l5 5 9-10" />
+                    </svg>
+                  )}
+                </span>
+                {item.name}
+              </button>
+            );
+          })}
+        </div>
+
+        <ol className={styles.slots}>
+          {[0, 1, 2].map((i) => {
+            const item = BUILDER_CLASSES.find((c) => c.slug === picked[i]);
+            return (
+              <li key={i}>
+                <div className={styles.frame}>
+                  {item ? (
+                    <Image key={item.slug} src={item.image.src} alt={item.image.alt} fill sizes="(max-width: 700px) 30vw, 28vw" />
+                  ) : (
+                    <span className={styles.empty}>Class {i + 1}</span>
+                  )}
+                </div>
+                <div className={styles.slotCap}>
+                  <span className={styles.slotName}>{item ? item.name : 'Choose a class'}</span>
+                  <span className="eu-cap" style={{ color: '#3d4a33' }}>
+                    0{i + 1}
+                  </span>
+                </div>
+              </li>
+            );
+          })}
+        </ol>
+
+        <div className={styles.summary}>
+          <div className={styles.msg} aria-live="polite">
+            {summaryA} <em>{summaryB}</em>
+          </div>
+          <PillLink
+            href={offer.momenceUrl}
+            variant="ink"
+            dot
+            target="_blank"
+            rel="noopener noreferrer"
+            data-offer-id={offer.id}
+            data-content-name={`${offer.name} ${offer.classes} ${offer.price}`}
+            data-content-type="intro_offer"
+            data-content-category="/offers/build"
+            data-value={offer.price.replace(/[^0-9.]/g, '')}
+            data-currency="GBP"
+          >
+            Claim for {offer.price}
+          </PillLink>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 // Main content component
 function OffersContent() {
   const [selectedOffer, setSelectedOffer] = useState<OfferId>('try-all');
@@ -174,95 +288,103 @@ function OffersContent() {
   };
 
   const offer = introOffers[selectedOffer];
+  const station = STUDIO.transport.station.replace(' is around', ', around');
 
   return (
-    <div className="pt-24 pb-24 md:pb-0">
+    <div className="eu-page-top">
       {/* Hero Section */}
-      <section className="relative min-h-[70vh] md:min-h-[75vh] flex items-center justify-center overflow-hidden">
-        {/* Background with gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-br from-[#1a260e] via-[#1a260e] to-[#2a3a1e]">
-          <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4wMyI+PGNpcmNsZSBjeD0iMzAiIGN5PSIzMCIgcj0iMyIvPjwvZz48L2c+PC9zdmc+')] opacity-50" />
-        </div>
-
-        <div className="relative z-10 container-width text-center px-6 pt-12 pb-10 md:pt-24 md:pb-12">
-          {/* First-time badge */}
-          <div className="inline-flex items-center gap-2 bg-[#fffcf2]/10 backdrop-blur-sm border border-[#fffcf2]/20 rounded-full px-3 py-1.5 md:px-5 md:py-2 mb-6 md:mb-8">
-            <Sparkles className="h-3.5 w-3.5 md:h-4 md:w-4 text-[#fffcf2]" />
-            <span className="text-xs md:text-sm text-[#fffcf2] tracking-wider">FIRST-TIME CLIENTS ONLY</span>
+      <section className={`eu-wrap ${styles.hero}`}>
+        <div className={styles.copy}>
+          <div className="eu-cap eu-cap-num eu-fade-in" style={{ animationDelay: '.1s', color: '#2a3a21' }}>
+            <Sparkles className="h-3.5 w-3.5" aria-hidden="true" />
+            FIRST-TIME CLIENTS ONLY
           </div>
 
           {/* Main Headline */}
-          <h1 className="font-serif text-[2.5rem] leading-[1.1] md:text-5xl lg:text-7xl text-[#fffcf2] tracking-wide mb-5 md:mb-6">
-            Begin Your<br />
+          <h1 className={`${styles.title} eu-fade-in`} style={{ animationDelay: '.2s' }}>
+            Begin Your{' '}
+            <br />
             <span className="italic">Transformation</span>
           </h1>
 
-          <p className="text-[#fffcf2]/80 text-base md:text-lg lg:text-xl max-w-2xl mx-auto mb-6 md:mb-8 font-light">
+          <div className={`${styles.priceBlock} eu-fade-in`} style={{ animationDelay: '.5s' }}>
+            <span className={styles.pbBig}>{offer.price}</span>
+            <span className={styles.pbSide}>
+              <strong>{offer.name}</strong>
+              <br />
+              {offer.classes} · {offer.perClass} per class
+            </span>
+          </div>
+
+          <p className={`${styles.lede} eu-fade-in`} style={{ animationDelay: '.65s' }}>
             New to Euforyc? Experience the power of Pilates with our Try It All intro offer.
             Your journey to a stronger, more balanced you starts here.
           </p>
 
           {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <a
-              href="#intro-offers"
-              className="group inline-flex items-center gap-2 bg-[#fffcf2] text-[#1a260e] px-8 py-4 font-sans text-sm tracking-[0.15em] uppercase transition-all duration-300 hover:scale-[1.02] hover:shadow-xl"
-            >
+          <div className={`${styles.ctas} eu-fade-in`} style={{ animationDelay: '.8s' }}>
+            <PillLink href="#intro-offers" variant="ink" dot stretchMobile>
               CLAIM YOUR FIRST 3 CLASSES
-              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-            </a>
+            </PillLink>
             {promoActive ? (
-              <a
-                href="#membership-offer"
-                className="text-[#fffcf2]/80 text-sm tracking-wider hover:text-[#fffcf2] transition-colors"
-              >
+              <a href="#membership-offer" className="eu-ulink" style={{ letterSpacing: '.08em', textTransform: 'none', fontSize: 14 }}>
                 Ready to commit? 5% off your first month of membership →
               </a>
             ) : (
-              <Link
-                href="/packages"
-                className="text-[#fffcf2]/80 text-sm tracking-wider hover:text-[#fffcf2] transition-colors"
-              >
+              <Link href="/packages" className="eu-ulink" style={{ letterSpacing: '.08em', textTransform: 'none', fontSize: 14 }}>
                 Returning client? View packages & perks →
               </Link>
             )}
           </div>
 
           {/* Trust indicators */}
-          <div className="mt-10 md:mt-16 pt-6 md:pt-8 border-t border-[#fffcf2]/10">
-            <div className="flex flex-wrap justify-center gap-6 md:gap-8 text-[#fffcf2]/60 text-xs md:text-sm">
-              <div className="flex items-center gap-1.5 md:gap-2">
-                <MapPin className="h-3.5 w-3.5 md:h-4 md:w-4" />
-                <span>Edgware, London</span>
-              </div>
-              <div className="flex items-center gap-1.5 md:gap-2">
-                <Users className="h-3.5 w-3.5 md:h-4 md:w-4" />
-                <span>Small Classes</span>
-              </div>
-              <div className="flex items-center gap-1.5 md:gap-2">
-                <Clock className="h-3.5 w-3.5 md:h-4 md:w-4" />
-                <span>Flexible Scheduling</span>
-              </div>
+          <ul className={`${styles.trust} eu-fade-in`} style={{ animationDelay: '.95s' }}>
+            <li className="eu-chip">Edgware, London</li>
+            <li className="eu-chip">Small Classes</li>
+            <li className="eu-chip">Flexible Scheduling</li>
+          </ul>
+        </div>
+
+        <div className={styles.art}>
+          <div className={styles.arch}>
+            <Image
+              src="/hero/IMG_8686.JPG"
+              alt="A member stretching on a reformer at Euforyc Studios"
+              fill
+              loading="eager"
+              sizes="(max-width: 900px) 90vw, 36vw"
+            />
+          </div>
+          <div className={`${styles.ticket} eu-fade-in`} style={{ animationDelay: '1.1s' }}>
+            <div className="eu-cap" style={{ color: '#F5F0E8' }}>
+              Your intro
+            </div>
+            <div className={styles.ticketN}>
+              3 <em>classes</em>
+            </div>
+            <div className={styles.ticketL}>
+              {offer.price} · valid {offer.validity}
             </div>
           </div>
         </div>
       </section>
 
+      {/* Build your three */}
+      <BuildYourThree offer={offer} />
+
       {/* Intro Offers Section */}
-      <section id="intro-offers" className="section-padding bg-[#fffcf2]">
-        <div className="container-width">
-          <div className="text-center mb-10 md:mb-16">
-            <p className="tagline text-[#1a260e]/60 mb-4">TRY IT ALL</p>
-            <h2 className="heading-secondary">
-              Intro Offer
-            </h2>
-            <p className="body-text max-w-2xl mx-auto mt-4">
+      <section id="intro-offers" className={styles.section} style={{ scrollMarginTop: 'var(--eu-header-space)' }}>
+        <div className="eu-wrap">
+          <div className={`${styles.centerHead} eu-rv`}>
+            <p className="tagline">TRY IT ALL</p>
+            <h2 className={`eu-h2 ${styles.h2}`}>Intro Offer</h2>
+            <p className="eu-lede">
               3 classes to use across all our group classes. Perfect for beginners or those new to Euforyc.
             </p>
           </div>
 
           {/* Offer Selector Pills */}
-          <div className="flex flex-wrap justify-center items-center gap-3 mb-10 md:mb-12">
+          <div className={styles.selector}>
             {offerIds.map((offerId) => {
               const offerData = introOffers[offerId];
               const isSelected = selectedOffer === offerId;
@@ -271,13 +393,12 @@ function OffersContent() {
               return (
                 <button
                   key={offerId}
+                  type="button"
                   onClick={() => setSelectedOffer(offerId)}
-                  className={`px-5 py-2.5 md:px-6 md:py-3 rounded-full font-sans text-xs md:text-sm tracking-wider transition-all duration-300 flex items-center gap-2 ${isSelected
-                    ? 'bg-[#1a260e] text-[#fffcf2]'
-                    : 'bg-transparent border border-[#1a260e]/20 text-[#1a260e]/70 hover:border-[#1a260e]/40 hover:text-[#1a260e]'
-                    }`}
+                  className={styles.selectorBtn}
+                  aria-pressed={isSelected}
                 >
-                  <Icon className="h-4 w-4" />
+                  <Icon className="h-4 w-4" aria-hidden="true" />
                   <span>{offerData.shortName}</span>
                 </button>
               );
@@ -285,172 +406,170 @@ function OffersContent() {
           </div>
 
           {/* Selected Offer Card */}
-          <div className="max-w-2xl mx-auto">
-            <a
-              href={offer.momenceUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              data-offer-id={offer.id}
-              data-content-name={`${offer.name} ${offer.classes} ${offer.price}`}
-              data-content-type="intro_offer"
-              data-content-category="/offers"
-              data-value={offer.price.replace(/[^0-9.]/g, '')}
-              data-currency="GBP"
-              className="group block relative rounded-2xl p-6 md:p-8 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl bg-gradient-to-br from-[#1a260e] to-[#2a3a1e] text-[#fffcf2]"
-            >
-              <div className="flex flex-col md:flex-row md:items-start gap-6">
-                {/* Left side - Icon and Info */}
-                <div className="flex items-start gap-4 flex-1">
-                  <div className="w-14 h-14 rounded-xl flex items-center justify-center flex-shrink-0 bg-[#fffcf2]/10">
-                    <offer.icon className="h-7 w-7 text-[#fffcf2]" />
-                  </div>
-                  <div className="flex-1 space-y-3">
-                    <div>
-                      <p className="text-xs tracking-widest mb-1 text-[#fffcf2]/50">
-                        {offer.classes}
-                      </p>
-                      <h3 className="font-serif text-2xl md:text-3xl font-light">{offer.name}</h3>
-                    </div>
-                    <p className="text-sm text-[#fffcf2]/80">
-                      {offer.description}
-                    </p>
-                  </div>
-                </div>
-
-                {/* Right side - Price */}
-                <div className="text-left md:text-right space-y-1">
-                  <div className="flex items-baseline gap-2 md:justify-end">
-                    <span className="font-serif text-4xl md:text-5xl font-light">{offer.price}</span>
-                  </div>
-                  <p className="text-green-400 text-sm font-medium">{offer.perClass} per class</p>
-                  <p className="text-xs text-[#fffcf2]/50">
-                    Valid for {offer.validity}
-                  </p>
-                </div>
+          <a
+            href={offer.momenceUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            data-offer-id={offer.id}
+            data-content-name={`${offer.name} ${offer.classes} ${offer.price}`}
+            data-content-type="intro_offer"
+            data-content-category="/offers"
+            data-value={offer.price.replace(/[^0-9.]/g, '')}
+            data-currency="GBP"
+            className={`${styles.offer} eu-on-dark`}
+          >
+            <div className={styles.offerTop}>
+              <div>
+                <p className="eu-cap" style={{ margin: 0, color: '#F5F0E8' }}>
+                  {offer.classes}
+                </p>
+                <h3 className={styles.offerName}>{offer.name}</h3>
+                <p className={styles.offerDesc}>{offer.description}</p>
               </div>
-
-              {/* Benefits */}
-              <ul className="grid grid-cols-2 gap-2 mt-6 pt-6 border-t border-[#fffcf2]/10">
-                {offer.benefits.map((benefit, idx) => (
-                  <li key={idx} className="flex items-center gap-2 text-sm">
-                    <CheckCircle2 className="h-4 w-4 flex-shrink-0 text-green-400" />
-                    <span className="text-[#fffcf2]/90">
-                      {benefit}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-
-              {/* CTA */}
-              <div className="mt-6 pt-6 border-t border-[#fffcf2]/10">
-                <div className="w-full flex items-center justify-center gap-3 bg-white text-[#1a260e] py-5 px-8 rounded-xl font-semibold text-base tracking-wider uppercase transition-all duration-300 group-hover:shadow-xl group-hover:scale-[1.02]">
-                  <span>Claim Your Intro Offer</span>
-                  <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
-                </div>
-                <p className="text-center text-xs text-[#fffcf2]/50 mt-3">
-                  First-time clients only · Can only be bought once
+              <div>
+                <div className={styles.offerPrice}>{offer.price}</div>
+                <p className={styles.offerMeta} style={{ margin: '8px 0 0' }}>
+                  {offer.perClass} per class
+                </p>
+                <p className={styles.offerMeta} style={{ margin: '4px 0 0' }}>
+                  Valid for {offer.validity}
                 </p>
               </div>
-            </a>
-          </div>
+            </div>
+
+            {/* Benefits */}
+            <ul className={styles.benefits}>
+              {offer.benefits.map((benefit, idx) => (
+                <li key={idx}>
+                  <CheckCircle2 className="h-4 w-4 flex-shrink-0" aria-hidden="true" />
+                  <span>{benefit}</span>
+                </li>
+              ))}
+            </ul>
+
+            {/* CTA */}
+            <div className={styles.offerCta}>
+              <span>Claim Your Intro Offer</span>
+              <span className={styles.offerCtaDot}>
+                <Arrow />
+              </span>
+            </div>
+            <p className={styles.offerFine}>First-time clients only · Can only be bought once</p>
+          </a>
         </div>
+      </section>
+
+      {/* How it works */}
+      <section className={`${styles.section} eu-wrap`} style={{ paddingTop: 0 }} aria-labelledby="how-title">
+        <div className="eu-rv">
+          <div className="eu-cap eu-cap-num" style={{ color: '#2a3a21' }}>
+            How it works
+          </div>
+          <h2 id="how-title" className={`eu-h2 ${styles.h2}`}>
+            Simple, from the{' '}
+            <br />
+            <em>first</em> breath
+          </h2>
+        </div>
+        <ol className={styles.steps}>
+          <li className={`${styles.step} eu-rv`}>
+            <div className={styles.stN} aria-hidden="true">i.</div>
+            <h3 className={styles.stT}>Claim your intro</h3>
+            <p className={styles.stP}>
+              Buy {offer.name} online — any three group classes for {offer.price}, for first-time clients. Valid{' '}
+              {offer.validity}.
+            </p>
+          </li>
+          <li className={`${styles.step} eu-rv`}>
+            <div className={styles.stN} aria-hidden="true">ii.</div>
+            <h3 className={styles.stT}>Book your classes</h3>
+            <p className={styles.stP}>
+              Choose your times on the <Link href="/schedule" className="underline underline-offset-4">live timetable</Link>.
+              Arrive 10–15 minutes early on your first visit to check in — and bring grip socks for Reformer.
+            </p>
+          </li>
+          <li className={`${styles.step} eu-rv`}>
+            <div className={styles.stN} aria-hidden="true">iii.</div>
+            <h3 className={styles.stT}>
+              Make it a <em>ritual</em>
+            </h3>
+            <p className={styles.stP}>
+              {promoActive
+                ? `Found your favourite? Join a Euforyc Membership — use ${PROMO_CODE} for 5% off your first month, until 30 November 2026.`
+                : 'Found your favourite? Join a Euforyc Membership or choose a class package.'}
+            </p>
+          </li>
+        </ol>
       </section>
 
       {/* Membership Offer Section */}
       {promoActive && (
-        <section id="membership-offer" className="section-padding bg-[#fffcf2]">
-          <div className="container-width">
-            <div className="text-center mb-10 md:mb-16">
-              <p className="tagline text-[#1a260e]/60 mb-4">LOVED YOUR FIRST CLASSES?</p>
-              <h2 className="heading-secondary">
+        <section id="membership-offer" className={`${styles.section} ${styles.sectionBeige}`} style={{ scrollMarginTop: 'var(--eu-header-space)' }}>
+          <div className="eu-wrap">
+            <div className={`${styles.centerHead} eu-rv`}>
+              <p className="tagline">LOVED YOUR FIRST CLASSES?</p>
+              <h2 className={`eu-h2 ${styles.h2}`}>
                 Your first month, <span className="italic">5% off</span>
               </h2>
-              <p className="body-text max-w-2xl mx-auto mt-4">
+              <p className="eu-lede">
                 Ready to make it a habit? Choose any Euforyc Membership and enter {PROMO_CODE} at checkout to take 5% off your first monthly payment. One membership for the whole group timetable.
               </p>
               {/* Real deadline: 30 November 2026, 23:59 UK time */}
-              <div className="inline-flex items-center gap-2 bg-orange-500/10 border border-orange-400/20 rounded-full px-4 py-2 mt-6">
-                <Timer className="h-4 w-4 text-orange-500" />
-                <span className="text-sm text-orange-600 font-medium" suppressHydrationWarning>
+              <div className={styles.countdown}>
+                <Timer className="h-4 w-4" aria-hidden="true" />
+                <span suppressHydrationWarning>
                   OFFER ENDS IN: {timeLeft.days}d {timeLeft.hours}h {timeLeft.minutes}m
                 </span>
               </div>
             </div>
 
             {/* Promo code */}
-            <div className="max-w-md mx-auto mb-12 md:mb-16 text-center">
-              <div className="bg-gradient-to-br from-[#1a260e] to-[#2a3a1e] text-[#fffcf2] border border-dashed border-[#1a260e]/30 rounded-2xl p-5 md:p-6">
-                <p className="text-xs tracking-widest text-[#fffcf2]/50 mb-2">USE CODE AT CHECKOUT</p>
-                <p className="font-serif text-4xl md:text-5xl tracking-[0.12em] mb-4 select-all">{PROMO_CODE}</p>
-                <button
-                  type="button"
-                  onClick={handleCopy}
-                  aria-live="polite"
-                  className="w-full inline-flex items-center justify-center gap-2 bg-[#fffcf2] text-[#1a260e] px-8 py-4 font-sans text-sm tracking-[0.15em] uppercase transition-all duration-300 hover:scale-[1.02] hover:shadow-xl"
-                >
-                  {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
-                  {copied ? 'Copied!' : 'Tap to copy code'}
-                </button>
-              </div>
-              <p className="text-xs text-[#1a260e]/60 mt-4 leading-relaxed">
-                5% off your first monthly payment only. New membership subscribers only. 6-month minimum term applies. Valid until 30 November 2026. One use per customer.
-              </p>
+            <div className={`${styles.codeCard} eu-on-dark`}>
+              <p className="eu-cap" style={{ margin: 0, color: '#F5F0E8' }}>USE CODE AT CHECKOUT</p>
+              <p className={styles.codeText}>{PROMO_CODE}</p>
+              <button type="button" onClick={handleCopy} aria-live="polite" className="eu-btn eu-btn--cream eu-btn--block">
+                {copied ? <Check className="h-4 w-4" aria-hidden="true" /> : <Copy className="h-4 w-4" aria-hidden="true" />}
+                {copied ? 'Copied!' : 'Tap to copy code'}
+              </button>
             </div>
+            <p className={styles.codeFine}>
+              5% off your first monthly payment only. New membership subscribers only. 6-month minimum term applies. Valid until 30 November 2026. One use per customer.
+            </p>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
+            <ul className={styles.mGrid}>
               {membershipOffers.map((membership) => (
-                <a
-                  key={membership.id}
-                  href={membership.momenceUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  data-offer-id={`euforyc5-${membership.id}`}
-                  data-content-name={`${membership.name} Membership ${membership.monthlyPrice} (${PROMO_CODE})`}
-                  data-content-type="membership"
-                  data-content-category="/offers/euforyc5"
-                  data-value={membership.monthlyPrice.replace(/[^0-9.]/g, '')}
-                  data-currency="GBP"
-                  className={`group relative rounded-2xl p-6 md:p-8 flex flex-col transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl bg-gradient-to-br from-[#1a260e] to-[#2a3a1e] text-[#fffcf2] ${membership.bestValue ? 'ring-2 ring-amber-400/60' : ''}`}
-                >
-                  {membership.bestValue && (
-                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-10">
-                      <div className="bg-gradient-to-r from-amber-400 to-amber-500 text-white px-4 py-1.5 rounded-full text-[10px] font-semibold tracking-[0.15em] uppercase whitespace-nowrap flex items-center gap-1.5 shadow-lg shadow-amber-400/20">
-                        <Crown className="w-3 h-3" />
-                        BEST VALUE
-                      </div>
+                <li key={membership.id}>
+                  <a
+                    href={membership.momenceUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    data-offer-id={`euforyc5-${membership.id}`}
+                    data-content-name={`${membership.name} Membership ${membership.monthlyPrice} (${PROMO_CODE})`}
+                    data-content-type="membership"
+                    data-content-category="/offers/euforyc5"
+                    data-value={membership.monthlyPrice.replace(/[^0-9.]/g, '')}
+                    data-currency="GBP"
+                    className={`${styles.mCard} ${membership.bestValue ? `${styles.mCardDark} eu-on-dark` : ''}`}
+                  >
+                    {membership.bestValue && <span className={styles.badge}>BEST VALUE</span>}
+                    <h3 className={styles.mName}>{membership.name}</h3>
+                    <p className={styles.mDesc}>{membership.description}</p>
+                    <div className={styles.mPrice}>
+                      {membership.monthlyPrice}
+                      <small>/mo</small>
                     </div>
-                  )}
-
-                  <div className="space-y-2 flex-1">
-                    <h3 className="font-serif text-xl md:text-2xl font-light">{membership.name}</h3>
-                    <p className="text-sm text-[#fffcf2]/70">{membership.description}</p>
-                    <div className="flex items-baseline gap-1 pt-2">
-                      <span className="font-serif text-3xl font-light">{membership.monthlyPrice}</span>
-                      <span className="text-sm text-[#fffcf2]/60">/mo</span>
-                    </div>
-                    <p className="text-green-400 text-sm font-medium">
+                    <p className={styles.mSave} style={{ margin: 0 }}>
                       Save {membership.firstMonthSaving} on your first month
                     </p>
-                  </div>
-
-                  <div className="mt-6 pt-6 border-t border-[#fffcf2]/10">
-                    <div className="w-full flex items-center justify-center gap-2 bg-white text-[#1a260e] py-4 px-6 rounded-xl font-semibold text-sm tracking-wider uppercase transition-all duration-300 group-hover:shadow-xl group-hover:scale-[1.02]">
-                      <span>Claim offer</span>
-                      <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-                    </div>
-                    <p className="text-center text-xs text-[#fffcf2]/50 mt-3">
-                      Enter {PROMO_CODE} at checkout
-                    </p>
-                  </div>
-                </a>
+                    <span className={styles.mCta}>Claim offer</span>
+                    <span className={styles.mHint}>Enter {PROMO_CODE} at checkout</span>
+                  </a>
+                </li>
               ))}
-            </div>
+            </ul>
 
-            <div className="text-center mt-8 md:mt-10">
-              <Link
-                href="/memberships"
-                className="text-sm text-[#1a260e]/60 tracking-wider hover:text-[#1a260e] transition-colors"
-              >
+            <div style={{ textAlign: 'center', marginTop: 32 }}>
+              <Link href="/memberships" className="eu-ulink">
                 Compare membership benefits →
               </Link>
             </div>
@@ -459,192 +578,178 @@ function OffersContent() {
       )}
 
       {/* MOVE Section */}
-      <section id="move" className="section-padding bg-[#fffcf2]">
-        <div className="container-width">
-          <div className="text-center mb-10 md:mb-16">
-            <p className="tagline text-[#1a260e]/60 mb-4">MIX &amp; MATCH</p>
-            <h2 className="heading-secondary">
-              MOVE
-            </h2>
-            <p className="body-text max-w-2xl mx-auto mt-4">
+      <section id="move" className={styles.section}>
+        <div className="eu-wrap">
+          <div className={`${styles.centerHead} eu-rv`}>
+            <p className="tagline">MIX &amp; MATCH</p>
+            <h2 className={`eu-h2 ${styles.h2}`}>MOVE</h2>
+            <p className="eu-lede">
               Sculpt Mat Pilates and Belly Dance, mix and match. Valid 30 days from your first class, no contract.
             </p>
           </div>
 
           {/* MOVE Classes */}
-          <div className="flex flex-wrap justify-center gap-3 mb-10 md:mb-12">
+          <ul className={styles.moveClasses}>
             {moveClasses.map((style) => (
-              <div
-                key={style}
-                className="px-6 py-3 border border-[#1a260e]/10 rounded-full bg-white"
-              >
-                <span className="font-serif text-base md:text-lg text-[#1a260e]">{style}</span>
-              </div>
+              <li key={style}>{style}</li>
             ))}
-          </div>
+          </ul>
 
           {/* MOVE Package Cards */}
-          <div className={`grid grid-cols-1 gap-4 md:gap-6 mx-auto ${movePackages.length === 1 ? 'max-w-sm' : 'md:grid-cols-2 max-w-2xl'}`}>
+          <ul className={styles.moveGrid}>
             {movePackages.map((pkg, index) => (
-              <a
-                key={index}
-                href={pkg.momenceUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                data-offer-id={`move-${pkg.name.toLowerCase().replace(/\s+/g, '-')}`}
-                data-content-name={`MOVE ${pkg.name} ${pkg.price}`}
-                data-content-type="move_package"
-                data-content-category="/offers/move"
-                data-value={pkg.price.replace(/[^0-9.]/g, '')}
-                data-currency="GBP"
-                className="group relative rounded-2xl p-6 md:p-8 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl bg-gradient-to-br from-[#1a260e] to-[#2a3a1e] text-[#fffcf2]"
-              >
-                {pkg.highlight && (
-                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-gradient-to-r from-orange-500 to-red-500 text-white text-xs font-medium px-4 py-1 rounded-full">
-                    BEST VALUE
-                  </div>
-                )}
-
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 md:w-14 md:h-14 rounded-xl flex items-center justify-center flex-shrink-0 bg-[#fffcf2]/10">
-                    <Music className="h-6 w-6 md:h-7 md:w-7 text-[#fffcf2]" />
-                  </div>
-                  <div className="flex-1 space-y-2">
-                    <h3 className="font-serif text-xl md:text-2xl font-light">{pkg.name}</h3>
-                    <p className="text-sm text-[#fffcf2]/80">
-                      {pkg.description}
+              <li key={index}>
+                <a
+                  href={pkg.momenceUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-offer-id={`move-${pkg.name.toLowerCase().replace(/\s+/g, '-')}`}
+                  data-content-name={`MOVE ${pkg.name} ${pkg.price}`}
+                  data-content-type="move_package"
+                  data-content-category="/offers/move"
+                  data-value={pkg.price.replace(/[^0-9.]/g, '')}
+                  data-currency="GBP"
+                  className={styles.mCard}
+                >
+                  {pkg.highlight && <span className={styles.badge}>BEST VALUE</span>}
+                  <h3 className={styles.mName}>{pkg.name}</h3>
+                  <p className={styles.mDesc}>{pkg.description}</p>
+                  <div className={styles.mPrice}>{pkg.price}</div>
+                  {pkg.savings && (
+                    <p className={styles.mSave} style={{ margin: 0 }}>
+                      {pkg.savings}
                     </p>
-                    <div className="flex items-baseline gap-2">
-                      <span className="font-serif text-3xl font-light">{pkg.price}</span>
-                      {pkg.savings && (
-                        <span className="text-green-400 text-sm font-medium">{pkg.savings}</span>
-                      )}
-                    </div>
-                  </div>
-                </div>
-
-                <div className="mt-6 pt-6 border-t border-[#fffcf2]/10">
-                  <span className="inline-flex items-center gap-2 text-sm font-medium transition-all group-hover:gap-3 text-[#fffcf2]">
-                    Book Now
-                    <ArrowRight className="h-4 w-4" />
-                  </span>
-                </div>
-              </a>
+                  )}
+                  <span className={styles.mCta}>Book Now</span>
+                </a>
+              </li>
             ))}
+          </ul>
+        </div>
+      </section>
+
+      {/* Why Euforyc */}
+      <section className={`${styles.section} ${styles.sectionDark} eu-on-dark`} aria-labelledby="why-title">
+        <div className={`eu-wrap ${styles.whyGrid}`}>
+          <div className={`${styles.whyImg} eu-rv`}>
+            <Image src="/about-studio.jpg" alt="The Euforyc reformer studio" fill sizes="(max-width: 900px) 90vw, 40vw" />
+          </div>
+          <div className={`${styles.whyText} eu-rv`}>
+            <div className="eu-cap eu-cap-num" style={{ color: '#F5F0E8' }}>
+              Why Euforyc
+            </div>
+            <h2 id="why-title" className={`eu-h2 ${styles.h2}`}>
+              A space that is{' '}
+              <br />
+              <em>entirely</em> yours
+            </h2>
+            <ul className={styles.whyList}>
+              {[
+                ['Women only', 'Every class, every day — a calm, supportive space designed for women.'],
+                ['Small and intimate', 'Six to eight women per class, so you are seen and guided.'],
+                ['More than Pilates', 'Red light therapy, infrared heat, skin treatments and matcha — all under one roof.'],
+                ['Easy to reach', `${STUDIO.addressLine} — ${station.charAt(0).toLowerCase()}${station.slice(1)}.`],
+              ].map(([title, text], i) => (
+                <li key={title} className={styles.whyRow}>
+                  <span className={styles.k} aria-hidden="true">{ROMAN[i]}</span>
+                  <span className={styles.v}>
+                    <strong>{title}</strong>
+                    {text}
+                  </span>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
       </section>
 
       {/* Existing Members Section */}
-      <section className="section-padding bg-[#1a260e] text-[#fffcf2]">
-        <div className="container-width">
-          <div className="max-w-3xl mx-auto text-center space-y-6 md:space-y-8">
-            <div className="inline-flex items-center gap-2 bg-[#fffcf2]/10 rounded-full px-4 py-2">
-              <Users className="h-4 w-4" />
-              <span className="text-xs md:text-sm tracking-wider">RETURNING CLIENT?</span>
-            </div>
-
-            <h2 className="font-serif text-2xl md:text-3xl lg:text-4xl font-light leading-tight">
-              We&apos;re Here For Your<br />
-              <span className="italic">Fitness Journey</span>
-            </h2>
-
-            <p className="text-[#fffcf2]/80 text-sm md:text-lg max-w-xl mx-auto">
-              Try It All is exclusively for new clients — but we&apos;ve got you covered. Explore our class packages and memberships for even more value and perks.
-            </p>
-
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link
-                href="/packages"
-                className="inline-flex items-center justify-center gap-2 bg-[#fffcf2] text-[#1a260e] px-8 md:px-10 py-4 md:py-5 font-sans text-sm tracking-[0.15em] uppercase transition-all duration-300 hover:scale-[1.02] hover:shadow-xl"
-              >
-                VIEW PACKAGES
-                <ArrowRight className="h-4 w-4" />
-              </Link>
-              <Link
-                href="/memberships"
-                className="inline-flex items-center justify-center gap-2 border border-[#fffcf2]/30 text-[#fffcf2] px-8 md:px-10 py-4 md:py-5 font-sans text-sm tracking-[0.15em] uppercase transition-all duration-300 hover:bg-[#fffcf2]/10"
-              >
-                EXPLORE MEMBERSHIPS
-              </Link>
-            </div>
+      <section className={`${styles.section} ${styles.sectionDark} eu-on-dark`} style={{ paddingTop: 0 }}>
+        <div className={`eu-wrap ${styles.returning}`}>
+          <div className="eu-cap" style={{ color: '#F5F0E8' }}>RETURNING CLIENT?</div>
+          <h2 className={`eu-h2 ${styles.h2}`} style={{ fontSize: 'clamp(34px, 4vw, 56px)' }}>
+            We&apos;re Here For Your{' '}
+            <br />
+            <span className="italic">Fitness Journey</span>
+          </h2>
+          <p>
+            Try It All is exclusively for new clients — but we&apos;ve got you covered. Explore our class packages and memberships for even more value and perks.
+          </p>
+          <div className={styles.returningCtas}>
+            <PillLink href="/packages" variant="cream" dot stretchMobile>
+              VIEW PACKAGES
+            </PillLink>
+            <PillLink href="/memberships" variant="ghost" stretchMobile>
+              EXPLORE MEMBERSHIPS
+            </PillLink>
           </div>
         </div>
       </section>
 
       {/* Reviews Section */}
-      <section className="section-padding bg-[#fffcf2]">
-        <div className="container-width">
-          <div className="text-center mb-10 md:mb-12">
-            <p className="tagline text-[#1a260e]/60 mb-4">FROM OUR COMMUNITY</p>
-            <h2 className="heading-secondary">What Our Clients Say</h2>
+      <section className={styles.section}>
+        <div className="eu-wrap">
+          <div className={`${styles.centerHead} eu-rv`} style={{ marginBottom: 40 }}>
+            <p className="tagline">FROM OUR COMMUNITY</p>
+            <h2 className={`eu-h2 ${styles.h2}`}>What Our Clients Say</h2>
           </div>
           <MomenceReviews />
         </div>
       </section>
 
       {/* FAQ Section */}
-      <section className="section-padding bg-[#fffcf2]">
-        <div className="container-width">
-          <div className="max-w-3xl mx-auto">
-            <div className="text-center mb-8 md:mb-12">
-              <h2 className="heading-secondary">Common Questions</h2>
+      <section className={styles.section} style={{ paddingTop: 0 }}>
+        <div className={`eu-wrap ${styles.faq}`}>
+          <h2 className="eu-h2" style={{ textAlign: 'center' }}>Common Questions</h2>
+
+          <div className={styles.faqList}>
+            <div className={styles.faqItem}>
+              <h3>I&apos;ve never done pilates before</h3>
+              <p>Perfect! Try It All is designed for beginners. Our instructors will guide you through every movement with personalized attention.</p>
             </div>
 
-            <div className="space-y-4 md:space-y-6">
-              <div className="border-b border-[#1a260e]/10 pb-4 md:pb-6">
-                <h3 className="font-serif text-lg md:text-xl font-light text-[#1a260e] mb-2 md:mb-3">I&apos;ve never done pilates before</h3>
-                <p className="text-xs md:text-sm text-[#1a260e]/70">Perfect! Try It All is designed for beginners. Our instructors will guide you through every movement with personalized attention.</p>
+            {promoActive && (
+              <div className={styles.faqItem}>
+                <h3>How does the {PROMO_CODE} code work?</h3>
+                <p>Choose any Euforyc Membership (Euforyc 4, 8, 12 or Unlimited) and enter {PROMO_CODE} at checkout. You&apos;ll get 5% off your first monthly payment only; after that you pay the standard monthly price. The code is for new membership subscribers only, can be used once per customer and is valid until 23:59 (UK time) on 30 November 2026. The Euforyc Membership&apos;s 6-month minimum term applies.</p>
               </div>
+            )}
 
-              {promoActive && (
-                <div className="border-b border-[#1a260e]/10 pb-4 md:pb-6">
-                  <h3 className="font-serif text-lg md:text-xl font-light text-[#1a260e] mb-2 md:mb-3">How does the {PROMO_CODE} code work?</h3>
-                  <p className="text-xs md:text-sm text-[#1a260e]/70">Choose any Euforyc Membership (Euforyc 4, 8, 12 or Unlimited) and enter {PROMO_CODE} at checkout. You&apos;ll get 5% off your first monthly payment only; after that you pay the standard monthly price. The code is for new membership subscribers only, can be used once per customer and is valid until 23:59 (UK time) on 30 November 2026. The Euforyc Membership&apos;s 6-month minimum term applies.</p>
-                </div>
-              )}
-
-              <div className="border-b border-[#1a260e]/10 pb-4 md:pb-6">
-                <h3 className="font-serif text-lg md:text-xl font-light text-[#1a260e] mb-2 md:mb-3">What should I bring?</h3>
-                <p className="text-xs md:text-sm text-[#1a260e]/70">Comfortable workout clothes and water. We provide all equipment and mats. Grip socks are mandatory for Reformer Pilates, and you need your own towel for Hot Pilates and Sculpt Mat Pilates. Both can be bought at the studio.</p>
-              </div>
-
-              <div className="border-b border-[#1a260e]/10 pb-4 md:pb-6">
-                <h3 className="font-serif text-lg md:text-xl font-light text-[#1a260e] mb-2 md:mb-3">How do I book my classes?</h3>
-                <p className="text-xs md:text-sm text-[#1a260e]/70">After purchase, you&apos;ll receive access to our booking system where you can schedule your classes at times that suit you.</p>
-              </div>
+            <div className={styles.faqItem}>
+              <h3>What should I bring?</h3>
+              <p>Comfortable workout clothes and water. We provide all equipment and mats. Grip socks are mandatory for Reformer Pilates, and you need your own towel for Hot Pilates and Sculpt Mat Pilates. Both can be bought at the studio.</p>
             </div>
 
-            <div className="text-center mt-8 md:mt-12">
-              <p className="text-sm text-[#1a260e]/60 mb-4">Have more questions?</p>
-              <Link href="/contact" className="btn-minimal">
-                CONTACT US
-              </Link>
+            <div className={styles.faqItem}>
+              <h3>How do I book my classes?</h3>
+              <p>After purchase, you&apos;ll receive access to our booking system where you can schedule your classes at times that suit you.</p>
             </div>
+          </div>
+
+          <div style={{ textAlign: 'center', marginTop: 40 }}>
+            <p className="eu-lede" style={{ marginBottom: 8 }}>Have more questions?</p>
+            <Link href="/contact" className="btn-minimal">
+              CONTACT US
+            </Link>
           </div>
         </div>
       </section>
 
       {/* Final CTA */}
-      <section className="py-16 md:py-20 bg-[#fffcf2]">
-        <div className="container-width">
-          <div className="text-center space-y-6">
-            <h2 className="font-serif text-2xl md:text-3xl lg:text-4xl text-[#1a260e] font-light">
-              Ready to Begin Your Journey?
-            </h2>
-            <a
-              href="#intro-offers"
-              className="inline-flex items-center gap-2 bg-[#1a260e] text-[#fffcf2] px-8 md:px-10 py-4 md:py-5 font-sans text-sm tracking-[0.15em] uppercase transition-all duration-300 hover:bg-[#1a260e]/90 hover:scale-[1.02]"
-            >
-              CLAIM YOUR FIRST 3 CLASSES
-              <ArrowRight className="h-4 w-4" />
-            </a>
-          </div>
+      <section className={`${styles.final} eu-wrap`}>
+        <h2 className="eu-h2">
+          Ready to Begin Your <em>Journey</em>?
+        </h2>
+        <div className={styles.finalCta}>
+          <PillLink href="#intro-offers" variant="ink" dot stretchMobile>
+            CLAIM YOUR FIRST 3 CLASSES
+          </PillLink>
         </div>
       </section>
 
       {/* Sticky CTA - Mobile only */}
-      <div className="fixed bottom-0 left-0 right-0 p-4 bg-[#fffcf2] border-t border-[#1a260e]/10 md:hidden z-50">
+      <div className={`${styles.mbar} eu-on-dark`} data-bookbar>
+        <span className="eu-cap">{offer.shortName} · {offer.price}</span>
         <a
           href={offer.momenceUrl}
           target="_blank"
@@ -655,10 +760,9 @@ function OffersContent() {
           data-content-category="/offers/sticky-mobile"
           data-value={offer.price.replace(/[^0-9.]/g, '')}
           data-currency="GBP"
-          className="flex items-center justify-center gap-2 bg-[#1a260e] text-[#fffcf2] w-full py-4 text-sm tracking-[0.1em] uppercase rounded-lg active:scale-[0.98] transition-transform font-medium"
+          className={styles.mbarGo}
         >
-          CLAIM {offer.shortName.toUpperCase()} OFFER — {offer.price}
-          <ExternalLink className="h-4 w-4" />
+          CLAIM {offer.shortName.toUpperCase()} OFFER
         </a>
       </div>
     </div>
@@ -667,17 +771,7 @@ function OffersContent() {
 
 export default function OffersPage() {
   return (
-    <Suspense fallback={
-      <div className="pt-24 pb-24 bg-[#fffcf2] min-h-screen">
-        <div className="min-h-[70vh] flex items-center justify-center bg-gradient-to-br from-[#1a260e] via-[#1a260e] to-[#2a3a1e]">
-          <div className="text-center animate-pulse px-6">
-            <div className="h-6 bg-[#fffcf2]/10 rounded-full w-48 mx-auto mb-8"></div>
-            <div className="h-16 bg-[#fffcf2]/10 rounded w-80 mx-auto mb-4"></div>
-            <div className="h-6 bg-[#fffcf2]/10 rounded w-64 mx-auto"></div>
-          </div>
-        </div>
-      </div>
-    }>
+    <Suspense fallback={<div className="eu-page-top min-h-screen bg-[#fffcf2]" />}>
       <OffersContent />
     </Suspense>
   );
