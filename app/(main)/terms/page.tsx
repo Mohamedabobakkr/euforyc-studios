@@ -11,7 +11,7 @@ export default function Terms() {
     <div className="eu-page-top">
       <section className="eu-wrap pb-[clamp(80px,10vw,150px)] pt-[clamp(48px,6vw,96px)]">
         <div>
-          <h1 className="eu-h1 eu-fade-in !mb-[clamp(40px,5vw,72px)]">
+          <h1 className="eu-h1 eu-rise !mb-[clamp(40px,5vw,72px)]">
             Terms of <em>Service</em>
           </h1>
           

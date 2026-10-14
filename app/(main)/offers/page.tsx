@@ -301,13 +301,13 @@ function OffersContent() {
           </div>
 
           {/* Main Headline */}
-          <h1 className={`${styles.title} eu-fade-in`} style={{ animationDelay: '.2s' }}>
+          <h1 className={`${styles.title} eu-rise`} style={{ animationDelay: '.2s' }}>
             Begin Your{' '}
             <br />
             <span className="italic">Transformation</span>
           </h1>
 
-          <div className={`${styles.priceBlock} eu-fade-in`} style={{ animationDelay: '.5s' }}>
+          <div className={`${styles.priceBlock} eu-rise`} style={{ animationDelay: '.5s' }}>
             <span className={styles.pbBig}>{offer.price}</span>
             <span className={styles.pbSide}>
               <strong>{offer.name}</strong>
@@ -316,7 +316,7 @@ function OffersContent() {
             </span>
           </div>
 
-          <p className={`${styles.lede} eu-fade-in`} style={{ animationDelay: '.65s' }}>
+          <p className={`${styles.lede} eu-rise`} style={{ animationDelay: '.65s' }}>
             New to Euforyc? Experience the power of Pilates with our Try It All intro offer.
             Your journey to a stronger, more balanced you starts here.
           </p>

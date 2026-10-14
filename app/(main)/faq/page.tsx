@@ -48,7 +48,7 @@ export default function FAQ() {
       {/* Hero Section */}
       <section className="eu-wrap pb-[clamp(48px,6vw,96px)] pt-[clamp(48px,6vw,96px)]">
         <div className="text-center">
-          <div className="eu-fade-in mx-auto max-w-5xl space-y-6">
+          <div className="eu-rise mx-auto max-w-5xl space-y-6">
             <h1 className="font-serif text-[clamp(52px,8.2vw,124px)] font-normal leading-[0.95] tracking-[-0.035em] text-eu-ink">
               Frequently Asked
             </h1>

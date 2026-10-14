@@ -40,13 +40,13 @@ export default function ClassesPage() {
 
       <section className="eu-wrap pb-[clamp(48px,6vw,88px)] pt-[clamp(48px,6vw,96px)]">
         <div className="grid grid-cols-1 gap-y-6 lg:grid-cols-12 lg:items-end lg:gap-x-6">
-          <div className="eu-fade-in lg:col-span-7">
+          <div className="eu-rise lg:col-span-7">
             <p className="eu-cap eu-cap-num text-eu-green">Women-only · Edgware, North West London</p>
             <h1 className="eu-h1 !mt-6">
               Our <em>Classes</em>
             </h1>
           </div>
-          <p className="eu-lede eu-fade-in max-w-xl lg:col-span-5 lg:col-start-8" style={{ animationDelay: '.15s' }}>
+          <p className="eu-lede eu-rise max-w-xl lg:col-span-5 lg:col-start-8" style={{ animationDelay: '.15s' }}>
             {STUDIO.shortDescription} Group classes run for 45 to 60 minutes with no more than 8 people, and first-time clients can try any three for £60.
           </p>
         </div>

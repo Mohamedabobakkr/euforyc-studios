@@ -85,11 +85,11 @@ export default function Contact() {
       {/* Hero Section */}
       <section className="eu-wrap pb-[clamp(40px,5vw,72px)] pt-[clamp(48px,6vw,96px)]">
         <div className="grid grid-cols-1 items-end lg:grid-cols-12 lg:gap-x-6">
-          <h1 className="eu-fade-in m-0 font-serif text-[clamp(56px,8.4vw,136px)] font-normal leading-[0.92] tracking-[-0.035em] text-eu-ink lg:col-span-7">
+          <h1 className="eu-rise m-0 font-serif text-[clamp(56px,8.4vw,136px)] font-normal leading-[0.92] tracking-[-0.035em] text-eu-ink lg:col-span-7">
             Get in <em>Touch</em>
           </h1>
           <p
-            className="eu-fade-in mt-7 max-w-xl font-sans text-[17px] leading-[1.75] text-eu-green lg:col-span-4 lg:col-start-9 lg:mt-0"
+            className="eu-rise mt-7 max-w-xl font-sans text-[17px] leading-[1.75] text-eu-green lg:col-span-4 lg:col-start-9 lg:mt-0"
             style={{ animationDelay: '.15s' }}
           >
             Have questions about our classes, membership options, or want to learn more

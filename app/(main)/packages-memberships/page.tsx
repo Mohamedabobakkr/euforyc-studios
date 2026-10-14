@@ -27,7 +27,7 @@ export default function PackagesMemberships() {
       <div className="eu-wrap">
         {/* Header */}
         <section className={styles.hero}>
-          <div className={`${styles.heroL} eu-fade-in`}>
+          <div className={`${styles.heroL} eu-rise`}>
             <div className="eu-cap" style={{ color: '#2a3a21' }}>
               Pricing
             </div>
@@ -37,7 +37,7 @@ export default function PackagesMemberships() {
               <em>Memberships</em>
             </h1>
           </div>
-          <div className={`${styles.heroR} eu-fade-in`} style={{ animationDelay: '.15s' }}>
+          <div className={`${styles.heroR} eu-rise`} style={{ animationDelay: '.15s' }}>
             <p>
               Choose the perfect option for your fitness journey. Select from flexible class packages
               or ongoing membership contracts designed to support your long-term wellness goals.

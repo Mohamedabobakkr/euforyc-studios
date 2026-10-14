@@ -52,7 +52,7 @@ export default async function SchedulePage() {
     <div className="eu-page-top">
       <div className="eu-wrap">
         <section className={styles.head}>
-          <div className={`${styles.headL} eu-fade-in`}>
+          <div className={`${styles.headL} eu-rise`}>
             <p className={`eu-cap ${styles.kicker}`} style={{ margin: 0 }}>
               <span className="eu-live-dot eu-live-dot--dark" aria-hidden="true" />
               Live Schedule
@@ -61,7 +61,7 @@ export default async function SchedulePage() {
               Class <em>Schedule</em>
             </h1>
           </div>
-          <div className={`${styles.headR} eu-fade-in`} style={{ animationDelay: '.15s' }}>
+          <div className={`${styles.headR} eu-rise`} style={{ animationDelay: '.15s' }}>
             <span className={styles.pill}>
               <span className="eu-live-dot eu-live-dot--dark" aria-hidden="true" />
               Updated live from Momence

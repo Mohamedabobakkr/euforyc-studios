@@ -164,7 +164,7 @@ export default async function ClassTypePage({ params }: { params: Promise<{ slug
         </nav>
 
         <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-12 lg:gap-x-6">
-          <div className="eu-fade-in space-y-8 lg:col-span-6">
+          <div className="eu-rise space-y-8 lg:col-span-6">
             <div className="space-y-5">
               <p className="eu-cap eu-cap-num text-eu-green">Women-only · Edgware, North West London</p>
               <h1 className={H1}>{classType.name}</h1>

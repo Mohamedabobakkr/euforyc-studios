@@ -101,7 +101,7 @@ function ThankYouContent() {
     <div className="eu-page-top min-h-screen bg-eu-cream text-eu-ink">
       {/* Hero */}
       <section className="px-5 pb-[clamp(40px,5vw,64px)] pt-[clamp(48px,6vw,96px)]">
-        <div className="eu-fade-in mx-auto max-w-3xl text-center">
+        <div className="eu-rise mx-auto max-w-3xl text-center">
           <p className="eu-cap mb-6 text-eu-green">
             Welcome to Euforyc
           </p>

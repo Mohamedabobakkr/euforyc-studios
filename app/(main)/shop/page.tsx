@@ -81,7 +81,7 @@ export default function Shop() {
       <section className="relative">
         <div className="eu-wrap pb-[clamp(40px,5vw,72px)] pt-[clamp(48px,6vw,96px)]">
           <div className="grid grid-cols-1 items-end gap-y-7 lg:grid-cols-12 lg:gap-x-6">
-            <div className="eu-fade-in lg:col-span-7">
+            <div className="eu-rise lg:col-span-7">
               <div className="eu-chip mb-7">
                 <Sparkles className="h-4 w-4 text-eu-ink" strokeWidth={1.5} aria-hidden="true" />
                 <span className="font-sans text-[12px] uppercase tracking-[0.2em] text-eu-green">Studio Essentials</span>
@@ -93,7 +93,7 @@ export default function Shop() {
             </div>
 
             <p
-              className="eu-fade-in max-w-xl font-sans text-[17px] leading-[1.75] text-eu-green md:text-lg lg:col-span-4 lg:col-start-9"
+              className="eu-rise max-w-xl font-sans text-[17px] leading-[1.75] text-eu-green md:text-lg lg:col-span-4 lg:col-start-9"
               style={{ animationDelay: '.15s' }}
             >
               Thoughtfully curated essentials for your pilates practice

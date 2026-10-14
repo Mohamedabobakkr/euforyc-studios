@@ -398,14 +398,8 @@
     grid-row: 1;
   }
 
-  /* Kept in the layout (not display: none) because the active bar's
-     animation is what moves the slideshow on */
   .bars {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    opacity: 0;
+    display: none;
   }
 
   .rate {
@@ -1430,7 +1424,7 @@
 }
 
 .dCount span {
-  opacity: 0.6;
+  color: #6b6450;
 }
 
 .deck {

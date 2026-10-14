@@ -483,14 +483,14 @@ export default function Packages() {
         {/* Hero */}
         <section className="relative pt-[clamp(48px,6vw,96px)] pb-[clamp(40px,5vw,64px)]">
           <div className="eu-wrap grid grid-cols-12 gap-x-6 items-end">
-            <div className="col-span-12 lg:col-span-8 eu-fade-in">
+            <div className="col-span-12 lg:col-span-8 eu-rise">
               <h1 className="font-serif font-normal text-[clamp(42px,7vw,112px)] text-eu-ink tracking-[-0.03em] leading-[0.95]">
                 YOUR PRACTICE,{' '}
                 <br />
                 <em className="tracking-[-0.035em]">your pace</em>
               </h1>
             </div>
-            <div className="col-span-12 lg:col-start-9 lg:col-span-4 mt-7 lg:mt-0 eu-fade-in" style={{ animationDelay: '.15s' }}>
+            <div className="col-span-12 lg:col-start-9 lg:col-span-4 mt-7 lg:mt-0 eu-rise" style={{ animationDelay: '.15s' }}>
               <p className="text-[16px] md:text-[17px] text-eu-green leading-[1.7]">
                 Choose the package that fits your lifestyle. Start anytime, move at your own rhythm.
               </p>

@@ -40,11 +40,11 @@ export default async function ReviewsPage() {
 
       <section className="eu-wrap pb-[clamp(24px,3vw,40px)] pt-[clamp(48px,6vw,96px)]">
         <div className="grid grid-cols-1 gap-y-6 lg:grid-cols-12 lg:items-end lg:gap-x-6">
-          <div className="eu-fade-in lg:col-span-6">
+          <div className="eu-rise lg:col-span-6">
             <p className="eu-cap eu-cap-num text-eu-green">In our clients’ words</p>
             <h1 className="eu-h1 !mt-6">Reviews</h1>
           </div>
-          <p className="body-text eu-fade-in lg:col-span-5 lg:col-start-8" style={{ animationDelay: '.15s' }}>
+          <p className="body-text eu-rise lg:col-span-5 lg:col-start-8" style={{ animationDelay: '.15s' }}>
             {total > 0
               ? `Clients have left ${total} written reviews of classes at ${STUDIO.name}. `
               : ''}

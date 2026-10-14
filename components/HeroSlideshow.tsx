@@ -27,10 +27,11 @@ interface HeroSlideshowProps {
 }
 
 /**
- * Full-bleed hero with a crossfading slideshow. Each slide's progress bar
- * drives the timing, so pausing (the button, the tab being hidden or the
- * hero scrolling off-screen) freezes the picture and the bar together.
- * Slides load one ahead of time rather than all at once.
+ * Full-bleed hero with a crossfading slideshow. A timer moves it on and
+ * remembers how much of the slide was left when paused (the button, the tab
+ * being hidden or the hero scrolling off-screen), so the progress bars stay
+ * in step. With reduced motion it starts paused. Slides load one ahead of
+ * time rather than all at once.
  */
 export default function HeroSlideshow({ children, nextClass, rating }: HeroSlideshowProps) {
   const [index, setIndex] = useState(0);
@@ -41,8 +42,33 @@ export default function HeroSlideshow({ children, nextClass, rating }: HeroSlide
   const [tabHidden, setTabHidden] = useState(false);
   const [hasAdvanced, setHasAdvanced] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
+  // Time left on the current slide, and when the timer last (re)started
+  const remainingRef = useRef(SLIDE_MS);
+  const startedRef = useRef(0);
 
   const paused = userPaused || offscreen || tabHidden;
+
+  useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) setUserPaused(true);
+  }, []);
+
+  // A new slide gets the full time
+  useEffect(() => {
+    remainingRef.current = SLIDE_MS;
+  }, [index]);
+
+  useEffect(() => {
+    if (paused) return;
+    startedRef.current = Date.now();
+    const timer = setTimeout(() => {
+      setHasAdvanced(true);
+      setIndex((current) => (current + 1) % heroImages.length);
+    }, remainingRef.current);
+    return () => {
+      clearTimeout(timer);
+      remainingRef.current = Math.max(0, remainingRef.current - (Date.now() - startedRef.current));
+    };
+  }, [paused, index]);
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -64,11 +90,6 @@ export default function HeroSlideshow({ children, nextClass, rating }: HeroSlide
     const timer = setTimeout(() => setLoadedUpTo(next), 2000);
     return () => clearTimeout(timer);
   }, [index, loadedUpTo]);
-
-  const advance = () => {
-    setHasAdvanced(true);
-    setIndex((current) => (current + 1) % heroImages.length);
-  };
 
   return (
     <section
@@ -104,10 +125,7 @@ export default function HeroSlideshow({ children, nextClass, rating }: HeroSlide
           <div className={styles.bars} aria-hidden="true">
             {heroImages.map((src, i) => (
               <span key={src} className={`${styles.bar} ${i === index ? styles.barActive : ''}`}>
-                <i
-                  className={styles.barFill}
-                  onAnimationEnd={i === index ? advance : undefined}
-                />
+                <i className={styles.barFill} />
               </span>
             ))}
           </div>

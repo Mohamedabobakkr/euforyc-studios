@@ -29,11 +29,11 @@ export default function Pricing() {
       {/* Header */}
       <section className="bg-eu-cream pt-[clamp(48px,6vw,96px)] pb-[clamp(56px,7vw,110px)]">
         <div className="eu-wrap grid grid-cols-12 gap-x-6 items-end">
-          <div className="col-span-12 lg:col-span-7 eu-fade-in">
+          <div className="col-span-12 lg:col-span-7 eu-rise">
             <p className="eu-cap eu-cap-num text-eu-green">TRANSPARENT PRICING</p>
             <h1 className="font-serif font-normal text-[clamp(52px,8.2vw,132px)] leading-[0.93] tracking-[-0.035em] text-eu-ink mt-6 md:mt-7">Price List</h1>
           </div>
-          <div className="col-span-12 lg:col-start-8 lg:col-span-5 mt-7 lg:mt-0 eu-fade-in" style={{ animationDelay: '.15s' }}>
+          <div className="col-span-12 lg:col-start-8 lg:col-span-5 mt-7 lg:mt-0 eu-rise" style={{ animationDelay: '.15s' }}>
             <p className="text-[16px] md:text-[17px] leading-[1.7] text-eu-green">
               Group class packages are valid for 30 days from your first class. First-time clients can start with our Try It All intro offer: 3 classes for £60, valid for 20 days from your first class.
             </p>

@@ -17,7 +17,7 @@ export default function Team() {
 
       {/* Hero Section */}
       <section className="eu-wrap pb-[clamp(56px,7vw,110px)] pt-[clamp(48px,6vw,96px)]">
-        <div className="eu-fade-in text-center">
+        <div className="eu-rise text-center">
           <h1 className="eu-h1 !mb-8">
             Meet Our <em>Team</em>
           </h1>

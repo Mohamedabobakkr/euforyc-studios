@@ -23,7 +23,7 @@ export default function GiftCards() {
           <div className="eu-wrap pb-[clamp(72px,9vw,140px)] pt-[clamp(40px,5vw,80px)]">
             <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-12 lg:gap-x-6">
               {/* Left: Text Content */}
-              <div className="eu-fade-in text-center lg:col-span-6 lg:text-left">
+              <div className="eu-rise text-center lg:col-span-6 lg:text-left">
                 <div className="mb-8 inline-flex h-16 w-16 items-center justify-center rounded-full border border-[#1a260e]/20">
                   <Gift className="h-7 w-7 text-eu-ink" strokeWidth={1.5} aria-hidden="true" />
                 </div>

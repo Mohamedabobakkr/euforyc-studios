@@ -24,8 +24,8 @@ export default function Book() {
       {/* Hero Section - Mobile Optimized */}
       <section className="pt-[clamp(48px,6vw,96px)] pb-[clamp(40px,5vw,64px)] bg-eu-cream">
         <div className="eu-wrap grid grid-cols-12 gap-x-6 items-end">
-          <h1 className="col-span-12 lg:col-span-8 font-serif font-normal text-[clamp(48px,8vw,128px)] leading-[0.93] tracking-[-0.035em] text-eu-ink eu-fade-in">Book Your Session</h1>
-          <p className="col-span-12 lg:col-start-9 lg:col-span-4 mt-6 lg:mt-0 text-[16px] md:text-[17px] text-eu-green leading-[1.7] eu-fade-in" style={{ animationDelay: '.15s' }}>
+          <h1 className="col-span-12 lg:col-span-8 font-serif font-normal text-[clamp(48px,8vw,128px)] leading-[0.93] tracking-[-0.035em] text-eu-ink eu-rise">Book Your Session</h1>
+          <p className="col-span-12 lg:col-start-9 lg:col-span-4 mt-6 lg:mt-0 text-[16px] md:text-[17px] text-eu-green leading-[1.7] eu-rise" style={{ animationDelay: '.15s' }}>
             Choose how you'd like to book your next class
           </p>
         </div>

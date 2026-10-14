@@ -239,7 +239,7 @@ export default function Memberships() {
           HERO — Editorial opening
          ════════════════════════════════════════════════════════════ */}
       <section className="eu-wrap grid grid-cols-12 gap-x-6 items-end pt-[clamp(48px,6vw,96px)] pb-[clamp(8px,2vw,24px)]">
-        <div className="col-span-12 lg:col-span-8 eu-fade-in">
+        <div className="col-span-12 lg:col-span-8 eu-rise">
           <p className="eu-cap eu-cap-num text-eu-green">
             THE EUFORYC MEMBERSHIP
           </p>
@@ -249,7 +249,7 @@ export default function Memberships() {
           </h1>
         </div>
 
-        <div className="col-span-12 lg:col-start-9 lg:col-span-4 mt-7 lg:mt-0 eu-fade-in" style={{ animationDelay: '.15s' }}>
+        <div className="col-span-12 lg:col-start-9 lg:col-span-4 mt-7 lg:mt-0 eu-rise" style={{ animationDelay: '.15s' }}>
           <p className="text-[16px] md:text-[17px] leading-[1.7] text-eu-green">
             One membership, the whole timetable. Use your credits across every
             Euforyc group class, or go Unlimited for our most exclusive perks.
