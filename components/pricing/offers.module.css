@@ -116,7 +116,7 @@
 
 .ticketL {
   margin-top: 8px;
-  font-size: 13.5px;
+  font-size: 14px;
   line-height: 1.5;
   color: #f5f0e8;
 }
@@ -498,7 +498,7 @@
 .offerFine {
   margin: 14px 0 0;
   text-align: center;
-  font-size: 13px;
+  font-size: 14px;
   color: #f5f0e8;
 }
 
@@ -565,7 +565,7 @@
   padding: 10px 18px;
   border: 1px solid rgba(26, 38, 14, 0.25);
   border-radius: 999px;
-  font-size: 13.5px;
+  font-size: 14px;
   letter-spacing: 0.08em;
   color: #1a260e;
 }
@@ -592,7 +592,7 @@
 .codeFine {
   max-width: 460px;
   margin: 16px auto 0;
-  font-size: 13px;
+  font-size: 14px;
   line-height: 1.6;
   color: #3d4a33;
   text-align: center;
@@ -693,7 +693,7 @@
 }
 
 .mHint {
-  font-size: 12.5px;
+  font-size: 14px;
   text-align: center;
 }
 

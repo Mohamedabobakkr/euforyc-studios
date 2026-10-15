@@ -202,7 +202,7 @@ export default function Memberships() {
             </div>
           ))}
           {m.note && (
-            <p className={`text-[13.5px] leading-[1.55] pt-2 ${wide ? 'xl:col-span-2 xl:pt-3' : ''} ${
+            <p className={`text-[14px] leading-[1.55] pt-2 ${wide ? 'xl:col-span-2 xl:pt-3' : ''} ${
               m.popular ? 'text-[#F5F0E8]' : 'text-eu-sage'
             }`}>
               {m.note}
@@ -331,7 +331,7 @@ export default function Memberships() {
 
               {/* Dot indicators */}
               {sortedMemberships.length > 1 && (
-                <div className="flex justify-center mt-2">
+                <div className="flex justify-center gap-2 mt-2">
                   {sortedMemberships.map((_, i) => (
                     <button
                       key={i}
@@ -344,7 +344,7 @@ export default function Memberships() {
                         const gap = 16;
                         carouselRef.current.scrollTo({ left: i * (cardWidth + gap), behavior: 'smooth' });
                       }}
-                      className="grid place-items-center w-9 h-11"
+                      className="grid place-items-center w-11 h-11"
                     >
                       <span
                         aria-hidden="true"
@@ -489,7 +489,7 @@ export default function Memberships() {
                 </div>
                 <p className="text-[15px] text-[#F5F0E8] mt-6">
                   To cancel, email{' '}
-                  <a href="mailto:euforyc@gmail.com" className="inline-block py-2 text-eu-cream underline underline-offset-4 decoration-[#fffcf2]/60 hover:decoration-eu-cream transition-colors">
+                  <a href="mailto:euforyc@gmail.com" className="inline-flex min-h-[44px] items-center text-eu-cream underline underline-offset-4 decoration-[#fffcf2]/60 hover:decoration-eu-cream transition-colors">
                     euforyc@gmail.com
                   </a>
                 </p>

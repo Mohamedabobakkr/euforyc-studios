@@ -689,7 +689,7 @@ export default function StudioHire() {
                       <Star className="h-4 w-4 flex-shrink-0" strokeWidth={1.5} />
                       <div>
                         <span className="block text-[15px] font-medium">Reformer Room</span>
-                        <span className={`block text-[13px] mt-0.5 ${
+                        <span className={`block text-[14px] mt-0.5 ${
                           formData.rooms.includes('reformer') ? 'text-eu-beige' : 'text-eu-sage'
                         }`}>From £35/person</span>
                       </div>
@@ -709,7 +709,7 @@ export default function StudioHire() {
                       <Flame className="h-4 w-4 flex-shrink-0" strokeWidth={1.5} />
                       <div>
                         <span className="block text-[15px] font-medium">Hot Pilates Room</span>
-                        <span className={`block text-[13px] mt-0.5 ${
+                        <span className={`block text-[14px] mt-0.5 ${
                           formData.rooms.includes('hot-pilates') ? 'text-eu-beige' : 'text-eu-sage'
                         }`}>From £30/person</span>
                       </div>
@@ -737,13 +737,13 @@ export default function StudioHire() {
                   {/* Slider */}
                   <div className="relative">
                     {/* Track labels */}
-                    <div className="flex justify-between mb-2">
+                    <div className="flex flex-wrap justify-center gap-2 mb-2 md:flex-nowrap md:justify-between md:gap-0">
                       {[2, 3, 4, 5, 6, 7, 8].map(n => (
                         <button
                           key={n}
                           type="button"
                           onClick={() => setFormData(prev => ({ ...prev, guests: String(n) }))}
-                          className="group/n w-9 h-11 md:w-11 grid place-items-center rounded-full text-sm"
+                          className="group/n w-11 h-11 grid place-items-center rounded-full text-sm"
                         >
                           <span className={`grid place-items-center w-9 h-9 md:w-10 md:h-10 rounded-full transition-colors duration-300 ${
                             parseInt(formData.guests) === n
@@ -760,6 +760,7 @@ export default function StudioHire() {
                     <div className="relative">
                       <input
                         type="range"
+                        aria-label="Number of guests"
                         min="2"
                         max="8"
                         step="1"
@@ -1041,6 +1042,7 @@ export default function StudioHire() {
                         <input
                           type="text"
                           id="name"
+                          autoComplete="name"
                           name="name"
                           required
                           value={formData.name}
@@ -1057,6 +1059,7 @@ export default function StudioHire() {
                         <input
                           type="email"
                           id="email"
+                          autoComplete="email"
                           name="email"
                           required
                           value={formData.email}
@@ -1074,6 +1077,7 @@ export default function StudioHire() {
                       <input
                         type="tel"
                         id="phone"
+                        autoComplete="tel"
                         name="phone"
                         required
                         value={formData.phone}
@@ -1147,7 +1151,7 @@ export default function StudioHire() {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-5">
                       <div ref={roomsRef}>
                         <label className={LABEL_CLASS}>
-                          Room(s) * <span className="normal-case tracking-normal text-eu-sage">— select one or both</span>
+                          Room(s) * <span className="normal-case tracking-normal text-[14px] text-eu-sage">— select one or both</span>
                         </label>
                         <div className="flex flex-col gap-2.5">
                           <button
@@ -1284,6 +1288,7 @@ export default function StudioHire() {
                     <textarea
                       id="message"
                       name="message"
+                      aria-label="Anything else? (optional)"
                       rows={4}
                       value={formData.message}
                       onChange={handleChange}

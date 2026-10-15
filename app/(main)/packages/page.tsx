@@ -407,7 +407,7 @@ function PackagesSection() {
             </div>
 
             {/* Desktop: Segmented pills */}
-            <div className="hidden md:inline-flex p-1.5 gap-1 rounded-full bg-eu-beige">
+            <div className="hidden md:inline-flex p-1.5 gap-2 rounded-full bg-eu-beige">
               {categories.map((cat) => (
                 <button
                   key={cat.key}

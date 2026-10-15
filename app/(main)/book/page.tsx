@@ -127,7 +127,7 @@ export default function Book() {
               <div className="space-y-8">
                 {/* Reformer Pilates */}
                 <div className="border-t border-[#1a260e]/15 pt-6 space-y-3">
-                  <h3 className="font-playfair font-normal text-[26px] md:text-[30px] leading-[1.15]"><Link href="/classes/reformer-pilates" className="underline-offset-4 decoration-1 hover:underline">Reformer Pilates (Group)</Link></h3>
+                  <h3 className="font-playfair font-normal text-[26px] md:text-[30px] leading-[1.15]"><Link href="/classes/reformer-pilates" className="inline-flex min-h-[44px] items-center underline-offset-4 decoration-1 hover:underline">Reformer Pilates (Group)</Link></h3>
                   <div className="flex flex-wrap items-center gap-x-5 gap-y-1 text-[14px] text-eu-green">
                     <div className="flex items-center gap-2">
                       <Clock className="h-4 w-4" strokeWidth={1.5} />
@@ -146,7 +146,7 @@ export default function Book() {
 
                 {/* Hot Pilates */}
                 <div className="border-t border-[#1a260e]/15 pt-6 space-y-3">
-                  <h3 className="font-playfair font-normal text-[26px] md:text-[30px] leading-[1.15]"><Link href="/classes/hot-pilates" className="underline-offset-4 decoration-1 hover:underline">Hot Pilates</Link></h3>
+                  <h3 className="font-playfair font-normal text-[26px] md:text-[30px] leading-[1.15]"><Link href="/classes/hot-pilates" className="inline-flex min-h-[44px] items-center underline-offset-4 decoration-1 hover:underline">Hot Pilates</Link></h3>
                   <div className="flex flex-wrap items-center gap-x-5 gap-y-1 text-[14px] text-eu-green">
                     <div className="flex items-center gap-2">
                       <Clock className="h-4 w-4" strokeWidth={1.5} />
@@ -165,7 +165,7 @@ export default function Book() {
 
                 {/* 1:1 Sessions */}
                 <div className="border-t border-[#1a260e]/15 pt-6 space-y-3">
-                  <h3 className="font-playfair font-normal text-[26px] md:text-[30px] leading-[1.15]"><Link href="/classes/private-reformer-pilates" className="underline-offset-4 decoration-1 hover:underline">1-1 Private Sessions</Link></h3>
+                  <h3 className="font-playfair font-normal text-[26px] md:text-[30px] leading-[1.15]"><Link href="/classes/private-reformer-pilates" className="inline-flex min-h-[44px] items-center underline-offset-4 decoration-1 hover:underline">1-1 Private Sessions</Link></h3>
                   <div className="flex flex-wrap items-center gap-x-5 gap-y-1 text-[14px] text-eu-green">
                     <div className="flex items-center gap-2">
                       <Clock className="h-4 w-4" strokeWidth={1.5} />

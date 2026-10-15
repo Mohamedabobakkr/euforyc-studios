@@ -17,10 +17,10 @@ const groupRows = 'col-span-12 lg:col-start-6 lg:col-span-7';
 const groupCta = 'col-span-12 lg:col-start-6 lg:col-span-7 pt-2';
 const row = 'flex justify-between items-center gap-5 py-5 md:py-6 border-b border-[#1a260e]/15';
 const rowName = 'font-serif font-normal text-[22px] md:text-[26px] leading-[1.2]';
-const rowLink = 'underline-offset-4 decoration-1 hover:underline';
+const rowLink = 'inline-flex min-h-[44px] items-center underline-offset-4 decoration-1 hover:underline';
 const rowSub = 'text-[14px] text-eu-sage mt-1.5';
 const rowPrice = 'font-serif font-normal text-[32px] md:text-[40px] leading-none tracking-[-0.02em] whitespace-nowrap';
-const rowSave = 'inline-block mt-2.5 rounded-full bg-eu-beige px-3 py-1 text-[13px] text-eu-green whitespace-nowrap';
+const rowSave = 'inline-block mt-2.5 rounded-full bg-eu-beige px-3 py-1 text-[14px] text-eu-green whitespace-nowrap';
 const perMonth = 'font-sans text-[14px] tracking-normal ml-1';
 
 export default function Pricing() {

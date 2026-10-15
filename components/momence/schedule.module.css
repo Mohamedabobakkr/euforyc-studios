@@ -44,7 +44,7 @@
   border: 1px solid rgba(26, 38, 14, 0.2);
   border-radius: 999px;
   background: #fffcf2;
-  font-size: 13.5px;
+  font-size: 14px;
   color: #2a3a21;
 }
 
@@ -91,6 +91,13 @@
   .daysBar {
     margin: 0 calc(-1 * var(--eu-gutter));
     padding: 10px var(--eu-gutter) 8px;
+  }
+}
+
+/* Phones on their side: the header and a stuck strip would fill half the screen */
+@media (max-height: 500px) {
+  .daysBar {
+    position: static;
   }
 }
 
@@ -155,11 +162,12 @@
 
 .dayCount {
   font-size: 12px;
+  white-space: nowrap;
 }
 
 @media (max-width: 760px) {
   .days li {
-    flex: 0 0 82px;
+    flex: 0 0 88px;
   }
 
   .day {
@@ -208,7 +216,7 @@
   background: transparent;
   color: #1a260e;
   font: inherit;
-  font-size: 13.5px;
+  font-size: 14px;
   white-space: nowrap;
   cursor: pointer;
   transition: background-color 0.3s, color 0.3s, border-color 0.3s;
@@ -241,7 +249,8 @@
   background: #fffcf2;
   color: #1a260e;
   font: inherit;
-  font-size: 13.5px;
+  /* 16px or more, so iPhones don't zoom in when the field is tapped */
+  font-size: 16px;
 }
 
 .select {
@@ -270,12 +279,12 @@
 
 .clearSearch {
   position: absolute;
-  right: 4px;
+  right: 0;
   top: 50%;
   display: grid;
   place-items: center;
-  width: 36px;
-  height: 36px;
+  width: 44px;
+  height: 44px;
   padding: 0;
   border: 0;
   border-radius: 50%;
@@ -336,6 +345,17 @@
   }
 }
 
+/* Phones: instructor and search each get a full row, so their 16px text fits */
+@media (max-width: 520px) {
+  .tools {
+    flex-wrap: wrap;
+  }
+
+  .tools .field {
+    flex: 1 1 100%;
+  }
+}
+
 /* ---------- List ---------- */
 
 .summary {
@@ -346,6 +366,13 @@
 
 .dayGroup {
   scroll-margin-top: calc(var(--eu-header-space) + 150px);
+}
+
+/* The strip doesn't stick on short screens (see .daysBar), so less room is needed */
+@media (max-height: 500px) {
+  .dayGroup {
+    scroll-margin-top: calc(var(--eu-header-space) + 12px);
+  }
 }
 
 .listHead {
@@ -477,7 +504,7 @@
 
 .capText {
   margin-top: 9px;
-  font-size: 13.5px;
+  font-size: 14px;
   color: #2a3a21;
 }
 
@@ -571,7 +598,7 @@
   border-radius: 999px;
   background: #1a260e;
   color: #fffcf2;
-  font-size: 13px;
+  font-size: 14px;
   box-shadow: 0 20px 40px -20px rgba(26, 38, 14, 0.7);
 }
 

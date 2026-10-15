@@ -220,16 +220,16 @@ function ThankYouContent() {
           <div className="mt-12 space-y-2 border-t border-[#1a260e]/15 pt-10 text-[15px] text-eu-sage">
             <p>Questions? We&apos;re here.</p>
             <p>
-              <a href="mailto:euforyc@gmail.com" className="inline-block py-2.5 text-eu-ink underline decoration-[#1a260e]/35 underline-offset-4 hover:decoration-[#1a260e]">
+              <a href="mailto:euforyc@gmail.com" className="inline-flex min-h-[44px] items-center text-eu-ink underline decoration-[#1a260e]/35 underline-offset-4 hover:decoration-[#1a260e]">
                 euforyc@gmail.com
               </a>
               <span className="mx-2">·</span>
-              <a href="tel:+447375710370" className="inline-block py-2.5 text-eu-ink underline decoration-[#1a260e]/35 underline-offset-4 hover:decoration-[#1a260e]">
+              <a href="tel:+447375710370" className="inline-flex min-h-[44px] items-center text-eu-ink underline decoration-[#1a260e]/35 underline-offset-4 hover:decoration-[#1a260e]">
                 +44 7375 710370
               </a>
             </p>
             <p className="pt-2">
-              <Link href="/" className="inline-block py-2.5 text-eu-ink underline decoration-[#1a260e]/35 underline-offset-4 hover:decoration-[#1a260e]">
+              <Link href="/" className="inline-flex min-h-[44px] items-center text-eu-ink underline decoration-[#1a260e]/35 underline-offset-4 hover:decoration-[#1a260e]">
                 Back to euforyc.co.uk
               </Link>
             </p>

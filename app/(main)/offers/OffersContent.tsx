@@ -728,7 +728,7 @@ export default function OffersContent({ reviews }: { reviews: ReactNode }) {
 
           <div style={{ textAlign: 'center', marginTop: 40 }}>
             <p className="eu-lede" style={{ marginBottom: 8 }}>Have more questions?</p>
-            <Link href="/contact" className="btn-minimal">
+            <Link href="/contact" className="btn-minimal min-h-[44px]">
               CONTACT US
             </Link>
           </div>

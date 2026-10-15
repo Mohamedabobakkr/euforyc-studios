@@ -376,7 +376,7 @@ export default function MassagePage() {
           {/* Trust row */}
           <Reveal delay={0.4}>
             <div className="mt-14 md:mt-20 pt-6 md:pt-8 border-t border-[#fffcf2]/15 max-w-3xl mx-auto">
-              <div className="flex flex-wrap justify-center gap-x-8 gap-y-3 text-eu-beige text-[13px] md:text-sm">
+              <div className="flex flex-wrap justify-center gap-x-8 gap-y-3 text-eu-beige text-[14px]">
                 {trust.map(({ icon: Icon, label }) => (
                   <div key={label} className="flex items-center gap-2">
                     <Icon className="h-4 w-4" strokeWidth={1.5} />
@@ -896,7 +896,7 @@ export default function MassagePage() {
       {/* ════════════════════════════════════════════════════════
           STICKY MOBILE CTA
          ════════════════════════════════════════════════════════ */}
-      <div className="fixed left-3 right-3 bottom-[calc(12px_+_env(safe-area-inset-bottom,0px))] md:hidden z-50">
+      <div className="fixed left-3 right-3 bottom-[calc(12px_+_env(safe-area-inset-bottom,0px))] md:hidden z-50" data-bookbar>
         <a
           href={pkg.momenceUrl}
           target="_blank"

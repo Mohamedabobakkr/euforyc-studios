@@ -12,7 +12,9 @@ const FAQItem = ({ faq }: { faq: Faq }) => {
   return (
     <div className="border-b border-[#1a260e]/15">
       <button
+        type="button"
         onClick={() => setIsOpen(!isOpen)}
+        aria-expanded={isOpen}
         className="group flex min-h-[72px] w-full items-center justify-between gap-5 px-0 py-6 text-left md:py-8"
       >
         <h3 className="font-serif text-[21px] font-normal leading-[1.3] text-eu-ink transition-transform duration-500 ease-eu group-hover:translate-x-1 md:text-[27px]">
