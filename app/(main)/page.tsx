@@ -31,6 +31,7 @@ import {
   within,
 } from '@/components/home/data';
 import styles from '@/components/home/home.module.css';
+import reviewStyles from '@/components/home/reviews.module.css';
 import { ORDERED_CLASS_TYPES } from '@/lib/classes';
 import { PRICING, pageMetadata } from '@/lib/site';
 import { getReviews, getUpcomingEvents } from '@/lib/studio-data';
@@ -168,10 +169,10 @@ export default async function Home() {
                 <h2 id="reviews-title" className="eu-h2">
                   What our <em>community</em> says
                 </h2>
-                <p className={`eu-tagline ${styles.tagline}`}>Real reviews from our clients</p>
-                <div className={styles.score}>
-                  <span className={styles.scoreBig}>{score.average}</span>
-                  <span className={styles.scoreMeta}>
+                <p className={`eu-tagline ${reviewStyles.tagline}`}>Real reviews from our clients</p>
+                <div className={reviewStyles.score}>
+                  <span className={reviewStyles.scoreBig}>{score.average}</span>
+                  <span className={reviewStyles.scoreMeta}>
                     <span className="eu-stars" role="img" aria-label={`Average rating ${score.average} out of 5`}>
                       ★★★★★
                     </span>{' '}

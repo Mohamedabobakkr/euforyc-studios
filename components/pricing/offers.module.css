@@ -961,3 +961,8 @@
     color: #1a260e;
   }
 }
+
+/* Reviews: the deck throws its top card off to the side, so clip it */
+.reviews {
+  overflow: hidden;
+}

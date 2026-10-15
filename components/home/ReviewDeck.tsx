@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import Arrow from '@/components/euforyc/Arrow';
-import styles from './home.module.css';
+import styles from './reviews.module.css';
 import type { DeckReview } from './types';
 
 const ADVANCE_MS = 6500;
