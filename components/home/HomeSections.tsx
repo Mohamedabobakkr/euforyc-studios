@@ -117,7 +117,7 @@ export function Philosophy() {
 
 // ---------------------------------------------------------------------------
 
-const roofItems = [
+const roofItems: { n: string; title: string; text: string; href: string; sameTab?: boolean }[] = [
   {
     n: 'i.',
     title: 'Move',
@@ -134,7 +134,9 @@ const roofItems = [
     n: 'iii.',
     title: 'Glow',
     text: 'Treatments at Euforyc Skin Studio, just steps from your reformer.',
-    href: '/skin-studio',
+    // Skin Studio's own site, opened in the same tab
+    href: 'https://euforycskin.co.uk/',
+    sameTab: true,
   },
   {
     n: 'iv.',
@@ -195,6 +197,10 @@ export function UnderOneRoof() {
                 <Link href={item.href} className={styles.ri}>
                   {inner}
                 </Link>
+              ) : item.sameTab ? (
+                <a href={item.href} className={styles.ri}>
+                  {inner}
+                </a>
               ) : (
                 <a href={item.href} className={styles.ri} target="_blank" rel="noopener noreferrer">
                   {inner}

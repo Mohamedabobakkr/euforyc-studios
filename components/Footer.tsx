@@ -25,7 +25,8 @@ const columns: { title: string; links: FooterLink[] }[] = [
       { href: '/team', label: 'Team' },
       { href: '/classes', label: 'Classes' },
       { href: '/studio-hire', label: 'Studio Hire' },
-      { href: '/skin-studio', label: 'Skin Studio' },
+      // Skin Studio has its own site; a plain link in the same tab
+      { href: 'https://euforycskin.co.uk/', label: 'Skin Studio' },
     ],
   },
   {

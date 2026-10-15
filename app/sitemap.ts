@@ -51,7 +51,6 @@ const pages: Page[] = [
   { path: '/sips/menu', changeFrequency: 'weekly', priority: 0.8 },
   { path: '/sips/order', changeFrequency: 'daily', priority: 0.8 },
   { path: '/sips/secret-menu', changeFrequency: 'weekly', priority: 0.8 },
-  { path: '/skin-studio', changeFrequency: 'weekly', priority: 0.9 },
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {

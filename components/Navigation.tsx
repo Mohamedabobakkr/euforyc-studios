@@ -12,13 +12,16 @@ type NavItem = {
   label: string;
 };
 
+// Skin Studio has its own site; linked with a plain <a> in the same tab
+const SKIN_STUDIO_URL = 'https://euforycskin.co.uk/';
+
 // The five most visited pages: in the header bar and large in the menu
 const priorityItems: NavItem[] = [
   { href: '/schedule', label: 'Timetable' },
   { href: '/packages-memberships', label: 'Memberships & Packages' },
   { href: '/offers', label: 'Intro Offer' },
   { href: '/classes', label: 'Our Classes' },
-  { href: '/skin-studio', label: 'Skin Studio' },
+  { href: SKIN_STUDIO_URL, label: 'Skin Studio' },
 ];
 
 // Every other page the menu has always linked to
@@ -159,10 +162,10 @@ const Navigation = () => {
             <Link href="/classes" className={styles.link} aria-current={current('/classes')}>
               Classes
             </Link>
-            <Link href="/skin-studio" className={`${styles.link} ${styles.skin}`}>
+            <a href={SKIN_STUDIO_URL} className={`${styles.link} ${styles.skin}`}>
               Skin Studio
               <span className={styles.skinDot} aria-hidden="true" />
-            </Link>
+            </a>
             <button
               type="button"
               className={styles.menuBtn}
@@ -200,14 +203,24 @@ const Navigation = () => {
           </div>
           <div className={styles.megaGrid}>
             <nav className={styles.megaMain} aria-label="Most visited">
-              {priorityItems.map((item, index) => (
-                <Link key={item.href} href={item.href} onClick={followLink} aria-current={current(item.href)}>
+              {priorityItems.map((item, index) => {
+                const number = (
                   <span className={styles.megaNum} aria-hidden="true">
                     {String(index + 1).padStart(2, '0')}
                   </span>
-                  {item.label}
-                </Link>
-              ))}
+                );
+                return item.href.startsWith('/') ? (
+                  <Link key={item.href} href={item.href} onClick={followLink} aria-current={current(item.href)}>
+                    {number}
+                    {item.label}
+                  </Link>
+                ) : (
+                  <a key={item.href} href={item.href} onClick={followLink}>
+                    {number}
+                    {item.label}
+                  </a>
+                );
+              })}
             </nav>
             <nav className={styles.megaSub} aria-labelledby="site-menu-studio">
               <h2 id="site-menu-studio">The studio</h2>
