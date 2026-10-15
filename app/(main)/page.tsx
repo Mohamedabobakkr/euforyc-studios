@@ -7,6 +7,7 @@ import ClassFinder from '@/components/home/ClassFinder';
 import NextClassCard from '@/components/home/NextClassCard';
 import ReviewDeck from '@/components/home/ReviewDeck';
 import TodayStrip from '@/components/home/TodayStrip';
+import { hasSpace } from '@/components/home/types';
 import {
   BookingBar,
   ClassesSection,
@@ -54,6 +55,9 @@ export default async function Home() {
 
   const classes = groupClasses(events);
   const soon = classes.slice(0, 12).map(toSlimEvent);
+  // The hero card shows the next class with spaces, which may be further out
+  const firstOpenLater = classes.slice(12).map(toSlimEvent).find(hasSpace);
+  const nextPool = firstOpenLater ? [...soon, firstOpenLater] : soon;
   const thisWeek = within(classes, renderedAt, 7).map(toSlimEvent);
   const specials = specialSessions(events);
 
@@ -81,7 +85,7 @@ export default async function Home() {
     <div>
       {/* 1 · Hero */}
       <HeroSlideshow
-        nextClass={soon.length > 0 ? <NextClassCard events={soon} renderedAt={renderedAt} /> : undefined}
+        nextClass={soon.length > 0 ? <NextClassCard events={nextPool} renderedAt={renderedAt} /> : undefined}
         rating={
           score ? (
             <div className={styles.rate}>

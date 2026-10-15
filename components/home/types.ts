@@ -59,6 +59,11 @@ export function londonDayKey(ms: number): string {
   return `${get('year')}-${get('month')}-${get('day')}`;
 }
 
+/** A class that can still be booked */
+export function hasSpace(event: SlimEvent): boolean {
+  return !event.isSoldOut && event.spotsAvailable > 0;
+}
+
 /** "Only 2 left", "Full · waitlist" and so on */
 export function spotsText(event: SlimEvent): string {
   if (event.isSoldOut || event.spotsAvailable <= 0) return event.waitlist ? 'Full · waitlist' : 'Fully booked';
