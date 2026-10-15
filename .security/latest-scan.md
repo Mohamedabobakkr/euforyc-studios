@@ -1,6 +1,6 @@
 # Security Scan Report
 
-**Date:** 2026-10-14 19:30 UTC
+**Date:** 2026-10-15 00:00 UTC
 **Status:** CLEAN
 
 ## npm audit
@@ -14,7 +14,7 @@ All 7 high vulnerabilities trace to `braces@3.0.3` (GHSA-vfj7-8cjw-p6xm — stac
 - `tailwindcss@3.4.19` → `chokidar@3.6.0` → `braces@3.0.3`
 - `tailwindcss@3.4.19` → `micromatch@4.0.8` → `braces@3.0.3`
 - `tailwindcss@3.4.19` → `fast-glob@3.3.3` → `micromatch` → `braces`
-- `eslint-config-next@16.4.0` → `@next/eslint-plugin-next` → `fast-glob` → `micromatch` → `braces`
+- `eslint-config-next@16.4.1` → `@next/eslint-plugin-next@16.4.1` → `fast-glob@3.3.1` → `micromatch` → `braces`
 
 **Risk assessment:** LOW — these are build-time dependencies only (CSS compilation and linting). The braces vulnerability requires processing specially crafted glob patterns during `npm run build` or `npx tailwindcss`, never at runtime on the production server. No user input reaches these code paths. No patched version of braces exists (3.0.3 is the latest release).
 
@@ -26,15 +26,13 @@ All 7 high vulnerabilities trace to `braces@3.0.3` (GHSA-vfj7-8cjw-p6xm — stac
 5. Security Headers: PASS — HSTS (2yr, includeSubDomains, preload), CSP, X-Frame-Options SAMEORIGIN, X-Content-Type-Options nosniff, Referrer-Policy, Permissions-Policy all configured; X-Powered-By disabled
 6. Image Hostnames: PASS — specific domains only (squarecdn.com, euforyc.co.uk, momence.com, specific S3 bucket, localhost); no wildcard
 7. No Hardcoded Secrets: PASS — all secrets accessed via `process.env`; no `sk-`, `pk_live`, or hardcoded passwords in app/, lib/, or components/
-8. No localStorage Credentials: PASS — barista sessions use HttpOnly cookies exclusively
-9. No Error Leaks: PASS — API routes return generic messages; detailed errors logged server-side only
+8. No localStorage Credentials: PASS — barista sessions use HttpOnly cookies exclusively; only anonymous analytics UUID stored client-side
+9. No Error Leaks: PASS — API routes return generic messages; detailed errors logged server-side only; Momence routes expose details only in development mode
 10. Safe Health Checks: PASS — no health/status endpoints exist; no API routes expose tokens or internal config
 
 ## Fixes Applied
-- None needed this scan — all code security checks pass, no new actionable vulnerabilities
+- None needed this scan — all code security checks pass; npm vulnerabilities have no upstream fix
 
 ## Manual Action Required
-- **tailwindcss v3 → v4 migration:** Would resolve 4 of 7 remaining vulnerabilities. Major breaking change (config format changes from JS to CSS-based). Recommend scheduling as a planned migration sprint.
-- **eslint-config-next:** Monitor for a patched version that ships updated fast-glob/micromatch. Current v16.4.0 has no fix; suggested downgrade to v14.2.35 is incompatible with Next.js 16.
-- **Monitor braces:** Watch for a 3.0.4+ release that patches GHSA-vfj7-8cjw-p6xm — this would resolve all 7 without any breaking changes.
-- **Overall runtime risk is LOW** since all affected packages are build-time-only dependencies with no production exposure.
+- **tailwindcss v3 → v4 migration:** Would resolve 5 of 7 remaining high vulnerabilities. Major breaking change (config format changes from JS to CSS-based). Recommend scheduling as a planned migration sprint. Runtime risk is LOW since these are build-time-only dependencies with no production exposure.
+- **braces upstream fix:** Monitor for a patched release of `braces` (>3.0.3). When available, `npm update braces` would resolve all 7 findings without any breaking changes.
