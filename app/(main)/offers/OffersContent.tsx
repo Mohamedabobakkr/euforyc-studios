@@ -1,15 +1,16 @@
 'use client';
 
-import { useState, useEffect, type ReactNode } from 'react';
+import { useState, useEffect, useRef, type ReactNode } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { CheckCircle2, Sparkles, Timer, Copy, Check } from 'lucide-react';
 
 import Arrow from '@/components/euforyc/Arrow';
+import LoadWhenNear from '@/components/euforyc/LoadWhenNear';
 import PillLink from '@/components/euforyc/PillLink';
 import styles from '@/components/pricing/offers.module.css';
 import { ORDERED_CLASS_TYPES } from '@/lib/classes';
-import { STUDIO } from '@/lib/site';
+import { POLICIES, PRICING, STUDIO } from '@/lib/site';
 
 // Membership promo code (set up in Momence checkout)
 const PROMO_CODE = 'EUFORYC5';
@@ -160,6 +161,8 @@ const BUILDER_CLASSES = ORDERED_CLASS_TYPES.filter((classType) => !classType.slu
 
 const ROMAN = ['i.', 'ii.', 'iii.', 'iv.'];
 
+const firstSentence = (text: string) => text.split(/(?<=\.)\s/)[0];
+
 // "Build your three": plan an intro across the group classes
 function BuildYourThree({ offer }: { offer: (typeof introOffers)[OfferId] }) {
   const [picked, setPicked] = useState<string[]>(['reformer-pilates', 'hot-pilates']);
@@ -181,7 +184,7 @@ function BuildYourThree({ offer }: { offer: (typeof introOffers)[OfferId] }) {
         <div className={`${styles.head} eu-rv`}>
           <div>
             <div className="eu-cap eu-cap-num" style={{ color: '#2a3a21' }}>
-              Build your three
+              What you can try
             </div>
             <h2 id="build-title" className={`eu-h2 ${styles.h2}`}>
               Which classes{' '}
@@ -220,7 +223,9 @@ function BuildYourThree({ offer }: { offer: (typeof introOffers)[OfferId] }) {
               <li key={i}>
                 <div className={styles.frame}>
                   {item ? (
-                    <Image key={item.slug} src={item.image.src} alt={item.image.alt} fill sizes="(max-width: 700px) 30vw, 28vw" />
+                    <LoadWhenNear>
+                      <Image key={item.slug} src={item.image.src} alt={item.image.alt} fill sizes="(max-width: 700px) 30vw, 28vw" />
+                    </LoadWhenNear>
                   ) : (
                     <span className={styles.empty}>Class {i + 1}</span>
                   )}
@@ -263,7 +268,14 @@ function BuildYourThree({ offer }: { offer: (typeof introOffers)[OfferId] }) {
 
 // Main content component
 /** The /offers page. `reviews` is rendered on the server by page.tsx. */
-export default function OffersContent({ reviews }: { reviews: ReactNode }) {
+export default function OffersContent({
+  reviews,
+  rating,
+}: {
+  reviews: ReactNode;
+  /** Live review score from Momence, or null when reviews couldn't be loaded */
+  rating: { average: string; count: number } | null;
+}) {
   const [selectedOffer, setSelectedOffer] = useState<OfferId>('try-all');
   const [copied, setCopied] = useState(false);
   const timeLeft = useCountdown(PROMO_ENDS_AT);
@@ -292,74 +304,92 @@ export default function OffersContent({ reviews }: { reviews: ReactNode }) {
   };
 
   const offer = introOffers[selectedOffer];
+  // The sticky bar shows once the hero button has scrolled out of view
+  const heroCtaRef = useRef<HTMLAnchorElement>(null);
+  const [showBar, setShowBar] = useState(false);
+
+  useEffect(() => {
+    const button = heroCtaRef.current;
+    if (!button) return;
+    // Shown once the button has scrolled up out of view (not before the page is scrolled)
+    const observer = new IntersectionObserver(([entry]) =>
+      setShowBar(!entry.isIntersecting && entry.boundingClientRect.top < 0)
+    );
+    observer.observe(button);
+    return () => observer.disconnect();
+  }, []);
   const station = STUDIO.transport.station.replace(' is around', ', around');
 
   return (
     <div className="eu-page-top">
-      {/* Hero Section */}
+      {/* Hero: the whole offer and one button on the first screen of a phone */}
       <section className={`eu-wrap ${styles.hero}`}>
         <div className={styles.copy}>
-          <div className="eu-cap eu-cap-num eu-fade-in" style={{ animationDelay: '.1s', color: '#2a3a21' }}>
-            <Sparkles className="h-3.5 w-3.5" aria-hidden="true" />
-            FIRST-TIME CLIENTS ONLY
-          </div>
+          <p className={`eu-cap ${styles.kicker}`}>First-time clients only</p>
 
-          {/* Main Headline */}
           <h1 className={`${styles.title} eu-rise`}>
-            Begin Your{' '}
+            {offer.name}{' '}
             <br />
-            <span className="italic">Transformation</span>
+            <em>
+              {offer.classes.toLowerCase()}, {offer.price}
+            </em>
           </h1>
 
-          <div className={`${styles.priceBlock} eu-rise`}>
-            <span className={styles.pbBig}>{offer.price}</span>
-            <span className={styles.pbSide}>
-              <strong>{offer.name}</strong>
-              <br />
-              {offer.classes} · {offer.perClass} per class
-            </span>
-          </div>
-
           <p className={`${styles.lede} eu-rise`}>
-            New to Euforyc? Experience the power of Pilates with our Try It All intro offer.
-            Your journey to a stronger, more balanced you starts here.
+            Any {PRICING.introOffer.classes} group classes, valid {PRICING.introOffer.note.split('valid ')[1]}, at our
+            women-only studio in {STUDIO.address.locality}.
           </p>
 
-          {/* CTA Buttons */}
-          <div className={`${styles.ctas} eu-fade-in`} style={{ animationDelay: '.8s' }}>
-            <PillLink href="#intro-offers" variant="ink" dot stretchMobile>
-              CLAIM YOUR FIRST 3 CLASSES
-            </PillLink>
-            {promoActive ? (
-              <a href="#membership-offer" className="eu-ulink" style={{ letterSpacing: '.08em', textTransform: 'none', fontSize: 14 }}>
-                Ready to commit? 5% off your first month of membership →
-              </a>
-            ) : (
-              <Link href="/packages" className="eu-ulink" style={{ letterSpacing: '.08em', textTransform: 'none', fontSize: 14 }}>
-                Returning client? View packages & perks →
-              </Link>
-            )}
-          </div>
+          <a
+            ref={heroCtaRef}
+            href={offer.momenceUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            data-offer-id={offer.id}
+            data-content-name={`${offer.name} ${offer.classes} ${offer.price}`}
+            data-content-type="intro_offer"
+            data-content-category="/offers/hero"
+            data-value={offer.price.replace(/[^0-9.]/g, '')}
+            data-currency="GBP"
+            className={`eu-btn eu-btn--ink eu-btn--block ${styles.heroCta}`}
+          >
+            Claim {offer.name} · {offer.price}
+            <span className="eu-btn__dot" aria-hidden="true">
+              <Arrow />
+            </span>
+          </a>
 
-          {/* Trust indicators */}
-          <ul className={`${styles.trust} eu-fade-in`} style={{ animationDelay: '.95s' }}>
-            <li className="eu-chip">Edgware, London</li>
-            <li className="eu-chip">Small Classes</li>
-            <li className="eu-chip">Flexible Scheduling</li>
+          <ul className={styles.proof}>
+            {rating && (
+              <li>
+                <b>
+                  <span aria-hidden="true">★ </span>
+                  {rating.average}
+                </b>{' '}
+                {rating.count} reviews
+              </li>
+            )}
+            <li>
+              <b>{offer.perClass}</b> a class
+            </li>
+            <li>
+              <b>Valid</b> {offer.validity.split(' from')[0]}
+            </li>
           </ul>
         </div>
 
         <div className={styles.art}>
           <div className={styles.arch}>
-            <Image
-              src="/hero/IMG_8686.JPG"
-              alt="A member stretching on a reformer at Euforyc Studios"
-              fill
-              loading="eager"
-              sizes="(max-width: 900px) 90vw, 36vw"
-            />
+            <LoadWhenNear>
+              <Image
+                src="/hero/IMG_8686.JPG"
+                alt="A member stretching on a reformer at Euforyc Studios"
+                fill
+                sizes="(max-width: 900px) 70vw, 36vw"
+              />
+            </LoadWhenNear>
           </div>
-          <div className={`${styles.ticket} eu-fade-in`} style={{ animationDelay: '1.1s' }}>
+          <div className={styles.ticket}>
             <div className="eu-cap" style={{ color: '#F5F0E8' }}>
               Your intro
             </div>
@@ -376,8 +406,98 @@ export default function OffersContent({ reviews }: { reviews: ReactNode }) {
       {/* Build your three */}
       <BuildYourThree offer={offer} />
 
-      {/* Intro Offers Section */}
-      <section id="intro-offers" className={styles.section} style={{ scrollMarginTop: 'var(--eu-header-space)' }}>
+      {/* How it works */}
+      <section className={`${styles.section} eu-wrap`} aria-labelledby="how-title">
+        <div className="eu-rv">
+          <div className="eu-cap eu-cap-num" style={{ color: '#2a3a21' }}>
+            How it works
+          </div>
+          <h2 id="how-title" className={`eu-h2 ${styles.h2}`}>
+            Simple, from the{' '}
+            <br />
+            <em>first</em> breath
+          </h2>
+        </div>
+        <ol className={styles.steps}>
+          <li className={`${styles.step} eu-rv`}>
+            <div className={styles.stN} aria-hidden="true">i.</div>
+            <h3 className={styles.stT}>Claim your intro</h3>
+            <p className={styles.stP}>
+              Buy {offer.name} online — any three group classes for {offer.price}, for first-time clients. Valid{' '}
+              {offer.validity}.
+            </p>
+          </li>
+          <li className={`${styles.step} eu-rv`}>
+            <div className={styles.stN} aria-hidden="true">ii.</div>
+            <h3 className={styles.stT}>Book your classes</h3>
+            <p className={styles.stP}>
+              Choose any three group classes on the{' '}
+              <Link href="/schedule" className="underline underline-offset-4">
+                live timetable
+              </Link>
+              , at times that suit you.
+            </p>
+          </li>
+          <li className={`${styles.step} eu-rv`}>
+            <div className={styles.stN} aria-hidden="true">iii.</div>
+            <h3 className={styles.stT}>
+              Arrive a little <em>early</em>
+            </h3>
+            <p className={styles.stP}>{[POLICIES.arrival, POLICIES.gripSocks, POLICIES.towel].map(firstSentence).join(' ')}</p>
+          </li>
+        </ol>
+      </section>
+
+      {/* Why Euforyc */}
+      <section className={`${styles.section} ${styles.sectionDark} eu-on-dark`} aria-labelledby="why-title">
+        <div className={`eu-wrap ${styles.whyGrid}`}>
+          <div className={`${styles.whyImg} eu-rv`}>
+            <LoadWhenNear>
+              <Image src="/about-studio.jpg" alt="The Euforyc reformer studio" fill sizes="(max-width: 900px) 160vw, 40vw" />
+            </LoadWhenNear>
+          </div>
+          <div className={`${styles.whyText} eu-rv`}>
+            <div className="eu-cap eu-cap-num" style={{ color: '#F5F0E8' }}>
+              Why Euforyc
+            </div>
+            <h2 id="why-title" className={`eu-h2 ${styles.h2}`}>
+              A space that is{' '}
+              <br />
+              <em>entirely</em> yours
+            </h2>
+            <ul className={styles.whyList}>
+              {[
+                ['Women only', 'Every class, every day — a calm, supportive space designed for women.'],
+                ['Small and intimate', 'Six to eight women per class, so you are seen and guided.'],
+                ['More than Pilates', 'Red light therapy, infrared heat, skin treatments and matcha — all under one roof.'],
+                ['Easy to reach', `${STUDIO.addressLine} — ${station.charAt(0).toLowerCase()}${station.slice(1)}.`],
+              ].map(([title, text], i) => (
+                <li key={title} className={styles.whyRow}>
+                  <span className={styles.k} aria-hidden="true">{ROMAN[i]}</span>
+                  <span className={styles.v}>
+                    <strong>{title}</strong>
+                    {text}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      {/* Reviews Section */}
+      <section className={`${styles.section} ${styles.reviews}`}>
+        <div className="eu-wrap">
+          <div className={`${styles.centerHead} eu-rv`} style={{ marginBottom: 40 }}>
+            <p className="tagline">FROM OUR COMMUNITY</p>
+            <h2 className={`eu-h2 ${styles.h2}`}>What Our Clients Say</h2>
+          </div>
+        </div>
+        {reviews}
+      </section>
+
+      {/* The offer in full, after the reviews: the second Claim */}
+      <section id="intro-offers" className={styles.section} style={{ scrollMarginTop: 'var(--eu-header-space)', paddingTop: 0 }}>
         <div className="eu-wrap">
           <div className={`${styles.centerHead} eu-rv`}>
             <p className="tagline">TRY IT ALL</p>
@@ -387,27 +507,29 @@ export default function OffersContent({ reviews }: { reviews: ReactNode }) {
             </p>
           </div>
 
-          {/* Offer Selector Pills */}
-          <div className={styles.selector}>
-            {offerIds.map((offerId) => {
-              const offerData = introOffers[offerId];
-              const isSelected = selectedOffer === offerId;
-              const Icon = offerData.icon;
+          {/* Offer selector: only when there is more than one intro offer (?offer= still picks one) */}
+          {offerIds.length > 1 && (
+            <div className={styles.selector}>
+              {offerIds.map((offerId) => {
+                const offerData = introOffers[offerId];
+                const isSelected = selectedOffer === offerId;
+                const Icon = offerData.icon;
 
-              return (
-                <button
-                  key={offerId}
-                  type="button"
-                  onClick={() => setSelectedOffer(offerId)}
-                  className={styles.selectorBtn}
-                  aria-pressed={isSelected}
-                >
-                  <Icon className="h-4 w-4" aria-hidden="true" />
-                  <span>{offerData.shortName}</span>
-                </button>
-              );
-            })}
-          </div>
+                return (
+                  <button
+                    key={offerId}
+                    type="button"
+                    onClick={() => setSelectedOffer(offerId)}
+                    className={styles.selectorBtn}
+                    aria-pressed={isSelected}
+                  >
+                    <Icon className="h-4 w-4" aria-hidden="true" />
+                    <span>{offerData.shortName}</span>
+                  </button>
+                );
+              })}
+            </div>
+          )}
 
           {/* Selected Offer Card */}
           <a
@@ -463,47 +585,42 @@ export default function OffersContent({ reviews }: { reviews: ReactNode }) {
         </div>
       </section>
 
-      {/* How it works */}
-      <section className={`${styles.section} eu-wrap`} style={{ paddingTop: 0 }} aria-labelledby="how-title">
-        <div className="eu-rv">
-          <div className="eu-cap eu-cap-num" style={{ color: '#2a3a21' }}>
-            How it works
+      {/* FAQ Section */}
+      <section className={styles.section} style={{ paddingTop: 0 }}>
+        <div className={`eu-wrap ${styles.faq}`}>
+          <h2 className="eu-h2" style={{ textAlign: 'center' }}>Common Questions</h2>
+
+          <div className={styles.faqList}>
+            <div className={styles.faqItem}>
+              <h3>I&apos;ve never done pilates before</h3>
+              <p>Perfect! Try It All is designed for beginners. Our instructors will guide you through every movement with personalized attention.</p>
+            </div>
+
+            {promoActive && (
+              <div className={styles.faqItem}>
+                <h3>How does the {PROMO_CODE} code work?</h3>
+                <p>Choose any Euforyc Membership (Euforyc 4, 8, 12 or Unlimited) and enter {PROMO_CODE} at checkout. You&apos;ll get 5% off your first monthly payment only; after that you pay the standard monthly price. The code is for new membership subscribers only, can be used once per customer and is valid until 23:59 (UK time) on 30 November 2026. The Euforyc Membership&apos;s 6-month minimum term applies.</p>
+              </div>
+            )}
+
+            <div className={styles.faqItem}>
+              <h3>What should I bring?</h3>
+              <p>Comfortable workout clothes and water. We provide all equipment and mats. Grip socks are mandatory for Reformer Pilates, and you need your own towel for Hot Pilates and Sculpt Mat Pilates. Both can be bought at the studio.</p>
+            </div>
+
+            <div className={styles.faqItem}>
+              <h3>How do I book my classes?</h3>
+              <p>After purchase, you&apos;ll receive access to our booking system where you can schedule your classes at times that suit you.</p>
+            </div>
           </div>
-          <h2 id="how-title" className={`eu-h2 ${styles.h2}`}>
-            Simple, from the{' '}
-            <br />
-            <em>first</em> breath
-          </h2>
+
+          <div style={{ textAlign: 'center', marginTop: 40 }}>
+            <p className="eu-lede" style={{ marginBottom: 8 }}>Have more questions?</p>
+            <Link href="/contact" className="btn-minimal min-h-[44px]">
+              CONTACT US
+            </Link>
+          </div>
         </div>
-        <ol className={styles.steps}>
-          <li className={`${styles.step} eu-rv`}>
-            <div className={styles.stN} aria-hidden="true">i.</div>
-            <h3 className={styles.stT}>Claim your intro</h3>
-            <p className={styles.stP}>
-              Buy {offer.name} online — any three group classes for {offer.price}, for first-time clients. Valid{' '}
-              {offer.validity}.
-            </p>
-          </li>
-          <li className={`${styles.step} eu-rv`}>
-            <div className={styles.stN} aria-hidden="true">ii.</div>
-            <h3 className={styles.stT}>Book your classes</h3>
-            <p className={styles.stP}>
-              Choose your times on the <Link href="/schedule" className="underline underline-offset-4">live timetable</Link>.
-              Arrive 10–15 minutes early on your first visit to check in — and bring grip socks for Reformer.
-            </p>
-          </li>
-          <li className={`${styles.step} eu-rv`}>
-            <div className={styles.stN} aria-hidden="true">iii.</div>
-            <h3 className={styles.stT}>
-              Make it a <em>ritual</em>
-            </h3>
-            <p className={styles.stP}>
-              {promoActive
-                ? `Found your favourite? Join a Euforyc Membership — use ${PROMO_CODE} for 5% off your first month, until 30 November 2026.`
-                : 'Found your favourite? Join a Euforyc Membership or choose a class package.'}
-            </p>
-          </li>
-        </ol>
       </section>
 
       {/* Membership Offer Section */}
@@ -574,7 +691,7 @@ export default function OffersContent({ reviews }: { reviews: ReactNode }) {
 
             <div style={{ textAlign: 'center', marginTop: 32 }}>
               <Link href="/memberships" className="eu-ulink">
-                Compare membership benefits →
+                Compare membership benefits&nbsp;→
               </Link>
             </div>
           </div>
@@ -632,43 +749,8 @@ export default function OffersContent({ reviews }: { reviews: ReactNode }) {
         </div>
       </section>
 
-      {/* Why Euforyc */}
-      <section className={`${styles.section} ${styles.sectionDark} eu-on-dark`} aria-labelledby="why-title">
-        <div className={`eu-wrap ${styles.whyGrid}`}>
-          <div className={`${styles.whyImg} eu-rv`}>
-            <Image src="/about-studio.jpg" alt="The Euforyc reformer studio" fill sizes="(max-width: 900px) 160vw, 40vw" />
-          </div>
-          <div className={`${styles.whyText} eu-rv`}>
-            <div className="eu-cap eu-cap-num" style={{ color: '#F5F0E8' }}>
-              Why Euforyc
-            </div>
-            <h2 id="why-title" className={`eu-h2 ${styles.h2}`}>
-              A space that is{' '}
-              <br />
-              <em>entirely</em> yours
-            </h2>
-            <ul className={styles.whyList}>
-              {[
-                ['Women only', 'Every class, every day — a calm, supportive space designed for women.'],
-                ['Small and intimate', 'Six to eight women per class, so you are seen and guided.'],
-                ['More than Pilates', 'Red light therapy, infrared heat, skin treatments and matcha — all under one roof.'],
-                ['Easy to reach', `${STUDIO.addressLine} — ${station.charAt(0).toLowerCase()}${station.slice(1)}.`],
-              ].map(([title, text], i) => (
-                <li key={title} className={styles.whyRow}>
-                  <span className={styles.k} aria-hidden="true">{ROMAN[i]}</span>
-                  <span className={styles.v}>
-                    <strong>{title}</strong>
-                    {text}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      </section>
-
       {/* Existing Members Section */}
-      <section className={`${styles.section} ${styles.sectionDark} eu-on-dark`} style={{ paddingTop: 0 }}>
+      <section className={`${styles.section} ${styles.sectionDark} eu-on-dark`}>
         <div className={`eu-wrap ${styles.returning}`}>
           <div className="eu-cap" style={{ color: '#F5F0E8' }}>RETURNING CLIENT?</div>
           <h2 className={`eu-h2 ${styles.h2}`} style={{ fontSize: 'clamp(34px, 4vw, 56px)' }}>
@@ -690,69 +772,36 @@ export default function OffersContent({ reviews }: { reviews: ReactNode }) {
         </div>
       </section>
 
-      {/* Reviews Section */}
-      <section className={`${styles.section} ${styles.reviews}`}>
-        <div className="eu-wrap">
-          <div className={`${styles.centerHead} eu-rv`} style={{ marginBottom: 40 }}>
-            <p className="tagline">FROM OUR COMMUNITY</p>
-            <h2 className={`eu-h2 ${styles.h2}`}>What Our Clients Say</h2>
-          </div>
-        </div>
-        {reviews}
-      </section>
-
-      {/* FAQ Section */}
-      <section className={styles.section} style={{ paddingTop: 0 }}>
-        <div className={`eu-wrap ${styles.faq}`}>
-          <h2 className="eu-h2" style={{ textAlign: 'center' }}>Common Questions</h2>
-
-          <div className={styles.faqList}>
-            <div className={styles.faqItem}>
-              <h3>I&apos;ve never done pilates before</h3>
-              <p>Perfect! Try It All is designed for beginners. Our instructors will guide you through every movement with personalized attention.</p>
-            </div>
-
-            {promoActive && (
-              <div className={styles.faqItem}>
-                <h3>How does the {PROMO_CODE} code work?</h3>
-                <p>Choose any Euforyc Membership (Euforyc 4, 8, 12 or Unlimited) and enter {PROMO_CODE} at checkout. You&apos;ll get 5% off your first monthly payment only; after that you pay the standard monthly price. The code is for new membership subscribers only, can be used once per customer and is valid until 23:59 (UK time) on 30 November 2026. The Euforyc Membership&apos;s 6-month minimum term applies.</p>
-              </div>
-            )}
-
-            <div className={styles.faqItem}>
-              <h3>What should I bring?</h3>
-              <p>Comfortable workout clothes and water. We provide all equipment and mats. Grip socks are mandatory for Reformer Pilates, and you need your own towel for Hot Pilates and Sculpt Mat Pilates. Both can be bought at the studio.</p>
-            </div>
-
-            <div className={styles.faqItem}>
-              <h3>How do I book my classes?</h3>
-              <p>After purchase, you&apos;ll receive access to our booking system where you can schedule your classes at times that suit you.</p>
-            </div>
-          </div>
-
-          <div style={{ textAlign: 'center', marginTop: 40 }}>
-            <p className="eu-lede" style={{ marginBottom: 8 }}>Have more questions?</p>
-            <Link href="/contact" className="btn-minimal min-h-[44px]">
-              CONTACT US
-            </Link>
-          </div>
-        </div>
-      </section>
-
       {/* Final CTA */}
       <section className={`${styles.final} eu-wrap`}>
         <h2 className="eu-h2">
           Ready to Begin Your <em>Journey</em>?
         </h2>
         <div className={styles.finalCta}>
-          <PillLink href="#intro-offers" variant="ink" dot stretchMobile>
+          <PillLink
+            href={offer.momenceUrl}
+            variant="ink"
+            dot
+            stretchMobile
+            target="_blank"
+            rel="noopener noreferrer"
+            data-offer-id={offer.id}
+            data-content-name={`${offer.name} ${offer.classes} ${offer.price}`}
+            data-content-type="intro_offer"
+            data-content-category="/offers/final"
+            data-value={offer.price.replace(/[^0-9.]/g, '')}
+            data-currency="GBP"
+          >
             CLAIM YOUR FIRST 3 CLASSES
           </PillLink>
         </div>
       </section>
 
-      {/* Sticky CTA - Mobile only */}
-      <div className={`${styles.mbar} eu-on-dark`} data-bookbar>
+      {/* Sticky CTA (phones): slides in once the hero button is off screen */}
+      <div
+        className={`${styles.mbar} ${showBar ? styles.mbarShow : ''} eu-on-dark`}
+        data-bookbar
+      >
         <span className="eu-cap">{offer.shortName} · {offer.price}</span>
         <a
           href={offer.momenceUrl}
@@ -766,7 +815,7 @@ export default function OffersContent({ reviews }: { reviews: ReactNode }) {
           data-currency="GBP"
           className={styles.mbarGo}
         >
-          CLAIM {offer.shortName.toUpperCase()} OFFER
+          Claim
         </a>
       </div>
     </div>

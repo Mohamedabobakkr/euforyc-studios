@@ -281,7 +281,7 @@ export default async function ClassTypePage({ params }: { params: Promise<{ slug
               Next <em>sessions</em>
             </h2>
             <Link href="/schedule" className="eu-ulink self-start text-eu-ink md:self-auto">
-              Full timetable <Arrow size={14} />
+              Full <span className="whitespace-nowrap">timetable{'\u00a0'}<Arrow size={14} /></span>
             </Link>
           </div>
           <UpcomingSessions
@@ -354,7 +354,7 @@ export default async function ClassTypePage({ params }: { params: Promise<{ slug
                 </div>
               ))}
             </div>
-            <Link href="/faq" className="eu-ulink mt-8 text-eu-ink">More questions answered <Arrow size={14} /></Link>
+            <Link href="/faq" className="eu-ulink mt-8 text-eu-ink">More questions <span className="whitespace-nowrap">answered{'\u00a0'}<Arrow size={14} /></span></Link>
           </div>
         </div>
       </section>
@@ -368,7 +368,7 @@ export default async function ClassTypePage({ params }: { params: Promise<{ slug
               {STUDIO.name} is at {STUDIO.addressLine}. {STUDIO.transport.station}, and buses {STUDIO.transport.buses.join(', ')} stop nearby.
             </p>
             <p className="body-text">{POLICIES.womenOnly}</p>
-            <Link href="/contact" className="eu-ulink text-eu-ink">Map and directions <Arrow size={14} /></Link>
+            <Link href="/contact" className="eu-ulink text-eu-ink">Map and <span className="whitespace-nowrap">directions{'\u00a0'}<Arrow size={14} /></span></Link>
           </div>
           <div className="space-y-5 rounded-eu-lg border border-[#1a260e]/15 p-7 md:p-12">
             <h2 className={H2_SMALL}>Other classes</h2>

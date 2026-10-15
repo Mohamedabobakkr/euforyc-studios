@@ -43,5 +43,7 @@ export default async function OffersPage() {
       </div>
     );
 
-  return <OffersContent reviews={reviewsBlock} />;
+  return (
+    <OffersContent reviews={reviewsBlock} rating={score ? { average: score.average, count: score.count } : null} />
+  );
 }

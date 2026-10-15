@@ -320,12 +320,19 @@ function PackagesSection() {
     };
   }, []);
 
-  // Scroll active tab into view on mobile
+  // Centre the active tab in its strip on mobile. Only the strip scrolls:
+  // scrollIntoView() would also scroll the page down to the tabs on load
   useEffect(() => {
-    if (tabsRef.current) {
-      const activeTab = tabsRef.current.querySelector('[data-active="true"]') as HTMLElement;
+    const strip = tabsRef.current;
+    if (strip) {
+      const activeTab = strip.querySelector('[data-active="true"]') as HTMLElement;
       if (activeTab) {
-        activeTab.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+        const tab = activeTab.getBoundingClientRect();
+        const box = strip.getBoundingClientRect();
+        strip.scrollTo({
+          left: strip.scrollLeft + tab.left - box.left - (strip.clientWidth - tab.width) / 2,
+          behavior: 'smooth',
+        });
       }
     }
     // Small delay to let scroll settle, then update indicators

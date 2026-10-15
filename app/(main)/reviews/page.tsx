@@ -71,7 +71,12 @@ export default async function ReviewsPage() {
                   </p>
                 </div>
                 <Link href={`/classes/${classType.slug}`} className="eu-ulink self-start text-eu-ink md:self-auto">
-                  About {classType.name} <Arrow size={14} />
+                  About {classType.name.split(' ').slice(0, -1).join(' ')}{' '}
+                  <span className="whitespace-nowrap">
+                    {classType.name.split(' ').at(-1)}
+                    {'\u00a0'}
+                    <Arrow size={14} />
+                  </span>
                 </Link>
               </div>
               <ReviewCards reviews={classReviews} />

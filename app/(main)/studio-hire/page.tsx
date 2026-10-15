@@ -339,7 +339,7 @@ export default function StudioHire() {
                 href="#pricing"
                 className="eu-ulink"
               >
-                View pricing →
+                View pricing&nbsp;→
               </a>
             </div>
           </Reveal>
@@ -1389,7 +1389,7 @@ export default function StudioHire() {
                   href="/contact"
                   className="eu-ulink"
                 >
-                  Or get in touch →
+                  Or get in touch&nbsp;→
                 </Link>
               </div>
 

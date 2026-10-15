@@ -368,7 +368,7 @@ export default function MassagePage() {
                 CHOOSE YOUR RITUAL
               </PillLink>
               <a href="#the-ritual" className="eu-ulink">
-                What to expect →
+                What to expect&nbsp;→
               </a>
             </div>
           </Reveal>
