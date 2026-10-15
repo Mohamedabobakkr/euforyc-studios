@@ -103,7 +103,8 @@ export default async function Home() {
         <div className={`eu-fade-in ${styles.heroTag}`} style={{ animationDelay: '1.1s' }}>
           Pilates • Wellness • Strength
         </div>
-        <p className={`eu-fade-in ${styles.heroLede}`} style={{ animationDelay: '1.25s' }}>
+        {/* Rises without fading so the first paint has real text (LCP) */}
+        <p className={`eu-rise ${styles.heroLede}`}>
           A space to move, glow, gather and breathe — all under one roof.
         </p>
         <div className={`eu-fade-in ${styles.heroCtas} eu-on-dark`} style={{ animationDelay: '1.4s' }}>
