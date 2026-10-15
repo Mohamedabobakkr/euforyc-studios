@@ -358,11 +358,12 @@
 
 @media (max-width: 900px) {
   .hero {
-    height: max(760px, 100svh);
+    height: max(800px, 100svh);
   }
 
+  /* Leaves room at the bottom for the fixed booking bar */
   .heroContent {
-    padding: 110px 20px 210px;
+    padding: 110px 20px 250px;
   }
 
   .h1 {
@@ -390,7 +391,7 @@
   .heroFoot {
     grid-template-columns: minmax(0, 1fr);
     gap: 12px;
-    padding-bottom: 20px;
+    padding-bottom: calc(92px + env(safe-area-inset-bottom, 0px));
   }
 
   .controls {
