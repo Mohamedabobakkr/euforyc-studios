@@ -319,7 +319,7 @@ export default function About() {
             alt="Euforyc Studios pilates session"
             fill
             className="object-cover"
-            sizes="100vw"
+            sizes="(max-width: 600px) and (min-resolution: 3.5dppx) 500px, (max-width: 600px) 640px, 100vw"
           />
           <div className="absolute inset-0 bg-[#1a260e]/70" />
         </div>

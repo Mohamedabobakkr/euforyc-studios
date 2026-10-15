@@ -389,7 +389,8 @@ export function Euforia() {
           src="/about-cta.jpg"
           alt="A member stretching on the reformer by the window"
           fill
-          sizes="100vw"
+          // Landscape photo in a tall box on phones: ask for a larger file there
+          sizes="(max-width: 600px) and (min-resolution: 3.5dppx) 500px, (max-width: 600px) 640px, 100vw"
         />
       </div>
       <PauseOffscreen className={`${styles.euRing} eu-spin eu-spin--slow`} ariaHidden>
@@ -479,7 +480,7 @@ export function FirstVisit() {
                 src={step.image.src}
                 alt={step.image.alt}
                 fill
-                sizes="(max-width: 900px) 110px, 30vw"
+                sizes="(max-width: 900px) 240px, 30vw"
                 style={{ objectPosition: step.image.position }}
               />
             </div>

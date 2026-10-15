@@ -268,6 +268,10 @@ export default function OffersContent({ reviews }: { reviews: ReactNode }) {
   const [copied, setCopied] = useState(false);
   const timeLeft = useCountdown(PROMO_ENDS_AT);
   const promoActive = timeLeft !== null;
+  // The page HTML can be a few minutes old: once in the browser, the countdown
+  // is re-mounted so it shows the browser's time straight away
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
 
   // Read ?offer= after mount so the page itself can be rendered as static HTML
   useEffect(() => {
@@ -517,7 +521,7 @@ export default function OffersContent({ reviews }: { reviews: ReactNode }) {
               {/* Real deadline: 30 November 2026, 23:59 UK time */}
               <div className={styles.countdown}>
                 <Timer className="h-4 w-4" aria-hidden="true" />
-                <span suppressHydrationWarning>
+                <span key={mounted ? 'browser' : 'server'} suppressHydrationWarning>
                   OFFER ENDS IN: {timeLeft.days}d {timeLeft.hours}h {timeLeft.minutes}m
                 </span>
               </div>
@@ -632,7 +636,7 @@ export default function OffersContent({ reviews }: { reviews: ReactNode }) {
       <section className={`${styles.section} ${styles.sectionDark} eu-on-dark`} aria-labelledby="why-title">
         <div className={`eu-wrap ${styles.whyGrid}`}>
           <div className={`${styles.whyImg} eu-rv`}>
-            <Image src="/about-studio.jpg" alt="The Euforyc reformer studio" fill sizes="(max-width: 900px) 90vw, 40vw" />
+            <Image src="/about-studio.jpg" alt="The Euforyc reformer studio" fill sizes="(max-width: 900px) 160vw, 40vw" />
           </div>
           <div className={`${styles.whyText} eu-rv`}>
             <div className="eu-cap eu-cap-num" style={{ color: '#F5F0E8' }}>

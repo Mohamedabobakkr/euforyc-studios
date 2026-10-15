@@ -4,6 +4,11 @@ import Image from 'next/image';
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import styles from './home/home.module.css';
 
+// The shopfront photo is landscape: on a portrait phone only its middle shows,
+// so phones ask for a larger file (less on 4x screens, which would get 3840w)
+const LANDSCAPE_SIZES = '(max-width: 600px) and (min-resolution: 3.5dppx) 500px, (max-width: 600px) 640px, 100vw';
+const LANDSCAPE = new Set(['/hero/IMG_4879.JPG']);
+
 const heroImages = [
   '/hero/IMG_4879.JPG',
   '/hero/IMG_5111.jpg',
@@ -109,7 +114,7 @@ export default function HeroSlideshow({ children, nextClass, rating }: HeroSlide
               src={src}
               alt=""
               fill
-              sizes="100vw"
+              sizes={LANDSCAPE.has(src) ? LANDSCAPE_SIZES : '100vw'}
               priority={i === 0}
               loading={i === 0 ? undefined : 'eager'}
             />

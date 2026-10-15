@@ -342,6 +342,11 @@ body {
   color: var(--eu-cream);
 }
 
+/* Headings break into even lines, never leaving one word on its own */
+.eu-site :is(h1, h2, h3) {
+  text-wrap: balance;
+}
+
 /* Inter 300 reads thin on small screens: body copy is 400 below 900px */
 @media (max-width: 899px) {
   .eu-site,
@@ -471,6 +476,19 @@ body {
 
 .eu-btn:has(.eu-btn__dot) {
   padding: 8px 8px 8px 28px;
+}
+
+/* Small phones: a long label wraps inside the pill rather than overflowing it */
+@media (max-width: 480px) {
+  .eu-btn {
+    white-space: normal;
+    text-align: center;
+  }
+
+  .eu-btn:has(.eu-btn__dot) {
+    padding-left: 24px;
+    text-align: left;
+  }
 }
 
 .eu-btn__dot {

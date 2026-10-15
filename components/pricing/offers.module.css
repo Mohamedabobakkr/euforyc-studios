@@ -27,6 +27,13 @@
   letter-spacing: -0.03em;
 }
 
+/* "Transformation" must fit the narrowest phones */
+@media (max-width: 420px) {
+  .title {
+    font-size: 13.4vw;
+  }
+}
+
 .priceBlock {
   display: flex;
   align-items: flex-end;
@@ -954,6 +961,13 @@
     font-weight: 500;
     letter-spacing: 0.16em;
     text-transform: uppercase;
+    line-height: 1.35;
+    text-align: center;
+  }
+
+  /* The offer and price stay on one line; the button wraps if it must */
+  .mbar > :global(.eu-cap) {
+    flex: none;
     white-space: nowrap;
   }
 

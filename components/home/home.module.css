@@ -356,14 +356,28 @@
   }
 }
 
+/* Keeps "Pilates • Wellness • Strength" on one line on the narrowest phones */
+@media (max-width: 400px) {
+  .heroTag {
+    letter-spacing: 0.2em;
+    white-space: nowrap;
+  }
+}
+
 @media (max-width: 900px) {
+  /* On phones the hero grows with its text, so the buttons never run into
+     the next-class card and pause button below them */
   .hero {
-    height: max(800px, 100svh);
+    height: auto;
+    min-height: max(800px, 100svh);
   }
 
-  /* Leaves room at the bottom for the fixed booking bar */
+  /* Leaves room at the bottom for the next-class card and the fixed booking bar */
   .heroContent {
-    padding: 110px 20px 250px;
+    position: relative;
+    inset: auto;
+    min-height: inherit;
+    padding: 110px 20px calc(280px + env(safe-area-inset-bottom, 0px));
   }
 
   .h1 {
@@ -558,6 +572,11 @@
   .stripRow {
     margin-right: calc(-1 * var(--eu-gutter));
     padding-right: var(--eu-gutter);
+    scroll-snap-type: x mandatory;
+  }
+
+  .stripRow li {
+    scroll-snap-align: start;
   }
 }
 
