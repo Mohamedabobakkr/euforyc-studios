@@ -18,76 +18,72 @@
   position: relative;
 }
 
+/* First screen: kicker, the offer as the H1, one line of facts, one button,
+   three proof points. Sized so the button shows without scrolling on an
+   iPhone SE. Two text sizes besides the H1: 12px capitals and 16px. */
+.kicker {
+  margin: 0;
+  font-size: 12px;
+  color: #2a3a21;
+  text-wrap: balance;
+}
+
 .title {
-  margin: 28px 0 0;
+  margin: 20px 0 0;
   font-family: var(--eu-display);
   font-weight: 400;
   font-size: clamp(54px, 7.2vw, 118px);
-  line-height: 0.95;
+  line-height: 0.98;
   letter-spacing: -0.03em;
 }
 
-/* "Transformation" must fit the narrowest phones */
-@media (max-width: 420px) {
-  .title {
-    font-size: 13.4vw;
-  }
-}
-
-.priceBlock {
-  display: flex;
-  align-items: flex-end;
-  gap: 22px;
-  margin-top: 40px;
-  padding: 26px 0;
-  border-top: 1px solid rgba(26, 38, 14, 0.16);
-  border-bottom: 1px solid rgba(26, 38, 14, 0.16);
-}
-
-.pbBig {
-  font-family: var(--eu-display);
-  font-size: clamp(88px, 9vw, 148px);
-  line-height: 0.85;
-  letter-spacing: -0.045em;
-}
-
-.pbSide {
-  padding-bottom: 10px;
-  font-size: 16px;
-  line-height: 1.55;
-  color: #2a3a21;
-}
-
-.pbSide strong {
-  font-family: var(--eu-display);
-  font-weight: 400;
-  font-size: 26px;
-  color: #1a260e;
+.title em {
+  font-style: italic;
 }
 
 .lede {
-  max-width: 480px;
-  margin: 28px 0 0;
-  font-size: 17px;
-  line-height: 1.7;
+  max-width: 460px;
+  margin: 20px 0 0;
+  font-size: 16px;
+  line-height: 1.6;
   color: #2a3a21;
 }
 
-.ctas {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 16px 28px;
-  margin-top: 36px;
+.heroCta {
+  max-width: 440px;
+  margin-top: 28px;
 }
 
-.trust {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin: 34px 0 0;
+.proof {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  max-width: 440px;
+  margin: 16px 0 0;
   padding: 0;
   list-style: none;
+  color: #3d4a33;
+  font-size: 12px;
+  line-height: 1.5;
+  letter-spacing: 0.12em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.proof li + li {
+  border-left: 1px solid rgba(26, 38, 14, 0.16);
+}
+
+/* The figure on top, its label under it */
+.proof b {
+  display: block;
+  font-weight: 500;
+  color: #1a260e;
+}
+
+@media (max-width: 420px) {
+  .title {
+    font-size: 12.6vw;
+  }
 }
 
 .arch {
@@ -159,22 +155,32 @@
 }
 
 @media (max-width: 900px) {
+  .hero {
+    padding-top: 28px;
+  }
+
   .copy,
   .art {
     grid-column: 1 / -1;
   }
 
+  .heroCta {
+    max-width: none;
+  }
+
+  /* The photo sits below the first screen on phones, and smaller */
   .art {
-    justify-self: end;
-    width: 100%;
-    max-width: 500px;
+    justify-self: center;
+    width: 72%;
+    max-width: 320px;
     margin-top: 56px;
   }
 
   .ticket {
-    left: -8px;
-    bottom: -30px;
-    width: 210px;
+    left: -12%;
+    bottom: -24px;
+    width: 190px;
+    padding: 18px 20px;
   }
 }
 
@@ -945,6 +951,16 @@
     background: #1a260e;
     color: #fffcf2;
     box-shadow: 0 20px 40px -20px rgba(26, 38, 14, 0.7);
+    /* Hidden below the screen until the hero button scrolls away */
+    transform: translateY(calc(100% + 24px + env(safe-area-inset-bottom, 0px)));
+    visibility: hidden;
+    transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1), visibility 0s linear 0.45s;
+  }
+
+  .mbarShow {
+    transform: none;
+    visibility: visible;
+    transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1), visibility 0s;
   }
 
   .mbarGo {
@@ -979,4 +995,50 @@
 /* Reviews: the deck throws its top card off to the side, so clip it */
 .reviews {
   overflow: hidden;
+}
+
+@media (max-width: 700px) and (prefers-reduced-motion: reduce) {
+  .mbar,
+  .mbarShow {
+    transition: none;
+  }
+}
+
+/* Phones: "What you can try" keeps the class buttons and the Claim; the
+   three photo frames are left out to keep the section short */
+@media (max-width: 560px) {
+  .slots {
+    display: none;
+  }
+}
+
+/* Phones on their side (short screens): the title on one line and tighter
+   spacing, so the Claim button still shows without scrolling */
+@media (max-width: 900px) and (max-height: 500px) {
+  .hero {
+    padding-top: 16px;
+  }
+
+  .title {
+    margin-top: 10px;
+    font-size: 40px;
+  }
+
+  .title br {
+    display: none;
+  }
+
+  .title em {
+    margin-left: 0.25em;
+  }
+
+  .lede {
+    max-width: none;
+    margin-top: 10px;
+  }
+
+  .heroCta {
+    max-width: 440px;
+    margin-top: 16px;
+  }
 }
