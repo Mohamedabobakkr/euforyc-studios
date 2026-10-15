@@ -13,6 +13,7 @@ import { POLICIES, PRICING, STUDIO } from '@/lib/site';
 import ClassPanels, { type ClassPanel } from './ClassPanels';
 import { OpenNow, StudioHours } from './OpenStatus';
 import type { SpecialSession } from './data';
+import { SOCIAL_CARDS, SOCIAL_LINE, SOCIAL_MEMBERSHIP, type SocialCard } from './social-data';
 import { spotsText } from './types';
 import styles from './home.module.css';
 
@@ -265,9 +266,44 @@ export function ClassesSection() {
 
 // ---------------------------------------------------------------------------
 
-export function ThisMonth({ specials }: { specials: SpecialSession[] }) {
-  const cards = specials.length + 1;
+function SocialCardLink({ card }: { card: SocialCard }) {
+  return (
+    <a href={card.href} className={`${styles.ev} ${styles.evBig}`}>
+      <span className={`${styles.evImg} ${card.image ? '' : styles.evWordBox}`} style={{ display: 'block' }}>
+        {card.image ? (
+          <Image
+            src={card.image.src}
+            alt={card.image.alt}
+            fill
+            sizes="(max-width: 1100px) min(76vw, 320px), 340px"
+            style={{ objectPosition: card.image.position }}
+          />
+        ) : (
+          <span className={styles.evWord} aria-hidden="true">
+            {card.word}
+          </span>
+        )}
+        <span className={styles.evDate}>
+          {card.badge.top && <span className="eu-cap">{card.badge.top}</span>}
+          {card.badge.big && <b>{card.badge.big}</b>}
+          {card.badge.bottom && <span className="eu-cap">{card.badge.bottom}</span>}
+        </span>
+      </span>
+      <span className={styles.evIn}>
+        <span className={`eu-cap ${styles.evKind}`}>{card.kicker}</span>
+        <span className={styles.evT}>{card.title}</span>
+        <span className={styles.evP}>{card.line}</span>
+        {card.note && <span className={styles.evP}>{card.note}</span>}
+        <span className={styles.evGo}>
+          {card.cta}
+          <Arrow size={14} />
+        </span>
+      </span>
+    </a>
+  );
+}
 
+export function ThisMonth({ specials }: { specials: SpecialSession[] }) {
   return (
     <section className={styles.month} aria-labelledby="month-title">
       <div className="eu-wrap">
@@ -285,57 +321,59 @@ export function ThisMonth({ specials }: { specials: SpecialSession[] }) {
           </p>
         </div>
 
-        <ul className={styles.evGrid} style={{ ['--cards' as string]: cards }}>
-          {specials.map(({ event, label, image }) => {
-            const [weekday, day, month] = event.dayLabel.split(' ');
-            return (
-              <li key={event.id}>
-                <Link href="/schedule" className={styles.ev}>
-                  <span className={styles.evImg} style={{ display: 'block' }}>
-                    <Image src={image.src} alt={image.alt} fill sizes="(max-width: 1100px) 76vw, 25vw" />
-                    <span className={styles.evDate}>
-                      <span className="eu-cap">{weekday}</span>
-                      <b>{day}</b>
-                      <span className="eu-cap">{month}</span>
+        {specials.length > 0 && (
+          <ul className={styles.evGrid} style={{ ['--cards' as string]: specials.length }}>
+            {specials.map(({ event, label, image }) => {
+              const [weekday, day, month] = event.dayLabel.split(' ');
+              return (
+                <li key={event.id}>
+                  <Link href="/schedule" className={styles.ev}>
+                    <span className={styles.evImg} style={{ display: 'block' }}>
+                      <Image src={image.src} alt={image.alt} fill sizes="(max-width: 1100px) 76vw, 25vw" />
+                      <span className={styles.evDate}>
+                        <span className="eu-cap">{weekday}</span>
+                        <b>{day}</b>
+                        <span className="eu-cap">{month}</span>
+                      </span>
                     </span>
-                  </span>
-                  <span className={styles.evIn}>
-                    <span className={`eu-cap ${styles.evKind}`}>
-                      {label} · {event.time}
+                    <span className={styles.evIn}>
+                      <span className={`eu-cap ${styles.evKind}`}>
+                        {label} · {event.time}
+                      </span>
+                      <span className={styles.evT}>{event.title}</span>
+                      <span className={styles.evP}>
+                        {event.instructor ? `With ${event.instructor}, at the studio. ` : 'At the studio. '}
+                        {event.isSoldOut ? spotsText(event) : `${event.spotsAvailable} of ${event.capacity} places left.`}
+                      </span>
                     </span>
-                    <span className={styles.evT}>{event.title}</span>
-                    <span className={styles.evP}>
-                      {event.instructor ? `With ${event.instructor}, at the studio. ` : 'At the studio. '}
-                      {event.isSoldOut ? spotsText(event) : `${event.spotsAvailable} of ${event.capacity} places left.`}
-                    </span>
-                  </span>
-                </Link>
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        )}
+
+        {/* Euforyc Social: retreats and London socials (components/home/social-data.ts) */}
+        <div className={styles.social}>
+          <div className={`${styles.socialHead} eu-rv`}>
+            <span className="eu-cap" style={{ color: '#2a3a21' }}>
+              Euforyc Social
+            </span>
+            <h3 className={styles.socialH}>{SOCIAL_LINE}</h3>
+          </div>
+          <ul className={`${styles.evGrid} ${styles.socialGrid}`} style={{ ['--cards' as string]: SOCIAL_CARDS.length }}>
+            {SOCIAL_CARDS.map((card) => (
+              <li key={card.id}>
+                <SocialCardLink card={card} />
               </li>
-            );
-          })}
-          <li>
-            <a
-              href="https://euforycsocial.co.uk"
-              className={`${styles.ev} ${styles.evBig}`}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <span className={styles.evImg} style={{ display: 'block' }}>
-                <Image src="/hero/IMG_8688.JPG" alt="A smiling Euforyc member" fill sizes="(max-width: 1100px) 76vw, 25vw" />
-                <span className={styles.evDate}>
-                  <span className="eu-cap">Apr</span>
-                  <b>13</b>
-                  <span className="eu-cap">2027</span>
-                </span>
-              </span>
-              <span className={styles.evIn}>
-                <span className={`eu-cap ${styles.evKind}`}>Euforyc Social · retreat</span>
-                <span className={styles.evT}>Siwa, Egypt</span>
-                <span className={styles.evP}>13–20 April 2027 · 8 places. Plus London socials all year for members.</span>
-              </span>
+            ))}
+          </ul>
+          <p className={styles.socialMember}>
+            <a href={SOCIAL_MEMBERSHIP.href}>
+              {SOCIAL_MEMBERSHIP.text}
             </a>
-          </li>
-        </ul>
+          </p>
+        </div>
       </div>
     </section>
   );
