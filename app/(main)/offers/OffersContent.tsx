@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { CheckCircle2, Sparkles, Timer, Copy, Check } from 'lucide-react';
 
 import Arrow from '@/components/euforyc/Arrow';
+import LoadWhenNear from '@/components/euforyc/LoadWhenNear';
 import PillLink from '@/components/euforyc/PillLink';
 import styles from '@/components/pricing/offers.module.css';
 import { ORDERED_CLASS_TYPES } from '@/lib/classes';
@@ -222,7 +223,9 @@ function BuildYourThree({ offer }: { offer: (typeof introOffers)[OfferId] }) {
               <li key={i}>
                 <div className={styles.frame}>
                   {item ? (
-                    <Image key={item.slug} src={item.image.src} alt={item.image.alt} fill sizes="(max-width: 700px) 30vw, 28vw" />
+                    <LoadWhenNear>
+                      <Image key={item.slug} src={item.image.src} alt={item.image.alt} fill sizes="(max-width: 700px) 30vw, 28vw" />
+                    </LoadWhenNear>
                   ) : (
                     <span className={styles.empty}>Class {i + 1}</span>
                   )}
@@ -377,12 +380,14 @@ export default function OffersContent({
 
         <div className={styles.art}>
           <div className={styles.arch}>
-            <Image
-              src="/hero/IMG_8686.JPG"
-              alt="A member stretching on a reformer at Euforyc Studios"
-              fill
-              sizes="(max-width: 900px) 70vw, 36vw"
-            />
+            <LoadWhenNear>
+              <Image
+                src="/hero/IMG_8686.JPG"
+                alt="A member stretching on a reformer at Euforyc Studios"
+                fill
+                sizes="(max-width: 900px) 70vw, 36vw"
+              />
+            </LoadWhenNear>
           </div>
           <div className={styles.ticket}>
             <div className="eu-cap" style={{ color: '#F5F0E8' }}>
@@ -447,7 +452,9 @@ export default function OffersContent({
       <section className={`${styles.section} ${styles.sectionDark} eu-on-dark`} aria-labelledby="why-title">
         <div className={`eu-wrap ${styles.whyGrid}`}>
           <div className={`${styles.whyImg} eu-rv`}>
-            <Image src="/about-studio.jpg" alt="The Euforyc reformer studio" fill sizes="(max-width: 900px) 160vw, 40vw" />
+            <LoadWhenNear>
+              <Image src="/about-studio.jpg" alt="The Euforyc reformer studio" fill sizes="(max-width: 900px) 160vw, 40vw" />
+            </LoadWhenNear>
           </div>
           <div className={`${styles.whyText} eu-rv`}>
             <div className="eu-cap eu-cap-num" style={{ color: '#F5F0E8' }}>
