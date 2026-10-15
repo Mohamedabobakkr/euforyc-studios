@@ -6,9 +6,15 @@
  * them in step with that site. Links open euforycsocial.co.uk.
  *
  * A card without `image` shows its `word` large on ink instead of a photo.
- * To give the padel card a photo, add /public/social/padel-london.jpg and set
- * its `image`.
+ * A card with `crossfade` as well fades between the two photos (CSS only).
  */
+
+export interface SocialPhoto {
+  src: string;
+  alt: string;
+  /** object-position, so faces and words stay in the frame */
+  position: string;
+}
 
 export interface SocialCard {
   id: string;
@@ -22,7 +28,9 @@ export interface SocialCard {
   href: string;
   /** The link's words; without one the card shows only an arrow */
   cta?: string;
-  image?: { src: string; alt: string; position: string };
+  image?: SocialPhoto;
+  /** A second photo the card fades to and back, in a loop */
+  crossfade?: SocialPhoto;
   /** Shown on the photo-less card */
   word: string;
 }
@@ -66,6 +74,16 @@ export const SOCIAL_CARDS: SocialCard[] = [
     title: 'Padel social',
     line: 'London is our home, and our socials are the heartbeat of the community.',
     href: 'https://euforycsocial.co.uk/club',
+    image: {
+      src: '/social/padel-london-1.jpg',
+      alt: 'Three Euforyc members taking a mirror selfie at a London padel club',
+      position: '50% 30%',
+    },
+    crossfade: {
+      src: '/social/padel-london-2.jpg',
+      alt: 'Euforyc Studios tote bag, padel racket and balls on the court',
+      position: '50% 38%',
+    },
     word: 'Padel',
   },
 ];
