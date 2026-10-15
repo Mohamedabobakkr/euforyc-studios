@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, Suspense } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { CheckCircle2, Sparkles, Timer, Copy, Check } from 'lucide-react';
@@ -769,10 +769,8 @@ function OffersContent() {
   );
 }
 
+// No Suspense boundary: nothing here suspends (?offer= is read after mount),
+// and a boundary made React stream the whole page hidden until a script ran
 export default function OffersPage() {
-  return (
-    <Suspense fallback={<div className="eu-page-top min-h-screen bg-[#fffcf2]" />}>
-      <OffersContent />
-    </Suspense>
-  );
+  return <OffersContent />;
 }

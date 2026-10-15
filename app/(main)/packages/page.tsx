@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, Suspense, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Sparkles, Flame, Zap, Heart, Crown, Dumbbell, Music } from 'lucide-react';
 import Arrow from '@/components/euforyc/Arrow';
 import PillLink from '@/components/euforyc/PillLink';
@@ -507,20 +507,8 @@ export default function Packages() {
         </div>
 
         {/* Intro Offers */}
-        <Suspense fallback={
-          <section className="py-16 md:py-20 bg-eu-cream">
-            <div className="eu-wrap">
-              <div className="max-w-3xl">
-                <div className="animate-pulse space-y-4">
-                  <div className="h-8 bg-[#1a260e]/[0.06] rounded-full w-48" />
-                  <div className="h-4 bg-[#1a260e]/[0.04] rounded-full w-64" />
-                </div>
-              </div>
-            </div>
-          </section>
-        }>
-          <IntroOffersSection />
-        </Suspense>
+        {/* Rendered directly (no Suspense): it reads ?offer= after mount */}
+        <IntroOffersSection />
 
         {/* Divider */}
         <div className="bg-eu-cream pt-[clamp(72px,8vw,120px)]">

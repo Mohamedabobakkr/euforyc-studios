@@ -150,6 +150,7 @@ const Navigation = () => {
               width={625}
               height={313}
               loading="eager"
+              fetchPriority="high"
               sizes="(max-width: 1100px) 96px, 148px"
             />
           </Link>
