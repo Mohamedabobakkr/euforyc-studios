@@ -35,4 +35,4 @@ All 7 high vulnerabilities trace to `braces@3.0.3` (GHSA-vfj7-8cjw-p6xm — stac
 
 ## Manual Action Required
 - **tailwindcss v3 → v4 migration:** Would resolve 5 of 7 remaining high vulnerabilities. Major breaking change (config format changes from JS to CSS-based). Recommend scheduling as a planned migration sprint. Runtime risk is LOW since these are build-time-only dependencies with no production exposure.
-- **braces upstream fix:** Monitor for a patched release of `braces` (>3.0.3). When available, `npm update braces` would resolve all 7 findings without any breaking changes.
+- **braces upstream fix:** Monitor for a patched release of `braces` (>3.0.3). When available, add `"braces": "^3.0.4"` to overrides in package.json to resolve all 7 findings without breaking changes.
