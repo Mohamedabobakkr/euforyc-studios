@@ -10,12 +10,15 @@ export default function PauseOffscreen({
   children,
   className = '',
   ariaHidden = false,
+  as: Tag = 'div',
 }: {
   children: ReactNode;
   className?: string;
   ariaHidden?: boolean;
+  /** 'span' where a <div> isn't allowed, such as inside a link's text */
+  as?: 'div' | 'span';
 }) {
-  const ref = useRef<HTMLDivElement>(null);
+  const ref = useRef<HTMLDivElement & HTMLSpanElement>(null);
   const [visible, setVisible] = useState(true);
   const [tabHidden, setTabHidden] = useState(false);
 
@@ -33,12 +36,12 @@ export default function PauseOffscreen({
   }, []);
 
   return (
-    <div
+    <Tag
       ref={ref}
       className={`${className} ${!visible || tabHidden ? 'eu-paused' : ''}`}
       aria-hidden={ariaHidden || undefined}
     >
       {children}
-    </div>
+    </Tag>
   );
 }

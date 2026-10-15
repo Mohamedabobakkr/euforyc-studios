@@ -266,16 +266,32 @@ export function ClassesSection() {
 
 // ---------------------------------------------------------------------------
 
+const SOCIAL_SIZES = '(max-width: 1100px) min(76vw, 320px), 340px';
+
 function SocialCardLink({ card }: { card: SocialCard }) {
   return (
     <a href={card.href} className={`${styles.ev} ${styles.evBig}`}>
       <span className={`${styles.evImg} ${card.image ? '' : styles.evWordBox}`} style={{ display: 'block' }}>
-        {card.image ? (
+        {card.image && card.crossfade ? (
+          // Two stacked photos; the top one fades in and out (CSS only)
+          <PauseOffscreen as="span" className={styles.evFade}>
+            <Image src={card.image.src} alt={card.image.alt} fill sizes={SOCIAL_SIZES} style={{ objectPosition: card.image.position }} />
+            <span className={styles.evFadeTop}>
+              <Image
+                src={card.crossfade.src}
+                alt={card.crossfade.alt}
+                fill
+                sizes={SOCIAL_SIZES}
+                style={{ objectPosition: card.crossfade.position }}
+              />
+            </span>
+          </PauseOffscreen>
+        ) : card.image ? (
           <Image
             src={card.image.src}
             alt={card.image.alt}
             fill
-            sizes="(max-width: 1100px) min(76vw, 320px), 340px"
+            sizes={SOCIAL_SIZES}
             style={{ objectPosition: card.image.position }}
           />
         ) : (

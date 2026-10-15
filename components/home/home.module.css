@@ -1563,6 +1563,50 @@
   letter-spacing: -0.02em;
 }
 
+/* Two stacked photos: the top one fades in and out over the bottom one.
+   Opacity only, so nothing moves or reflows; paused off-screen by
+   PauseOffscreen (.eu-paused). With reduced motion only the first shows. */
+.evFade {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+
+.evFadeTop {
+  position: absolute;
+  inset: 0;
+  display: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .evFadeTop {
+    display: block;
+    opacity: 0;
+    animation: evFade 5.6s linear infinite;
+  }
+}
+
+/* Each photo holds 2s, then a 0.8s fade to the other: 2 + 0.8 + 2 + 0.8 = 5.6s */
+@keyframes evFade {
+  0% {
+    opacity: 0;
+  }
+  35.7% {
+    opacity: 0;
+    animation-timing-function: ease-in-out;
+  }
+  50% {
+    opacity: 1;
+  }
+  85.7% {
+    opacity: 1;
+    animation-timing-function: ease-in-out;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
 .evGo {
   display: inline-flex;
   align-items: center;
