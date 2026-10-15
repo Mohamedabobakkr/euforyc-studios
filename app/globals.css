@@ -578,34 +578,33 @@ body {
 }
 
 /* Text link with an underline that shortens on hover */
+/* Underlined text link. A real text underline, so a link that wraps is
+   underlined line by line (never struck through). Put a no-break space
+   before the arrow so it stays with the last word. 13px padding keeps
+   the tap area at least 44px tall. */
 .eu-ulink {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  min-height: 44px;
+  display: inline-block;
+  padding: 13px 0;
   font-size: 12px;
   font-weight: 400;
+  line-height: 1.5;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  text-decoration: none;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 6px;
   color: inherit;
+  transition: text-decoration-color 0.4s;
 }
 
-.eu-ulink::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 9px;
-  height: 1px;
-  background: currentColor;
-  transform-origin: left;
-  transition: transform 0.6s var(--eu-ease);
+.eu-ulink:hover {
+  color: inherit;
+  text-decoration-color: color-mix(in srgb, currentColor 30%, transparent);
 }
 
-.eu-ulink:hover::after {
-  transform: scaleX(0.3);
+.eu-ulink svg {
+  display: inline-block;
+  vertical-align: -2px;
 }
 
 /* Arch image frame */

@@ -574,7 +574,7 @@ export default function OffersContent({ reviews }: { reviews: ReactNode }) {
 
             <div style={{ textAlign: 'center', marginTop: 32 }}>
               <Link href="/memberships" className="eu-ulink">
-                Compare membership benefits →
+                Compare membership benefits&nbsp;→
               </Link>
             </div>
           </div>
