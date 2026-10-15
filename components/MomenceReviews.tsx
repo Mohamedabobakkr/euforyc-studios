@@ -67,7 +67,7 @@ export default function MomenceReviews() {
                 /* Review text styling */
                 #momence-plugin-reviews p,
                 #momence-plugin-reviews span {
-                    font-family: 'Inter', sans-serif !important;
+                    font-family: var(--eu-body) !important;
                     color: rgba(26, 38, 14, 0.8) !important;
                 }
 
@@ -76,7 +76,7 @@ export default function MomenceReviews() {
                 #momence-plugin-reviews h4,
                 #momence-plugin-reviews [class*="name"],
                 #momence-plugin-reviews [class*="Name"] {
-                    font-family: 'Playfair Display', serif !important;
+                    font-family: var(--eu-display) !important;
                     color: #1a260e !important;
                     font-weight: 400 !important;
                     letter-spacing: 0.02em !important;

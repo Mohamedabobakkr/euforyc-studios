@@ -136,7 +136,18 @@ const nextConfig = {
       // EMS Sculpt landing page retired — EMS is offered through Skin Studio
       {
         source: '/ems-sculpt',
-        destination: '/skin-studio',
+        destination: 'https://euforycskin.co.uk/',
+        permanent: true,
+      },
+      // Skin Studio now has its own site
+      {
+        source: '/skin-studio',
+        destination: 'https://euforycskin.co.uk/',
+        permanent: true,
+      },
+      {
+        source: '/skin-studio/:path*',
+        destination: 'https://euforycskin.co.uk/',
         permanent: true,
       },
       // Retreats have moved to Euforyc Social

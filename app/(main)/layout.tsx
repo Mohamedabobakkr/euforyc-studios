@@ -445,9 +445,9 @@ export default function RootLayout({
         {/* Structured Data - WebSite */}
         <JsonLd data={websiteSchema} />
       </head>
-      <body className="font-sans bg-[#fffcf2] text-[#1a260e] antialiased" suppressHydrationWarning>
+      <body className="eu-site font-sans bg-[#fffcf2] text-[#1a260e] antialiased" suppressHydrationWarning>
         {/* Skip to content for accessibility */}
-        <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-[#1a260e] text-[#fffcf2] px-4 py-2 rounded">
+        <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:z-[100] focus:top-4 focus:left-4 bg-[#1a260e] text-[#fffcf2] px-4 py-2 rounded-full">
           Skip to content
         </a>
 

@@ -11,7 +11,7 @@ import {
   Music,
   Send,
   CheckCircle2,
-  ArrowRight,
+  ChevronDown,
   Calendar,
   MapPin,
   Heart,
@@ -21,6 +21,7 @@ import {
   Plus,
   Calculator,
 } from 'lucide-react';
+import Arrow from '@/components/euforyc/Arrow';
 import HoneypotField from '@/components/HoneypotField';
 import { getPerPerson } from '@/lib/studio-hire-pricing';
 import { submitEnquiry } from '@/lib/submit-enquiry';
@@ -43,21 +44,10 @@ function useInView(threshold = 0.12) {
 }
 
 // ─── Reveal Wrapper ───────────────────────────────────────────
-function Reveal({ children, className = '', delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) {
-  const { ref, visible } = useInView();
-  return (
-    <div
-      ref={ref}
-      className={className}
-      style={{
-        opacity: visible ? 1 : 0,
-        transform: visible ? 'translateY(0)' : 'translateY(32px)',
-        transition: `opacity 0.8s cubic-bezier(.22,1,.36,1) ${delay}s, transform 0.8s cubic-bezier(.22,1,.36,1) ${delay}s`,
-      }}
-    >
-      {children}
-    </div>
-  );
+// CSS-only (eu-rv): content is always rendered visible, and only animates
+// where scroll-driven animations are supported and motion is allowed.
+function Reveal({ children, className = '' }: { children: React.ReactNode; className?: string; delay?: number }) {
+  return <div className={`eu-rv ${className}`}>{children}</div>;
 }
 
 // ─── Animated Counter ─────────────────────────────────────────
@@ -89,42 +79,9 @@ function AnimatedNumber({ value, prefix = '', suffix = '' }: { value: number; pr
 
 // ─── Divider ──────────────────────────────────────────────────
 function Divider() {
-  const { ref, visible } = useInView(0.5);
   return (
-    <div ref={ref} className="container-width px-6">
-      <div
-        className="h-px bg-[#1a260e]/10 mx-auto"
-        style={{
-          maxWidth: visible ? '100%' : '0%',
-          transition: 'max-width 1.2s cubic-bezier(.22,1,.36,1)',
-        }}
-      />
-    </div>
-  );
-}
-
-// ─── Floating Particles (Decorative) ──────────────────────────
-function FloatingParticles() {
-  return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none">
-      {[...Array(6)].map((_, i) => (
-        <div
-          key={i}
-          className="absolute w-1 h-1 rounded-full bg-[#fffcf2]/20"
-          style={{
-            left: `${15 + i * 15}%`,
-            top: `${20 + (i % 3) * 25}%`,
-            animation: `float ${4 + i * 0.8}s ease-in-out infinite alternate`,
-            animationDelay: `${i * 0.5}s`,
-          }}
-        />
-      ))}
-      <style jsx>{`
-        @keyframes float {
-          from { transform: translateY(0px) scale(1); opacity: 0.3; }
-          to { transform: translateY(-30px) scale(1.5); opacity: 0.7; }
-        }
-      `}</style>
+    <div className="eu-wrap">
+      <div className="h-px bg-[#1a260e]/15" />
     </div>
   );
 }
@@ -205,8 +162,14 @@ const FIELD_MESSAGES: Record<string, string> = {
 
 function FieldError({ message }: { message?: string }) {
   if (!message) return null;
-  return <p role="alert" className="mt-2 text-xs font-light text-red-800">{message}</p>;
+  return <p role="alert" className="mt-2 pl-1 text-sm leading-snug text-red-800">{message}</p>;
 }
+
+// ─── Field Styles ─────────────────────────────────────────────
+// Rounded cream fields with a hairline border; 16px text so iOS doesn't zoom
+const LABEL_CLASS = 'block font-sans text-[12px] font-normal tracking-[0.16em] uppercase text-eu-green mb-2.5 pl-1';
+const FIELD_CLASS =
+  'block w-full px-5 rounded-[14px] bg-eu-cream border text-base font-normal text-eu-ink placeholder:text-eu-stone transition-colors duration-300 focus:border-eu-ink';
 
 export default function StudioHire() {
   const [formData, setFormData] = useState<FormData>(emptyForm);
@@ -234,6 +197,9 @@ export default function StudioHire() {
   }, [invalidFields]);
 
   const fieldError = (field: string) => (invalidFields.includes(field) ? FIELD_MESSAGES[field] : undefined);
+  // Visual only: a field the server rejected gets a red border alongside its message
+  const fieldClass = (field: string) =>
+    `${FIELD_CLASS} ${fieldError(field) ? 'border-red-800' : 'border-[#1a260e]/20 hover:border-[#1a260e]/40'}`;
 
   // Choosing a room or extra mounts content further up the page (price estimates, "Selected"
   // tags). Safari has no scroll anchoring, so that would push the rest of the page down:
@@ -326,67 +292,52 @@ export default function StudioHire() {
     : null;
 
   return (
-    <div className="bg-[#fffcf2]">
+    <div className="bg-eu-cream">
 
       {/* ════════════════════════════════════════════════════════
-          HERO — Cinematic, dark, immersive
+          HERO — Cinematic, dark, immersive (sits under the fixed header)
          ════════════════════════════════════════════════════════ */}
-      <section ref={heroRef} className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#1a260e] xl:pt-40">
-        <FloatingParticles />
-
-        {/* Background gradient orbs */}
-        <div className="absolute inset-0">
-          <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] rounded-full bg-[#2a3a21]/30 blur-[120px]" />
-          <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] rounded-full bg-[#3a4a31]/20 blur-[100px]" />
-        </div>
-
-        {/* Decorative grid lines */}
-        <div className="absolute inset-0 opacity-[0.03]">
-          <div className="absolute top-0 left-1/4 w-px h-full bg-[#fffcf2]" />
-          <div className="absolute top-0 left-2/4 w-px h-full bg-[#fffcf2]" />
-          <div className="absolute top-0 left-3/4 w-px h-full bg-[#fffcf2]" />
-          <div className="absolute top-1/3 left-0 w-full h-px bg-[#fffcf2]" />
-          <div className="absolute top-2/3 left-0 w-full h-px bg-[#fffcf2]" />
-        </div>
-
-        <div className="relative z-10 container-width px-6 text-center xl:pt-10 xl:pb-28">
+      <section ref={heroRef} className="relative min-h-screen flex items-center justify-center overflow-hidden bg-eu-ink text-eu-cream rounded-b-[32px] md:rounded-b-eu-xl eu-on-dark">
+        <div className="relative z-10 eu-wrap w-full text-center pt-[calc(var(--eu-header-space)_+_56px)] pb-32 md:pb-36">
           <Reveal>
-            <p className="text-[#fffcf2]/30 text-xs tracking-[0.4em] uppercase mb-6">
+            <p className="eu-cap text-eu-beige mb-7 inline-flex items-center gap-3.5 before:content-[''] before:w-[34px] before:h-px before:bg-current after:content-[''] after:w-[34px] after:h-px after:bg-current">
               Introducing
             </p>
           </Reveal>
 
           <Reveal delay={0.08}>
-            <h1 className="font-serif text-5xl md:text-7xl lg:text-[6.5rem] xl:text-[8rem] text-[#fffcf2] leading-[0.95] tracking-tight mb-6">
-              Studio<br />
-              <span className="italic font-light">Hire</span>
+            <h1 className="font-serif font-normal text-[clamp(64px,10.4vw,168px)] text-eu-cream leading-[0.9] tracking-[-0.03em] mb-8">
+              Studio{' '}<br />
+              <em className="italic text-eu-beige">Hire</em>
             </h1>
           </Reveal>
 
           <Reveal delay={0.16}>
-            <div className="w-16 h-px bg-[#fffcf2]/20 mx-auto mb-6" />
+            <div className="w-16 h-px bg-[#fffcf2]/40 mx-auto mb-8" />
           </Reveal>
 
           <Reveal delay={0.22}>
-            <p className="text-[#fffcf2]/50 text-base md:text-lg font-light max-w-2xl mx-auto leading-relaxed mb-10">
+            <p className="text-eu-beige text-[17px] md:text-lg leading-[1.75] max-w-2xl mx-auto mb-10 md:mb-12">
               Your event. Your people. Our space. Host birthdays, corporate events,
               private pilates sessions, gatherings, and celebrations in our premium
-              boutique studio — open to <span className="text-[#fffcf2]/80 font-normal">everyone</span>.
+              boutique studio — open to <span className="text-eu-cream font-medium">everyone</span>.
             </p>
           </Reveal>
 
           <Reveal delay={0.3}>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-8 justify-center items-center">
               <button
                 onClick={scrollToForm}
-                className="group inline-flex items-center gap-2 bg-[#fffcf2] text-[#1a260e] px-10 py-5 font-sans text-sm tracking-[0.15em] uppercase transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl hover:shadow-[#fffcf2]/10"
+                className="eu-btn eu-btn--cream w-full sm:w-auto !justify-between"
               >
                 Enquire Now
-                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                <span className="eu-btn__dot">
+                  <Arrow />
+                </span>
               </button>
               <a
                 href="#pricing"
-                className="text-[#fffcf2]/40 text-sm tracking-wider hover:text-[#fffcf2]/70 transition-colors"
+                className="eu-ulink"
               >
                 View pricing →
               </a>
@@ -396,32 +347,29 @@ export default function StudioHire() {
 
         {/* Scroll indicator */}
         <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2">
-          <span className="text-[#fffcf2]/20 text-[10px] tracking-[0.3em] uppercase">Scroll</span>
-          <div className="w-px h-10 bg-gradient-to-b from-[#fffcf2]/30 to-transparent" />
+          <span className="text-eu-beige text-[10.5px] tracking-[0.3em] uppercase">Scroll</span>
+          <div className="w-px h-10 bg-gradient-to-b from-[#fffcf2]/50 to-transparent" />
         </div>
       </section>
 
       {/* ════════════════════════════════════════════════════════
           OPEN TO EVERYONE — Key differentiator
          ════════════════════════════════════════════════════════ */}
-      <section className="py-20 md:py-28 px-6 relative overflow-hidden">
-        {/* Subtle background pattern */}
-        <div className="absolute top-0 right-0 w-64 h-64 rounded-full bg-[#1a260e]/[0.02] blur-[80px]" />
-
-        <div className="container-width">
+      <section className="py-[clamp(80px,9vw,140px)] relative overflow-hidden">
+        <div className="eu-wrap">
           <Reveal>
-            <div className="text-center mb-14">
-              <div className="inline-flex items-center gap-3 mb-6">
-                <div className="h-px w-10 bg-[#1a260e]/20" />
-                <Heart className="h-4 w-4 text-[#1a260e]/40" />
-                <div className="h-px w-10 bg-[#1a260e]/20" />
+            <div className="text-center mb-12 md:mb-14">
+              <div className="inline-flex items-center gap-3 mb-7">
+                <div className="h-px w-10 bg-[#1a260e]/25" />
+                <Heart className="h-4 w-4 text-eu-green" strokeWidth={1.5} />
+                <div className="h-px w-10 bg-[#1a260e]/25" />
               </div>
-              <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-[#1a260e] font-light mb-6">
-                Open to <span className="italic">Everyone</span>
+              <h2 className="font-serif font-normal text-[clamp(42px,5.6vw,88px)] leading-none tracking-[-0.025em] text-eu-ink mb-7">
+                Open to <em className="italic">Everyone</em>
               </h2>
-              <p className="text-[#1a260e]/60 text-base md:text-lg font-light max-w-2xl mx-auto leading-relaxed">
+              <p className="text-eu-green text-[17px] md:text-lg leading-[1.75] max-w-2xl mx-auto">
                 While our regular classes are women-only, studio hire is open to
-                <span className="font-normal text-[#1a260e]/80"> all genders</span>.
+                <span className="font-medium text-eu-ink"> all genders</span>.
                 Bring your friends, family, colleagues, or partner — whoever you
                 want to share the experience with. It&apos;s your space, your rules.
               </p>
@@ -430,7 +378,7 @@ export default function StudioHire() {
 
           {/* Feature pills */}
           <Reveal delay={0.1}>
-            <div className="flex flex-wrap justify-center gap-3 md:gap-4">
+            <div className="flex flex-wrap justify-center gap-2.5 md:gap-3 max-w-3xl mx-auto">
               {[
                 { icon: PartyPopper, text: 'Birthday Parties' },
                 { icon: Users, text: 'Corporate Events' },
@@ -441,9 +389,9 @@ export default function StudioHire() {
               ].map(({ icon: Icon, text }, i) => (
                 <div
                   key={text}
-                  className="flex items-center gap-2 px-5 py-3 border border-[#1a260e]/10 rounded-full text-[#1a260e]/60 text-sm font-light hover:border-[#1a260e]/30 hover:text-[#1a260e]/80 transition-all duration-300 cursor-default"
+                  className="flex items-center gap-2.5 min-h-[48px] px-5 border border-[#1a260e]/20 rounded-full text-eu-green text-[15px] hover:border-eu-ink hover:text-eu-ink transition-colors duration-300 cursor-default"
                 >
-                  <Icon className="h-3.5 w-3.5" />
+                  <Icon className="h-4 w-4" strokeWidth={1.5} />
                   {text}
                 </div>
               ))}
@@ -457,13 +405,13 @@ export default function StudioHire() {
       {/* ════════════════════════════════════════════════════════
           PRICING — Two elegant cards
          ════════════════════════════════════════════════════════ */}
-      <section id="pricing" className="py-24 md:py-36 px-6 scroll-mt-32 xl:scroll-mt-40">
-        <div className="container-width">
+      <section id="pricing" className="py-[clamp(88px,10vw,150px)] scroll-mt-[var(--eu-header-space)]">
+        <div className="eu-wrap">
           <Reveal>
-            <div className="text-center mb-16 md:mb-20">
-              <p className="tagline text-[#1a260e]/40 mb-5">PRICING</p>
-              <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-[#1a260e] font-light">
-                Choose Your <span className="italic">Space</span>
+            <div className="text-center mb-12 md:mb-16">
+              <p className="eu-cap text-eu-green mb-5">PRICING</p>
+              <h2 className="font-serif font-normal text-[clamp(42px,5.6vw,88px)] leading-none tracking-[-0.025em] text-eu-ink">
+                Choose Your <em className="italic">Space</em>
               </h2>
             </div>
           </Reveal>
@@ -472,9 +420,7 @@ export default function StudioHire() {
             {/* Reformer Room Card */}
             <Reveal delay={0}>
               <div
-                className={`group relative cursor-pointer transition-all duration-500 ${
-                  formData.rooms.includes('reformer') ? 'scale-[1.02]' : ''
-                }`}
+                className="group relative cursor-pointer rounded-eu-md"
                 onClick={(e) => toggleRoom('reformer', e.currentTarget)}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' || e.key === ' ') toggleRoom('reformer', e.currentTarget);
@@ -485,58 +431,58 @@ export default function StudioHire() {
                 aria-label="Select Reformer Room"
               >
                 {/* Offset border decoration */}
-                <div className={`absolute -inset-2 border transition-all duration-500 rounded-sm ${
+                <div className={`absolute -inset-2 border transition-colors duration-500 rounded-[36px] ${
                   formData.rooms.includes('reformer')
-                    ? 'border-[#1a260e]/20'
-                    : 'border-transparent group-hover:border-[#1a260e]/10'
+                    ? 'border-[#1a260e]/30'
+                    : 'border-transparent group-hover:border-[#1a260e]/15'
                 }`} />
 
-                <div className={`relative p-8 md:p-10 rounded-sm transition-all duration-500 ${
+                <div className={`relative p-7 md:p-10 rounded-eu-md transition-colors duration-500 ${
                   formData.rooms.includes('reformer')
-                    ? 'bg-[#1a260e] text-[#fffcf2]'
-                    : 'bg-[#faf8f3] text-[#1a260e] group-hover:bg-[#f5f0e8]'
+                    ? 'bg-eu-ink text-eu-cream'
+                    : 'bg-eu-beige text-eu-ink group-hover:bg-[#efe8dc]'
                 }`}>
                   {/* Room badge */}
-                  <div className="flex items-center justify-between mb-6">
-                    <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-[10px] tracking-[0.2em] uppercase ${
+                  <div className="flex items-center justify-between gap-3 mb-7">
+                    <div className={`inline-flex flex-shrink-0 items-center gap-2 min-h-[32px] px-3.5 rounded-full text-[11px] tracking-[0.18em] uppercase ${
                       formData.rooms.includes('reformer')
-                        ? 'bg-[#fffcf2]/10 text-[#fffcf2]/60'
-                        : 'bg-[#1a260e]/5 text-[#1a260e]/40'
+                        ? 'bg-[#fffcf2]/10 text-eu-beige'
+                        : 'bg-eu-cream text-eu-green'
                     }`}>
-                      <Star className="h-3 w-3" />
+                      <Star className="h-3.5 w-3.5" strokeWidth={1.5} />
                       Reformer Room
                     </div>
-                    <span className={`text-[10px] tracking-wider uppercase ${
-                      formData.rooms.includes('reformer') ? 'text-[#fffcf2]/30' : 'text-[#1a260e]/20'
+                    <span className={`text-[11px] tracking-[0.14em] uppercase text-right ${
+                      formData.rooms.includes('reformer') ? 'text-eu-beige' : 'text-eu-sage'
                     }`}>
                       Main Studio
                     </span>
                   </div>
 
                   {/* Price */}
-                  <div className="mb-6">
-                    <div className="flex items-baseline gap-1">
-                      <span className="font-serif text-5xl md:text-6xl font-light">£32</span>
-                      <span className={`text-sm font-light ${
-                        formData.rooms.includes('reformer') ? 'text-[#fffcf2]/40' : 'text-[#1a260e]/40'
+                  <div className="mb-7">
+                    <div className="flex items-baseline gap-2">
+                      <span className="font-serif text-[56px] md:text-7xl leading-none">£32</span>
+                      <span className={`text-[15px] ${
+                        formData.rooms.includes('reformer') ? 'text-eu-beige' : 'text-eu-sage'
                       }`}>
                         / person
                       </span>
                     </div>
-                    <p className={`text-xs mt-2 ${
-                      formData.rooms.includes('reformer') ? 'text-[#fffcf2]/30' : 'text-[#1a260e]/30'
+                    <p className={`text-sm mt-3 ${
+                      formData.rooms.includes('reformer') ? 'text-eu-beige' : 'text-eu-sage'
                     }`}>
                       From £32/person + instructor fee
                     </p>
                   </div>
 
                   {/* Divider */}
-                  <div className={`h-px w-full mb-6 ${
-                    formData.rooms.includes('reformer') ? 'bg-[#fffcf2]/10' : 'bg-[#1a260e]/10'
+                  <div className={`h-px w-full mb-7 ${
+                    formData.rooms.includes('reformer') ? 'bg-[#fffcf2]/15' : 'bg-[#1a260e]/15'
                   }`} />
 
                   {/* Features */}
-                  <ul className="space-y-3">
+                  <ul className="space-y-3.5">
                     {[
                       'Professional reformer equipment',
                       '2–8 guests per session',
@@ -545,11 +491,11 @@ export default function StudioHire() {
                       'Instructor-led or self-guided',
                     ].map((feature) => (
                       <li key={feature} className="flex items-center gap-3">
-                        <CheckCircle2 className={`h-4 w-4 flex-shrink-0 ${
-                          formData.rooms.includes('reformer') ? 'text-[#fffcf2]/30' : 'text-[#1a260e]/30'
+                        <CheckCircle2 strokeWidth={1.5} className={`h-4 w-4 flex-shrink-0 ${
+                          formData.rooms.includes('reformer') ? 'text-eu-live' : 'text-eu-green'
                         }`} />
-                        <span className={`text-sm font-light ${
-                          formData.rooms.includes('reformer') ? 'text-[#fffcf2]/70' : 'text-[#1a260e]/60'
+                        <span className={`text-[15px] ${
+                          formData.rooms.includes('reformer') ? 'text-eu-cream' : 'text-eu-green'
                         }`}>
                           {feature}
                         </span>
@@ -558,10 +504,10 @@ export default function StudioHire() {
                   </ul>
 
                   {/* Select indicator */}
-                  <div className={`mt-8 text-center py-3 rounded-sm text-xs tracking-[0.15em] uppercase transition-all duration-300 ${
+                  <div className={`mt-8 flex items-center justify-center min-h-[52px] px-4 rounded-full border text-xs tracking-[0.16em] uppercase transition-colors duration-300 ${
                     formData.rooms.includes('reformer')
-                      ? 'bg-[#fffcf2]/10 text-[#fffcf2]/60'
-                      : 'border border-[#1a260e]/10 text-[#1a260e]/40 group-hover:border-[#1a260e]/20'
+                      ? 'bg-[#fffcf2]/10 border-[#fffcf2]/25 text-eu-cream'
+                      : 'border-[#1a260e]/30 text-eu-ink group-hover:bg-eu-ink group-hover:border-eu-ink group-hover:text-eu-cream'
                   }`}>
                     {formData.rooms.includes('reformer') ? 'Selected — tap to remove' : 'Tap to select'}
                   </div>
@@ -572,9 +518,7 @@ export default function StudioHire() {
             {/* Hot Pilates Room Card */}
             <Reveal delay={0.1}>
               <div
-                className={`group relative cursor-pointer transition-all duration-500 ${
-                  formData.rooms.includes('hot-pilates') ? 'scale-[1.02]' : ''
-                }`}
+                className="group relative cursor-pointer rounded-eu-md"
                 onClick={(e) => toggleRoom('hot-pilates', e.currentTarget)}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' || e.key === ' ') toggleRoom('hot-pilates', e.currentTarget);
@@ -585,58 +529,58 @@ export default function StudioHire() {
                 aria-label="Select Hot Pilates Room"
               >
                 {/* Offset border decoration */}
-                <div className={`absolute -inset-2 border transition-all duration-500 rounded-sm ${
+                <div className={`absolute -inset-2 border transition-colors duration-500 rounded-[36px] ${
                   formData.rooms.includes('hot-pilates')
-                    ? 'border-[#1a260e]/20'
-                    : 'border-transparent group-hover:border-[#1a260e]/10'
+                    ? 'border-[#1a260e]/30'
+                    : 'border-transparent group-hover:border-[#1a260e]/15'
                 }`} />
 
-                <div className={`relative p-8 md:p-10 rounded-sm transition-all duration-500 ${
+                <div className={`relative p-7 md:p-10 rounded-eu-md transition-colors duration-500 ${
                   formData.rooms.includes('hot-pilates')
-                    ? 'bg-[#1a260e] text-[#fffcf2]'
-                    : 'bg-[#faf8f3] text-[#1a260e] group-hover:bg-[#f5f0e8]'
+                    ? 'bg-eu-ink text-eu-cream'
+                    : 'bg-eu-beige text-eu-ink group-hover:bg-[#efe8dc]'
                 }`}>
                   {/* Room badge */}
-                  <div className="flex items-center justify-between mb-6">
-                    <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-[10px] tracking-[0.2em] uppercase ${
+                  <div className="flex items-center justify-between gap-3 mb-7">
+                    <div className={`inline-flex flex-shrink-0 items-center gap-2 min-h-[32px] px-3.5 rounded-full text-[11px] tracking-[0.18em] uppercase ${
                       formData.rooms.includes('hot-pilates')
-                        ? 'bg-[#fffcf2]/10 text-[#fffcf2]/60'
-                        : 'bg-[#1a260e]/5 text-[#1a260e]/40'
+                        ? 'bg-[#fffcf2]/10 text-eu-beige'
+                        : 'bg-eu-cream text-eu-green'
                     }`}>
-                      <Flame className="h-3 w-3" />
+                      <Flame className="h-3.5 w-3.5" strokeWidth={1.5} />
                       Hot Pilates Room
                     </div>
-                    <span className={`text-[10px] tracking-wider uppercase ${
-                      formData.rooms.includes('hot-pilates') ? 'text-[#fffcf2]/30' : 'text-[#1a260e]/20'
+                    <span className={`text-[11px] tracking-[0.14em] uppercase text-right ${
+                      formData.rooms.includes('hot-pilates') ? 'text-eu-beige' : 'text-eu-sage'
                     }`}>
                       Add-on or Standalone
                     </span>
                   </div>
 
                   {/* Price */}
-                  <div className="mb-6">
-                    <div className="flex items-baseline gap-1">
-                      <span className="font-serif text-5xl md:text-6xl font-light">£28</span>
-                      <span className={`text-sm font-light ${
-                        formData.rooms.includes('hot-pilates') ? 'text-[#fffcf2]/40' : 'text-[#1a260e]/40'
+                  <div className="mb-7">
+                    <div className="flex items-baseline gap-2">
+                      <span className="font-serif text-[56px] md:text-7xl leading-none">£28</span>
+                      <span className={`text-[15px] ${
+                        formData.rooms.includes('hot-pilates') ? 'text-eu-beige' : 'text-eu-sage'
                       }`}>
                         / person
                       </span>
                     </div>
-                    <p className={`text-xs mt-2 ${
-                      formData.rooms.includes('hot-pilates') ? 'text-[#fffcf2]/30' : 'text-[#1a260e]/30'
+                    <p className={`text-sm mt-3 ${
+                      formData.rooms.includes('hot-pilates') ? 'text-eu-beige' : 'text-eu-sage'
                     }`}>
                       From £28/person + instructor fee
                     </p>
                   </div>
 
                   {/* Divider */}
-                  <div className={`h-px w-full mb-6 ${
-                    formData.rooms.includes('hot-pilates') ? 'bg-[#fffcf2]/10' : 'bg-[#1a260e]/10'
+                  <div className={`h-px w-full mb-7 ${
+                    formData.rooms.includes('hot-pilates') ? 'bg-[#fffcf2]/15' : 'bg-[#1a260e]/15'
                   }`} />
 
                   {/* Features */}
-                  <ul className="space-y-3">
+                  <ul className="space-y-3.5">
                     {[
                       'Infrared heated studio',
                       '2–8 guests per session',
@@ -645,11 +589,11 @@ export default function StudioHire() {
                       'Hire alone or add to Reformer',
                     ].map((feature) => (
                       <li key={feature} className="flex items-center gap-3">
-                        <CheckCircle2 className={`h-4 w-4 flex-shrink-0 ${
-                          formData.rooms.includes('hot-pilates') ? 'text-[#fffcf2]/30' : 'text-[#1a260e]/30'
+                        <CheckCircle2 strokeWidth={1.5} className={`h-4 w-4 flex-shrink-0 ${
+                          formData.rooms.includes('hot-pilates') ? 'text-eu-live' : 'text-eu-green'
                         }`} />
-                        <span className={`text-sm font-light ${
-                          formData.rooms.includes('hot-pilates') ? 'text-[#fffcf2]/70' : 'text-[#1a260e]/60'
+                        <span className={`text-[15px] ${
+                          formData.rooms.includes('hot-pilates') ? 'text-eu-cream' : 'text-eu-green'
                         }`}>
                           {feature}
                         </span>
@@ -658,10 +602,10 @@ export default function StudioHire() {
                   </ul>
 
                   {/* Select indicator */}
-                  <div className={`mt-8 text-center py-3 rounded-sm text-xs tracking-[0.15em] uppercase transition-all duration-300 ${
+                  <div className={`mt-8 flex items-center justify-center min-h-[52px] px-4 rounded-full border text-xs tracking-[0.16em] uppercase transition-colors duration-300 ${
                     formData.rooms.includes('hot-pilates')
-                      ? 'bg-[#fffcf2]/10 text-[#fffcf2]/60'
-                      : 'border border-[#1a260e]/10 text-[#1a260e]/40 group-hover:border-[#1a260e]/20'
+                      ? 'bg-[#fffcf2]/10 border-[#fffcf2]/25 text-eu-cream'
+                      : 'border-[#1a260e]/30 text-eu-ink group-hover:bg-eu-ink group-hover:border-eu-ink group-hover:text-eu-cream'
                   }`}>
                     {formData.rooms.includes('hot-pilates') ? 'Selected — tap to remove' : 'Tap to select'}
                   </div>
@@ -674,9 +618,9 @@ export default function StudioHire() {
           {formData.rooms.length === 2 && (
             <Reveal>
               <div className="mt-10 text-center">
-                <div className="inline-flex items-center gap-3 px-6 py-3 bg-[#1a260e] rounded-full">
-                  <Sparkles className="h-4 w-4 text-[#fffcf2]/50" />
-                  <span className="text-[#fffcf2] text-sm tracking-wider">Both rooms selected — the full experience</span>
+                <div className="inline-flex items-center gap-3 min-h-[48px] px-6 py-3 bg-eu-ink rounded-[28px]">
+                  <Sparkles className="h-4 w-4 text-eu-beige flex-shrink-0" strokeWidth={1.5} />
+                  <span className="text-eu-cream text-sm tracking-[0.06em]">Both rooms selected — the full experience</span>
                 </div>
               </div>
             </Reveal>
@@ -685,7 +629,7 @@ export default function StudioHire() {
           {/* You can select both hint */}
           {formData.rooms.length === 1 && (
             <Reveal>
-              <p className="mt-8 text-center text-[#1a260e]/30 text-xs tracking-wide">
+              <p className="mt-8 text-center text-eu-sage text-sm">
                 You can also select the {formData.rooms[0] === 'reformer' ? 'Hot Pilates Room' : 'Reformer Room'} to hire both
               </p>
             </Reveal>
@@ -695,12 +639,12 @@ export default function StudioHire() {
           {totalPerPerson !== null && totalPerPerson > 0 && (
             <Reveal>
               <div className="mt-8 text-center">
-                <div className="inline-flex flex-col items-center gap-2 px-8 py-5 bg-[#1a260e]/[0.03] rounded-sm">
-                  <span className="text-[#1a260e]/40 text-xs tracking-wider uppercase">Per person</span>
-                  <span className="font-serif text-2xl md:text-3xl text-[#1a260e] font-light">
+                <div className="inline-flex flex-col items-center gap-2 px-10 py-6 bg-eu-beige rounded-eu-sm">
+                  <span className="eu-cap text-eu-sage">Per person</span>
+                  <span className="font-serif text-3xl md:text-4xl text-eu-ink">
                     £{totalPerPerson}/person
                   </span>
-                  <span className="text-[#1a260e]/25 text-xs">+ instructor fee</span>
+                  <span className="text-eu-sage text-sm">+ instructor fee</span>
                 </div>
               </div>
             </Reveal>
@@ -711,138 +655,146 @@ export default function StudioHire() {
       {/* ════════════════════════════════════════════════════════
           PRICE CALCULATOR — Interactive slider
          ════════════════════════════════════════════════════════ */}
-      <section className="py-20 md:py-28 px-6 bg-[#faf8f3]">
-        <div className="container-width">
+      <section className="py-[clamp(80px,9vw,140px)] bg-eu-beige rounded-[32px] md:rounded-eu-xl mx-[clamp(10px,1.5vw,24px)]">
+        <div className="eu-wrap">
           <Reveal>
             <div className="text-center mb-12 md:mb-16">
               <div className="inline-flex items-center gap-3 mb-5">
-                <Calculator className="h-4 w-4 text-[#1a260e]/30" />
-                <p className="tagline text-[#1a260e]/40">PRICE CALCULATOR</p>
+                <Calculator className="h-4 w-4 text-eu-green" strokeWidth={1.5} />
+                <p className="eu-cap text-eu-green">PRICE CALCULATOR</p>
               </div>
-              <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-[#1a260e] font-light">
-                See Your <span className="italic">Price</span>
+              <h2 className="font-serif font-normal text-[clamp(42px,5.6vw,88px)] leading-none tracking-[-0.025em] text-eu-ink">
+                See Your <em className="italic">Price</em>
               </h2>
             </div>
           </Reveal>
 
           <Reveal delay={0.08}>
             <div className="max-w-2xl mx-auto">
-              <div className="bg-[#fffcf2] border border-[#1a260e]/[0.06] rounded-sm overflow-hidden">
+              <div className="bg-eu-cream border border-[#1a260e]/15 rounded-[28px] md:rounded-eu-lg overflow-hidden">
 
                 {/* Room Selection */}
-                <div className="p-8 md:p-10 pb-0">
-                  <p className="text-xs tracking-wider uppercase text-[#1a260e]/35 mb-4">1. Choose Your Room(s)</p>
+                <div className="px-5 pt-7 sm:px-8 sm:pt-8 md:px-10 md:pt-10">
+                  <p className="eu-cap text-eu-green mb-4">1. Choose Your Room(s)</p>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <button
                       type="button"
                       onClick={(e) => toggleRoom('reformer', e.currentTarget)}
-                      className={`relative flex items-center gap-3 px-5 py-4 border rounded-sm text-left transition-all duration-300 ${
+                      className={`relative flex items-center gap-3 min-h-[68px] pl-5 pr-11 py-4 border rounded-eu-sm text-left transition-colors duration-300 ${
                         formData.rooms.includes('reformer')
-                          ? 'border-[#1a260e] bg-[#1a260e] text-[#fffcf2]'
-                          : 'border-[#1a260e]/10 text-[#1a260e]/60 hover:border-[#1a260e]/25'
+                          ? 'border-eu-ink bg-eu-ink text-eu-cream'
+                          : 'border-[#1a260e]/20 text-eu-ink hover:border-eu-ink'
                       }`}
                     >
-                      <Star className="h-4 w-4 flex-shrink-0" />
+                      <Star className="h-4 w-4 flex-shrink-0" strokeWidth={1.5} />
                       <div>
-                        <span className="block text-sm font-medium">Reformer Room</span>
-                        <span className={`block text-xs mt-0.5 ${
-                          formData.rooms.includes('reformer') ? 'text-[#fffcf2]/50' : 'text-[#1a260e]/30'
+                        <span className="block text-[15px] font-medium">Reformer Room</span>
+                        <span className={`block text-[14px] mt-0.5 ${
+                          formData.rooms.includes('reformer') ? 'text-eu-beige' : 'text-eu-sage'
                         }`}>From £35/person</span>
                       </div>
                       {formData.rooms.includes('reformer') && (
-                        <CheckCircle2 className="h-4 w-4 absolute top-3 right-3 text-[#fffcf2]/40" />
+                        <CheckCircle2 className="h-4 w-4 absolute top-1/2 -translate-y-1/2 right-4 text-eu-beige" strokeWidth={1.5} />
                       )}
                     </button>
                     <button
                       type="button"
                       onClick={(e) => toggleRoom('hot-pilates', e.currentTarget)}
-                      className={`relative flex items-center gap-3 px-5 py-4 border rounded-sm text-left transition-all duration-300 ${
+                      className={`relative flex items-center gap-3 min-h-[68px] pl-5 pr-11 py-4 border rounded-eu-sm text-left transition-colors duration-300 ${
                         formData.rooms.includes('hot-pilates')
-                          ? 'border-[#1a260e] bg-[#1a260e] text-[#fffcf2]'
-                          : 'border-[#1a260e]/10 text-[#1a260e]/60 hover:border-[#1a260e]/25'
+                          ? 'border-eu-ink bg-eu-ink text-eu-cream'
+                          : 'border-[#1a260e]/20 text-eu-ink hover:border-eu-ink'
                       }`}
                     >
-                      <Flame className="h-4 w-4 flex-shrink-0" />
+                      <Flame className="h-4 w-4 flex-shrink-0" strokeWidth={1.5} />
                       <div>
-                        <span className="block text-sm font-medium">Hot Pilates Room</span>
-                        <span className={`block text-xs mt-0.5 ${
-                          formData.rooms.includes('hot-pilates') ? 'text-[#fffcf2]/50' : 'text-[#1a260e]/30'
+                        <span className="block text-[15px] font-medium">Hot Pilates Room</span>
+                        <span className={`block text-[14px] mt-0.5 ${
+                          formData.rooms.includes('hot-pilates') ? 'text-eu-beige' : 'text-eu-sage'
                         }`}>From £30/person</span>
                       </div>
                       {formData.rooms.includes('hot-pilates') && (
-                        <CheckCircle2 className="h-4 w-4 absolute top-3 right-3 text-[#fffcf2]/40" />
+                        <CheckCircle2 className="h-4 w-4 absolute top-1/2 -translate-y-1/2 right-4 text-eu-beige" strokeWidth={1.5} />
                       )}
                     </button>
                   </div>
                 </div>
 
                 {/* Guest Slider */}
-                <div className="p-8 md:p-10">
-                  <p className="text-xs tracking-wider uppercase text-[#1a260e]/35 mb-6">2. How Many Guests?</p>
+                <div className="px-5 py-8 sm:p-8 md:p-10">
+                  <p className="eu-cap text-eu-green mb-6">2. How Many Guests?</p>
 
                   {/* Big number display */}
                   <div className="text-center mb-8">
-                    <span className="font-serif text-7xl md:text-8xl text-[#1a260e] font-light leading-none transition-all duration-300">
+                    <span className="font-serif text-[88px] md:text-[112px] text-eu-ink leading-none">
                       {formData.guests}
                     </span>
-                    <span className="block text-[10px] tracking-[0.25em] uppercase text-[#1a260e]/25 mt-2">
+                    <span className="block eu-cap text-eu-sage mt-3">
                       guests
                     </span>
                   </div>
 
                   {/* Slider */}
-                  <div className="relative px-2">
+                  <div className="relative">
                     {/* Track labels */}
-                    <div className="flex justify-between mb-3 px-1">
+                    <div className="flex flex-wrap justify-center gap-2 mb-2 md:flex-nowrap md:justify-between md:gap-0">
                       {[2, 3, 4, 5, 6, 7, 8].map(n => (
                         <button
                           key={n}
                           type="button"
                           onClick={() => setFormData(prev => ({ ...prev, guests: String(n) }))}
-                          className={`w-8 h-8 rounded-full text-xs transition-all duration-300 ${
-                            parseInt(formData.guests) === n
-                              ? 'bg-[#1a260e] text-[#fffcf2] scale-110'
-                              : 'text-[#1a260e]/30 hover:text-[#1a260e]/60 hover:bg-[#1a260e]/5'
-                          }`}
+                          className="group/n w-11 h-11 grid place-items-center rounded-full text-sm"
                         >
-                          {n}
+                          <span className={`grid place-items-center w-9 h-9 md:w-10 md:h-10 rounded-full transition-colors duration-300 ${
+                            parseInt(formData.guests) === n
+                              ? 'bg-eu-ink text-eu-cream'
+                              : 'text-eu-green group-hover/n:bg-eu-beige group-hover/n:text-eu-ink'
+                          }`}>
+                            {n}
+                          </span>
                         </button>
                       ))}
                     </div>
 
                     {/* Range slider */}
-                    <div className="relative mt-2">
+                    <div className="relative">
                       <input
                         type="range"
+                        aria-label="Number of guests"
                         min="2"
                         max="8"
                         step="1"
                         value={formData.guests}
                         onChange={(e) => setFormData(prev => ({ ...prev, guests: e.target.value }))}
-                        className="w-full h-1 appearance-none cursor-pointer bg-[#1a260e]/10 rounded-full outline-none
+                        className="block w-full h-11 appearance-none cursor-pointer bg-transparent rounded-full
+                          [&::-webkit-slider-runnable-track]:h-1
+                          [&::-webkit-slider-runnable-track]:rounded-full
+                          [&::-webkit-slider-runnable-track]:bg-[#1a260e]/15
                           [&::-webkit-slider-thumb]:appearance-none
-                          [&::-webkit-slider-thumb]:w-6
-                          [&::-webkit-slider-thumb]:h-6
+                          [&::-webkit-slider-thumb]:-mt-3
+                          [&::-webkit-slider-thumb]:w-7
+                          [&::-webkit-slider-thumb]:h-7
                           [&::-webkit-slider-thumb]:rounded-full
-                          [&::-webkit-slider-thumb]:bg-[#1a260e]
+                          [&::-webkit-slider-thumb]:bg-eu-ink
                           [&::-webkit-slider-thumb]:cursor-grab
                           [&::-webkit-slider-thumb]:active:cursor-grabbing
                           [&::-webkit-slider-thumb]:transition-transform
                           [&::-webkit-slider-thumb]:duration-150
-                          [&::-webkit-slider-thumb]:hover:scale-125
-                          [&::-webkit-slider-thumb]:active:scale-110
-                          [&::-webkit-slider-thumb]:shadow-lg
-                          [&::-moz-range-thumb]:w-6
-                          [&::-moz-range-thumb]:h-6
+                          [&::-webkit-slider-thumb]:hover:scale-110
+                          [&::-moz-range-track]:h-1
+                          [&::-moz-range-track]:rounded-full
+                          [&::-moz-range-track]:bg-[#1a260e]/15
+                          [&::-moz-range-thumb]:w-7
+                          [&::-moz-range-thumb]:h-7
                           [&::-moz-range-thumb]:rounded-full
-                          [&::-moz-range-thumb]:bg-[#1a260e]
+                          [&::-moz-range-thumb]:bg-eu-ink
                           [&::-moz-range-thumb]:border-0
                           [&::-moz-range-thumb]:cursor-grab
                           [&::-moz-range-thumb]:active:cursor-grabbing"
                       />
                       {/* Fill track */}
                       <div
-                        className="absolute top-1/2 left-0 h-1 bg-[#1a260e] rounded-full pointer-events-none -translate-y-1/2"
+                        className="absolute top-1/2 left-0 h-1 bg-eu-ink rounded-full pointer-events-none -translate-y-1/2"
                         style={{ width: `${((parseInt(formData.guests) - 2) / 6) * 100}%` }}
                       />
                     </div>
@@ -850,13 +802,13 @@ export default function StudioHire() {
                 </div>
 
                 {/* Price Result */}
-                <div className={`transition-all duration-500 ${
+                <div className={`transition-colors duration-500 ${
                   formData.rooms.length === 0
-                    ? 'bg-[#1a260e]/[0.02] p-8 md:p-10'
-                    : 'bg-[#1a260e] p-8 md:p-10'
+                    ? 'bg-eu-beige px-5 py-8 sm:p-8 md:p-10'
+                    : 'bg-eu-ink px-5 py-8 sm:p-8 md:p-10 eu-on-dark'
                 }`}>
                   {formData.rooms.length === 0 ? (
-                    <p className="text-center text-[#1a260e]/25 text-sm font-light">
+                    <p className="text-center text-eu-sage text-[15px]">
                       Select a room above to see your price
                     </p>
                   ) : (
@@ -866,39 +818,39 @@ export default function StudioHire() {
                       {formData.rooms.length > 1 && (
                         <div className="space-y-3 mb-2">
                           {formData.rooms.map(room => (
-                            <div key={room} className="flex items-center justify-between">
+                            <div key={room} className="flex items-center justify-between gap-4">
                               <div className="flex items-center gap-2">
                                 {room === 'reformer'
-                                  ? <Star className="h-3.5 w-3.5 text-[#fffcf2]/30" />
-                                  : <Flame className="h-3.5 w-3.5 text-[#fffcf2]/30" />
+                                  ? <Star className="h-3.5 w-3.5 text-eu-beige" strokeWidth={1.5} />
+                                  : <Flame className="h-3.5 w-3.5 text-eu-beige" strokeWidth={1.5} />
                                 }
-                                <span className="text-sm text-[#fffcf2]/60 font-light">
+                                <span className="text-[15px] text-eu-beige">
                                   {room === 'reformer' ? 'Reformer Room' : 'Hot Pilates Room'}
                                 </span>
                               </div>
-                              <span className="text-[#fffcf2]/80 text-sm font-light">
+                              <span className="text-eu-cream text-[15px]">
                                 £{getPerPerson(room, guestCount)}/person
                               </span>
                             </div>
                           ))}
-                          <div className="h-px bg-[#fffcf2]/10" />
+                          <div className="h-px bg-[#fffcf2]/15" />
                         </div>
                       )}
 
                       {/* Main price display */}
                       <div className="text-center">
-                        <p className="text-[10px] tracking-[0.25em] uppercase text-[#fffcf2]/25 mb-3">
+                        <p className="eu-cap text-eu-beige mb-4">
                           {guestCount} guests &middot; per person
                         </p>
-                        <p className="font-serif text-5xl md:text-6xl lg:text-7xl text-[#fffcf2] font-light leading-none transition-all duration-300">
+                        <p className="font-serif text-[64px] md:text-7xl lg:text-8xl text-eu-cream leading-none">
                           £{formData.rooms.reduce((sum, room) => sum + getPerPerson(room, guestCount), 0)}
                         </p>
-                        <p className="text-[#fffcf2]/20 text-xs mt-3 tracking-wide">per person + instructor fee</p>
+                        <p className="text-eu-beige text-sm mt-4">per person + instructor fee</p>
 
                         {formData.rooms.length === 2 && (
-                          <div className="mt-4 inline-flex items-center gap-2 px-4 py-1.5 bg-[#fffcf2]/[0.06] rounded-full">
-                            <Sparkles className="h-3 w-3 text-[#fffcf2]/30" />
-                            <span className="text-[10px] tracking-wider uppercase text-[#fffcf2]/40">Both rooms selected</span>
+                          <div className="mt-5 inline-flex items-center gap-2 min-h-[32px] px-4 bg-[#fffcf2]/10 rounded-full">
+                            <Sparkles className="h-3.5 w-3.5 text-eu-beige" strokeWidth={1.5} />
+                            <span className="text-[11px] tracking-[0.14em] uppercase text-eu-beige">Both rooms selected</span>
                           </div>
                         )}
                       </div>
@@ -907,10 +859,12 @@ export default function StudioHire() {
                       <button
                         type="button"
                         onClick={scrollToForm}
-                        className="group w-full flex items-center justify-center gap-2 bg-[#fffcf2] text-[#1a260e] py-4 font-sans text-xs tracking-[0.15em] uppercase transition-all duration-300 hover:scale-[1.01] rounded-sm"
+                        className="eu-btn eu-btn--cream eu-btn--block !whitespace-normal !text-left !leading-snug"
                       >
                         Enquire with these details
-                        <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
+                        <span className="eu-btn__dot">
+                          <Arrow />
+                        </span>
                       </button>
                     </div>
                   )}
@@ -921,23 +875,21 @@ export default function StudioHire() {
         </div>
       </section>
 
-      <Divider />
-
       {/* ════════════════════════════════════════════════════════
           HOW IT WORKS — Three steps
          ════════════════════════════════════════════════════════ */}
-      <section className="py-24 md:py-32 px-6">
-        <div className="container-width">
+      <section className="py-[clamp(88px,10vw,150px)]">
+        <div className="eu-wrap">
           <Reveal>
-            <div className="text-center mb-16 md:mb-20">
-              <p className="tagline text-[#1a260e]/40 mb-5">HOW IT WORKS</p>
-              <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-[#1a260e] font-light">
-                Three Simple <span className="italic">Steps</span>
+            <div className="text-center mb-12 md:mb-16">
+              <p className="eu-cap text-eu-green mb-5">HOW IT WORKS</p>
+              <h2 className="font-serif font-normal text-[clamp(42px,5.6vw,88px)] leading-none tracking-[-0.025em] text-eu-ink">
+                Three Simple <em className="italic">Steps</em>
               </h2>
             </div>
           </Reveal>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-0 border-t border-[#1a260e]/10 max-w-4xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-5xl mx-auto">
             {[
               {
                 number: '01',
@@ -958,14 +910,16 @@ export default function StudioHire() {
                 icon: PartyPopper,
               },
             ].map((step, i) => (
-              <Reveal key={step.number} delay={i * 0.08}>
-                <div className={`py-10 md:py-14 md:px-8 ${i < 2 ? 'md:border-r border-b md:border-b-0 border-[#1a260e]/10' : ''}`}>
-                  <div className="flex items-center gap-3 mb-4">
-                    <span className="text-xs tracking-[0.3em] text-[#1a260e]/25 font-medium">{step.number}</span>
-                    <step.icon className="h-4 w-4 text-[#1a260e]/25" />
+              <Reveal key={step.number} delay={i * 0.08} className="h-full">
+                <div className="h-full p-7 md:p-8 rounded-eu-md border border-[#1a260e]/15">
+                  <div className="flex items-center justify-between gap-3 mb-6">
+                    <span className="font-serif italic text-[44px] md:text-[52px] leading-none text-eu-green">{step.number}</span>
+                    <span className="grid place-items-center w-11 h-11 rounded-full bg-eu-beige">
+                      <step.icon className="h-4 w-4 text-eu-green" strokeWidth={1.5} />
+                    </span>
                   </div>
-                  <h3 className="font-serif text-2xl md:text-3xl font-light text-[#1a260e] mb-4">{step.title}</h3>
-                  <p className="text-sm md:text-base text-[#1a260e]/60 font-light leading-[1.8]">{step.body}</p>
+                  <h3 className="font-serif font-normal text-[28px] md:text-3xl text-eu-ink mb-3">{step.title}</h3>
+                  <p className="text-[15px] md:text-base text-eu-green leading-[1.75]">{step.body}</p>
                 </div>
               </Reveal>
             ))}
@@ -976,51 +930,51 @@ export default function StudioHire() {
       {/* ════════════════════════════════════════════════════════
           EXTRAS — Add-ons section
          ════════════════════════════════════════════════════════ */}
-      <section className="py-16 md:py-24 px-6 bg-[#1a260e]">
-        <div className="container-width">
+      <section className="py-[clamp(72px,8vw,120px)] bg-eu-ink text-eu-cream rounded-[32px] md:rounded-eu-xl mx-[clamp(10px,1.5vw,24px)] eu-on-dark">
+        <div className="eu-wrap">
           <Reveal>
             <div className="text-center mb-12 md:mb-16">
-              <p className="text-[#fffcf2]/30 text-xs tracking-[0.35em] uppercase mb-5">MAKE IT SPECIAL</p>
-              <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-[#fffcf2] font-light">
-                Add <span className="italic">Extras</span>
+              <p className="eu-cap text-eu-beige mb-5">MAKE IT SPECIAL</p>
+              <h2 className="font-serif font-normal text-[clamp(42px,5.6vw,88px)] leading-none tracking-[-0.025em] text-eu-cream">
+                Add <em className="italic">Extras</em>
               </h2>
             </div>
           </Reveal>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-4xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4 max-w-5xl mx-auto">
             {extras.map((extra, i) => (
-              <Reveal key={extra.id} delay={i * 0.06}>
+              <Reveal key={extra.id} delay={i * 0.06} className="h-full">
                 <button
                   type="button"
                   onClick={(e) => toggleExtra(extra.id, e.currentTarget)}
-                  className={`w-full text-left p-6 rounded-sm transition-all duration-500 group ${
+                  className={`w-full h-full text-left p-6 rounded-eu-sm border transition-colors duration-500 group ${
                     formData.extras.includes(extra.id)
-                      ? 'bg-[#fffcf2] text-[#1a260e]'
-                      : 'bg-[#fffcf2]/5 text-[#fffcf2] hover:bg-[#fffcf2]/10'
+                      ? 'bg-eu-cream border-eu-cream text-eu-ink'
+                      : 'bg-[#fffcf2]/[0.04] border-[#fffcf2]/15 text-eu-cream hover:bg-[#fffcf2]/10 hover:border-[#fffcf2]/30'
                   }`}
                 >
-                  <extra.icon className={`h-5 w-5 mb-4 transition-colors ${
+                  <extra.icon strokeWidth={1.5} className={`h-5 w-5 mb-5 transition-colors ${
                     formData.extras.includes(extra.id)
-                      ? 'text-[#1a260e]'
-                      : 'text-[#fffcf2]/40'
+                      ? 'text-eu-ink'
+                      : 'text-eu-beige'
                   }`} />
-                  <h3 className={`text-sm font-medium tracking-wide mb-2 ${
+                  <h3 className={`font-serif text-xl font-normal leading-snug mb-2 ${
                     formData.extras.includes(extra.id)
-                      ? 'text-[#1a260e]'
-                      : 'text-[#fffcf2]/80'
+                      ? 'text-eu-ink'
+                      : 'text-eu-cream'
                   }`}>
                     {extra.label}
                   </h3>
-                  <p className={`text-xs font-light leading-relaxed ${
+                  <p className={`text-sm leading-relaxed ${
                     formData.extras.includes(extra.id)
-                      ? 'text-[#1a260e]/60'
-                      : 'text-[#fffcf2]/30'
+                      ? 'text-eu-green'
+                      : 'text-eu-beige'
                   }`}>
                     {extra.description}
                   </p>
                   {formData.extras.includes(extra.id) && (
-                    <div className="mt-3 flex items-center gap-1.5 text-[10px] tracking-wider uppercase text-[#1a260e]/50">
-                      <CheckCircle2 className="h-3 w-3" />
+                    <div className="mt-4 flex items-center gap-1.5 eu-cap text-eu-green">
+                      <CheckCircle2 className="h-3.5 w-3.5" strokeWidth={1.5} />
                       Selected
                     </div>
                   )}
@@ -1030,7 +984,7 @@ export default function StudioHire() {
           </div>
 
           <Reveal delay={0.2}>
-            <p className="text-center text-[#fffcf2]/20 text-xs mt-8 tracking-wide">
+            <p className="text-center text-eu-beige text-sm mt-8">
               Pricing for extras will be discussed during confirmation
             </p>
           </Reveal>
@@ -1040,15 +994,15 @@ export default function StudioHire() {
       {/* ════════════════════════════════════════════════════════
           ENQUIRY FORM — The main event
          ════════════════════════════════════════════════════════ */}
-      <section ref={formRef} className="py-24 md:py-36 px-6 scroll-mt-32 xl:scroll-mt-40">
-        <div className="container-width">
+      <section ref={formRef} className="py-[clamp(88px,10vw,150px)] scroll-mt-[var(--eu-header-space)]">
+        <div className="eu-wrap">
           <Reveal>
-            <div className="text-center mb-14 md:mb-20">
-              <p className="tagline text-[#1a260e]/40 mb-5">ENQUIRE</p>
-              <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-[#1a260e] font-light mb-6">
-                Book Your <span className="italic">Experience</span>
+            <div className="text-center mb-12 md:mb-16">
+              <p className="eu-cap text-eu-green mb-5">ENQUIRE</p>
+              <h2 className="font-serif font-normal text-[clamp(42px,5.6vw,88px)] leading-none tracking-[-0.025em] text-eu-ink mb-6">
+                Book Your <em className="italic">Experience</em>
               </h2>
-              <p className="text-[#1a260e]/50 text-base font-light max-w-xl mx-auto">
+              <p className="text-eu-green text-[17px] leading-[1.75] max-w-xl mx-auto">
                 Fill in the details below and we&apos;ll get back to you within 24 hours
                 to confirm availability and finalise your booking.
               </p>
@@ -1058,14 +1012,14 @@ export default function StudioHire() {
           <div className="max-w-3xl mx-auto">
             {submitted ? (
               <Reveal>
-                <div ref={successRef} className="text-center py-20">
-                  <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-[#1a260e]/5 mb-6">
-                    <CheckCircle2 className="h-8 w-8 text-[#1a260e]/60" />
+                <div ref={successRef} className="text-center py-16 md:py-20 px-6 rounded-[28px] md:rounded-eu-lg bg-eu-beige">
+                  <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-eu-cream mb-6">
+                    <CheckCircle2 className="h-8 w-8 text-eu-green" strokeWidth={1.5} />
                   </div>
-                  <h3 className="font-serif text-2xl md:text-3xl text-[#1a260e] font-light mb-4">
+                  <h3 className="font-serif font-normal text-3xl md:text-4xl text-eu-ink mb-4">
                     Enquiry Sent
                   </h3>
-                  <p className="text-[#1a260e]/50 font-light">
+                  <p className="text-eu-green text-[17px]">
                     Thank you, we&apos;ve received your enquiry.
                     We&apos;ll be in touch soon!
                   </p>
@@ -1073,140 +1027,149 @@ export default function StudioHire() {
               </Reveal>
             ) : (
               <Reveal delay={0.05}>
-                <form onSubmit={handleSubmit} className="space-y-8">
+                <form onSubmit={handleSubmit} className="space-y-10 rounded-[28px] md:rounded-eu-lg bg-eu-beige p-5 sm:p-8 md:p-12">
                   {/* Personal Details */}
                   <div>
-                    <h3 className="font-serif text-xl text-[#1a260e] font-light mb-6 flex items-center gap-3">
-                      <span className="text-[10px] tracking-[0.3em] text-[#1a260e]/25 font-sans uppercase">01</span>
+                    <h3 className="font-serif text-2xl md:text-[28px] text-eu-ink font-normal mb-6 flex items-baseline gap-3">
+                      <span className="font-serif italic text-lg text-eu-green">01</span>
                       Your Details
                     </h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                       <div>
-                        <label htmlFor="name" className="block font-sans text-xs tracking-wider uppercase text-[#1a260e]/40 mb-2">
+                        <label htmlFor="name" className={LABEL_CLASS}>
                           Full Name *
                         </label>
                         <input
                           type="text"
                           id="name"
+                          autoComplete="name"
                           name="name"
                           required
                           value={formData.name}
                           onChange={handleChange}
                           placeholder="Your name"
-                          className="w-full px-4 py-3.5 bg-transparent border-b border-[#1a260e]/15 focus:border-[#1a260e] focus:outline-none transition-colors text-[#1a260e] placeholder:text-[#1a260e]/20 text-base md:text-sm font-light"
+                          className={`${fieldClass('name')} min-h-[52px] py-3`}
                         />
                         <FieldError message={fieldError('name')} />
                       </div>
                       <div>
-                        <label htmlFor="email" className="block font-sans text-xs tracking-wider uppercase text-[#1a260e]/40 mb-2">
+                        <label htmlFor="email" className={LABEL_CLASS}>
                           Email Address *
                         </label>
                         <input
                           type="email"
                           id="email"
+                          autoComplete="email"
                           name="email"
                           required
                           value={formData.email}
                           onChange={handleChange}
                           placeholder="your@email.com"
-                          className="w-full px-4 py-3.5 bg-transparent border-b border-[#1a260e]/15 focus:border-[#1a260e] focus:outline-none transition-colors text-[#1a260e] placeholder:text-[#1a260e]/20 text-base md:text-sm font-light"
+                          className={`${fieldClass('email')} min-h-[52px] py-3`}
                         />
                         <FieldError message={fieldError('email')} />
                       </div>
                     </div>
                     <div className="mt-5">
-                      <label htmlFor="phone" className="block font-sans text-xs tracking-wider uppercase text-[#1a260e]/40 mb-2">
+                      <label htmlFor="phone" className={LABEL_CLASS}>
                         Phone Number *
                       </label>
                       <input
                         type="tel"
                         id="phone"
+                        autoComplete="tel"
                         name="phone"
                         required
                         value={formData.phone}
                         onChange={handleChange}
                         placeholder="+44 ..."
-                        className="w-full px-4 py-3.5 bg-transparent border-b border-[#1a260e]/15 focus:border-[#1a260e] focus:outline-none transition-colors text-[#1a260e] placeholder:text-[#1a260e]/20 text-base md:text-sm font-light"
+                        className={`${fieldClass('phone')} min-h-[52px] py-3`}
                       />
                       <FieldError message={fieldError('phone')} />
                     </div>
                   </div>
 
                   {/* Event Details */}
-                  <div className="pt-4">
-                    <h3 className="font-serif text-xl text-[#1a260e] font-light mb-6 flex items-center gap-3">
-                      <span className="text-[10px] tracking-[0.3em] text-[#1a260e]/25 font-sans uppercase">02</span>
+                  <div>
+                    <h3 className="font-serif text-2xl md:text-[28px] text-eu-ink font-normal mb-6 flex items-baseline gap-3">
+                      <span className="font-serif italic text-lg text-eu-green">02</span>
                       Event Details
                     </h3>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                       <div>
-                        <label htmlFor="eventType" className="block font-sans text-xs tracking-wider uppercase text-[#1a260e]/40 mb-2">
+                        <label htmlFor="eventType" className={LABEL_CLASS}>
                           Type of Event *
                         </label>
-                        <select
-                          id="eventType"
-                          name="eventType"
-                          required
-                          value={formData.eventType}
-                          onChange={handleChange}
-                          className="w-full px-4 py-3.5 bg-transparent border-b border-[#1a260e]/15 focus:border-[#1a260e] focus:outline-none transition-colors text-[#1a260e] text-base md:text-sm font-light appearance-none cursor-pointer"
-                        >
-                          <option value="" disabled>Select event type</option>
-                          <option value="Birthday Party">Birthday Party</option>
-                          <option value="Corporate Event">Corporate Event</option>
-                          <option value="Hen Do">Hen Do</option>
-                          <option value="Private Class">Private Pilates Class</option>
-                          <option value="Social Gathering">Social Gathering</option>
-                          <option value="Team Building">Team Building</option>
-                          <option value="Other">Other</option>
-                        </select>
+                        <div className="relative">
+                          <select
+                            id="eventType"
+                            name="eventType"
+                            required
+                            value={formData.eventType}
+                            onChange={handleChange}
+                            className={`${fieldClass('eventType')} min-h-[52px] py-3 pr-12 appearance-none cursor-pointer`}
+                          >
+                            <option value="" disabled>Select event type</option>
+                            <option value="Birthday Party">Birthday Party</option>
+                            <option value="Corporate Event">Corporate Event</option>
+                            <option value="Hen Do">Hen Do</option>
+                            <option value="Private Class">Private Pilates Class</option>
+                            <option value="Social Gathering">Social Gathering</option>
+                            <option value="Team Building">Team Building</option>
+                            <option value="Other">Other</option>
+                          </select>
+                          <ChevronDown className="pointer-events-none absolute right-5 top-1/2 -translate-y-1/2 h-4 w-4 text-eu-green" strokeWidth={1.5} aria-hidden="true" />
+                        </div>
                         <FieldError message={fieldError('eventType')} />
                       </div>
 
                       <div>
-                        <label htmlFor="guests" className="block font-sans text-xs tracking-wider uppercase text-[#1a260e]/40 mb-2">
+                        <label htmlFor="guests" className={LABEL_CLASS}>
                           Number of Guests *
                         </label>
-                        <select
-                          id="guests"
-                          name="guests"
-                          required
-                          value={formData.guests}
-                          onChange={handleChange}
-                          className="w-full px-4 py-3.5 bg-transparent border-b border-[#1a260e]/15 focus:border-[#1a260e] focus:outline-none transition-colors text-[#1a260e] text-base md:text-sm font-light appearance-none cursor-pointer"
-                        >
-                          <option value="" disabled>Select number</option>
-                          {[2, 3, 4, 5, 6, 7, 8].map(n => (
-                            <option key={n} value={n}>{n} {n === 2 ? '(minimum)' : n === 8 ? '(maximum)' : ''} guests</option>
-                          ))}
-                        </select>
+                        <div className="relative">
+                          <select
+                            id="guests"
+                            name="guests"
+                            required
+                            value={formData.guests}
+                            onChange={handleChange}
+                            className={`${fieldClass('guests')} min-h-[52px] py-3 pr-12 appearance-none cursor-pointer`}
+                          >
+                            <option value="" disabled>Select number</option>
+                            {[2, 3, 4, 5, 6, 7, 8].map(n => (
+                              <option key={n} value={n}>{n} {n === 2 ? '(minimum)' : n === 8 ? '(maximum)' : ''} guests</option>
+                            ))}
+                          </select>
+                          <ChevronDown className="pointer-events-none absolute right-5 top-1/2 -translate-y-1/2 h-4 w-4 text-eu-green" strokeWidth={1.5} aria-hidden="true" />
+                        </div>
                         <FieldError message={fieldError('guests')} />
                       </div>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-5">
                       <div ref={roomsRef}>
-                        <label className="block font-sans text-xs tracking-wider uppercase text-[#1a260e]/40 mb-3">
-                          Room(s) * <span className="normal-case tracking-normal text-[#1a260e]/25">— select one or both</span>
+                        <label className={LABEL_CLASS}>
+                          Room(s) * <span className="normal-case tracking-normal text-[14px] text-eu-sage">— select one or both</span>
                         </label>
-                        <div className="flex flex-col gap-2">
+                        <div className="flex flex-col gap-2.5">
                           <button
                             type="button"
                             onClick={(e) => toggleRoom('reformer', e.currentTarget)}
-                            className={`flex items-center gap-3 px-4 py-3 border rounded-sm text-left text-sm font-light transition-all duration-300 ${
+                            className={`flex items-center gap-3 min-h-[52px] px-5 py-3 border rounded-[14px] bg-eu-cream text-left text-base transition-colors duration-300 ${
                               formData.rooms.includes('reformer')
-                                ? 'border-[#1a260e] bg-[#1a260e]/[0.03] text-[#1a260e]'
-                                : 'border-[#1a260e]/10 text-[#1a260e]/50 hover:border-[#1a260e]/25'
+                                ? 'border-eu-ink shadow-[inset_0_0_0_1px_#1a260e] text-eu-ink'
+                                : 'border-[#1a260e]/20 text-eu-green hover:border-[#1a260e]/40'
                             }`}
                           >
-                            <div className={`w-4 h-4 rounded-sm border flex items-center justify-center transition-all ${
+                            <div className={`w-5 h-5 rounded-[6px] border flex flex-shrink-0 items-center justify-center transition-colors ${
                               formData.rooms.includes('reformer')
-                                ? 'border-[#1a260e] bg-[#1a260e]'
-                                : 'border-[#1a260e]/20'
+                                ? 'border-eu-ink bg-eu-ink'
+                                : 'border-[#1a260e]/40 bg-eu-cream'
                             }`}>
                               {formData.rooms.includes('reformer') && (
-                                <CheckCircle2 className="h-3 w-3 text-[#fffcf2]" />
+                                <CheckCircle2 className="h-3.5 w-3.5 text-eu-cream" />
                               )}
                             </div>
                             Reformer Room
@@ -1214,33 +1177,33 @@ export default function StudioHire() {
                           <button
                             type="button"
                             onClick={(e) => toggleRoom('hot-pilates', e.currentTarget)}
-                            className={`flex items-center gap-3 px-4 py-3 border rounded-sm text-left text-sm font-light transition-all duration-300 ${
+                            className={`flex items-center gap-3 min-h-[52px] px-5 py-3 border rounded-[14px] bg-eu-cream text-left text-base transition-colors duration-300 ${
                               formData.rooms.includes('hot-pilates')
-                                ? 'border-[#1a260e] bg-[#1a260e]/[0.03] text-[#1a260e]'
-                                : 'border-[#1a260e]/10 text-[#1a260e]/50 hover:border-[#1a260e]/25'
+                                ? 'border-eu-ink shadow-[inset_0_0_0_1px_#1a260e] text-eu-ink'
+                                : 'border-[#1a260e]/20 text-eu-green hover:border-[#1a260e]/40'
                             }`}
                           >
-                            <div className={`w-4 h-4 rounded-sm border flex items-center justify-center transition-all ${
+                            <div className={`w-5 h-5 rounded-[6px] border flex flex-shrink-0 items-center justify-center transition-colors ${
                               formData.rooms.includes('hot-pilates')
-                                ? 'border-[#1a260e] bg-[#1a260e]'
-                                : 'border-[#1a260e]/20'
+                                ? 'border-eu-ink bg-eu-ink'
+                                : 'border-[#1a260e]/40 bg-eu-cream'
                             }`}>
                               {formData.rooms.includes('hot-pilates') && (
-                                <CheckCircle2 className="h-3 w-3 text-[#fffcf2]" />
+                                <CheckCircle2 className="h-3.5 w-3.5 text-eu-cream" />
                               )}
                             </div>
                             Hot Pilates Room
                           </button>
                         </div>
                         {roomError && formData.rooms.length === 0 && (
-                          <p role="alert" className="mt-2 text-xs font-light text-red-800">
+                          <p role="alert" className="mt-2 pl-1 text-sm leading-snug text-red-800">
                             Please select at least one room.
                           </p>
                         )}
                       </div>
 
                       <div>
-                        <label htmlFor="date" className="block font-sans text-xs tracking-wider uppercase text-[#1a260e]/40 mb-2">
+                        <label htmlFor="date" className={LABEL_CLASS}>
                           Preferred Date *
                         </label>
                         <input
@@ -1251,41 +1214,44 @@ export default function StudioHire() {
                           value={formData.date}
                           onChange={handleChange}
                           min={new Date().toISOString().split('T')[0]}
-                          className="w-full px-4 py-3.5 bg-transparent border-b border-[#1a260e]/15 focus:border-[#1a260e] focus:outline-none transition-colors text-[#1a260e] text-base md:text-sm font-light"
+                          className={`${fieldClass('date')} min-h-[52px] py-3`}
                         />
                         <FieldError message={fieldError('date')} />
                       </div>
                     </div>
 
                     <div className="mt-5">
-                      <label htmlFor="time" className="block font-sans text-xs tracking-wider uppercase text-[#1a260e]/40 mb-2">
+                      <label htmlFor="time" className={LABEL_CLASS}>
                         Preferred Time *
                       </label>
-                      <select
-                        id="time"
-                        name="time"
-                        required
-                        value={formData.time}
-                        onChange={handleChange}
-                        className="w-full px-4 py-3.5 bg-transparent border-b border-[#1a260e]/15 focus:border-[#1a260e] focus:outline-none transition-colors text-[#1a260e] text-base md:text-sm font-light appearance-none cursor-pointer"
-                      >
-                        <option value="" disabled>Select time</option>
-                        <option value="Morning (9am - 12pm)">Morning (9am - 12pm)</option>
-                        <option value="Afternoon (12pm - 3pm)">Afternoon (12pm - 3pm)</option>
-                        <option value="Late Afternoon (3pm - 6pm)">Late Afternoon (3pm - 6pm)</option>
-                        <option value="Evening (6pm - 8pm)">Evening (6pm - 8pm)</option>
-                        <option value="Flexible">Flexible / No preference</option>
-                      </select>
+                      <div className="relative">
+                        <select
+                          id="time"
+                          name="time"
+                          required
+                          value={formData.time}
+                          onChange={handleChange}
+                          className={`${fieldClass('time')} min-h-[52px] py-3 pr-12 appearance-none cursor-pointer`}
+                        >
+                          <option value="" disabled>Select time</option>
+                          <option value="Morning (9am - 12pm)">Morning (9am - 12pm)</option>
+                          <option value="Afternoon (12pm - 3pm)">Afternoon (12pm - 3pm)</option>
+                          <option value="Late Afternoon (3pm - 6pm)">Late Afternoon (3pm - 6pm)</option>
+                          <option value="Evening (6pm - 8pm)">Evening (6pm - 8pm)</option>
+                          <option value="Flexible">Flexible / No preference</option>
+                        </select>
+                        <ChevronDown className="pointer-events-none absolute right-5 top-1/2 -translate-y-1/2 h-4 w-4 text-eu-green" strokeWidth={1.5} aria-hidden="true" />
+                      </div>
                       <FieldError message={fieldError('time')} />
                     </div>
                   </div>
 
                   {/* Extras Selection (inline in form) */}
-                  <div className="pt-4">
-                    <h3 className="font-serif text-xl text-[#1a260e] font-light mb-6 flex items-center gap-3">
-                      <span className="text-[10px] tracking-[0.3em] text-[#1a260e]/25 font-sans uppercase">03</span>
+                  <div>
+                    <h3 className="font-serif text-2xl md:text-[28px] text-eu-ink font-normal mb-6 flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                      <span className="font-serif italic text-lg text-eu-green">03</span>
                       Extras
-                      <span className="text-[#1a260e]/20 text-xs font-sans font-light">(optional)</span>
+                      <span className="text-eu-sage text-sm font-sans font-normal">(optional)</span>
                     </h3>
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                       {extras.map((extra) => (
@@ -1293,17 +1259,17 @@ export default function StudioHire() {
                           key={extra.id}
                           type="button"
                           onClick={(e) => toggleExtra(extra.id, e.currentTarget)}
-                          className={`p-4 rounded-sm border text-left transition-all duration-300 ${
+                          className={`min-h-[96px] p-4 rounded-[18px] border text-left transition-colors duration-300 ${
                             formData.extras.includes(extra.id)
-                              ? 'border-[#1a260e] bg-[#1a260e]/[0.03]'
-                              : 'border-[#1a260e]/10 hover:border-[#1a260e]/25'
+                              ? 'border-eu-ink bg-eu-ink'
+                              : 'border-[#1a260e]/20 bg-eu-cream hover:border-[#1a260e]/40'
                           }`}
                         >
-                          <extra.icon className={`h-4 w-4 mb-2 ${
-                            formData.extras.includes(extra.id) ? 'text-[#1a260e]' : 'text-[#1a260e]/30'
+                          <extra.icon strokeWidth={1.5} className={`h-5 w-5 mb-3 ${
+                            formData.extras.includes(extra.id) ? 'text-eu-cream' : 'text-eu-green'
                           }`} />
-                          <span className={`block text-xs font-light ${
-                            formData.extras.includes(extra.id) ? 'text-[#1a260e]' : 'text-[#1a260e]/50'
+                          <span className={`block text-sm leading-snug ${
+                            formData.extras.includes(extra.id) ? 'text-eu-cream' : 'text-eu-ink'
                           }`}>
                             {extra.label}
                           </span>
@@ -1313,35 +1279,36 @@ export default function StudioHire() {
                   </div>
 
                   {/* Additional Notes */}
-                  <div className="pt-4">
-                    <h3 className="font-serif text-xl text-[#1a260e] font-light mb-6 flex items-center gap-3">
-                      <span className="text-[10px] tracking-[0.3em] text-[#1a260e]/25 font-sans uppercase">04</span>
+                  <div>
+                    <h3 className="font-serif text-2xl md:text-[28px] text-eu-ink font-normal mb-6 flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                      <span className="font-serif italic text-lg text-eu-green">04</span>
                       Anything Else?
-                      <span className="text-[#1a260e]/20 text-xs font-sans font-light">(optional)</span>
+                      <span className="text-eu-sage text-sm font-sans font-normal">(optional)</span>
                     </h3>
                     <textarea
                       id="message"
                       name="message"
+                      aria-label="Anything else? (optional)"
                       rows={4}
                       value={formData.message}
                       onChange={handleChange}
                       placeholder="Tell us about your event, any special requirements, dietary needs for drinks, or anything else we should know..."
-                      className="w-full px-4 py-3.5 bg-transparent border border-[#1a260e]/10 focus:border-[#1a260e] focus:outline-none transition-colors text-[#1a260e] placeholder:text-[#1a260e]/20 text-base md:text-sm font-light resize-none rounded-sm"
+                      className={`${fieldClass('message')} py-4 leading-relaxed resize-none`}
                     />
                     <FieldError message={fieldError('message')} />
                   </div>
 
                   {/* Live Price Estimate */}
                   {totalPerPerson !== null && totalPerPerson > 0 && (
-                    <div className="flex items-center justify-between p-5 bg-[#1a260e]/[0.02] rounded-sm border border-[#1a260e]/5">
+                    <div className="flex flex-wrap items-center justify-between gap-4 p-5 md:p-6 bg-eu-cream rounded-eu-sm border border-[#1a260e]/15">
                       <div>
-                        <p className="text-xs tracking-wider uppercase text-[#1a260e]/30 mb-1">Per Person</p>
-                        <p className="font-serif text-2xl text-[#1a260e] font-light">
+                        <p className="eu-cap text-eu-sage mb-1.5">Per Person</p>
+                        <p className="font-serif text-3xl text-eu-ink">
                           £{totalPerPerson}/person
-                          <span className="text-sm text-[#1a260e]/30 ml-2">+ instructor fee</span>
+                          <span className="font-sans text-sm text-eu-sage ml-2">+ instructor fee</span>
                         </p>
                       </div>
-                      <div className="text-right text-xs text-[#1a260e]/30 font-light">
+                      <div className="text-left sm:text-right text-sm text-eu-green">
                         {formData.rooms.map(r => (
                           <span key={r} className="block">
                             {r === 'reformer' ? 'Reformer' : 'Hot Pilates'}: £{getPerPerson(r, guestCount)}/pp
@@ -1355,30 +1322,32 @@ export default function StudioHire() {
                   <button
                     type="submit"
                     disabled={sending}
-                    className="group w-full flex items-center justify-center gap-3 bg-[#1a260e] text-[#fffcf2] py-5 font-sans text-sm tracking-[0.15em] uppercase transition-all duration-500 hover:scale-[1.01] hover:shadow-xl disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:hover:shadow-none"
+                    className="eu-btn eu-btn--ink eu-btn--block disabled:opacity-60 disabled:cursor-not-allowed"
                   >
                     {sending ? 'Sending…' : 'Send Enquiry'}
-                    <Send className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                    <span className="eu-btn__dot">
+                      <Send className="h-4 w-4" strokeWidth={1.5} />
+                    </span>
                   </button>
 
                   {invalidFields.length > 0 && (
-                    <p role="alert" className="text-center text-sm font-light text-red-800">
+                    <p role="alert" className="text-center text-[15px] text-red-800">
                       Some of your details need checking. Please correct them and try again.
                     </p>
                   )}
 
                   {sendError && (
-                    <p role="alert" className="text-center text-sm font-light text-red-800">
+                    <p role="alert" className="text-center text-[15px] leading-relaxed text-red-800">
                       Sorry, that didn&apos;t send. Please try again, or email us at{' '}
-                      <a href="mailto:euforyc@gmail.com" className="underline">euforyc@gmail.com</a>
+                      <a href="mailto:euforyc@gmail.com" className="inline-block py-2.5 underline underline-offset-2">euforyc@gmail.com</a>
                       {' '}or call{' '}
-                      <a href="tel:+447375710370" className="underline">+44 7375 710370</a>.
+                      <a href="tel:+447375710370" className="inline-block py-2.5 underline underline-offset-2">+44 7375 710370</a>.
                     </p>
                   )}
 
-                  <p className="text-center text-[#1a260e]/25 text-xs font-light">
+                  <p className="text-center text-eu-sage text-sm">
                     You can also email us directly at{' '}
-                    <a href="mailto:euforyc@gmail.com" className="underline hover:text-[#1a260e]/50 transition-colors">
+                    <a href="mailto:euforyc@gmail.com" className="inline-block py-3 text-eu-ink underline underline-offset-4 hover:text-eu-green transition-colors">
                       euforyc@gmail.com
                     </a>
                   </p>
@@ -1394,45 +1363,40 @@ export default function StudioHire() {
       {/* ════════════════════════════════════════════════════════
           CLOSING CTA
          ════════════════════════════════════════════════════════ */}
-      <section className="relative py-28 md:py-36 overflow-hidden bg-[#1a260e]">
-        <FloatingParticles />
-
-        {/* Background gradient */}
-        <div className="absolute inset-0">
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-[#2a3a21]/30 blur-[150px]" />
-        </div>
-
-        <div className="relative z-10 container-width text-center px-6">
+      <section className="relative py-[clamp(88px,10vw,150px)] overflow-hidden bg-eu-ink text-eu-cream rounded-[32px] md:rounded-eu-xl mx-[clamp(10px,1.5vw,24px)] mb-6 eu-on-dark">
+        <div className="relative z-10 eu-wrap text-center">
           <Reveal>
             <div className="max-w-2xl mx-auto space-y-7">
-              <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-[#fffcf2] font-light leading-tight">
+              <h2 className="font-serif font-normal text-[clamp(42px,5.6vw,88px)] text-eu-cream leading-[1.02] tracking-[-0.025em]">
                 Your next event<br />
-                starts <span className="italic">here</span>
+                starts <em className="italic">here</em>
               </h2>
-              <p className="text-[#fffcf2]/40 text-sm md:text-base font-light max-w-md mx-auto">
+              <p className="text-eu-beige text-[17px] md:text-lg leading-[1.75] max-w-md mx-auto">
                 Whether it&apos;s a birthday celebration, team bonding session,
                 or a private pilates class with friends — we&apos;ve got the perfect space for you.
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-2">
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-8 justify-center items-center pt-2">
                 <button
                   onClick={scrollToForm}
-                  className="group inline-flex items-center gap-2 bg-[#fffcf2] text-[#1a260e] px-10 py-5 font-sans text-sm tracking-[0.15em] uppercase transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl hover:shadow-[#fffcf2]/10"
+                  className="eu-btn eu-btn--cream w-full sm:w-auto !justify-between"
                 >
                   Enquire Now
-                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                  <span className="eu-btn__dot">
+                    <Arrow />
+                  </span>
                 </button>
                 <Link
                   href="/contact"
-                  className="text-[#fffcf2]/40 text-sm tracking-wider hover:text-[#fffcf2]/70 transition-colors"
+                  className="eu-ulink"
                 >
                   Or get in touch →
                 </Link>
               </div>
 
               {/* Location tag */}
-              <div className="flex items-center justify-center gap-2 pt-6 text-[#fffcf2]/20 text-xs">
-                <MapPin className="h-3 w-3" />
-                <span className="tracking-wider">7-8 Holmstall Parade, Edgware, HA8 5HX</span>
+              <div className="flex items-center justify-center gap-2 pt-6 text-eu-beige text-[13px]">
+                <MapPin className="h-3.5 w-3.5 flex-shrink-0" strokeWidth={1.5} />
+                <span className="tracking-[0.08em]">7-8 Holmstall Parade, Edgware, HA8 5HX</span>
               </div>
             </div>
           </Reveal>

@@ -1,0 +1,198 @@
+/* The stacked review cards (ReviewDeck) and the score beside them.
+   Shared by the homepage and /offers. */
+
+.rvGrid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: 24px;
+  align-items: center;
+}
+
+.rvL {
+  grid-column: 1 / span 5;
+}
+
+.rvL h2 {
+  margin-top: 22px;
+}
+
+.rvL .tagline {
+  margin: 22px 0 0;
+}
+
+.rvR {
+  grid-column: 7 / span 6;
+}
+
+.score {
+  display: flex;
+  align-items: flex-end;
+  gap: 20px;
+  margin-top: clamp(40px, 4vw, 64px);
+  padding-top: 30px;
+  border-top: 1px solid rgba(26, 38, 14, 0.16);
+}
+
+/* The score as the first thing in the column (/offers, under its own heading) */
+.scoreFirst {
+  margin-top: 0;
+}
+
+.scoreBig {
+  font-family: var(--eu-display);
+  font-size: clamp(96px, 10vw, 160px);
+  line-height: 0.78;
+  letter-spacing: -0.05em;
+}
+
+.scoreMeta {
+  max-width: 230px;
+  padding-bottom: 6px;
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: #2a3a21;
+}
+
+.deckCtrl {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 40px;
+}
+
+.rbtn {
+  display: grid;
+  place-items: center;
+  width: 58px;
+  height: 58px;
+  padding: 0;
+  border: 1px solid rgba(26, 38, 14, 0.3);
+  border-radius: 50%;
+  background: transparent;
+  color: #1a260e;
+  cursor: pointer;
+  transition: background-color 0.35s, color 0.35s;
+}
+
+.rbtn:hover {
+  background: #1a260e;
+  color: #fffcf2;
+}
+
+.rbtn:focus-visible {
+  outline: 2px solid #2a3a21;
+  outline-offset: 3px;
+}
+
+.dCount {
+  margin-left: 6px;
+  font-family: var(--eu-display);
+  font-size: 22px;
+}
+
+.dCount span {
+  color: #6b6450;
+}
+
+.deck {
+  position: relative;
+  height: 560px;
+  touch-action: pan-y;
+}
+
+.card {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 26px;
+  width: min(560px, 100%);
+  min-height: 380px;
+  margin: -190px 0 0 calc(min(560px, 100%) / -2);
+  padding: clamp(26px, 3vw, 44px);
+  border-radius: 32px;
+  box-shadow: 0 30px 60px -40px rgba(26, 38, 14, 0.55);
+  transition: transform 0.9s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.6s;
+  will-change: transform;
+}
+
+.c0 {
+  background: #f5f0e8;
+  color: #1a260e;
+}
+
+.c1 {
+  background: #2a3a21;
+  color: #fffcf2;
+}
+
+.c2 {
+  background: #fffcf2;
+  color: #1a260e;
+  border: 1px solid rgba(26, 38, 14, 0.18);
+}
+
+.c3 {
+  background: #1a260e;
+  color: #fffcf2;
+}
+
+.qMark {
+  height: 40px;
+  font-family: var(--eu-display);
+  font-size: 96px;
+  line-height: 0.5;
+}
+
+.q {
+  margin: 0;
+  font-family: var(--eu-display);
+  font-size: clamp(22px, 2.1vw, 30px);
+  line-height: 1.32;
+}
+
+.qWho {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 16px;
+}
+
+.qName {
+  display: block;
+  font-family: var(--eu-display);
+  font-size: 20px;
+}
+
+.qCtx {
+  display: block;
+  margin-top: 4px;
+  font-size: 14px;
+  opacity: 0.85;
+}
+
+@media (max-width: 900px) {
+  .rvL,
+  .rvR {
+    grid-column: 1 / -1;
+  }
+
+  .rvR {
+    margin-top: 40px;
+  }
+
+  .deck {
+    height: 500px;
+  }
+
+  .card {
+    min-height: 360px;
+    margin-top: -180px;
+  }
+
+  .q {
+    font-size: 21px;
+  }
+}

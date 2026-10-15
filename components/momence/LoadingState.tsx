@@ -4,6 +4,7 @@
  */
 
 import React from 'react';
+import scheduleStyles from './schedule.module.css';
 
 interface LoadingStateProps {
   count?: number; // Number of skeleton cards to show
@@ -149,30 +150,19 @@ export function LoadingSpinner({ size = 'md' }: { size?: 'sm' | 'md' | 'lg' }) {
 }
 
 /**
- * Full page loading state with logo
+ * Timetable placeholder while classes load: rows in the shape of the real list
  */
 export function FullPageLoading() {
   return (
-    <div className="min-h-[60vh] flex flex-col items-center justify-center">
-      <div className="text-center space-y-6">
-        {/* Animated logo placeholder */}
-        <div className="mx-auto">
-          <div className="h-16 w-16 border-4 border-[#1a260e]/20 border-t-[#1a260e] rounded-full animate-spin" />
+    <div className={scheduleStyles.skeleton} role="status" aria-live="polite">
+      <span className="eu-sr-only">Loading the timetable…</span>
+      {Array.from({ length: 6 }).map((_, index) => (
+        <div key={index} className={`${scheduleStyles.skeletonRow} animate-pulse`} aria-hidden="true">
+          <span style={{ width: 64, height: 28 }} />
+          <span style={{ width: `${70 - (index % 3) * 12}%` }} />
+          <span style={{ height: 44 }} />
         </div>
-
-        {/* Loading text */}
-        <div className="space-y-2">
-          <p className="font-serif text-2xl font-light text-[#1a260e]">Loading</p>
-          <p className="text-sm text-[#1a260e]/60">Fetching the latest information...</p>
-        </div>
-
-        {/* Pulsing dots */}
-        <div className="flex items-center justify-center gap-2">
-          <div className="h-2 w-2 bg-[#1a260e]/40 rounded-full animate-pulse [animation-delay:0ms]" />
-          <div className="h-2 w-2 bg-[#1a260e]/40 rounded-full animate-pulse [animation-delay:150ms]" />
-          <div className="h-2 w-2 bg-[#1a260e]/40 rounded-full animate-pulse [animation-delay:300ms]" />
-        </div>
-      </div>
+      ))}
     </div>
   );
 }

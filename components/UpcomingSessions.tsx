@@ -39,7 +39,7 @@ export default function UpcomingSessions({ sessions, renderedAt }: UpcomingSessi
     return (
       <p className="body-text">
         See the{' '}
-        <Link href="/schedule" className="underline underline-offset-4 hover:opacity-70">
+        <Link href="/schedule" className="text-eu-ink underline decoration-[#1a260e]/40 underline-offset-4 hover:decoration-[#1a260e]">
           live timetable
         </Link>{' '}
         for the next available sessions.
@@ -48,7 +48,7 @@ export default function UpcomingSessions({ sessions, renderedAt }: UpcomingSessi
   }
 
   return (
-    <ul className="divide-y divide-[#1a260e]/10 border-y border-[#1a260e]/10">
+    <ul className="divide-y divide-[#1a260e]/15 border-y border-[#1a260e]/15">
       {upcoming.map((session) => (
         <li key={session.id}>
           <a
@@ -58,16 +58,22 @@ export default function UpcomingSessions({ sessions, renderedAt }: UpcomingSessi
             data-content-name={session.title}
             data-content-category="class_booking"
             data-content-type="class"
-            className="group flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-6 py-5 transition-opacity duration-300 hover:opacity-70"
+            className="group my-1.5 flex flex-col gap-1.5 rounded-[20px] px-3 py-4 text-eu-ink transition-colors duration-300 hover:bg-eu-beige hover:text-eu-ink sm:flex-row sm:items-center sm:gap-6 sm:px-5"
           >
-            <span className="font-serif text-lg text-[#1a260e] sm:w-64 flex-shrink-0">
+            <span className="flex-shrink-0 font-serif text-[20px] leading-snug text-eu-ink sm:w-64">
               {session.dateLabel}, {session.timeLabel}
             </span>
-            <span className="font-sans text-sm font-light text-[#1a260e]/80 flex-1">
+            <span className="flex-1 font-sans text-[15px] leading-[1.5] text-eu-green">
               {session.title}
               {session.instructor ? ` with ${session.instructor}` : ''}
             </span>
-            <span className="font-sans text-xs tracking-[0.12em] uppercase text-[#1a260e]/60 flex-shrink-0">
+            <span
+              className={`mt-2 inline-flex min-h-[36px] flex-shrink-0 items-center self-start rounded-full px-4 font-sans text-[11px] uppercase tracking-[0.14em] sm:mt-0 sm:self-auto ${
+                session.isSoldOut
+                  ? 'border border-[#1a260e]/20 text-eu-sage'
+                  : 'bg-eu-ink text-eu-cream transition-colors duration-300 group-hover:bg-eu-green'
+              }`}
+            >
               {session.isSoldOut
                 ? 'Fully booked'
                 : `${session.spotsAvailable} ${session.spotsAvailable === 1 ? 'space' : 'spaces'} left · Book`}

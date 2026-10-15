@@ -6,12 +6,13 @@
 
 'use client';
 
-import React, { useState, useEffect, useMemo } from 'react';
-import { Calendar, Filter, ChevronDown, Search, X } from 'lucide-react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
+import { Calendar, ChevronDown, Search, X } from 'lucide-react';
 import CompactClassRow, { DateHeader } from './CompactClassRow';
 import { FullPageLoading } from './LoadingState';
 import ErrorState, { EmptyState } from './ErrorState';
 import { DateGroupedEvents } from '@/lib/types/momence';
+import styles from './schedule.module.css';
 
 interface ScheduleViewProps {
   initialData?: DateGroupedEvents[];
@@ -30,7 +31,6 @@ export default function ScheduleView({ initialData, renderedAt }: ScheduleViewPr
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [selectedInstructor, setSelectedInstructor] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState<string>('');
-  const [showFilters, setShowFilters] = useState<boolean>(false);
 
   /**
    * Fetch events from API
@@ -284,6 +284,35 @@ export default function ScheduleView({ initialData, renderedAt }: ScheduleViewPr
 
   const totalClasses = filteredGroupedEvents.reduce((sum, group) => sum + group.events.length, 0);
 
+  // Day pills jump to that day in the list and follow the scroll position
+  const [activeDate, setActiveDate] = useState<string | null>(null);
+  const listRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const list = listRef.current;
+    if (!list) return;
+    const sections = Array.from(list.querySelectorAll<HTMLElement>('[data-day]'));
+    if (sections.length === 0) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+        if (visible[0]) setActiveDate(visible[0].target.getAttribute('data-day'));
+      },
+      { rootMargin: '-35% 0px -55% 0px' }
+    );
+    sections.forEach((section) => observer.observe(section));
+    return () => observer.disconnect();
+  }, [filteredGroupedEvents]);
+
+  const jumpToDay = (date: string) => {
+    setActiveDate(date);
+    document.getElementById(`day-${date}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
+  const currentDate = activeDate ?? filteredGroupedEvents[0]?.date;
+
   // Loading state
   if (isLoading && groupedEvents.length === 0) {
     return <FullPageLoading />;
@@ -295,190 +324,109 @@ export default function ScheduleView({ initialData, renderedAt }: ScheduleViewPr
   }
 
   return (
-    <div className="space-y-8">
-      {/* Filters Section - Dark Green */}
-      <div className="bg-[#1a260e] rounded-2xl p-5 md:p-6 border border-white/10
-        shadow-[0_8px_30px_rgba(0,0,0,0.12)]
-        hover:shadow-[0_12px_40px_rgba(0,0,0,0.18)]
-        transition-shadow duration-500
-        relative overflow-hidden">
+    <div>
+      {/* Day strip */}
+      {filteredGroupedEvents.length > 0 && (
+        <nav className={styles.daysBar} aria-label="Jump to a day">
+          <ul className={styles.days}>
+            {filteredGroupedEvents.map((group) => {
+              const { weekday, day } = dayParts(group.date);
+              return (
+                <li key={group.date}>
+                  <button
+                    type="button"
+                    className={styles.day}
+                    aria-current={group.date === currentDate ? 'true' : undefined}
+                    onClick={() => jumpToDay(group.date)}
+                  >
+                    <span className={`eu-cap ${styles.dayName}`}>{weekday}</span>
+                    <span className={styles.dayNum}>{day}</span>
+                    <span className={styles.dayCount}>
+                      {group.events.length} {group.events.length === 1 ? 'class' : 'classes'}
+                    </span>
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
+        </nav>
+      )}
 
-        {/* Subtle texture overlay */}
-        <div className="absolute inset-0 opacity-[0.02] pointer-events-none"
-          style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' /%3E%3C/svg%3E")`
-          }}
-        />
-
-        <div className="flex flex-col lg:flex-row lg:items-center gap-4 relative z-10">
-          {/* Search */}
-          <div className="flex-1">
-            <div className="relative group">
-              <div className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 flex items-center justify-center">
-                <Search className="w-4 h-4 text-white/40 group-focus-within:text-white/60 transition-colors duration-200" />
-              </div>
-              <input
-                type="text"
-                placeholder="Search classes, instructors..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-12 pr-11 py-3.5 bg-white/10 backdrop-blur-sm border border-white/10 rounded-xl text-sm text-white placeholder:text-white/40
-                  focus:bg-white/15 focus:border-white/20 focus:outline-none focus:ring-2 focus:ring-white/10
-                  transition-all duration-300"
-              />
-              {searchQuery && (
-                <button
-                  onClick={() => setSearchQuery('')}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 w-6 h-6 flex items-center justify-center rounded-full
-                    text-white/40 hover:text-white hover:bg-white/10 transition-all duration-200"
-                  aria-label="Clear search"
-                >
-                  <X className="w-4 h-4" />
-                </button>
-              )}
-            </div>
-          </div>
-
-          {/* Filter Toggle (Mobile) */}
-          <button
-            onClick={() => setShowFilters(!showFilters)}
-            className="lg:hidden flex items-center justify-center gap-2.5 px-5 py-3.5 bg-white/10 backdrop-blur-sm text-white rounded-xl border border-white/10
-              hover:bg-white/15 hover:shadow-lg transition-all duration-300 text-sm font-semibold tracking-wide"
-          >
-            <Filter className="w-4 h-4" />
-            Filters
-            {hasActiveFilters && (
-              <span className="bg-yellow-500 text-[#1a260e] text-[10px] font-bold rounded-full w-5 h-5 flex items-center justify-center">
-                !
-              </span>
-            )}
-          </button>
-
-          {/* Desktop Filters */}
-          <div className="hidden lg:flex items-center gap-3">
-            {/* Class Type Filter */}
-            <div className="relative">
-              <select
-                value={selectedCategory}
-                onChange={(e) => setSelectedCategory(e.target.value)}
-                className="appearance-none pl-4 pr-10 py-3.5 bg-white/10 backdrop-blur-sm border border-white/10 rounded-xl text-sm text-white font-medium
-                  focus:bg-white/15 focus:border-white/20 focus:outline-none focus:ring-2 focus:ring-white/10
-                  transition-all duration-300 cursor-pointer hover:bg-white/15 hover:border-white/15"
-              >
-                <option value="all">All Class Types</option>
-                {categories.map((category) => (
-                  <option key={category} value={category}>
-                    {category}
-                  </option>
-                ))}
-              </select>
-              <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/60 pointer-events-none" />
-            </div>
-
-            {/* Instructor Filter */}
-            <div className="relative">
-              <select
-                value={selectedInstructor}
-                onChange={(e) => setSelectedInstructor(e.target.value)}
-                className="appearance-none pl-4 pr-10 py-3.5 bg-white/10 backdrop-blur-sm border border-white/10 rounded-xl text-sm text-white font-medium
-                  focus:bg-white/15 focus:border-white/20 focus:outline-none focus:ring-2 focus:ring-white/10
-                  transition-all duration-300 cursor-pointer hover:bg-white/15 hover:border-white/15"
-              >
-                <option value="all">All Instructors</option>
-                {instructors.map((instructor) => (
-                  <option key={instructor.id} value={instructor.id}>
-                    {instructor.name}
-                  </option>
-                ))}
-              </select>
-              <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/60 pointer-events-none" />
-            </div>
-
-            {/* Clear Filters */}
-            {hasActiveFilters && (
-              <button
-                onClick={clearFilters}
-                className="px-4 py-3.5 text-sm font-medium text-white/70 hover:text-white hover:bg-white/10 rounded-xl transition-all duration-200"
-              >
-                Clear
-              </button>
-            )}
-          </div>
+      {/* Filters */}
+      <div className={styles.filters}>
+        <div className={styles.chips} role="group" aria-label="Class type">
+          {['all', ...categories].map((category) => (
+            <button
+              key={category}
+              type="button"
+              className={styles.chip}
+              aria-pressed={selectedCategory === category}
+              onClick={() => setSelectedCategory(category)}
+            >
+              {category === 'all' ? 'All classes' : category}
+            </button>
+          ))}
         </div>
 
-        {/* Mobile Filters Dropdown - Dark Green Theme */}
-        {showFilters && (
-          <div className="lg:hidden mt-5 pt-5 border-t border-white/10 space-y-4 animate-fade-down">
-            {/* Class Type Filter */}
-            <div>
-              <label className="block text-xs font-semibold text-white/50 mb-2 uppercase tracking-[0.15em]">
-                Class Type
-              </label>
-              <div className="relative">
-                <select
-                  value={selectedCategory}
-                  onChange={(e) => setSelectedCategory(e.target.value)}
-                  className="w-full appearance-none px-4 py-3.5 bg-white/10 backdrop-blur-sm border border-white/10 rounded-xl text-sm text-white font-medium
-                    focus:bg-white/15 focus:border-white/20 focus:outline-none focus:ring-2 focus:ring-white/10
-                    transition-all duration-300"
-                >
-                  <option value="all">All Class Types</option>
-                  {categories.map((category) => (
-                    <option key={category} value={category}>
-                      {category}
-                    </option>
-                  ))}
-                </select>
-                <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/60 pointer-events-none" />
-              </div>
-            </div>
+        <div className={styles.tools}>
+          <div className={styles.field}>
+            <label htmlFor="schedule-instructor" className="eu-sr-only">
+              Instructor
+            </label>
+            <select
+              id="schedule-instructor"
+              className={styles.select}
+              value={selectedInstructor}
+              onChange={(e) => setSelectedInstructor(e.target.value)}
+            >
+              <option value="all">All instructors</option>
+              {instructors.map((instructor) => (
+                <option key={instructor.id} value={instructor.id}>
+                  {instructor.name}
+                </option>
+              ))}
+            </select>
+            <ChevronDown className={styles.fieldIcon} style={{ right: 16 }} width={14} height={14} aria-hidden="true" />
+          </div>
 
-            {/* Instructor Filter */}
-            <div>
-              <label className="block text-xs font-semibold text-white/50 mb-2 uppercase tracking-[0.15em]">
-                Instructor
-              </label>
-              <div className="relative">
-                <select
-                  value={selectedInstructor}
-                  onChange={(e) => setSelectedInstructor(e.target.value)}
-                  className="w-full appearance-none px-4 py-3.5 bg-white/10 backdrop-blur-sm border border-white/10 rounded-xl text-sm text-white font-medium
-                    focus:bg-white/15 focus:border-white/20 focus:outline-none focus:ring-2 focus:ring-white/10
-                    transition-all duration-300"
-                >
-                  <option value="all">All Instructors</option>
-                  {instructors.map((instructor) => (
-                    <option key={instructor.id} value={instructor.id}>
-                      {instructor.name}
-                    </option>
-                  ))}
-                </select>
-                <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/60 pointer-events-none" />
-              </div>
-            </div>
-
-            {/* Clear Button - Dark Theme */}
-            {hasActiveFilters && (
+          <div className={styles.field}>
+            <label htmlFor="schedule-search" className="eu-sr-only">
+              Search classes and instructors
+            </label>
+            <Search className={styles.fieldIcon} style={{ left: 16 }} width={15} height={15} aria-hidden="true" />
+            <input
+              id="schedule-search"
+              type="search"
+              placeholder="Search classes, instructors..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className={styles.search}
+            />
+            {searchQuery && (
               <button
-                onClick={clearFilters}
-                className="w-full px-5 py-3.5 text-sm font-semibold text-white bg-white/10 hover:bg-white/15 rounded-xl border border-white/10
-                  transition-all duration-300 hover:shadow-sm"
+                type="button"
+                onClick={() => setSearchQuery('')}
+                className={styles.clearSearch}
+                aria-label="Clear search"
               >
-                Clear All Filters
+                <X width={15} height={15} aria-hidden="true" />
               </button>
             )}
           </div>
-        )}
+
+          {hasActiveFilters && (
+            <button type="button" onClick={clearFilters} className={styles.clearAll}>
+              Clear
+            </button>
+          )}
+        </div>
       </div>
 
       {/* Results Summary */}
-      <div className="flex items-center justify-between px-2">
-        <p className="text-sm text-[#1a260e]/50 font-light">
-          Showing <span className="font-semibold text-[#1a260e] text-base">{totalClasses}</span>{' '}
-          {totalClasses === 1 ? 'class' : 'classes'}
-          {hasActiveFilters && <span className="text-[#1a260e]/40"> (filtered)</span>}
-        </p>
-      </div>
+      <p className={styles.summary} aria-live="polite">
+        Showing {totalClasses} {totalClasses === 1 ? 'class' : 'classes'}
+        {hasActiveFilters && ' (filtered)'}
+      </p>
 
       {/* Schedule Content - List View Only */}
       {filteredGroupedEvents.length === 0 ? (
@@ -495,27 +443,48 @@ export default function ScheduleView({ initialData, renderedAt }: ScheduleViewPr
         />
       ) : (
         /* Compact List View */
-        <div className="space-y-8">
+        <div ref={listRef}>
           {filteredGroupedEvents.map((group) => (
-            <div key={group.date}>
-              <DateHeader displayDate={group.displayDate} eventCount={group.events.length} />
-              <div className="space-y-2">
-                {group.events.map((event) => (
-                  <CompactClassRow key={event.id} event={event} />
+            <section key={group.date} id={`day-${group.date}`} data-day={group.date} className={styles.dayGroup}>
+              <DateHeader displayDate={longDate(group.date)} eventCount={group.events.length} />
+              <ul className={styles.rows}>
+                {group.events.map((event, index) => (
+                  <li key={event.id} style={{ animationDelay: `${Math.min(index, 12) * 0.045}s` }}>
+                    <CompactClassRow event={event} />
+                  </li>
                 ))}
-              </div>
-            </div>
+              </ul>
+            </section>
           ))}
         </div>
       )}
 
       {/* Refresh Indicator */}
       {isLoading && groupedEvents.length > 0 && (
-        <div className="fixed bottom-8 right-8 bg-[#1a260e] text-[#fffcf2] px-5 py-2.5 rounded-full shadow-2xl flex items-center gap-2 animate-pulse">
-          <div className="w-2 h-2 bg-[#fffcf2] rounded-full animate-ping" />
-          <span className="text-sm font-medium">Updating...</span>
+        <div className={styles.refreshing} role="status">
+          <span className="eu-live-dot" aria-hidden="true" />
+          Updating...
         </div>
       )}
     </div>
   );
+}
+
+/** "2026-10-15" → { weekday: "Thu", day: "15" } */
+function dayParts(date: string) {
+  const noonUtc = new Date(`${date}T12:00:00Z`);
+  return {
+    weekday: noonUtc.toLocaleDateString('en-GB', { weekday: 'short', timeZone: 'UTC' }),
+    day: String(noonUtc.getUTCDate()),
+  };
+}
+
+/** "2026-10-15" → "Thursday 15 October" */
+function longDate(date: string) {
+  return new Date(`${date}T12:00:00Z`).toLocaleDateString('en-GB', {
+    weekday: 'long',
+    day: 'numeric',
+    month: 'long',
+    timeZone: 'UTC',
+  });
 }

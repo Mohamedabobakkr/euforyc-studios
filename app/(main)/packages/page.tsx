@@ -1,7 +1,9 @@
 'use client';
 
-import { useState, useEffect, Suspense, useRef } from 'react';
-import { Sparkles, Flame, Zap, Heart, Crown, ChevronRight, Dumbbell, Music } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { Sparkles, Flame, Zap, Heart, Crown, Dumbbell, Music } from 'lucide-react';
+import Arrow from '@/components/euforyc/Arrow';
+import PillLink from '@/components/euforyc/PillLink';
 
 // Services Schema for SEO
 const servicesSchema = {
@@ -121,72 +123,76 @@ function IntroOffersSection() {
   const currentPackage = introPackages.find(pkg => pkg.id === selectedOffer) || introPackages[0];
 
   return (
-    <section className="py-16 md:py-20 bg-[#fffcf2]">
-      <div className="container-width px-5 md:px-8">
-        <div className="max-w-6xl mx-auto">
+    <section className="pt-[clamp(56px,7vw,110px)] bg-eu-cream">
+      <div className="eu-wrap">
+        <div>
           {/* Section header */}
-          <div className="text-center mb-10 md:mb-12">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-[#1a260e]/5 rounded-full mb-4">
-              <Sparkles className="h-3.5 w-3.5 text-[#1a260e]" />
-              <span className="font-sans text-[10px] tracking-[0.2em] text-[#1a260e]/70 uppercase">New clients</span>
+          <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-5 lg:gap-12 mb-8 md:mb-12">
+            <div>
+              <div className="eu-chip mb-5">
+                <Sparkles className="h-3.5 w-3.5 text-eu-green" strokeWidth={1.5} aria-hidden="true" />
+                <span className="eu-cap">New clients</span>
+              </div>
+              <h2 className="font-serif font-normal text-[clamp(40px,5vw,80px)] leading-[1] tracking-[-0.022em] text-eu-ink">
+                Intro Offer
+              </h2>
             </div>
-            <h2 className="font-serif text-3xl md:text-5xl font-light text-[#1a260e] tracking-wide mb-3">
-              Intro Offer
-            </h2>
-            <p className="font-sans text-sm md:text-base text-[#1a260e]/50">
+            <p className="text-[16px] md:text-[17px] leading-[1.7] text-eu-green lg:max-w-[420px]">
               Your first step into the studio
             </p>
           </div>
 
           {/* Mobile: Selector + Card */}
           <div className="md:hidden">
-            <div className="flex flex-wrap justify-center gap-2 mb-6 max-w-sm mx-auto">
-              {introPackages.map((pkg, index) => (
+            <div className="flex flex-wrap gap-2 mb-5">
+              {introPackages.map((pkg) => (
                 <button
                   key={pkg.id}
+                  type="button"
+                  aria-pressed={selectedOffer === pkg.id}
                   onClick={() => setSelectedOffer(pkg.id as IntroOfferType)}
-                  className={`py-2.5 px-4 rounded-full text-[13px] font-medium transition-all duration-300 flex items-center justify-center gap-1.5 ${index < 4 ? 'w-[calc(50%-4px)]' : 'w-auto'} ${
+                  className={`min-h-[48px] py-2 px-5 rounded-full border text-[14px] transition-colors duration-300 flex items-center justify-center gap-2 ${
                     selectedOffer === pkg.id
-                      ? 'bg-[#1a260e] text-[#fffcf2] shadow-lg'
-                      : 'bg-[#1a260e]/[0.06] text-[#1a260e]/60'
+                      ? 'bg-eu-ink text-eu-cream border-eu-ink'
+                      : 'bg-transparent text-eu-ink border-[#1a260e]/30'
                   }`}
                 >
-                  {getIcon(pkg.icon, 'h-3.5 w-3.5')}
+                  {getIcon(pkg.icon, 'h-4 w-4')}
                   <span className="truncate">{pkg.name.replace(' Pilates', '').replace('Red Light Hot', 'Red Light')}</span>
                 </button>
               ))}
             </div>
 
             {fromAd && (
-              <div className="mb-4 flex justify-center">
-                <div className="bg-[#1a260e] text-[#fffcf2] text-xs font-medium px-4 py-2 rounded-full flex items-center gap-2">
-                  <Sparkles className="h-3 w-3" />
+              <div className="mb-4 flex">
+                <div className="eu-chip bg-eu-beige border-transparent text-eu-ink">
+                  <Sparkles className="h-3.5 w-3.5" strokeWidth={1.5} aria-hidden="true" />
                   <span>Special offer selected</span>
                 </div>
               </div>
             )}
 
-            <a href={currentPackage.momenceUrl} target="_blank" rel="noopener noreferrer" className="block">
-              <div className="bg-[#1a260e] text-[#fffcf2] rounded-2xl p-8 relative overflow-hidden shadow-[0_8px_40px_rgba(26,38,14,0.2)]">
-                <div className="absolute top-0 right-0 w-40 h-40 bg-white/[0.03] rounded-full -translate-y-1/2 translate-x-1/2" />
-                <div className="absolute bottom-0 left-0 w-32 h-32 bg-white/[0.03] rounded-full translate-y-1/2 -translate-x-1/2" />
-                <div className="relative z-10 text-center space-y-5">
-                  <div className="w-14 h-14 bg-[#fffcf2]/[0.08] rounded-full flex items-center justify-center mx-auto">
-                    {getIcon(currentPackage.icon, 'h-6 w-6 text-[#fffcf2]/80')}
+            <a href={currentPackage.momenceUrl} target="_blank" rel="noopener noreferrer" className="group block rounded-eu-md">
+              <div className="bg-eu-ink text-eu-cream rounded-eu-md px-6 pt-7 pb-6 relative overflow-hidden">
+                <div className="relative z-10 space-y-6">
+                  <div className="w-12 h-12 border border-[#fffcf2]/40 rounded-full flex items-center justify-center">
+                    {getIcon(currentPackage.icon, 'h-5 w-5 text-eu-cream')}
                   </div>
                   <div>
-                    <h3 className="font-serif text-2xl font-light tracking-wide">{currentPackage.name}</h3>
-                    <p className="text-[13px] text-[#fffcf2]/40 mt-1 tracking-wider uppercase">{currentPackage.classes}</p>
+                    <h3 className="font-serif font-normal text-[36px] leading-[1.05] tracking-[-0.01em]">{currentPackage.name}</h3>
+                    <p className="eu-cap text-[#F5F0E8] mt-3">{currentPackage.classes}</p>
                   </div>
                   <div>
-                    <p className="font-serif text-4xl font-light">{currentPackage.price}</p>
-                    <p className="font-sans text-xs text-[#fffcf2]/40 mt-2 tracking-wide">Valid for {currentPackage.validity}</p>
+                    <p className="font-serif font-normal text-[88px] leading-[0.85] tracking-[-0.04em]">{currentPackage.price}</p>
+                    <p className="text-[14px] text-[#F5F0E8] mt-4">Valid for {currentPackage.validity}</p>
                   </div>
-                  <p className="text-[13px] text-[#fffcf2]/60 leading-relaxed max-w-xs mx-auto">{currentPackage.description}</p>
+                  <p className="text-[15px] text-[#F5F0E8] leading-[1.6]">{currentPackage.description}</p>
                   <div className="pt-1">
-                    <span className="inline-flex items-center gap-2 bg-[#fffcf2] text-[#1a260e] px-8 py-3.5 rounded-full text-sm font-medium tracking-wide">
+                    <span className="flex items-center justify-between gap-3 min-h-[56px] rounded-full bg-eu-cream text-eu-ink pl-6 pr-1.5 py-1.5 text-[12px] tracking-[0.16em] uppercase font-medium">
                       Claim Offer
-                      <ChevronRight className="h-4 w-4" />
+                      <span className="grid place-items-center w-11 h-11 rounded-full bg-eu-ink text-eu-cream flex-none">
+                        <Arrow size={15} />
+                      </span>
                     </span>
                   </div>
                 </div>
@@ -195,38 +201,39 @@ function IntroOffersSection() {
           </div>
 
           {/* Desktop: Row of cards */}
-          <div className={`hidden md:grid gap-4 ${introPackages.length === 1 ? 'grid-cols-1 max-w-sm mx-auto' : 'grid-cols-3'}`}>
+          <div className={`hidden md:grid gap-4 ${introPackages.length === 1 ? 'grid-cols-1' : 'grid-cols-3'}`}>
             {introPackages.map((pkg) => (
               <a
                 key={pkg.id}
                 href={pkg.momenceUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group relative bg-[#1a260e] text-[#fffcf2] rounded-2xl p-6 transition-all duration-500 hover:shadow-[0_20px_60px_rgba(26,38,14,0.25)] hover:-translate-y-1"
+                className="group relative bg-eu-ink text-eu-cream rounded-eu-lg p-10 lg:p-14 transition-[transform,box-shadow] duration-500 ease-eu hover:shadow-[0_30px_60px_-40px_rgba(26,38,14,0.6)] hover:-translate-y-1"
               >
-                <div className="absolute top-0 right-0 w-20 h-20 bg-white/[0.03] rounded-full -translate-y-1/2 translate-x-1/2 transition-transform duration-500 group-hover:scale-150" />
-                <div className="text-center space-y-4 relative z-10">
-                  <div className="w-12 h-12 bg-[#fffcf2]/[0.06] rounded-full flex items-center justify-center mx-auto group-hover:bg-[#fffcf2]/[0.1] transition-colors duration-300">
-                    {getIcon(pkg.icon, 'h-5 w-5 text-[#fffcf2]/60')}
+                <div className={`relative z-10 ${introPackages.length === 1 ? 'grid grid-cols-[minmax(0,1fr)_auto_auto] items-end gap-x-10 lg:gap-x-16 gap-y-8' : 'space-y-5'}`}>
+                  <div className="col-start-1 row-start-1 w-14 h-14 border border-[#fffcf2]/40 rounded-full flex items-center justify-center transition-colors duration-300 group-hover:bg-[#fffcf2]/10">
+                    {getIcon(pkg.icon, 'h-5 w-5 text-eu-cream')}
                   </div>
-                  <div>
-                    <h3 className="font-serif text-xl font-light tracking-wide">{pkg.name}</h3>
-                    <p className="text-[11px] text-[#fffcf2]/30 mt-1 uppercase tracking-wider">{pkg.classes}</p>
+                  <div className="col-start-1 row-start-2">
+                    <h3 className="font-serif font-normal text-[clamp(40px,4.4vw,64px)] leading-[1] tracking-[-0.02em]">{pkg.name}</h3>
+                    <p className="eu-cap text-[#F5F0E8] mt-4">{pkg.classes}</p>
                   </div>
-                  <div>
-                    <p className="font-serif text-3xl font-light">{pkg.price}</p>
-                    <p className="font-sans text-[11px] text-[#fffcf2]/30 mt-1.5 tracking-wide">Valid {pkg.validity}</p>
+                  <div className="col-start-2 row-start-1 row-span-2">
+                    <p className="font-serif font-normal text-[clamp(96px,9vw,148px)] leading-[0.85] tracking-[-0.045em]">{pkg.price}</p>
+                    <p className="text-[15px] text-[#F5F0E8] mt-4">Valid {pkg.validity}</p>
                   </div>
-                  <div className="flex items-center justify-center gap-1.5 text-[#fffcf2]/40 group-hover:text-[#fffcf2]/80 transition-all duration-300">
-                    <span className="font-sans text-xs tracking-wider uppercase">Claim</span>
-                    <ChevronRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5" />
+                  <div className="col-start-3 row-start-1 row-span-2 flex items-center justify-between gap-4 min-h-[60px] rounded-full bg-eu-cream text-eu-ink pl-7 pr-2 py-2 transition-colors duration-300 group-hover:bg-eu-beige">
+                    <span className="font-sans text-[12px] font-medium tracking-[0.18em] uppercase">Claim</span>
+                    <span className="grid place-items-center w-11 h-11 rounded-full bg-eu-ink text-eu-cream flex-none transition-transform duration-500 ease-eu group-hover:-rotate-45">
+                      <Arrow size={15} />
+                    </span>
                   </div>
                 </div>
               </a>
             ))}
           </div>
 
-          <p className="text-center text-[11px] text-[#1a260e]/30 mt-6 tracking-wide">
+          <p className="text-[14px] text-eu-sage mt-5 md:mt-6">
             Try It All is for first-time clients only and can only be bought once
           </p>
         </div>
@@ -243,44 +250,41 @@ function PackageCard({ pkg }: { pkg: { name: string; price: string; savings?: st
       href={pkg.momenceUrl}
       target="_blank"
       rel="noopener noreferrer"
-      className={`group relative overflow-hidden rounded-2xl transition-all duration-500 hover:-translate-y-1 ${
+      className={`group relative flex flex-col rounded-eu-sm transition-[background-color,color,transform] duration-300 ease-eu hover:-translate-y-[3px] ${
         isUnlimited
-          ? 'bg-[#1a260e] text-[#fffcf2] shadow-[0_8px_40px_rgba(26,38,14,0.2)] hover:shadow-[0_20px_60px_rgba(26,38,14,0.3)]'
-          : 'bg-white text-[#1a260e] border border-[#1a260e]/[0.06] shadow-[0_2px_16px_rgba(26,38,14,0.04)] hover:shadow-[0_12px_40px_rgba(26,38,14,0.1)] hover:border-[#1a260e]/[0.12]'
+          ? 'bg-eu-ink text-eu-cream hover:bg-eu-green'
+          : 'bg-eu-beige text-eu-ink hover:bg-eu-ink hover:text-eu-cream'
       }`}
     >
-      {/* Decorative circle */}
-      <div className={`absolute -top-10 -right-10 w-24 h-24 rounded-full transition-transform duration-500 group-hover:scale-150 ${
-        isUnlimited ? 'bg-white/[0.04]' : 'bg-[#1a260e]/[0.02]'
-      }`} />
-
       {isUnlimited && (
-        <div className="absolute top-4 right-4">
-          <Crown className="h-4 w-4 text-[#fffcf2]/30" />
+        <div className="absolute top-5 right-5">
+          <Crown className="h-4 w-4 text-[#F5F0E8]" strokeWidth={1.5} aria-hidden="true" />
         </div>
       )}
 
-      <div className="relative z-10 p-6 md:p-8 text-center space-y-4">
-        <div>
-          <h3 className="font-serif text-xl md:text-2xl font-light tracking-wide">{pkg.name}</h3>
+      <div className="relative z-10 flex flex-col flex-1 p-5 md:p-6 min-h-[176px] md:min-h-[200px]">
+        <div className={isUnlimited ? 'pr-7' : ''}>
+          <h3 className="font-sans text-[15px] leading-[1.35]">{pkg.name}</h3>
         </div>
 
-        <div>
-          <p className={`font-serif text-3xl md:text-4xl font-light ${isUnlimited ? '' : ''}`}>{pkg.price}</p>
+        <div className="mt-3">
+          <p className="font-serif font-normal text-[44px] md:text-[52px] leading-[0.95] tracking-[-0.03em]">{pkg.price}</p>
           {pkg.savings && (
-            <p className={`font-sans text-xs mt-2 tracking-wide ${
-              isUnlimited ? 'text-[#fffcf2]/40' : 'text-[#1a260e]/40'
+            <p className={`eu-cap mt-2.5 transition-colors duration-300 ${
+              isUnlimited ? 'text-[#F5F0E8]' : 'text-eu-sage group-hover:text-[#F5F0E8]'
             }`}>{pkg.savings}</p>
           )}
         </div>
 
-        <div className={`flex items-center justify-center gap-1.5 pt-2 transition-all duration-300 ${
+        <div className={`flex items-center justify-between gap-2 mt-auto pt-6 transition-colors duration-300 ${
           isUnlimited
-            ? 'text-[#fffcf2]/50 group-hover:text-[#fffcf2]/90'
-            : 'text-[#1a260e]/40 group-hover:text-[#1a260e]/80'
+            ? 'text-eu-cream'
+            : 'text-eu-ink group-hover:text-eu-cream'
         }`}>
-          <span className="font-sans text-xs tracking-[0.15em] uppercase">Book Now</span>
-          <ChevronRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5" />
+          <span className="font-sans text-[12px] tracking-[0.16em] uppercase">Book Now</span>
+          <span className="transition-transform duration-500 ease-eu group-hover:translate-x-1">
+            <Arrow size={16} />
+          </span>
         </div>
       </div>
     </a>
@@ -331,29 +335,30 @@ function PackagesSection() {
   // Determine grid layout based on package count
   const getGridCols = (count: number) => {
     if (count === 1) return 'grid-cols-1 max-w-sm';
-    if (count <= 2) return 'grid-cols-1 md:grid-cols-2 max-w-2xl';
-    if (count === 3) return 'grid-cols-1 md:grid-cols-3 max-w-4xl';
-    return 'grid-cols-2 md:grid-cols-4 max-w-5xl';
+    if (count <= 2) return 'grid-cols-2';
+    if (count === 3) return 'grid-cols-1 sm:grid-cols-3';
+    return 'grid-cols-2 xl:grid-cols-4';
   };
 
   return (
-    <section className="py-16 md:py-24 bg-[#fffcf2]">
-      <div className="container-width px-5 md:px-8">
-        <div className="max-w-6xl mx-auto">
+    <section className="py-[clamp(72px,8vw,120px)] bg-eu-cream">
+      <div className="eu-wrap">
+        <div>
           {/* Section header */}
-          <div className="text-center mb-10 md:mb-14">
-            <h2 className="font-serif text-3xl md:text-5xl font-light text-[#1a260e] tracking-wide mb-3">
+          <div className="lg:flex lg:items-end lg:justify-between lg:gap-12 mb-8 md:mb-10">
+          <div className="mb-7 lg:mb-0">
+            <h2 className="font-serif font-normal text-[clamp(40px,5vw,80px)] leading-[1] tracking-[-0.022em] text-eu-ink">
               Class Packages
             </h2>
-            <p className="font-sans text-sm md:text-base text-[#1a260e]/40 max-w-lg mx-auto">
+            <p className="text-[16px] md:text-[17px] leading-[1.7] text-eu-green max-w-lg mt-5">
               Commit to your practice and save. Group class packages are valid for 30 days from your first class.
             </p>
           </div>
 
           {/* Category Tabs */}
-          <div className="mb-10 md:mb-14">
+          <div className="lg:flex-none">
             {/* Mobile: Horizontal scroll with edge fade indicators */}
-            <div className="md:hidden relative">
+            <div className="md:hidden relative" style={{ marginInline: 'calc(-1 * var(--eu-gutter))' }}>
               {/* Left fade - appears when scrollable to left */}
               <div
                 className={`absolute left-0 top-0 bottom-0 w-10 z-10 pointer-events-none transition-opacity duration-300 ${
@@ -372,17 +377,20 @@ function PackagesSection() {
 
               <div
                 ref={tabsRef}
-                className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide -mx-5 px-5"
+                className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide"
+                style={{ paddingInline: 'var(--eu-gutter)' }}
               >
                 {categories.map((cat) => (
                   <button
                     key={cat.key}
+                    type="button"
                     data-active={activeCategory === cat.key}
+                    aria-pressed={activeCategory === cat.key}
                     onClick={() => setActiveCategory(cat.key)}
-                    className={`flex-shrink-0 py-2.5 px-5 rounded-full text-[13px] font-medium transition-all duration-300 ${
+                    className={`flex-shrink-0 min-h-[48px] py-2 px-5 rounded-full border text-[14px] transition-colors duration-300 ${
                       activeCategory === cat.key
-                        ? 'bg-[#1a260e] text-[#fffcf2] shadow-md'
-                        : 'bg-[#1a260e]/[0.04] text-[#1a260e]/50'
+                        ? 'bg-eu-ink text-eu-cream border-eu-ink'
+                        : 'bg-transparent text-eu-ink border-[#1a260e]/30'
                     }`}
                   >
                     {cat.label}
@@ -392,22 +400,24 @@ function PackagesSection() {
 
               {/* Subtle scroll hint text - only on first render when right is scrollable */}
               {canScrollRight && !canScrollLeft && (
-                <p className="text-center text-[10px] text-[#1a260e]/25 mt-2 tracking-wider uppercase animate-pulse">
+                <p className="eu-cap text-center text-eu-sage mt-2">
                   swipe for more
                 </p>
               )}
             </div>
 
-            {/* Desktop: Centered pills */}
-            <div className="hidden md:flex justify-center gap-2">
+            {/* Desktop: Segmented pills */}
+            <div className="hidden md:inline-flex p-1.5 gap-2 rounded-full bg-eu-beige">
               {categories.map((cat) => (
                 <button
                   key={cat.key}
+                  type="button"
+                  aria-pressed={activeCategory === cat.key}
                   onClick={() => setActiveCategory(cat.key)}
-                  className={`py-3 px-6 rounded-full text-sm transition-all duration-300 ${
+                  className={`min-h-[48px] px-6 rounded-full text-[12px] tracking-[0.16em] uppercase transition-colors duration-300 ${
                     activeCategory === cat.key
-                      ? 'bg-[#1a260e] text-[#fffcf2] shadow-lg'
-                      : 'bg-transparent text-[#1a260e]/40 hover:text-[#1a260e]/70 hover:bg-[#1a260e]/[0.04]'
+                      ? 'bg-eu-ink text-eu-cream'
+                      : 'bg-transparent text-eu-green hover:bg-[#1a260e]/[0.07] hover:text-eu-ink'
                   }`}
                 >
                   {cat.label}
@@ -415,26 +425,28 @@ function PackagesSection() {
               ))}
             </div>
           </div>
+          </div>
 
           {/* Active category content */}
-          <div className="transition-all duration-300">
+          <div className="rounded-eu-md border border-[#1a260e]/15 p-5 sm:p-7 md:p-10 lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] lg:gap-12">
             {/* Category title + subtitle */}
-            <div className="text-center mb-8 md:mb-10">
-              <h3 className="font-serif text-2xl md:text-3xl font-light text-[#1a260e] tracking-wide mb-2">
+            <div className="mb-6 md:mb-8 lg:mb-0">
+              <h3 className="font-serif font-normal text-[34px] md:text-[44px] leading-[1.05] tracking-[-0.015em] text-eu-ink">
                 {activeData.title}
               </h3>
-              <p className="font-sans text-sm text-[#1a260e]/40">
+              <p className="text-[15px] leading-[1.6] text-eu-green mt-3">
                 {activeData.subtitle}
               </p>
               {'note' in activeData && (activeData as { note?: string }).note && (
-                <p className="font-sans text-xs text-[#1a260e]/30 mt-1">
+                <p className="eu-chip mt-4">
                   {(activeData as { note: string }).note}
                 </p>
               )}
             </div>
 
+            <div>
             {/* Package cards grid */}
-            <div className={`grid ${getGridCols(activePackages.length)} gap-4 md:gap-5 mx-auto`}>
+            <div className={`grid ${getGridCols(activePackages.length)} gap-2.5 md:gap-3`}>
               {activePackages.map((pkg, index) => (
                 <PackageCard key={`${activeCategory}-${index}`} pkg={pkg} />
               ))}
@@ -442,17 +454,19 @@ function PackagesSection() {
 
             {/* Euforyc Package upsell hint when not on Euforyc Package */}
             {activeCategory !== 'euforycPackage' && activeCategory !== 'private' && (
-              <div className="mt-8 text-center">
+              <div className="mt-5">
                 <button
+                  type="button"
                   onClick={() => setActiveCategory('euforycPackage')}
-                  className="inline-flex items-center gap-2 text-[#1a260e]/30 hover:text-[#1a260e]/60 transition-colors duration-300 group"
+                  className="inline-flex flex-wrap items-center gap-x-2 gap-y-1 min-h-[44px] py-2 text-left text-eu-green hover:text-eu-ink transition-colors duration-300 group"
                 >
-                  <span className="font-sans text-xs tracking-wider uppercase">Want access to everything?</span>
-                  <span className="font-sans text-xs tracking-wider uppercase underline underline-offset-4 group-hover:no-underline">See Euforyc Package</span>
-                  <ChevronRight className="h-3 w-3 transition-transform duration-300 group-hover:translate-x-0.5" />
+                  <span className="font-sans text-[12px] tracking-[0.14em] uppercase">Want access to everything?</span>
+                  <span className="inline-flex items-center gap-2 font-sans text-[12px] tracking-[0.14em] uppercase underline underline-offset-4 group-hover:no-underline">See Euforyc Package
+                  <Arrow size={14} /></span>
                 </button>
               </div>
             )}
+            </div>
           </div>
         </div>
       </div>
@@ -465,54 +479,41 @@ export default function Packages() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(servicesSchema) }} />
 
-      <div className="pt-24 md:pt-32">
+      <div className="eu-page-top bg-eu-cream">
         {/* Hero */}
-        <section className="relative py-16 md:py-24 bg-gradient-to-b from-[#f5f1e8] via-[#fffcf2] to-[#fffcf2] overflow-hidden">
-          <div className="absolute top-10 left-10 w-32 h-32 bg-[#1a260e]/[0.03] rounded-full blur-3xl" />
-          <div className="absolute bottom-10 right-10 w-40 h-40 bg-[#1a260e]/[0.03] rounded-full blur-3xl" />
-
-          <div className="container-width text-center relative z-10 px-5 md:px-8">
-            <div className="max-w-3xl mx-auto space-y-5">
-              <h1 className="font-serif text-4xl md:text-6xl lg:text-7xl text-[#1a260e] tracking-wider leading-[0.95]">
-                YOUR PRACTICE,
+        <section className="relative pt-[clamp(48px,6vw,96px)] pb-[clamp(40px,5vw,64px)]">
+          <div className="eu-wrap grid grid-cols-12 gap-x-6 items-end">
+            <div className="col-span-12 lg:col-span-8 eu-rise">
+              <h1 className="font-serif font-normal text-[clamp(42px,7vw,112px)] text-eu-ink tracking-[-0.03em] leading-[0.95]">
+                YOUR PRACTICE,{' '}
                 <br />
-                <span className="italic font-light">your pace</span>
+                <em className="tracking-[-0.035em]">your pace</em>
               </h1>
-              <p className="font-sans text-sm md:text-base text-[#1a260e]/50 max-w-md mx-auto leading-relaxed">
+            </div>
+            <div className="col-span-12 lg:col-start-9 lg:col-span-4 mt-7 lg:mt-0 eu-rise">
+              <p className="text-[16px] md:text-[17px] text-eu-green leading-[1.7]">
                 Choose the package that fits your lifestyle. Start anytime, move at your own rhythm.
               </p>
-              <div className="w-12 h-[1px] bg-[#1a260e]/15 mx-auto" />
+              <div className="w-12 h-[1px] bg-[#1a260e]/30 mt-6" />
             </div>
           </div>
         </section>
 
         {/* Divider line */}
-        <div className="bg-[#fffcf2]">
-          <div className="container-width px-5 md:px-8">
-            <div className="h-[1px] bg-gradient-to-r from-transparent via-[#1a260e]/[0.06] to-transparent" />
+        <div className="bg-eu-cream">
+          <div className="eu-wrap">
+            <div className="h-[1px] bg-[#1a260e]/15" />
           </div>
         </div>
 
         {/* Intro Offers */}
-        <Suspense fallback={
-          <section className="py-16 md:py-20 bg-[#fffcf2]">
-            <div className="container-width px-5 md:px-8">
-              <div className="max-w-3xl mx-auto text-center">
-                <div className="animate-pulse space-y-4">
-                  <div className="h-8 bg-[#1a260e]/[0.06] rounded-full w-48 mx-auto" />
-                  <div className="h-4 bg-[#1a260e]/[0.04] rounded-full w-64 mx-auto" />
-                </div>
-              </div>
-            </div>
-          </section>
-        }>
-          <IntroOffersSection />
-        </Suspense>
+        {/* Rendered directly (no Suspense): it reads ?offer= after mount */}
+        <IntroOffersSection />
 
         {/* Divider */}
-        <div className="bg-[#fffcf2]">
-          <div className="container-width px-5 md:px-8">
-            <div className="h-[1px] bg-gradient-to-r from-transparent via-[#1a260e]/[0.06] to-transparent" />
+        <div className="bg-eu-cream pt-[clamp(72px,8vw,120px)]">
+          <div className="eu-wrap">
+            <div className="h-[1px] bg-[#1a260e]/15" />
           </div>
         </div>
 
@@ -520,40 +521,28 @@ export default function Packages() {
         <PackagesSection />
 
         {/* Bottom CTA */}
-        <section className="relative py-16 md:py-20 bg-[#1a260e] text-[#fffcf2] overflow-hidden">
-          <div className="absolute inset-0 opacity-[0.03]">
-            <div className="absolute inset-0" style={{
-              backgroundImage: 'radial-gradient(circle, white 1px, transparent 1px)',
-              backgroundSize: '24px 24px'
-            }} />
-          </div>
-
-          <div className="container-width text-center relative z-10 px-5 md:px-8">
-            <div className="max-w-xl mx-auto space-y-6">
-              <h2 className="font-serif text-3xl md:text-4xl font-light tracking-wide">
+        <div className="eu-wrap pb-[clamp(80px,9vw,140px)]">
+        <section className="eu-on-dark relative rounded-eu-lg md:rounded-eu-xl px-6 py-14 md:px-12 md:py-24 bg-eu-ink text-eu-cream overflow-hidden">
+          <div className="text-center relative z-10">
+            <div className="max-w-4xl mx-auto space-y-6">
+              <h2 className="font-serif font-normal text-[clamp(38px,5vw,76px)] leading-[1.02] tracking-[-0.022em]">
                 Not sure where to start?
               </h2>
-              <p className="font-sans text-sm text-[#fffcf2]/50 leading-relaxed">
+              <p className="text-[16px] md:text-[17px] text-[#F5F0E8] leading-[1.7] max-w-md mx-auto">
                 Reach out and we&apos;ll help you find the perfect fit for your goals.
               </p>
-              <div className="flex flex-col sm:flex-row gap-3 justify-center pt-2">
-                <a
-                  href="/book"
-                  className="inline-flex items-center justify-center gap-2 bg-[#fffcf2] text-[#1a260e] px-8 py-3.5 rounded-full font-sans text-sm tracking-wider uppercase hover:shadow-xl transition-all duration-300"
-                >
+              <div className="flex flex-col sm:flex-row gap-3 justify-center pt-4">
+                <PillLink href="/book" variant="cream" dot stretchMobile>
                   Book a Class
-                  <ChevronRight className="h-4 w-4" />
-                </a>
-                <a
-                  href="/contact"
-                  className="inline-flex items-center justify-center gap-2 border border-[#fffcf2]/20 text-[#fffcf2]/70 px-8 py-3.5 rounded-full font-sans text-sm tracking-wider uppercase hover:border-[#fffcf2]/40 hover:text-[#fffcf2] transition-all duration-300"
-                >
+                </PillLink>
+                <PillLink href="/contact" variant="ghost" stretchMobile>
                   Contact Us
-                </a>
+                </PillLink>
               </div>
             </div>
           </div>
         </section>
+        </div>
       </div>
     </>
   );

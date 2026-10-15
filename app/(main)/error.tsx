@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react';
 import Link from 'next/link';
+import Arrow from '@/components/euforyc/Arrow';
 
 export default function Error({
   error,
@@ -16,22 +17,25 @@ export default function Error({
   }, [error]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#fffcf2]">
-      <div className="text-center space-y-6 max-w-lg mx-auto px-4">
-        <h1 className="font-serif text-4xl text-[#1a260e]">Something went wrong</h1>
-        <p className="font-sans text-[#1a260e]/70">
+    <div className="eu-page-top flex min-h-screen items-center justify-center bg-eu-cream">
+      <div className="mx-auto max-w-xl space-y-6 px-5 py-[clamp(64px,8vw,120px)] text-center">
+        <h1 className="font-serif text-[clamp(44px,5.6vw,80px)] font-normal leading-[1] tracking-[-0.025em] text-eu-ink">Something went wrong</h1>
+        <p className="eu-lede">
           We apologize for the inconvenience. Please try again.
         </p>
-        <div className="space-x-4">
+        <div className="flex flex-col justify-center gap-3 pt-4 sm:flex-row">
           <button
             onClick={reset}
-            className="inline-block bg-[#1a260e] text-[#fffcf2] px-8 py-3 font-sans text-sm tracking-[0.1em] uppercase transition-all duration-500 hover:bg-[#1a260e]/90"
+            className="eu-btn eu-btn--ink eu-btn--stretch-mobile"
           >
             Try Again
+            <span className="eu-btn__dot">
+              <Arrow />
+            </span>
           </button>
           <Link
             href="/"
-            className="inline-block border border-[#1a260e] text-[#1a260e] px-8 py-3 font-sans text-sm tracking-[0.1em] uppercase transition-all duration-500 hover:bg-[#1a260e] hover:text-[#fffcf2]"
+            className="eu-btn eu-btn--line eu-btn--stretch-mobile"
           >
             Go Home
           </Link>
