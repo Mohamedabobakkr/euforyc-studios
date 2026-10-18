@@ -1,6 +1,6 @@
 # Security Scan Report
 
-**Date:** 2026-10-17 19:23 UTC
+**Date:** 2026-10-18 03:15 UTC
 **Status:** CLEAN
 
 ## npm audit
@@ -14,7 +14,7 @@ All 7 HIGH findings trace to `braces@3.0.3` (GHSA-vfj7-8cjw-p6xm — stack-exhau
 - `tailwindcss@3.4.19` → `chokidar@3.6.0` → `braces@3.0.3`
 - `tailwindcss@3.4.19` → `micromatch@4.0.8` → `braces@3.0.3`
 - `tailwindcss@3.4.19` → `fast-glob@3.3.3` → `micromatch` → `braces`
-- `eslint-config-next@16.4.0` → `@next/eslint-plugin-next` → `fast-glob` → `micromatch` → `braces`
+- `eslint-config-next@16.x` → `@next/eslint-plugin-next` → `fast-glob` → `micromatch` → `braces`
 
 **Risk assessment:** LOW — these are build-time dependencies only (CSS compilation and linting). The braces vulnerability requires processing specially crafted glob patterns during `npm run build` or `npx tailwindcss`, never at runtime on the production server. No user input reaches these code paths. No patched version of braces exists (3.0.3 is the latest release).
 
@@ -31,7 +31,7 @@ All 7 HIGH findings trace to `braces@3.0.3` (GHSA-vfj7-8cjw-p6xm — stack-exhau
 10. Safe Health Checks: PASS — no health/status/ping endpoints exist; no API routes expose tokens or internal config
 
 ## Fixes Applied
-- None needed — all 10 code security checks pass, no new actionable npm vulnerabilities
+- None needed — all 10 code security checks pass; npm vulnerabilities are build-time only with no safe auto-fix path
 
 ## Manual Action Required
 - **braces@3.0.3**: Monitor for a patch release from the braces maintainer (github.com/micromatch/braces). Once available, add `"braces": ">=3.0.4"` to package.json overrides. Alternatively, evaluate tailwindcss v4 migration when convenient — this is not urgent as the vulnerability is build-time only with no production exposure.
