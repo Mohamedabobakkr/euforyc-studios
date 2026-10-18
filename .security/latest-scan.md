@@ -1,6 +1,6 @@
 # Security Scan Report
 
-**Date:** 2026-10-18 03:15 UTC
+**Date:** 2026-10-18 11:30 UTC
 **Status:** CLEAN
 
 ## npm audit
@@ -26,7 +26,7 @@ All 7 HIGH findings trace to `braces@3.0.3` (GHSA-vfj7-8cjw-p6xm — stack-exhau
 5. Security Headers: PASS — HSTS (2yr, includeSubDomains, preload), CSP, X-Frame-Options SAMEORIGIN, X-Content-Type-Options nosniff, Referrer-Policy, Permissions-Policy all configured; X-Powered-By disabled
 6. Image Hostnames: PASS — specific domains only (squarecdn.com, euforyc.co.uk, momence.com, specific S3 bucket, localhost); no wildcard
 7. No Hardcoded Secrets: PASS — all secrets accessed via `process.env`; no `sk-`, `pk_live`, or hardcoded passwords in app/, lib/, or components/
-8. No localStorage Credentials: PASS — barista sessions use HttpOnly cookies exclusively; only anonymous analytics UUID stored client-side
+8. No localStorage Credentials: PASS — barista sessions use HttpOnly cookies exclusively; no credential storage in localStorage
 9. No Error Leaks: PASS — API routes return generic messages; `error.details` only exposed when `NODE_ENV === 'development'`; detailed errors logged server-side only
 10. Safe Health Checks: PASS — no health/status/ping endpoints exist; no API routes expose tokens or internal config
 
