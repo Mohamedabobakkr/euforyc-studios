@@ -1,6 +1,6 @@
 # Security Scan Report
 
-**Date:** 2026-10-19 UTC
+**Date:** 2026-10-20 07:12 UTC
 **Status:** CLEAN
 
 ## npm audit
@@ -13,7 +13,7 @@
 All 7 HIGH findings trace to build-time dependencies (CSS compilation and linting), not runtime code:
 - `tailwindcss@3.4.19` → `chokidar@3.6.0` → `braces@3.0.3` (stack-exhaustion DoS via nested patterns)
 - `tailwindcss@3.4.19` → `micromatch@4.0.8` → `braces@3.0.3`
-- `eslint-config-next@16.4.1` → `@next/eslint-plugin-next@16.4.1` → `fast-glob@3.3.1` → `micromatch` → `braces`
+- `eslint-config-next@16.x` → `@next/eslint-plugin-next` → `fast-glob` → `micromatch` → `braces`
 
 **Risk assessment:** LOW — these packages process CSS and lint rules at build time only. They never execute in the production Node.js runtime or browser. Exploitation requires a malicious Tailwind config or glob pattern in the developer environment, not via web traffic. No patched minor/patch versions exist for any of these chains.
 
@@ -26,13 +26,13 @@ All 7 HIGH findings trace to build-time dependencies (CSS compilation and lintin
 6. Image Hostnames: PASS — specific domains only (squarecdn.com, euforyc.co.uk, momence.com, specific S3 bucket, localhost); no wildcard
 7. No Hardcoded Secrets: PASS — all secrets accessed via `process.env`; no `sk-`, `pk_live`, or hardcoded passwords in app/, lib/, or components/
 8. No localStorage Credentials: PASS — barista sessions use HttpOnly cookies exclusively; localStorage stores only anonymous tracking UID
-9. No Error Leaks: PASS — API routes return generic messages; `error.details` only exposed when `NODE_ENV === 'development'`; detailed errors logged server-side only
+9. No Error Leaks: PASS — API routes return generic messages to clients; detailed errors logged server-side only
 10. Safe Health Checks: PASS — no health/status/ping endpoints exist; no API routes expose tokens or internal config
 
 ## Fixes Applied
 - None needed — all 10 code security checks pass; npm vulnerabilities are build-time only with no safe auto-fix path
 
 ## Manual Action Required
-- **tailwindcss v3→v4 migration**: Would resolve 5 of 7 vulnerabilities (braces, micromatch, chokidar, tailwindcss, fast-glob partial). Significant migration with breaking changes — recommend scheduling dedicated sprint when convenient.
-- **eslint-config-next / @next/eslint-plugin-next**: Latest v16.4.1 still depends on fast-glob@3.3.1. Monitor for a patch release that drops the vulnerable micromatch dependency.
-- **Consider devDependencies**: tailwindcss and eslint-config-next are build-time tools; moving them to devDependencies won't fix audit but correctly categorizes production risk.
+- **tailwindcss v3->v4 migration**: Would resolve 5 of 7 vulnerabilities (braces, micromatch, chokidar, tailwindcss, fast-glob partial). Significant migration with breaking changes — recommend scheduling dedicated sprint when convenient.
+- **eslint-config-next / @next/eslint-plugin-next**: Latest version still depends on fast-glob which pulls in vulnerable micromatch/braces. Monitor for a patch release.
+- **Consider devDependencies**: tailwindcss and eslint-config-next are build-time tools; moving them to devDependencies correctly categorizes production risk.
