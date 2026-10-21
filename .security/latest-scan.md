@@ -1,6 +1,6 @@
 # Security Scan Report
 
-**Date:** 2026-10-21 00:00 UTC
+**Date:** 2026-10-21 12:00 UTC
 **Status:** VULNERABILITIES_FOUND
 
 ## npm audit
@@ -28,7 +28,7 @@ All 7 HIGH findings trace to `braces@3.0.3` (GHSA-vfj7-8cjw-p6xm — stack-exhau
 6. Image Hostnames: PASS — no `hostname: '**'` wildcard; only specific trusted domains
 7. No Hardcoded Secrets: PASS — no `sk-`, `pk_live`, `sk_live`, `sk_test`, or hardcoded passwords found in app/, lib/, components/
 8. No localStorage Credentials: PASS — barista sessions use HttpOnly cookies exclusively; localStorage stores only anonymous tracking UID
-9. No Error Leaks: PASS — all API routes return generic messages to clients; internal details logged server-side only or gated behind `NODE_ENV === 'development'`
+9. No Error Leaks: PASS — all API routes return generic messages to clients; internal details logged server-side only
 10. Safe Health Checks: PASS — no health check endpoints exist; no internal config or tokens exposed
 
 ## Fixes Applied
