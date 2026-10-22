@@ -1,6 +1,6 @@
 # Security Scan Report
 
-**Date:** 2026-10-21 09:15 UTC
+**Date:** 2026-10-22 03:30 UTC
 **Status:** VULNERABILITIES_FOUND
 
 ## npm audit
@@ -26,13 +26,12 @@ All 7 HIGH findings trace to build-time dependencies (CSS compilation and lintin
 6. Image Hostnames: PASS — specific domains only (squarecdn.com, euforyc.co.uk, momence.com, specific S3 bucket, localhost); no wildcard
 7. No Hardcoded Secrets: PASS — all secrets accessed via `process.env`; no `sk-`, `pk_live`, or hardcoded passwords in app/, lib/, or components/
 8. No localStorage Credentials: PASS — barista sessions use HttpOnly cookies exclusively
-9. No Error Leaks: PASS — API routes return generic messages to clients; detailed errors logged server-side only; Momence route conditionally exposes details only in development mode
+9. No Error Leaks: PASS — API routes return generic messages to clients; detailed errors logged server-side only
 10. Safe Health Checks: PASS — no health/status/ping endpoints exist; no API routes expose tokens or internal config
 
 ## Fixes Applied
-- `90e98f1` — bump eslint-config-next 16.4.1 → 16.4.2 (housekeeping, keeps linting toolchain current)
+- None needed this scan (no new vulnerabilities since 2026-10-21 scan)
 
 ## Manual Action Required
 - **tailwindcss v3→v4 migration**: Would resolve 5 of 7 vulnerabilities (braces, micromatch, chokidar, tailwindcss, fast-glob partial). Significant migration with breaking changes — recommend scheduling as a dedicated task.
 - **@next/eslint-plugin-next fast-glob**: Latest version still depends on vulnerable fast-glob/micromatch/braces. Monitor for a patch release from the Next.js team.
-- **Build environment**: `npm run build` fails due to missing `MOMENCE_API_TOKEN` in CI — this is an environment config issue, not a code vulnerability.
