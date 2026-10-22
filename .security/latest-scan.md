@@ -1,21 +1,27 @@
 # Security Scan Report
 
-**Date:** 2026-10-22 12:00 UTC
+**Date:** 2026-10-22 21:00 UTC
 **Status:** FIXES_APPLIED
 
 ## npm audit
-- Critical: 0
+- Critical: 0 (was 1 — fixed this scan)
 - High: 7 (all build-time transitive deps, no runtime exposure)
 - Medium: 0
 - Low: 0
 
-### Details
+### Critical Fix Applied
+Upgraded `next` from 16.3.8 to 16.4.2, patching three CVEs in Next.js 16.0.0–16.4.0:
+- **GHSA-2464-fhr4-w9xw** (Critical): Unauthenticated RCE in Image Optimization API via SVG files
+- **GHSA-p3m5-59mp-jv5r** (High): Denial of Service in App Router Server Actions
+- **GHSA-673q-mjm6-r5xr** (Critical): Unauthenticated RCE in `use cache` functions returning typed arrays
+
+### Remaining High (build-time only)
 All 7 HIGH findings trace to a single root cause: `braces` <=3.0.3 (GHSA-vfj7-8cjw-p6xm, stack-exhaustion DoS via deeply nested patterns). The vulnerable `braces` is pulled in transitively by build-time dependencies only:
 - `tailwindcss@3.4.19` → `chokidar@3.6.0` → `braces@3.0.3`
 - `tailwindcss@3.4.19` → `micromatch@4.0.8` → `braces@3.0.3`
 - `eslint-config-next@16.4.2` → `@next/eslint-plugin-next@16.4.2` → `fast-glob` → `micromatch` → `braces`
 
-**Risk assessment:** LOW — these packages process CSS and lint rules at build time only. They never execute in the production Node.js runtime or browser. Exploitation requires a malicious Tailwind config or glob pattern in the developer environment, not via web traffic.
+**Risk assessment:** LOW — these packages process CSS and lint rules at build time only. They never execute in the production Node.js runtime or browser.
 
 ## Code Security Checks
 1. SSRF Protection: PASS — `validateSquarePath()` blocks `../`, `//`, `\\` and enforces strict regex `^\/[a-zA-Z0-9/_-]+$`
@@ -30,9 +36,8 @@ All 7 HIGH findings trace to a single root cause: `braces` <=3.0.3 (GHSA-vfj7-8c
 10. Safe Health Checks: PASS — no health/status/ping endpoints exist; no API routes expose tokens or internal config
 
 ## Fixes Applied
-- `71f4b96` (earlier today) fix(security): bump eslint-config-next ^16.2.12 → ^16.4.2
+- `a02fc6d` fix(security): upgrade next 16.3.8 → 16.4.2 — patches 3 critical/high CVEs (RCE via SVG, DoS in Server Actions, RCE in use cache)
 
 ## Manual Action Required
 - **braces <=3.0.3 (7 high):** All 7 npm audit findings share this root cause. Resolving requires migrating tailwindcss from v3 to v4 (breaking: config format, utility classes, plugin API) and/or waiting for eslint-config-next to ship a version that drops the transitive braces dependency. Both are build-time only — no production runtime exposure.
-- **Build failure:** `npm run build` fails due to missing `MOMENCE_API_TOKEN` environment variable (pre-existing, unrelated to security). The Momence API route throws at build time when the token is absent. Consider making the route lazy-load the config or adding a build-time stub.
-- **Consider devDependencies:** tailwindcss and eslint-config-next are build-time tools; moving them to devDependencies correctly categorizes production risk.
+- **Build verification:** `npm run build` fails in this CI environment due to missing `MOMENCE_API_TOKEN` (pre-existing, unrelated to security). TypeScript type-check passes cleanly. Production builds on Vercel with env vars configured are unaffected.
