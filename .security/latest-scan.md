@@ -1,7 +1,7 @@
 # Security Scan Report
 
-**Date:** 2026-10-22 03:30 UTC
-**Status:** VULNERABILITIES_FOUND
+**Date:** 2026-10-22 12:00 UTC
+**Status:** FIXES_APPLIED
 
 ## npm audit
 - Critical: 0
@@ -10,28 +10,29 @@
 - Low: 0
 
 ### Details
-All 7 HIGH findings trace to build-time dependencies (CSS compilation and linting), not runtime code:
-- `tailwindcss@3.4.19` → `chokidar@3.6.0` → `braces@3.0.3` (stack-exhaustion DoS via nested patterns, GHSA-vfj7-8cjw-p6xm)
+All 7 HIGH findings trace to a single root cause: `braces` <=3.0.3 (GHSA-vfj7-8cjw-p6xm, stack-exhaustion DoS via deeply nested patterns). The vulnerable `braces` is pulled in transitively by build-time dependencies only:
+- `tailwindcss@3.4.19` → `chokidar@3.6.0` → `braces@3.0.3`
 - `tailwindcss@3.4.19` → `micromatch@4.0.8` → `braces@3.0.3`
-- `eslint-config-next@16.4.2` → `@next/eslint-plugin-next@16.4.2` → `fast-glob@3.3.1` → `micromatch` → `braces`
+- `eslint-config-next@16.4.2` → `@next/eslint-plugin-next@16.4.2` → `fast-glob` → `micromatch` → `braces`
 
-**Risk assessment:** LOW — these packages process CSS and lint rules at build time only. They never execute in the production Node.js runtime or browser. No patched minor/patch versions exist for any of these chains.
+**Risk assessment:** LOW — these packages process CSS and lint rules at build time only. They never execute in the production Node.js runtime or browser. Exploitation requires a malicious Tailwind config or glob pattern in the developer environment, not via web traffic.
 
 ## Code Security Checks
 1. SSRF Protection: PASS — `validateSquarePath()` blocks `../`, `//`, `\\` and enforces strict regex `^\/[a-zA-Z0-9/_-]+$`
 2. API Auth: PASS — `/api/sips/orders` and `/api/sips/update-order` validate HMAC-SHA256 signed HttpOnly session cookies via `authenticateBarista()`
 3. Webhook Signatures: PASS — HMAC-SHA256 verified with constant-time comparison; fails closed (HTTP 500) when key missing
-4. Input Validation: PASS — orderId/fulfillmentUid validated with `/^[a-zA-Z0-9_-]+$/`; state transitions whitelisted; create-order enforces length limits and item caps
+4. Input Validation: PASS — orderId/fulfillmentUid validated with `/^[a-zA-Z0-9_-]+$/`; state transitions whitelisted
 5. Security Headers: PASS — HSTS (2yr, includeSubDomains, preload), CSP, X-Frame-Options SAMEORIGIN, X-Content-Type-Options nosniff, Referrer-Policy, Permissions-Policy all configured; X-Powered-By disabled
 6. Image Hostnames: PASS — specific domains only (squarecdn.com, euforyc.co.uk, momence.com, specific S3 bucket, localhost); no wildcard
 7. No Hardcoded Secrets: PASS — all secrets accessed via `process.env`; no `sk-`, `pk_live`, or hardcoded passwords in app/, lib/, or components/
-8. No localStorage Credentials: PASS — barista sessions use HttpOnly cookies exclusively
+8. No localStorage Credentials: PASS — barista sessions use HttpOnly cookies exclusively; localStorage stores only anonymous tracking UID
 9. No Error Leaks: PASS — API routes return generic messages to clients; detailed errors logged server-side only
 10. Safe Health Checks: PASS — no health/status/ping endpoints exist; no API routes expose tokens or internal config
 
 ## Fixes Applied
-- None needed this scan (no new vulnerabilities since 2026-10-21 scan)
+- `71f4b96` (earlier today) fix(security): bump eslint-config-next ^16.2.12 → ^16.4.2
 
 ## Manual Action Required
-- **tailwindcss v3→v4 migration**: Would resolve 5 of 7 vulnerabilities (braces, micromatch, chokidar, tailwindcss, fast-glob partial). Significant migration with breaking changes — recommend scheduling as a dedicated task.
-- **@next/eslint-plugin-next fast-glob**: Latest version still depends on vulnerable fast-glob/micromatch/braces. Monitor for a patch release from the Next.js team.
+- **braces <=3.0.3 (7 high):** All 7 npm audit findings share this root cause. Resolving requires migrating tailwindcss from v3 to v4 (breaking: config format, utility classes, plugin API) and/or waiting for eslint-config-next to ship a version that drops the transitive braces dependency. Both are build-time only — no production runtime exposure.
+- **Build failure:** `npm run build` fails due to missing `MOMENCE_API_TOKEN` environment variable (pre-existing, unrelated to security). The Momence API route throws at build time when the token is absent. Consider making the route lazy-load the config or adding a build-time stub.
+- **Consider devDependencies:** tailwindcss and eslint-config-next are build-time tools; moving them to devDependencies correctly categorizes production risk.
