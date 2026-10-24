@@ -1,16 +1,13 @@
 # Security Scan Report
 
-**Date:** 2026-10-24 07:30 UTC
-**Status:** FIXES_APPLIED
+**Date:** 2026-10-24 11:25 UTC
+**Status:** CLEAN
 
 ## npm audit
 - Critical: 0
-- High: 0 (was 1 — fixed)
+- High: 0
 - Medium: 0
 - Low: 0
-
-### Vulnerability fixed
-- **zod <4.6.6** (GHSA-mrhx-c7xc-m3w5): Memory exhaustion while validating oversized constrained collections (CVSS 7.5 HIGH). Upgraded from 3.23.8 to 4.6.7. Build and type-check verified clean.
 
 ## Code Security Checks
 1. SSRF Protection: PASS — `validateSquarePath()` in lib/square.ts blocks `..`, `//`, `\\` and validates path format with strict regex
@@ -25,7 +22,7 @@
 10. Safe Health Checks: PASS — no health check endpoints exist that could expose config
 
 ## Fixes Applied
-- `e7c80f6` fix(security): upgrade zod 3.23.8 → 4.6.7 to fix memory exhaustion vulnerability
+- `e7c80f6` fix(security): upgrade zod 3.23.8 → 4.6.7 (applied in prior scan, already on main)
 
 ## Manual Action Required
-- None
+- `npm run build` fails due to missing MOMENCE_API_TOKEN env var — pre-existing issue in /api/momence/events route, not a security vulnerability but worth configuring for production builds
