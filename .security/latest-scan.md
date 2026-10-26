@@ -1,15 +1,17 @@
 # Security Scan Report
 
-**Date:** 2026-10-25 19:25 UTC
-**Status:** VULNERABILITIES_FOUND
+**Date:** 2026-10-26 03:25 UTC
+**Status:** CLEAN
 
 ## npm audit
 - Critical: 0
-- High: 1 (zod <4.6.6 — memory exhaustion via oversized constrained collections, GHSA-mrhx-c7xc-m3w5)
+- High: 0
 - Medium: 0
 - Low: 0
 
-The vulnerable zod@3.23.8 is a direct dependency used in `lib/enquiry.ts` for form validation. It also exists as a transitive dep via `eslint-plugin-react-hooks` -> `zod-validation-error`. The fix requires upgrading from zod v3 to v4, which is a breaking major version change.
+Note: zod was upgraded from v3.23.8 to v4.6.7 in a prior scan (2026-10-25)
+to fix GHSA-mrhx-c7xc-m3w5 (memory exhaustion, CVSS 7.5). The fix remains
+in place and npm audit returns 0 vulnerabilities.
 
 ## Code Security Checks
 1. SSRF Protection: PASS — `validateSquarePath()` blocks `../`, `//`, `\\` and enforces strict regex `^\/[a-zA-Z0-9/_-]+$`
@@ -24,7 +26,7 @@ The vulnerable zod@3.23.8 is a direct dependency used in `lib/enquiry.ts` for fo
 10. Safe Health Checks: PASS — no health/status/ping endpoints exist; no API routes expose tokens or internal config
 
 ## Fixes Applied
-- None — the only vulnerability (zod) requires a major version upgrade (3.x → 4.x) with breaking API changes
+- None needed (zod v4.6.7 fix from prior scan commit b0932c9 remains effective)
 
 ## Manual Action Required
-- **zod@3.23.8 → 4.6.7 upgrade (HIGH)**: Memory exhaustion vulnerability in zod's constrained collection validation (GHSA-mrhx-c7xc-m3w5, CVSS 7.5). The fix requires migrating from zod v3 to v4 — a breaking change affecting import paths and several APIs. File affected: `lib/enquiry.ts`. **Mitigation in place:** request body is size-limited to 20,000 chars (`MAX_BODY_CHARS`) before reaching zod, which significantly reduces exploitability. **Recommended action:** schedule manual migration of zod v3 → v4, test all form validation paths, then deploy.
+- None
