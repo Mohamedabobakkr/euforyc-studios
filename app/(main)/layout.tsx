@@ -198,6 +198,11 @@ const websiteSchema = {
   publisher: {
     '@id': `${siteUrl}/#organization`
   },
+  creator: {
+    '@type': 'Organization',
+    name: 'Identeti',
+    url: 'https://identeti.com',
+  },
   inLanguage: 'en-GB',
 };
 

@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import PillLink from '@/components/euforyc/PillLink';
+import IdentetiCredit from '@/components/IdentetiCredit';
 import { STUDIO } from '@/lib/site';
 import styles from './Footer.module.css';
 
@@ -107,6 +108,7 @@ const Footer = () => {
             All rights reserved. All content, designs, graphics, and code are protected by copyright. Unauthorized
             use, copying, or reproduction is strictly prohibited.
           </p>
+          <IdentetiCredit className={styles.credit} />
         </div>
       </div>
     </footer>

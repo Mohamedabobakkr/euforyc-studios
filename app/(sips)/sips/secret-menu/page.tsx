@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import IdentetiCredit from '@/components/IdentetiCredit';
 import './sips.css';
 
 /* ─────────────── SVG ILLUSTRATION COMPONENTS ─────────────── */
@@ -1247,6 +1248,7 @@ export default function SipsPage() {
           <a href="https://euforyc.co.uk/contact">contact</a>
         </div>
         <p className="footer-copy">&copy; 2025 euforyc studios &middot; 7-8 holmstall parade, edgware, ha8 5hx</p>
+        <IdentetiCredit className="footer-credit" />
       </footer>
     </>
   );
