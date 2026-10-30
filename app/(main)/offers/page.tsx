@@ -9,8 +9,9 @@ import reviewStyles from '@/components/home/reviews.module.css';
 import { getReviews } from '@/lib/studio-data';
 import OffersContent from './OffersContent';
 
-// Reviews refresh every 5 minutes, like the homepage
-export const revalidate = 300;
+// Only the reviews here come from Momence (and they refresh every 6 hours at
+// the source), so the page is rebuilt every hour, like the homepage
+export const revalidate = 3600;
 
 // No Suspense boundary: nothing here suspends (?offer= is read after mount),
 // and a boundary made React stream the whole page hidden until a script ran
