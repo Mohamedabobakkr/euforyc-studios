@@ -1,6 +1,6 @@
 # Security Scan Report
 
-**Date:** 2026-10-29 UTC
+**Date:** 2026-10-30 06:15 UTC
 **Status:** CLEAN
 
 ## npm audit
@@ -17,8 +17,8 @@
 5. Security Headers: PASS — HSTS (2yr, includeSubDomains, preload), CSP, X-Frame-Options SAMEORIGIN, X-Content-Type-Options nosniff, Referrer-Policy, Permissions-Policy all configured; X-Powered-By disabled
 6. Image Hostnames: PASS — specific domains only (squarecdn.com, euforyc.co.uk, momence.com, specific S3 bucket, localhost); no wildcard
 7. No Hardcoded Secrets: PASS — all secrets accessed via `process.env`; no `sk-`, `pk_live`, or hardcoded passwords in app/, lib/, or components/
-8. No localStorage Credentials: PASS — barista sessions use HttpOnly cookies exclusively; localStorage only stores anonymous visitor UUID (`euforyc_uid`)
-9. No Error Leaks: PASS — API routes return generic messages to clients; detailed errors logged server-side only; Momence details only in NODE_ENV=development
+8. No localStorage Credentials: PASS — barista sessions use HttpOnly cookies exclusively; no credentials in localStorage
+9. No Error Leaks: PASS — API routes return generic messages to clients; detailed errors logged server-side only
 10. Safe Health Checks: PASS — no health/status/ping endpoints exist; no API routes expose tokens or internal config
 
 ## Fixes Applied
