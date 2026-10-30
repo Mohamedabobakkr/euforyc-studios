@@ -813,7 +813,7 @@ body {
 .footer-credit {
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: baseline;
     gap: 8px;
     margin-top: 4px;
     font-family: 'Gaegu', cursive;
