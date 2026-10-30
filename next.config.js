@@ -1,3 +1,18 @@
+const fs = require('fs');
+const path = require('path');
+const imageWidths = require('./lib/image-widths.json');
+
+// Photos are pre-sized at build time (tools/static-images.mjs, in prebuild) and served as static files, so
+// nothing goes through Vercel's image optimiser (/_next/image). The version is a hash of every source photo,
+// put on each image URL so /static's one-year cache never serves an old photo.
+const IMG_VERSION = (() => {
+  try {
+    return JSON.parse(fs.readFileSync(path.join(__dirname, 'public/static/img/version.json'), 'utf8')).version;
+  } catch {
+    return '';
+  }
+})();
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // Remove static export for better performance with SSR/ISR
@@ -9,42 +24,30 @@ const nextConfig = {
   // Stop `next dev` generating AGENTS.md / CLAUDE.md in the repo root
   agentRules: false,
 
-  // Image optimization — restrict to known trusted domains only
+  env: { NEXT_PUBLIC_IMG_V: IMG_VERSION },
+
+  // next/image reads the pre-built files (lib/imageLoader.ts) instead of the optimiser. Same widths as before,
+  // from lib/image-widths.json, which the build script reads too. External photos (Square, on the Sips pages)
+  // are plain <img> tags and load from their own servers, as before.
   images: {
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: '*.squarecdn.com',
-      },
-      {
-        protocol: 'https',
-        hostname: 'squarecdn.com',
-      },
-      {
-        protocol: 'https',
-        hostname: 'items-images-production.s3.us-west-2.amazonaws.com',
-      },
-      {
-        protocol: 'https',
-        hostname: 'euforyc.co.uk',
-      },
-      {
-        protocol: 'https',
-        hostname: 'www.euforyc.co.uk',
-      },
-      {
-        protocol: 'https',
-        hostname: '*.momence.com',
-      },
-      {
-        protocol: 'http',
-        hostname: 'localhost',
-      },
-    ],
-    formats: ['image/avif', 'image/webp'],
-    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
-    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
-    minimumCacheTTL: 60,
+    loader: 'custom',
+    loaderFile: './lib/imageLoader.ts',
+    deviceSizes: imageWidths.deviceSizes,
+    imageSizes: imageWidths.imageSizes,
+  },
+
+  async rewrites() {
+    return {
+      beforeFiles: [
+        // A pre-sized photo is linked as .webp; a browser that accepts AVIF gets the .avif made next to it
+        // (same URL), as the optimiser did with formats ['image/avif', 'image/webp']
+        {
+          source: '/static/img/:path(.*)\\.webp',
+          has: [{ type: 'header', key: 'accept', value: '(.*)image/avif(.*)' }],
+          destination: '/static/img/:path.avif',
+        },
+      ],
+    };
   },
 
   // Performance optimizations
@@ -107,13 +110,23 @@ const nextConfig = {
         ]
       },
       {
-        // Prevent caching of API responses
-        source: '/api/:path*',
+        // Prevent caching of API responses (Sips auth and orders, webhooks, enquiries...).
+        // /api/momence/events is left out: it sets its own short shared CDN cache.
+        source: '/api/:path((?!momence/events(?:/|$)).*)',
         headers: [
           {
             key: 'Cache-Control',
             value: 'no-store, max-age=0'
           }
+        ]
+      },
+      {
+        // Pre-sized photos: the ?v= on every URL changes when any photo does
+        source: '/static/img/:path*',
+        headers: [
+          { key: 'Cache-Control', value: 'public, max-age=31536000, immutable' },
+          // the same URL is AVIF or WebP depending on the Accept header
+          { key: 'Vary', value: 'Accept' },
         ]
       }
     ]

@@ -12,9 +12,9 @@ import styles from '@/components/momence/schedule.module.css';
 import { POLICIES, PRICING, STUDIO, pageMetadata } from '@/lib/site';
 import { getUpcomingEvents, groupByLondonDay } from '@/lib/studio-data';
 
-// The timetable is rendered into the page HTML and refreshed every 5 minutes;
-// the browser then keeps availability live.
-export const revalidate = 300;
+// The timetable is rendered into the page HTML and refreshed every hour;
+// the browser then keeps availability live (ScheduleView).
+export const revalidate = 3600;
 
 export const metadata: Metadata = pageMetadata({
   title: 'Class Timetable | Reformer, Hot & Red Light Pilates in Edgware',
@@ -36,7 +36,7 @@ function Icon({ path }: { path: string }) {
 }
 
 export default async function SchedulePage() {
-  const events = await getUpcomingEvents();
+  const events = await getUpcomingEvents('/schedule');
   const initialData = events.length > 0 ? groupByLondonDay(events, 14) : undefined;
   const renderedAt = Date.now();
   const intro = PRICING.introOffer;

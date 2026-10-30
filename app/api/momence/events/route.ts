@@ -9,7 +9,14 @@ import { momenceClient } from '@/lib/momence-client';
 import { MomenceApiError } from '@/lib/types/momence';
 
 export const dynamic = 'force-dynamic'; // Disable static generation
-export const revalidate = 0; // Always fetch fresh data - no caching
+export const revalidate = 0; // Always fetch fresh data from Momence when the function runs
+
+// The CDN keeps each answer for 60 seconds (then serves it for up to 60 more
+// while fetching a new one), so visitors polling at the same time share one
+// Momence call. Browsers do not keep it: ScheduleView asks with no-store.
+const SHARED_CACHE = 'public, s-maxage=60, stale-while-revalidate=60';
+// Errors are never cached
+const NO_STORE = 'no-store, max-age=0';
 
 /**
  * GET /api/momence/events
@@ -47,7 +54,7 @@ export async function GET(request: NextRequest) {
       ? await momenceClient.getEventsGroupedByDate(filters)
       : await momenceClient.getEvents(filters);
 
-    // Return success response with no-cache headers to ensure fresh data
+    // Return success response, shared briefly through the CDN (see SHARED_CACHE)
     return NextResponse.json(
       {
         success: true,
@@ -57,9 +64,7 @@ export async function GET(request: NextRequest) {
       },
       {
         headers: {
-          'Cache-Control': 'no-cache, no-store, must-revalidate',
-          'Pragma': 'no-cache',
-          'Expires': '0',
+          'Cache-Control': SHARED_CACHE,
         },
       }
     );
@@ -78,7 +83,7 @@ export async function GET(request: NextRequest) {
           },
           timestamp: new Date().toISOString(),
         },
-        { status: error.statusCode }
+        { status: error.statusCode, headers: { 'Cache-Control': NO_STORE } }
       );
     }
 
@@ -92,7 +97,7 @@ export async function GET(request: NextRequest) {
         },
         timestamp: new Date().toISOString(),
       },
-      { status: 500 }
+      { status: 500, headers: { 'Cache-Control': NO_STORE } }
     );
   }
 }

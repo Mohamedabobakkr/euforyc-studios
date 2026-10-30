@@ -18,7 +18,10 @@ const MOMENCE_HOST_ID = process.env.MOMENCE_HOST_ID || '75303';
 // Public signature for the Momence reviews plugin embed
 const REVIEWS_PLUGIN_SIGNATURE = 'b5276d8f04f580428352131d60c1206a43a3e929ee68a214824cd8882bf0ac17';
 
-const EVENTS_REVALIDATE_SECONDS = 300;
+// One hour, the same as the pages that show the timetable (/, /schedule,
+// /classes/*); the browser keeps availability live on / and /schedule. This
+// value also caps the page's own revalidate, so it must never be shorter.
+const EVENTS_REVALIDATE_SECONDS = 60 * 60;
 const REVIEWS_REVALIDATE_SECONDS = 6 * 60 * 60;
 const LONDON = 'Europe/London';
 
@@ -40,8 +43,11 @@ export function isPrivateBooking(title: string): boolean {
   );
 }
 
+// Each page keeps its own copy (the page path is part of the cache key), so
+// every hourly rebuild of a page finds its copy due and reads Momence afresh
+// instead of reusing one another page fetched up to an hour earlier.
 const fetchEvents = unstable_cache(
-  async (): Promise<MomenceEvent[]> => {
+  async (_page: string): Promise<MomenceEvent[]> => {
     const { momenceClient } = await import('./momence-client');
     return momenceClient.getEvents();
   },
@@ -49,10 +55,13 @@ const fetchEvents = unstable_cache(
   { revalidate: EVENTS_REVALIDATE_SECONDS }
 );
 
-/** Upcoming public classes, soonest first. Empty if Momence is unavailable. */
-export async function getUpcomingEvents(): Promise<MomenceEvent[]> {
+/**
+ * Upcoming public classes, soonest first. Empty if Momence is unavailable.
+ * `page` is the path of the page asking, e.g. "/schedule".
+ */
+export async function getUpcomingEvents(page: string): Promise<MomenceEvent[]> {
   try {
-    const events = await fetchEvents();
+    const events = await fetchEvents(page);
     const now = Date.now();
     return events
       .filter((event) => !isPrivateBooking(event.title))

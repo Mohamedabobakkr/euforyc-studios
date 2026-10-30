@@ -26,8 +26,8 @@ import {
   reviewsFor,
 } from '@/lib/studio-data';
 
-// Timetable facts refresh every 10 minutes
-export const revalidate = 600;
+// Timetable facts refresh every hour
+export const revalidate = 3600;
 export const dynamicParams = false;
 
 // Shared type and spacing for the class page sections
@@ -71,7 +71,7 @@ export default async function ClassTypePage({ params }: { params: Promise<{ slug
   const classType = getClassType(slug);
   if (!classType) notFound();
 
-  const [events, { reviews }] = await Promise.all([getUpcomingEvents(), getReviews()]);
+  const [events, { reviews }] = await Promise.all([getUpcomingEvents(`/classes/${classType.slug}`), getReviews()]);
   const live = liveFactsFor(classType, events);
   const classReviews = reviewsFor(classType, reviews);
   const isPrivate = classType.slug.startsWith('private-');
