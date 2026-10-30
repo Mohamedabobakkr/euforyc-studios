@@ -107,8 +107,9 @@ const nextConfig = {
         ]
       },
       {
-        // Prevent caching of API responses
-        source: '/api/:path*',
+        // Prevent caching of API responses (Sips auth and orders, webhooks, enquiries...).
+        // /api/momence/events is left out: it sets its own short shared CDN cache.
+        source: '/api/:path((?!momence/events(?:/|$)).*)',
         headers: [
           {
             key: 'Cache-Control',

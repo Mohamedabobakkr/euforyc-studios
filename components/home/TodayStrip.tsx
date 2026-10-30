@@ -4,15 +4,17 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import styles from './home.module.css';
 import { londonDayKey, relativeDay, spotsText, spotsTone, stillUpcoming, type SlimEvent } from './types';
+import { useLiveEvents } from './useLiveEvents';
 
 const SHOWN = 8;
 
 /**
  * "Today at Euforyc": the next classes on the live timetable. Rendered on the
- * server; once mounted it drops anything that has started since. Hidden
- * entirely when there is nothing to show.
+ * server; once mounted it keeps spaces left live and drops anything that has
+ * started since. Hidden entirely when there is nothing to show.
  */
-export default function TodayStrip({ events, renderedAt }: { events: SlimEvent[]; renderedAt: number }) {
+export default function TodayStrip({ events: rendered, renderedAt }: { events: SlimEvent[]; renderedAt: number }) {
+  const events = useLiveEvents(rendered);
   const [now, setNow] = useState(renderedAt);
 
   useEffect(() => {

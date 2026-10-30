@@ -37,8 +37,10 @@ import { ORDERED_CLASS_TYPES } from '@/lib/classes';
 import { PRICING, pageMetadata } from '@/lib/site';
 import { getReviews, getUpcomingEvents } from '@/lib/studio-data';
 
-// The timetable parts of the page refresh every 5 minutes, like /schedule
-export const revalidate = 300;
+// The page HTML is rebuilt every hour, like /schedule. In the browser the
+// timetable parts (Next class, Today, Find your class) keep spaces left live,
+// as /schedule does (components/home/useLiveEvents.ts).
+export const revalidate = 3600;
 
 export const metadata: Metadata = pageMetadata({
   title: 'Euforyc Studios | Women-Only Pilates Studio in Edgware, North West London',
@@ -50,7 +52,7 @@ export const metadata: Metadata = pageMetadata({
 const HEADLINE = ['EUFORYC', 'STUDIOS'];
 
 export default async function Home() {
-  const [events, { reviews }] = await Promise.all([getUpcomingEvents(), getReviews()]);
+  const [events, { reviews }] = await Promise.all([getUpcomingEvents('/'), getReviews()]);
   const renderedAt = Date.now();
 
   const classes = groupClasses(events);

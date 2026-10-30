@@ -7,6 +7,7 @@ import PillLink from '@/components/euforyc/PillLink';
 import type { ClassPanel } from './ClassPanels';
 import styles from './home.module.css';
 import { spotsText, stillUpcoming, type SlimEvent } from './types';
+import { useLiveEvents } from './useLiveEvents';
 
 type Goal = 'strength' | 'sweat' | 'tone' | 'recover' | 'fun' | 'private';
 type Level = 'new' | 'some' | 'regular';
@@ -61,7 +62,8 @@ interface ClassFinderProps {
  * "Find your class": three questions, then a class from lib/classes.ts with
  * real upcoming times from the live timetable.
  */
-export default function ClassFinder({ classes, events, renderedAt, tryItAll }: ClassFinderProps) {
+export default function ClassFinder({ classes, events: rendered, renderedAt, tryItAll }: ClassFinderProps) {
+  const events = useLiveEvents(rendered);
   const [goal, setGoal] = useState<Goal>('strength');
   const [level, setLevel] = useState<Level>('new');
   const [when, setWhen] = useState<When>('evening');
