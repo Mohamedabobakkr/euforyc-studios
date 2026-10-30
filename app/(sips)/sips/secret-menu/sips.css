@@ -316,6 +316,14 @@ body {
 .footer-links a { font-family: 'Gaegu', cursive; font-size: 22px; font-weight: 700; color: var(--cream-2); text-decoration: none; transition: color 0.3s; }
 .footer-links a:hover { color: var(--cream); }
 .footer-copy { font-family: 'Gaegu', cursive; font-size: 18px; color: var(--taupe); opacity: 0.5; }
+/* "Site by Identeti": the copyright line's face and colour */
+.footer-credit {
+  display: flex; justify-content: center; align-items: baseline; gap: 8px; margin-top: 4px;
+  font-family: 'Gaegu', cursive; font-size: 18px; text-transform: lowercase;
+  color: var(--taupe); color: color-mix(in srgb, var(--taupe) 50%, transparent);
+}
+.footer-credit a { display: inline-flex; align-items: center; min-height: 44px; color: inherit; }
+.footer-credit a:focus-visible { outline: 2px solid var(--cream); outline-offset: 3px; }
 
 /* ── CHOOSE YOUR PATH ── */
 .choose-wrap {

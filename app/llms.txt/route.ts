@@ -70,6 +70,8 @@ ${ORDERED_CLASS_TYPES.map(
 - [Euforyc Sips](${SITE_URL}/sips): matcha bar and wellness cafe serving ceremonial-grade matcha, specialty coffee, cold foam drinks and smoothies. Open to everyone, walk-ins welcome, with [click and collect ordering](${SITE_URL}/sips/order)
 - [Euforyc Skin Studio](https://euforycskin.co.uk/): women-only aesthetic clinic offering dermal fillers, anti-wrinkle treatments, IV drips, skin boosters, body contouring and laser hair removal
 - [Massage Ritual](${SITE_URL}/massage): 30, 60 and 90 minute massages
+
+Website designed and built by Identeti (https://identeti.com).
 `;
 
   return new Response(body, {
