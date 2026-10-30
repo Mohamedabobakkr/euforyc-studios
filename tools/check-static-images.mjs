@@ -8,7 +8,9 @@ import { fileURLToPath } from 'node:url';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const DIST = path.join(ROOT, process.env.NEXT_DIST_DIR || '.next');
-const APP = path.join(DIST, 'server', 'app');
+// Pre-rendered pages are in server/app/ for a plain `next build`, but in server/route-cache/ when a deployment
+// adapter is set (Vercel sets one), so search all of server/.
+const APP = path.join(DIST, 'server');
 const CHUNKS = path.join(DIST, 'static', 'chunks');
 const PUBLIC = path.join(ROOT, 'public');
 const OUT = path.join(PUBLIC, 'static', 'img');
