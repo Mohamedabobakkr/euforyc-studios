@@ -1,12 +1,12 @@
 # Security Scan Report
 
-**Date:** 2026-10-31 03:30 UTC
+**Date:** 2026-10-31 12:00 UTC
 **Status:** FIXES_APPLIED
 
 ## npm audit
 - Critical: 0
 - High: 0
-- Medium: 13 (all minimatch <11.0.1, dev-only eslint toolchain — does not ship to production)
+- Medium: 0 (was 13, all fixed)
 - Low: 0
 
 ## Code Security Checks
@@ -22,7 +22,7 @@
 10. Safe Health Checks: PASS — no health/status/ping endpoints exist; no API routes expose tokens or internal config
 
 ## Fixes Applied
-- `6ed66ae` fix(security): update transitive dependencies via npm audit fix
+- `d4f05ec` fix(security): upgrade minimatch override to ^11.0.1 to resolve CVE — resolved all 13 moderate minimatch vulnerabilities (GHSA-g3hv-75wg-m249) by bumping the npm override from ^10.2.6 to ^11.0.1
 
 ## Manual Action Required
-- 13 moderate minimatch vulnerabilities remain in eslint/typescript-eslint dev toolchain. These are dev-only dependencies (not shipped to production). The only available fix requires downgrading eslint from v10 to v4 (semver-major breaking change), which is not viable. Monitor for eslint-config-next and eslint updates that adopt minimatch >=11.0.1.
+- None
