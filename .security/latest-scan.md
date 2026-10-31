@@ -1,6 +1,6 @@
 # Security Scan Report
 
-**Date:** 2026-10-31 12:00 UTC
+**Date:** 2026-10-31 19:30 UTC
 **Status:** FIXES_APPLIED
 
 ## npm audit
@@ -22,7 +22,7 @@
 10. Safe Health Checks: PASS — no health/status/ping endpoints exist; no API routes expose tokens or internal config
 
 ## Fixes Applied
-- `d4f05ec` fix(security): upgrade minimatch override to ^11.0.1 to resolve CVE — resolved all 13 moderate minimatch vulnerabilities (GHSA-g3hv-75wg-m249) by bumping the npm override from ^10.2.6 to ^11.0.1
+- `d4f05ec` fix(security): upgrade minimatch override to ^11.0.1 (GHSA-g3hv-75wg-m249) — resolved all 13 moderate minimatch vulnerabilities by bumping the npm override from ^10.2.6 to ^11.0.1
 
 ## Manual Action Required
 - None
