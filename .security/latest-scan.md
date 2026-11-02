@@ -1,30 +1,30 @@
 # Security Scan Report
 
-**Date:** 2026-11-02 11:30 UTC
+**Date:** 2026-11-02 19:30 UTC
 **Status:** CLEAN
 
 ## npm audit
 - Critical: 0
 - High: 0
-- Medium: 13 (all in `minimatch` via eslint/typescript-eslint — dev-tooling only, not production)
+- Medium: 0
 - Low: 0
 
-All 13 moderate vulnerabilities trace to `minimatch` ReDoS in ESLint-related packages (`eslint`, `eslint-config-next`, `typescript-eslint`, `@typescript-eslint/*`). These are linting tools that do not run in production (`next build` does not invoke ESLint). The suggested fix requires semver-major downgrades that are not viable. No production risk.
+Previous minimatch override (^10.2.6) was updated to ^11.0.1 in an earlier scan today, resolving all 13 moderate findings (GHSA-g3hv-75wg-m249). Current scan confirms 0 vulnerabilities.
 
 ## Code Security Checks
-1. SSRF Protection: PASS — `validateSquarePath()` blocks `..`, `//`, `\\` and enforces safe character whitelist
-2. API Auth: PASS — both `/api/sips/orders` and `/api/sips/update-order` call `authenticateBarista()` via HttpOnly cookie
-3. Webhook Signatures: PASS — HMAC-SHA256 verified with constant-time comparison; fails closed when key missing (returns 500)
-4. Input Validation: PASS — order IDs validated with `/^[a-zA-Z0-9_-]+$/`; state transitions enforced; quantities capped
-5. Security Headers: PASS — HSTS (63072000s, preload), CSP, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy all set; `poweredByHeader: false`
-6. Image Hostnames: PASS — uses custom loader, no `hostname: '**'` wildcard, no unsafe `remotePatterns`
-7. No Hardcoded Secrets: PASS — no `sk-`, `pk_live`, or hardcoded passwords found in app/lib/components
-8. No localStorage Credentials: PASS — no credentials stored in localStorage; auth uses HttpOnly cookies
-9. No Error Leaks: PASS — all API routes return generic error messages; `error.details` only shown when `NODE_ENV === 'development'`
-10. Safe Health Checks: PASS — no health check endpoints that expose tokens or internal config
+1. SSRF Protection: PASS — validateSquarePath() blocks `..`, `//`, `\\` and validates with strict regex
+2. API Auth: PASS — orders and update-order routes use authenticateBarista() with HMAC-signed HttpOnly session cookies
+3. Webhook Signatures: PASS — SQUARE_WEBHOOK_SIGNATURE_KEY checked at entry; missing key returns 500 (fail-closed); HMAC-SHA256 verified with constant-time comparison
+4. Input Validation: PASS — orderId and fulfillmentUid validated with /^[a-zA-Z0-9_-]+$/, state transitions whitelist-checked, item quantities capped
+5. Security Headers: PASS — HSTS (2 years + preload), CSP, X-Frame-Options SAMEORIGIN, X-Content-Type-Options nosniff, Referrer-Policy, Permissions-Policy all set
+6. Image Hostnames: PASS — custom image loader used, no remote patterns or hostname wildcards
+7. No Hardcoded Secrets: PASS — grep for sk-, pk_live, hardcoded passwords found nothing in app/lib/components
+8. No localStorage Credentials: PASS — no credential storage in localStorage detected
+9. No Error Leaks: PASS — API responses return generic messages; Momence error details gated behind NODE_ENV==='development'; enquiry route error.message only in server-side logs
+10. Safe Health Checks: PASS — no health endpoints expose tokens or internal config
 
 ## Fixes Applied
-- None needed
+- None needed (minimatch override already fixed by earlier scan: commit 6a0f2e9)
 
 ## Manual Action Required
-- Consider moving `eslint` and `eslint-config-next` from `dependencies` to `devDependencies` — they are linting tools not needed at runtime. This would also remove the 13 moderate `minimatch` vulnerabilities from production installs.
+- None
