@@ -1,6 +1,6 @@
 # Security Scan Report
 
-**Date:** 2026-11-02 19:30 UTC
+**Date:** 2026-11-03 03:30 UTC
 **Status:** CLEAN
 
 ## npm audit
@@ -9,22 +9,20 @@
 - Medium: 0
 - Low: 0
 
-Previous minimatch override (^10.2.6) was updated to ^11.0.1 in an earlier scan today, resolving all 13 moderate findings (GHSA-g3hv-75wg-m249). Current scan confirms 0 vulnerabilities.
-
 ## Code Security Checks
-1. SSRF Protection: PASS — validateSquarePath() blocks `..`, `//`, `\\` and validates with strict regex
-2. API Auth: PASS — orders and update-order routes use authenticateBarista() with HMAC-signed HttpOnly session cookies
-3. Webhook Signatures: PASS — SQUARE_WEBHOOK_SIGNATURE_KEY checked at entry; missing key returns 500 (fail-closed); HMAC-SHA256 verified with constant-time comparison
-4. Input Validation: PASS — orderId and fulfillmentUid validated with /^[a-zA-Z0-9_-]+$/, state transitions whitelist-checked, item quantities capped
-5. Security Headers: PASS — HSTS (2 years + preload), CSP, X-Frame-Options SAMEORIGIN, X-Content-Type-Options nosniff, Referrer-Policy, Permissions-Policy all set
-6. Image Hostnames: PASS — custom image loader used, no remote patterns or hostname wildcards
-7. No Hardcoded Secrets: PASS — grep for sk-, pk_live, hardcoded passwords found nothing in app/lib/components
-8. No localStorage Credentials: PASS — no credential storage in localStorage detected
-9. No Error Leaks: PASS — API responses return generic messages; Momence error details gated behind NODE_ENV==='development'; enquiry route error.message only in server-side logs
-10. Safe Health Checks: PASS — no health endpoints expose tokens or internal config
+1. SSRF Protection: PASS — `validateSquarePath()` in `lib/square.ts` blocks `..`, `//`, `\\`, and enforces safe character regex `^\/[a-zA-Z0-9/_-]+$`
+2. API Auth: PASS — `app/api/sips/orders/route.ts` and `update-order/route.ts` both call `authenticateBarista()` before processing; auth uses HMAC-SHA256 signed HttpOnly cookies with constant-time password comparison
+3. Webhook Signatures: PASS — `app/api/sips/webhook/route.ts` fails closed when `SQUARE_WEBHOOK_SIGNATURE_KEY` is missing (returns 500); HMAC-SHA256 verified with constant-time comparison
+4. Input Validation: PASS — Order IDs validated with `/^[a-zA-Z0-9_-]+$/`; fulfillment states validated against whitelist; item quantities capped at 99; string lengths truncated
+5. Security Headers: PASS — HSTS (2-year, includeSubDomains, preload), CSP (strict policy with frame-ancestors 'self'), X-Frame-Options SAMEORIGIN, X-Content-Type-Options nosniff, Referrer-Policy, Permissions-Policy all set in `next.config.js`; X-Powered-By disabled
+6. Image Hostnames: PASS — No `hostname: '**'` wildcard; images use custom loader from pre-built static files
+7. No Hardcoded Secrets: PASS — No API keys, tokens, or passwords found in `app/`, `lib/`, or `components/` source files; all secrets loaded from environment variables
+8. No localStorage Credentials: PASS — `localStorage` used only for anonymous visitor UID (`euforyc_uid`), no credentials or tokens stored client-side
+9. No Error Leaks: PASS — All API routes return generic error messages to clients; `error.details` only included when `NODE_ENV === 'development'`; no stack traces or `String(error)` in responses
+10. Safe Health Checks: PASS — No health check endpoints exist; no routes expose tokens or internal configuration
 
 ## Fixes Applied
-- None needed (minimatch override already fixed by earlier scan: commit 6a0f2e9)
+- None needed
 
 ## Manual Action Required
 - None
