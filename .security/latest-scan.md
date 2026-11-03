@@ -1,28 +1,30 @@
 # Security Scan Report
 
-**Date:** 2026-11-03 11:25 UTC
+**Date:** 2026-11-03 19:30 UTC
 **Status:** CLEAN
 
 ## npm audit
 - Critical: 0
 - High: 0
-- Medium: 0
+- Medium: 13
 - Low: 0
 
+All 13 moderate vulnerabilities trace to a single root cause: `minimatch <11.0.1` (ReDoS via globparts amplification) pulled in by the eslint toolchain (`eslint`, `eslint-config-next`, `typescript-eslint`, `eslint-plugin-import`, `eslint-plugin-jsx-a11y`, `eslint-plugin-react`). These are linting/dev-only packages — they never run in production. The suggested fix requires a semver-major upgrade of `eslint` (to 4.0.0) and `eslint-config-next` (to 0.2.4, a downgrade from 16.4.2), which would break the linting configuration. No action taken; risk is negligible for a production site.
+
 ## Code Security Checks
-1. SSRF Protection: PASS — `validateSquarePath()` in `lib/square.ts` blocks `..`, `//`, `\\`, and enforces safe character regex `^\/[a-zA-Z0-9/_-]+$`
-2. API Auth: PASS — `app/api/sips/orders/route.ts` and `update-order/route.ts` both call `authenticateBarista()` before processing; auth uses HMAC-SHA256 signed HttpOnly cookies with constant-time password comparison
-3. Webhook Signatures: PASS — `app/api/sips/webhook/route.ts` fails closed when `SQUARE_WEBHOOK_SIGNATURE_KEY` is missing (returns 500); HMAC-SHA256 verified with constant-time comparison
-4. Input Validation: PASS — Order IDs validated with `/^[a-zA-Z0-9_-]+$/`; fulfillment states validated against whitelist; item quantities capped at 99; string lengths truncated
-5. Security Headers: PASS — HSTS (2-year, includeSubDomains, preload), CSP (strict policy with frame-ancestors 'self'), X-Frame-Options SAMEORIGIN, X-Content-Type-Options nosniff, Referrer-Policy, Permissions-Policy all set in `next.config.js`; X-Powered-By disabled
-6. Image Hostnames: PASS — No `hostname: '**'` wildcard; images use custom loader from pre-built static files
-7. No Hardcoded Secrets: PASS — No API keys, tokens, or passwords found in `app/`, `lib/`, or `components/` source files; all secrets loaded from environment variables
-8. No localStorage Credentials: PASS — `localStorage` used only for anonymous visitor UID (`euforyc_uid`), no credentials or tokens stored client-side
-9. No Error Leaks: PASS — All API routes return generic error messages to clients; `error.details` only included when `NODE_ENV === 'development'`; no stack traces or `String(error)` in responses
-10. Safe Health Checks: PASS — No health check endpoints exist; no routes expose tokens or internal configuration
+1. SSRF Protection: PASS — `validateSquarePath()` blocks `../`, `//`, `\\` and enforces strict regex `^\/[a-zA-Z0-9/_-]+$`
+2. API Auth: PASS — `/api/sips/orders` and `/api/sips/update-order` validate HMAC-SHA256 signed HttpOnly session cookies via `authenticateBarista()`
+3. Webhook Signatures: PASS — HMAC-SHA256 verified with constant-time comparison; fails closed (HTTP 500) when key missing
+4. Input Validation: PASS — orderId/fulfillmentUid validated with `/^[a-zA-Z0-9_-]+$/`; state transitions whitelisted; create-order validates and caps all inputs; redirect URLs checked against allowlist
+5. Security Headers: PASS — HSTS (2yr, includeSubDomains, preload), CSP, X-Frame-Options SAMEORIGIN, X-Content-Type-Options nosniff, Referrer-Policy, Permissions-Policy all configured; X-Powered-By disabled
+6. Image Hostnames: PASS — custom image loader with no remote hostname config; no wildcard
+7. No Hardcoded Secrets: PASS — all secrets accessed via `process.env`; no `sk-`, `pk_live`, or hardcoded passwords in app/, lib/, or components/
+8. No localStorage Credentials: PASS — barista sessions use HttpOnly cookies exclusively; localStorage stores only anonymous analytics UID (`euforyc_uid`)
+9. No Error Leaks: PASS — API routes return generic messages to clients (`'Failed to fetch orders'`, `'Failed to update order'`, `'Enquiry could not be delivered'`); detailed errors logged server-side only
+10. Safe Health Checks: PASS — no health/status/ping endpoints exist; no API routes expose tokens or internal config
 
 ## Fixes Applied
 - None needed
 
 ## Manual Action Required
-- None
+- **Low priority:** When the Next.js/eslint ecosystem releases compatible versions, upgrade `eslint` and `eslint-config-next` to resolve the 13 moderate `minimatch` ReDoS advisories. These affect dev tooling only, not production.
