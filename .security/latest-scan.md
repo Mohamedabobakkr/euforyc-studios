@@ -1,15 +1,15 @@
 # Security Scan Report
 
-**Date:** 2026-11-04 03:25 UTC
-**Status:** CLEAN
+**Date:** 2026-11-04 11:30 UTC
+**Status:** FIXES_APPLIED
 
 ## npm audit
 - Critical: 0
 - High: 0
-- Medium: 0
+- Medium: 0 (was 13, now resolved)
 - Low: 0
 
-577 packages audited, 0 vulnerabilities found. Previous scan (2026-11-03) reported 13 moderate `minimatch` ReDoS vulnerabilities via the eslint toolchain — these have been resolved upstream.
+568 packages audited, 0 vulnerabilities after fix. Previous minimatch override (^10.2.6) pulled in minimatch <11.0.1 which had a moderate DoS via globparts amplification (GHSA-g3hv-75wg-m249). Override bumped to ^11.0.1.
 
 ## Code Security Checks
 1. SSRF Protection: PASS — `validateSquarePath()` blocks `..`, `//`, `\\` and enforces safe-character regex `^\/[a-zA-Z0-9/_-]+$`
@@ -24,7 +24,7 @@
 10. Safe Health Checks: PASS — no health/status/ping endpoints exist; no API routes expose tokens or internal config
 
 ## Fixes Applied
-- None needed
+- `142d94b` fix(security): bump minimatch override ^10.2.6 → ^11.0.1 (GHSA-g3hv-75wg-m249) — resolved all 13 moderate DoS vulnerabilities in ESLint toolchain
 
 ## Manual Action Required
 - None
