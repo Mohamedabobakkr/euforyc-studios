@@ -1,6 +1,6 @@
 # Security Scan Report
 
-**Date:** 2026-11-04 12:00 UTC
+**Date:** 2026-11-05 03:28 UTC
 **Status:** CLEAN
 
 ## npm audit
@@ -24,7 +24,7 @@
 10. Safe Health Checks: PASS — no health/status/ping endpoints exist; no API routes expose tokens or internal config
 
 ## Fixes Applied
-- None needed (previous minimatch override fix from `142d94b` already resolved all moderate DoS vulnerabilities)
+- None needed — minimatch override ^11.0.1 (GHSA-g3hv-75wg-m249) was already applied from prior scan
 
 ## Manual Action Required
 - None
