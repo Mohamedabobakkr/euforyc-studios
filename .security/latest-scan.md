@@ -1,15 +1,15 @@
 # Security Scan Report
 
-**Date:** 2026-11-05 19:30 UTC
+**Date:** 2026-11-06 05:00 UTC
 **Status:** CLEAN
 
 ## npm audit
 - Critical: 0
 - High: 0
-- Medium: 13
+- Medium: 0
 - Low: 0
 
-All 13 moderate vulnerabilities are in `minimatch` (ReDoS via glob pattern amplification, GHSA-g3hv-75wg-m249), a transitive dependency of `eslint`, `eslint-config-next`, `eslint-plugin-import`, `eslint-plugin-jsx-a11y`, `eslint-plugin-react`, and `@typescript-eslint/*`. These are lint/build-time tools with no production runtime exposure. Fix requires a semver-major upgrade of `eslint` (v10 -> v11+) and `eslint-config-next` (v16 -> latest); not auto-fixable without risk.
+569 packages audited, 0 vulnerabilities found. (Previous 13 moderate `minimatch` vulnerabilities now resolved.)
 
 ## Code Security Checks
 1. SSRF Protection: PASS — `validateSquarePath()` blocks `../`, `//`, `\\` and enforces strict regex `^\/[a-zA-Z0-9/_-]+$`
@@ -27,4 +27,4 @@ All 13 moderate vulnerabilities are in `minimatch` (ReDoS via glob pattern ampli
 - None needed
 
 ## Manual Action Required
-- Consider upgrading `eslint` (^10.8.0 -> ^11.x) and `eslint-config-next` (^16.4.2 -> latest compatible) to resolve 13 moderate `minimatch` ReDoS vulnerabilities. These only affect build/lint tooling, not the production runtime.
+- None
