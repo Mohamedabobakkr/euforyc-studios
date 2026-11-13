@@ -1,6 +1,6 @@
 # Security Scan Report
 
-**Date:** 2026-11-13 11:25 UTC
+**Date:** 2026-11-13 19:25 UTC
 **Status:** CLEAN
 
 ## npm audit
@@ -10,16 +10,16 @@
 - Low: 0
 
 ## Code Security Checks
-1. SSRF Protection: PASS — `validateSquarePath()` blocks `..`, `//`, `\\`, enforces leading `/`, allows only safe characters.
-2. API Auth: PASS — Both orders and update-order routes call `authenticateBarista()` and return 401 on failure.
-3. Webhook Signatures: PASS — HMAC-SHA256 verified with constant-time comparison; returns 500 (fail-closed) when key is missing.
-4. Input Validation: PASS — Order IDs validated with `/^[a-zA-Z0-9_-]+$/`; input lengths capped; state transitions whitelisted.
-5. Security Headers: PASS — HSTS, CSP, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy all configured.
-6. Image Hostnames: PASS — No `hostname: '**'` wildcard; images use custom loader with pre-sized static files.
-7. No Hardcoded Secrets: PASS — No `sk-`, `sk_live`, `pk_live`, or hardcoded passwords found.
-8. No localStorage Credentials: PASS — Only stores anonymous visitor UID; no passwords, tokens, or secrets.
-9. No Error Leaks: PASS — All API routes return generic messages; error details only in server-side logs or gated behind `NODE_ENV === 'development'`.
-10. Safe Health Checks: PASS — No health check endpoints expose tokens or internal config.
+1. SSRF Protection: PASS — `validateSquarePath()` blocks `..`, `//`, `\\` and enforces safe character whitelist
+2. API Auth: PASS — both `/api/sips/orders` and `/api/sips/update-order` verify barista session via `authenticateBarista()` HttpOnly cookie
+3. Webhook Signatures: PASS — HMAC-SHA256 verification with constant-time comparison; fails closed (500) when key missing
+4. Input Validation: PASS — order IDs validated with `safeIdPattern`, state transitions whitelisted, input lengths capped, items limited to 50
+5. Security Headers: PASS — HSTS (2yr preload), CSP, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy all configured
+6. Image Hostnames: PASS — no wildcard hostname; uses custom image loader with pre-sized static files
+7. No Hardcoded Secrets: PASS — no `sk-`, `pk_live`, `sk_live`, or hardcoded passwords found in app/, lib/, or components/
+8. No localStorage Credentials: PASS — localStorage used only for `euforyc_uid` (anonymous analytics ID), not credentials
+9. No Error Leaks: PASS — Momence routes gate `error.details` behind `NODE_ENV === 'development'`; all other routes return generic messages
+10. Safe Health Checks: PASS — no health endpoints; API routes do not expose tokens or internal config
 
 ## Fixes Applied
 - None needed
