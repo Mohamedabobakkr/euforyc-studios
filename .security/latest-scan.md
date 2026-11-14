@@ -1,6 +1,6 @@
 # Security Scan Report
 
-**Date:** 2026-11-14 06:00 UTC
+**Date:** 2026-11-14 08:00 UTC
 **Status:** CLEAN
 
 ## npm audit
@@ -10,16 +10,16 @@
 - Low: 0
 
 ## Code Security Checks
-1. SSRF Protection: PASS — `validateSquarePath()` blocks `..`, `//`, `\\` and enforces safe character whitelist
-2. API Auth: PASS — both `/api/sips/orders` and `/api/sips/update-order` verify barista session via `authenticateBarista()` HttpOnly cookie
-3. Webhook Signatures: PASS — HMAC-SHA256 verification with constant-time comparison; fails closed (500) when key missing
-4. Input Validation: PASS — order IDs validated with `safeIdPattern`, state transitions whitelisted, input lengths capped, items limited to 50
-5. Security Headers: PASS — HSTS (2yr preload), CSP, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy all configured
-6. Image Hostnames: PASS — no wildcard hostname; uses custom image loader with pre-sized static files
-7. No Hardcoded Secrets: PASS — no `sk-`, `pk_live`, `sk_live`, or hardcoded passwords found in app/, lib/, or components/
-8. No localStorage Credentials: PASS — localStorage used only for `euforyc_uid` (anonymous analytics ID), not credentials
-9. No Error Leaks: PASS — Momence routes gate `error.details` behind `NODE_ENV === 'development'`; all other routes return generic messages
-10. Safe Health Checks: PASS — no health endpoints; API routes do not expose tokens or internal config
+1. SSRF Protection: PASS — `validateSquarePath()` blocks `..`, `//`, `\\`; requires `/` prefix; allows only `[a-zA-Z0-9/_-]` in path segment
+2. API Auth: PASS — `orders/route.ts` and `update-order/route.ts` both call `authenticateBarista()` (HMAC-SHA256 signed HttpOnly cookie with expiry)
+3. Webhook Signatures: PASS — fails closed when `SQUARE_WEBHOOK_SIGNATURE_KEY` missing (returns 500); HMAC-SHA256 verified with constant-time comparison
+4. Input Validation: PASS — `orderId` and `fulfillmentUid` validated against `/^[a-zA-Z0-9_-]+$/`; state transitions constrained to `VALID_TRANSITIONS` map
+5. Security Headers: PASS — HSTS (2yr, includeSubDomains, preload), CSP (restrictive), X-Frame-Options SAMEORIGIN, X-Content-Type-Options nosniff, Referrer-Policy, Permissions-Policy, poweredByHeader disabled
+6. Image Hostnames: PASS — uses custom image loader (`lib/imageLoader.ts`), no `remotePatterns` or `hostname: '**'` wildcard
+7. No Hardcoded Secrets: PASS — grep for `sk-`, `sk_live`, `pk_live`, hardcoded passwords returned no matches in app/lib/components
+8. No localStorage Credentials: PASS — no `localStorage.setItem`/`getItem` calls involving password, token, secret, key, credential, or auth
+9. No Error Leaks: PASS — all API routes return generic error messages to clients; Momence error details gated behind `NODE_ENV === 'development'`; enquiry route logs `error.message` server-side only, client gets `'Enquiry could not be delivered'`
+10. Safe Health Checks: PASS — no health/status endpoints exist; no endpoints expose tokens or internal config
 
 ## Fixes Applied
 - None needed
