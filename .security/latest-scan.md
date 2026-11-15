@@ -1,6 +1,6 @@
 # Security Scan Report
 
-**Date:** 2026-11-15 12:00 UTC
+**Date:** 2026-11-15 19:30 UTC
 **Status:** CLEAN
 
 ## npm audit
@@ -10,16 +10,16 @@
 - Low: 0
 
 ## Code Security Checks
-1. SSRF Protection: PASS — `validateSquarePath()` blocks `..`, `//`, `\\`; requires `/` prefix; allows only `[a-zA-Z0-9/_-]` in path segment
-2. API Auth: PASS — `orders/route.ts` and `update-order/route.ts` both call `authenticateBarista()` (HMAC-SHA256 signed HttpOnly cookie with expiry)
-3. Webhook Signatures: PASS — fails closed when `SQUARE_WEBHOOK_SIGNATURE_KEY` missing (returns 500); HMAC-SHA256 verified with constant-time comparison
-4. Input Validation: PASS — `orderId` and `fulfillmentUid` validated against `/^[a-zA-Z0-9_-]+$/`; state transitions constrained to `VALID_TRANSITIONS` map
-5. Security Headers: PASS — HSTS (2yr, includeSubDomains, preload), CSP (restrictive), X-Frame-Options SAMEORIGIN, X-Content-Type-Options nosniff, Referrer-Policy, Permissions-Policy, poweredByHeader disabled
-6. Image Hostnames: PASS — uses custom image loader (`lib/imageLoader.ts`), no `remotePatterns` or `hostname: '**'` wildcard
-7. No Hardcoded Secrets: PASS — grep for `sk-`, `sk_live`, `pk_live`, hardcoded passwords returned no matches in app/lib/components
-8. No localStorage Credentials: PASS — no `localStorage.setItem`/`getItem` calls involving password, token, secret, key, credential, or auth
-9. No Error Leaks: PASS — all API routes return generic error messages to clients; Momence error details gated behind `NODE_ENV === 'development'`; enquiry route logs `error.message` server-side only, client gets `'Enquiry could not be delivered'`
-10. Safe Health Checks: PASS — no health/status endpoints exist; no endpoints expose tokens or internal config
+1. SSRF Protection: PASS — `validateSquarePath()` blocks `..`, `//`, `\\`, enforces leading `/`, allows only safe characters.
+2. API Auth: PASS — Both orders and update-order routes call `authenticateBarista()` and return 401 on failure.
+3. Webhook Signatures: PASS — HMAC-SHA256 verified with constant-time comparison; returns 500 (fail-closed) when key is missing.
+4. Input Validation: PASS — Order IDs validated with `/^[a-zA-Z0-9_-]+$/`; input lengths capped; state transitions whitelisted.
+5. Security Headers: PASS — HSTS, CSP, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy all configured.
+6. Image Hostnames: PASS — No `hostname: '**'` wildcard; images use custom loader with pre-sized static files.
+7. No Hardcoded Secrets: PASS — No `sk-`, `sk_live`, `pk_live`, or hardcoded passwords found.
+8. No localStorage Credentials: PASS — Only stores anonymous visitor UID; no passwords, tokens, or secrets.
+9. No Error Leaks: PASS — All API routes return generic messages; error details only in server-side logs or guarded by `NODE_ENV === 'development'`.
+10. Safe Health Checks: PASS — No health check endpoints expose tokens or internal config.
 
 ## Fixes Applied
 - None needed
