@@ -54,37 +54,6 @@ const PRIVATE_SESSION_IMAGE = {
 // Order matters: a title is assigned to the first class type it matches.
 export const CLASS_TYPES: ClassType[] = [
   {
-    slug: 'private-cadillac-reformer-pilates',
-    name: '1:1 Private Cadillac Reformer Pilates',
-    tagline: 'One-to-one sessions on the Cadillac Reformer.',
-    summary:
-      '1:1 Private Cadillac Reformer Pilates at Euforyc Studios is a 60-minute one-to-one session on the Cadillac Reformer, which combines a reformer with an overhead frame for spring, bar and strap work. Each session is planned around your goals, body and pace.',
-    duration: '60 minutes',
-    level: 'All levels, tailored to you',
-    groupSize: 'One-to-one',
-    price: 75,
-    covered: PRIVATE_COVERAGE,
-    expect: [
-      'Your instructor starts by asking about your goals, experience and any injuries, then builds the session around them. Expect clear guidance and a programme that adapts as you progress.',
-      'Sessions take place in the studio, in a women-only space.',
-    ],
-    goodFor: [
-      'Working around an injury or a specific physical goal',
-      'Clients who want variety beyond the standard reformer',
-      'Anyone who prefers undivided attention',
-    ],
-    bring: ['Grip socks (mandatory)', 'Comfortable, fitted workout clothes', 'Water'],
-    faqs: [
-      {
-        question: 'How much is a 1:1 Private Cadillac Reformer Pilates session?',
-        answer:
-          'A single 60-minute session is £75. Packs bring the price down: 4 sessions for £250, 8 for £490 and 12 for £700, each valid for 90 days.',
-      },
-    ],
-    image: PRIVATE_SESSION_IMAGE,
-    match: { include: ['cadillac'] },
-  },
-  {
     slug: 'private-reformer-pilates',
     name: '1:1 Private Reformer Pilates',
     tagline: 'One-to-one Reformer sessions built around you.',
@@ -119,7 +88,8 @@ export const CLASS_TYPES: ClassType[] = [
       },
     ],
     image: PRIVATE_SESSION_IMAGE,
-    match: { include: ['1:1', '1-1', 'private'] },
+    // A retired Cadillac session title must not be read as Private Reformer
+    match: { include: ['1:1', '1-1', 'private'], exclude: ['cadillac'] },
   },
   {
     slug: 'red-light-hot-mat-pilates',
@@ -456,7 +426,6 @@ export const CLASS_ORDER = [
   'barre',
   'belly-dance',
   'private-reformer-pilates',
-  'private-cadillac-reformer-pilates',
 ];
 
 export const ORDERED_CLASS_TYPES: ClassType[] = CLASS_ORDER.map(

@@ -163,6 +163,12 @@ const nextConfig = {
         destination: 'https://euforycskin.co.uk/',
         permanent: true,
       },
+      // The Cadillac is no longer offered — 1:1 Private Reformer Pilates continues
+      {
+        source: '/classes/private-cadillac-reformer-pilates',
+        destination: '/classes/private-reformer-pilates',
+        permanent: true,
+      },
       // Retreats have moved to Euforyc Social
       {
         source: '/morocco-retreat',
