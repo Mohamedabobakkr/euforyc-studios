@@ -34,6 +34,13 @@ export const BF_END_DATE = 'Sunday 29 November 2026';
 /** True once the offer's end time has passed */
 export const blackFridayEnded = (now: number = Date.now()) => now >= BF_ENDS_AT;
 
+/**
+ * A one-line script that runs before the page is drawn. If the page's HTML
+ * was built before the end time and the offer has ended since, it marks
+ * <html> so CSS can hide the offer straight away, until React takes over.
+ */
+export const HIDE_IF_ENDED = `if(Date.now()>=${BF_ENDS_AT})document.documentElement.setAttribute('data-bf-ended','')`;
+
 // ---------------------------------------------------------------------------
 // Memberships: same price, extra classes every month for the first 6 months
 // ---------------------------------------------------------------------------

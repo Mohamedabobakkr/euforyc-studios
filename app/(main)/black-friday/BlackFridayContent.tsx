@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState, useSyncExternalStore, type ReactNode } from 'react';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -10,7 +10,6 @@ import PillLink from '@/components/euforyc/PillLink';
 import {
   BF_BONUS_MONTHS,
   BF_END_DATE,
-  BF_ENDS_AT,
   BF_FAQS,
   BF_GROUP_CLASSES,
   BF_LINE,
@@ -28,37 +27,11 @@ import {
   PACKAGE_VALIDITY,
   bfMembershipTracking,
   bfPackageTracking,
-  blackFridayEnded,
 } from '@/components/black-friday/offer';
+import { useOfferEnded } from '@/components/black-friday/useOfferEnded';
 // Hero, section rhythm, FAQ rows and the sticky bar are the ones /offers uses
 import offerStyles from '@/components/pricing/offers.module.css';
 import styles from './black-friday.module.css';
-
-// Tells React to look at the clock again: at the end time itself, every 30
-// seconds, and whenever the tab comes back to the front (phones pause timers)
-function subscribeToEnd(onChange: () => void) {
-  const remaining = BF_ENDS_AT - Date.now();
-  if (remaining <= 0) return () => {};
-  const atEnd = remaining < 2 ** 31 - 1000 ? setTimeout(onChange, remaining + 50) : null;
-  const tick = setInterval(onChange, 30_000);
-  document.addEventListener('visibilitychange', onChange);
-  return () => {
-    if (atEnd) clearTimeout(atEnd);
-    clearInterval(tick);
-    document.removeEventListener('visibilitychange', onChange);
-  };
-}
-
-const endedNow = () => blackFridayEnded();
-
-/**
- * Whether the offer has ended, by the visitor's own clock. `serverEnded` is
- * what the page HTML was built with (it can be a few minutes old); the
- * browser's answer replaces it before anything is drawn.
- */
-function useOfferEnded(serverEnded: boolean) {
-  return useSyncExternalStore(subscribeToEnd, endedNow, () => serverEnded);
-}
 
 /** A checkout button, or a marked placeholder while its Momence link is missing */
 function Checkout({

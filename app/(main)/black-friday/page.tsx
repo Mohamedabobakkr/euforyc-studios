@@ -12,7 +12,6 @@ import { deckReviews, reviewScore } from '@/components/home/data';
 import reviewStyles from '@/components/home/reviews.module.css';
 import {
   BF_END_DATE,
-  BF_ENDS_AT,
   BF_FAQS,
   BF_HAS_PLACEHOLDERS,
   BF_LINE,
@@ -20,6 +19,7 @@ import {
   BF_BONUS_MONTHS,
   BF_NAME,
   BF_PATH,
+  HIDE_IF_ENDED,
   blackFridayEnded,
 } from '@/components/black-friday/offer';
 import { breadcrumbSchema, pageMetadata } from '@/lib/site';
@@ -48,11 +48,6 @@ const faqSchema = {
     acceptedAnswer: { '@type': 'Answer', text: faq.answer },
   })),
 };
-
-// Runs before the page is drawn. If the HTML is a few minutes old and the
-// offer has ended since, this hides the offer straight away (see .live in
-// black-friday.module.css) until the page takes over and shows "offer ended".
-const HIDE_IF_ENDED = `if(Date.now()>=${BF_ENDS_AT})document.documentElement.setAttribute('data-bf-ended','')`;
 
 export default async function BlackFridayPage() {
   const ended = blackFridayEnded();
@@ -87,6 +82,7 @@ export default async function BlackFridayPage() {
 
   return (
     <>
+      {/* Hides the offer before the page is drawn if it has ended since this HTML was built (.live in black-friday.module.css) */}
       <script dangerouslySetInnerHTML={{ __html: HIDE_IF_ENDED }} />
       <JsonLd data={breadcrumbSchema([{ name: 'Black Friday', path: BF_PATH }])} />
       {!ended && <JsonLd data={faqSchema} />}
