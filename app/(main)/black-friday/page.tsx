@@ -1,5 +1,5 @@
 /**
- * Black Friday landing page: "One more, on us". The Meta ads land here.
+ * Black Friday landing page: "More, on us". The Meta ads land here.
  *
  * The offer itself (dates, extra classes, checkout links) is in
  * components/black-friday/offer.ts. The reviews are rendered here on the
@@ -20,6 +20,7 @@ import {
   BF_NAME,
   BF_PATH,
   HIDE_IF_ENDED,
+  bfTimeLeft,
   blackFridayEnded,
 } from '@/components/black-friday/offer';
 import { breadcrumbSchema, pageMetadata } from '@/lib/site';
@@ -94,7 +95,7 @@ export default async function BlackFridayPage() {
         data-content-type="offer"
         data-content-category={BF_PATH}
       />
-      <BlackFridayContent serverEnded={ended} reviews={reviewsBlock} />
+      <BlackFridayContent serverEnded={ended} serverTimeLeft={bfTimeLeft()} reviews={reviewsBlock} />
     </>
   );
 }

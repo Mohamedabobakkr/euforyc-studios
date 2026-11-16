@@ -1,5 +1,5 @@
 /**
- * Black Friday 2026: "One more, on us".
+ * Black Friday 2026: "More, on us".
  *
  * Everything specific to the offer lives here: the end time, the extra
  * classes, which plans are part of it and their Momence checkout links.
@@ -22,7 +22,7 @@ import { ORDERED_CLASS_TYPES } from '@/lib/classes';
 import { PRICING } from '@/lib/site';
 
 export const BF_PATH = '/black-friday';
-export const BF_NAME = 'One more, on us';
+export const BF_NAME = 'More, on us';
 export const BF_LINE = 'No price drops. Just a little more of what you love.';
 
 // Sunday 29 November 2026, Europe/London. The UK is on GMT (UTC+0) in
@@ -33,6 +33,32 @@ export const BF_END_DATE = 'Sunday 29 November 2026';
 
 /** True once the offer's end time has passed */
 export const blackFridayEnded = (now: number = Date.now()) => now >= BF_ENDS_AT;
+
+const HOUR_MS = 60 * 60 * 1000;
+const DAY_MS = 24 * HOUR_MS;
+
+// "23:59", the end time as a UK clock reads it
+const BF_END_CLOCK = new Intl.DateTimeFormat('en-GB', {
+  hour: '2-digit',
+  minute: '2-digit',
+  timeZone: 'Europe/London',
+}).format(BF_ENDS_AT);
+
+/**
+ * How long the offer has left, in plain words: "13 days left", then "Ends
+ * tomorrow night", "Ends tonight at 23:59" and "Final hour". Empty once it
+ * has ended. The offer ends at the end of a UK day, so whole days left are
+ * the same as calendar days left in the UK.
+ */
+export function bfTimeLeft(now: number = Date.now()): string {
+  const remaining = BF_ENDS_AT - now;
+  if (remaining <= 0) return '';
+  const days = Math.floor(remaining / DAY_MS);
+  if (days >= 2) return `${days} days left`;
+  if (days === 1) return 'Ends tomorrow night';
+  if (remaining > HOUR_MS) return `Ends tonight at ${BF_END_CLOCK}`;
+  return 'Final hour';
+}
 
 /**
  * A one-line script that runs before the page is drawn. If the page's HTML
@@ -69,8 +95,15 @@ export interface BfMembership {
   classesWithBonus: number | null;
   /** Free classes across the bonus months; null for Unlimited */
   freeClasses: number | null;
+  /** "£18": the monthly price shared across the classes with the bonus; null for Unlimited */
+  perClassWithBonus: string | null;
+  /** "£22.50": the same, across the usual number of classes; null for Unlimited */
+  perClassUsual: string | null;
   checkoutUrl: string | null;
 }
+
+// £18, £16.50, £22.50: whole pounds without pence, otherwise two decimals
+const pounds = (amount: number) => `£${Number.isInteger(amount) ? amount : amount.toFixed(2)}`;
 
 const slug = (name: string) => name.toLowerCase().replace(/\s+/g, '-');
 
@@ -82,6 +115,8 @@ export const BF_MEMBERSHIPS: BfMembership[] = MEMBERSHIPS.map((plan) => {
     plan,
     classesWithBonus,
     freeClasses: classesWithBonus && plan.classes ? (classesWithBonus - plan.classes) * BF_BONUS_MONTHS : null,
+    perClassWithBonus: classesWithBonus ? pounds(plan.price / classesWithBonus) : null,
+    perClassUsual: classesWithBonus && plan.classes ? pounds(plan.price / plan.classes) : null,
     checkoutUrl: MEMBERSHIP_CHECKOUT[plan.name] ?? null,
   };
 });
@@ -212,6 +247,14 @@ const bonusList = BF_MEMBERSHIPS.filter((m) => m.classesWithBonus)
   .map((m) => `${m.plan.name} goes from ${m.plan.classes} to ${m.classesWithBonus} classes a month`)
   .join(', ');
 
+// "4, 8 and 12": the usual classes a month, which is what memberships go back to
+const usualClasses = BF_MEMBERSHIPS.filter((m) => m.plan.classes).map((m) => String(m.plan.classes));
+const usualClassesList = `${usualClasses.slice(0, -1).join(', ')} and ${usualClasses[usualClasses.length - 1]}`;
+
+/** What ends with the offer. All of it follows from the offer's own terms. */
+export const BF_AFTER_MEMBERSHIPS = `After ${BF_END_DATE}, memberships go back to ${usualClassesList} classes a month.`;
+export const BF_AFTER_PACKAGES = `The extra class only comes with packages bought by ${BF_END_DATE}.`;
+
 const lowerFirst = (text: string) => `${text.charAt(0).toLowerCase()}${text.slice(1)}`;
 const upperFirst = (text: string) => `${text.charAt(0).toUpperCase()}${text.slice(1)}`;
 
@@ -232,6 +275,10 @@ export const BF_FAQS: BfFaq[] = [
   {
     question: 'When does the offer end?',
     answer: `The offer ends on ${BF_END_DATE}, UK time.`,
+  },
+  {
+    question: `What happens after ${BF_END_DATE}?`,
+    answer: `The offer closes. Memberships go back to ${usualClassesList} classes a month and class packages to their usual number of classes. If you join before then, you keep your extra classes every month for your first ${BF_BONUS_MONTHS} months.`,
   },
   {
     question: 'Has the price changed?',

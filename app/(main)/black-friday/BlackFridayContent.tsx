@@ -8,6 +8,8 @@ import Arrow from '@/components/euforyc/Arrow';
 import LoadWhenNear from '@/components/euforyc/LoadWhenNear';
 import PillLink from '@/components/euforyc/PillLink';
 import {
+  BF_AFTER_MEMBERSHIPS,
+  BF_AFTER_PACKAGES,
   BF_BONUS_MONTHS,
   BF_END_DATE,
   BF_FAQS,
@@ -28,7 +30,7 @@ import {
   bfMembershipTracking,
   bfPackageTracking,
 } from '@/components/black-friday/offer';
-import { useOfferEnded } from '@/components/black-friday/useOfferEnded';
+import { useOfferEnded, useTimeLeft } from '@/components/black-friday/useOfferEnded';
 // Hero, section rhythm, FAQ rows and the sticky bar are the ones /offers uses
 import offerStyles from '@/components/pricing/offers.module.css';
 import styles from './black-friday.module.css';
@@ -88,8 +90,18 @@ function OfferEnded() {
 }
 
 /** The /black-friday page. `reviews` is rendered on the server by page.tsx. */
-export default function BlackFridayContent({ serverEnded, reviews }: { serverEnded: boolean; reviews: ReactNode }) {
+export default function BlackFridayContent({
+  serverEnded,
+  serverTimeLeft,
+  reviews,
+}: {
+  serverEnded: boolean;
+  serverTimeLeft: string;
+  reviews: ReactNode;
+}) {
   const ended = useOfferEnded(serverEnded);
+  // "13 days left", "Ends tonight at 23:59": kept current by the visitor's clock
+  const timeLeft = useTimeLeft(serverTimeLeft);
 
   // The sticky bar shows once the hero button has scrolled away, and steps
   // aside while the offer cards (which have their own buttons) are on screen
@@ -128,7 +140,7 @@ export default function BlackFridayContent({ serverEnded, reviews }: { serverEnd
           <p className={`eu-cap ${offerStyles.kicker}`}>Black Friday at Euforyc</p>
 
           <h1 className={`${offerStyles.title} eu-rise`}>
-            One more,{' '}
+            More,{' '}
             <br />
             <em>on us.</em>
           </h1>
@@ -136,7 +148,10 @@ export default function BlackFridayContent({ serverEnded, reviews }: { serverEnd
           <p className={`${offerStyles.lede} eu-rise`}>{BF_LINE}</p>
 
           <p className={styles.ends}>
-            <span className="eu-cap">Early access</span>
+            <span className="eu-cap">
+              Early access
+              {timeLeft && <strong className={styles.left}> · {timeLeft}</strong>}
+            </span>
             <span>Ends {BF_END_DATE}</span>
           </p>
 
@@ -164,7 +179,7 @@ export default function BlackFridayContent({ serverEnded, reviews }: { serverEnd
               Same price
             </div>
             <div className={`${offerStyles.ticketN} ${styles.ticketN}`}>
-              One <em>more</em>
+              <em>More</em>
             </div>
             <div className={offerStyles.ticketL}>Until {BF_END_DATE}</div>
           </div>
@@ -201,6 +216,9 @@ export default function BlackFridayContent({ serverEnded, reviews }: { serverEnd
               {classPlans.map((offer) => (
                 <li key={offer.id}>
                   <article className={styles.card}>
+                    {offer.freeClasses === BF_MAX_FREE_CLASSES && (
+                      <p className={`eu-cap ${styles.badge}`}>Most free classes</p>
+                    )}
                     <h3 className={styles.cardName}>{offer.plan.name}</h3>
                     <p className={styles.cardSub}>{offer.plan.sub}</p>
 
@@ -216,6 +234,9 @@ export default function BlackFridayContent({ serverEnded, reviews }: { serverEnd
                       <span className={styles.swapUnit}>classes a month</span>
                     </p>
                     <p className={styles.every}>every month for your first {BF_BONUS_MONTHS} months</p>
+                    <p className={styles.perClass}>
+                      <b>{offer.perClassWithBonus} a class</b>, instead of {offer.perClassUsual}
+                    </p>
 
                     <div className={styles.cardFoot}>
                       <div className={styles.priceRow}>
@@ -264,6 +285,11 @@ export default function BlackFridayContent({ serverEnded, reviews }: { serverEnd
                 </li>
               ))}
             </ul>
+
+            <p className={styles.after}>
+              {timeLeft && <strong>{timeLeft}. </strong>}
+              {BF_AFTER_MEMBERSHIPS}
+            </p>
           </div>
         </section>
 
@@ -312,6 +338,8 @@ export default function BlackFridayContent({ serverEnded, reviews }: { serverEnd
                 </li>
               ))}
             </ul>
+
+            <p className={styles.after}>{BF_AFTER_PACKAGES}</p>
           </div>
         </section>
       </div>
@@ -397,6 +425,30 @@ export default function BlackFridayContent({ serverEnded, reviews }: { serverEnd
         </div>
       </section>
 
+      {/* A last reminder before the small print */}
+      <section className={offerStyles.section} style={{ paddingTop: 0 }} aria-labelledby="bf-last-title">
+        <div className="eu-wrap">
+          <div className={`${styles.last} eu-on-dark`}>
+            <p className="eu-cap">{timeLeft || `Ends ${BF_END_DATE}`}</p>
+            <h2 id="bf-last-title" className={`eu-h2 ${styles.lastTitle}`}>
+              Same price.{' '}
+              <br />
+              <em>More, on us.</em>
+            </h2>
+            <p className={styles.lastText}>
+              Join or buy by {BF_END_DATE}. After that, memberships and class packages go back to their usual number
+              of classes.
+            </p>
+            <a href="#offers" className={`eu-btn eu-btn--cream ${styles.lastCta} ${styles.down}`}>
+              See the offers
+              <span className="eu-btn__dot" aria-hidden="true">
+                <Arrow />
+              </span>
+            </a>
+          </div>
+        </div>
+      </section>
+
       {/* 7. Terms */}
       <section className={offerStyles.section} style={{ paddingTop: 0 }} aria-labelledby="bf-terms-title">
         <div className={`eu-wrap ${styles.terms}`}>
@@ -423,7 +475,10 @@ export default function BlackFridayContent({ serverEnded, reviews }: { serverEnd
         className={`${offerStyles.mbar} ${pastHero && !offersInView ? offerStyles.mbarShow : ''} eu-on-dark`}
         data-bookbar
       >
-        <span className="eu-cap">{BF_NAME}</span>
+        <span className={styles.barText}>
+          <span className="eu-cap">{BF_NAME}</span>
+          {timeLeft && <span className={styles.barLeft}>{timeLeft}</span>}
+        </span>
         <a href="#offers" className={offerStyles.mbarGo}>
           See offers
         </a>

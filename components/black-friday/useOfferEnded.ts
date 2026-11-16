@@ -1,7 +1,7 @@
 'use client';
 
 import { useSyncExternalStore } from 'react';
-import { BF_ENDS_AT, blackFridayEnded } from './offer';
+import { BF_ENDS_AT, bfTimeLeft, blackFridayEnded } from './offer';
 
 // The clock check shared by /black-friday and the Black Friday banner
 
@@ -29,4 +29,14 @@ const endedNow = () => blackFridayEnded();
  */
 export function useOfferEnded(serverEnded: boolean) {
   return useSyncExternalStore(subscribeToEnd, endedNow, () => serverEnded);
+}
+
+const timeLeftNow = () => bfTimeLeft();
+
+/**
+ * "13 days left", "Ends tonight at 23:59" and so on, by the visitor's own
+ * clock. `serverTimeLeft` is what the page HTML was built with.
+ */
+export function useTimeLeft(serverTimeLeft: string) {
+  return useSyncExternalStore(subscribeToEnd, timeLeftNow, () => serverTimeLeft);
 }

@@ -31,7 +31,7 @@ export default function BlackFridayBanner({ afterHero = false }: { afterHero?: b
         <Link href={BF_PATH} className={`${styles.strip} eu-on-dark`} data-bf-banner>
           <span className={styles.text}>
             <span className={styles.name}>
-              One more, <em>on us.</em>
+              More, <em>on us.</em>
             </span>
             <span className={styles.meta}>
               <span className={styles.label}>Black Friday</span>

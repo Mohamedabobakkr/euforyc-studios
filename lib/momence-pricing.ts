@@ -29,7 +29,7 @@ export const MOMENCE_PRICING: Record<string, MomencePriceEntry> = {
   '937346': { value: 240, currency: 'GBP', contentName: 'Euforyc Membership — Euforyc 12',       contentType: 'membership' },
   '937348': { value: 280, currency: 'GBP', contentName: 'Euforyc Membership — Euforyc Unlimited', contentType: 'membership' },
 
-  // Black Friday 2026 "One more, on us" (/black-friday) — same prices, extra classes
+  // Black Friday 2026 "More, on us" (/black-friday) — same prices, extra classes
   '982800': { value: 90,  currency: 'GBP', contentName: 'Black Friday — Euforyc 4 + 1 Membership',        contentType: 'membership' },
   '982801': { value: 165, currency: 'GBP', contentName: 'Black Friday — Euforyc 8 + 2 Membership',        contentType: 'membership' },
   '982805': { value: 240, currency: 'GBP', contentName: 'Black Friday — Euforyc 12 + 3 Membership',       contentType: 'membership' },
