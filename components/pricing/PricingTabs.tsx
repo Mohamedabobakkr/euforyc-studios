@@ -240,7 +240,7 @@ export default function PricingTabs({
       <div role="tabpanel" id="panel-private" aria-labelledby="tab-private" hidden={tab !== 'private'}>
         <div className={styles.pkGrid}>
           <div className={`${styles.introCard} eu-on-dark`}>
-            <Image src="/ps.jpg" alt="The Cadillac reformer in the private studio" fill sizes="(max-width: 1000px) 100vw, 40vw" />
+            <Image src="/ps.jpg" alt="Reformer beds with a Pilates ring at Euforyc Studios" fill sizes="(max-width: 1000px) 100vw, 40vw" />
             <div className={styles.introShade} />
             <div className={styles.introIn}>
               <span className={`eu-cap ${styles.introLabel}`}>One-to-one · 60 minutes</span>
