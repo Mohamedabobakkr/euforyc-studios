@@ -222,6 +222,16 @@ export const BF_MAX_EXTRA_CLASS_WORTH = BF_PACKAGES.reduce(
 /** "valid 30 days from your first class" — from the site's package terms */
 export const PACKAGE_VALIDITY = PRICING.euforycPackage.note.split(', ').slice(-1)[0];
 
+// "30 days", from the same terms
+const PACKAGE_DAYS = PACKAGE_VALIDITY.match(/\d+ days/)?.[0] ?? '';
+
+/**
+ * Stocking up: more than one package can be bought during the offer, and a
+ * package's days only start from the first class booked with it (confirmed
+ * by the studio).
+ */
+export const BF_STOCK_UP = `Buy as many class packages as you like. Every one comes with its own extra class, and its ${PACKAGE_DAYS} only start from the first class you book with it, not the day you buy.`;
+
 /** True while any checkout link is still missing */
 export const BF_HAS_PLACEHOLDERS = [...BF_MEMBERSHIPS, ...BF_PACKAGES].some((offer) => !offer.checkoutUrl);
 
@@ -322,6 +332,10 @@ export const BF_FAQS: BfFaq[] = [
     answer: `${eligiblePackages}. Each comes with ${BF_PACKAGE_EXTRA_CLASSES} extra class at the usual price.`,
   },
   {
+    question: 'Can I buy more than one class package?',
+    answer: `Yes, you can stock up before ${BF_END_DATE}. ${BF_STOCK_UP}`,
+  },
+  {
     question: 'Which classes can I use them on?',
     answer: `Any Euforyc group class: ${BF_GROUP_CLASSES.join(', ')}. ${moveNote}`,
   },
@@ -348,6 +362,7 @@ export const BF_TERMS: string[] = [
   'Existing members need to upgrade their membership to qualify.',
   `Euforyc Unlimited: ${lowerFirst(BF_UNLIMITED_GIFT)}, ${BF_UNLIMITED_GIFT_EVERY}, booked with your membership.`,
   `Class packages: buy an eligible class package (${eligiblePackages}) and get ${BF_PACKAGE_EXTRA_CLASSES} extra class. Packages are ${PACKAGE_VALIDITY}.`,
+  `You can buy more than one eligible class package. Each comes with its own extra class and its ${PACKAGE_DAYS} start from the first class booked with it, not the day of purchase.`,
   `Extra classes can be used on any Euforyc group class. ${moveNote}`,
   `The ${PRICING.introOffer.name} intro offer is not part of this offer.`,
   '“Worth” figures use the usual price per class of the same membership or class package.',

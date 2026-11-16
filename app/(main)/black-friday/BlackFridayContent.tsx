@@ -24,6 +24,7 @@ import {
   BF_PACKAGES,
   BF_PACKAGE_EXTRA_CLASSES,
   BF_PATH,
+  BF_STOCK_UP,
   BF_TERMS,
   BF_UNLIMITED_GIFT,
   BF_UNLIMITED_GIFT_EVERY,
@@ -362,6 +363,13 @@ export default function BlackFridayContent({
               ))}
             </ul>
 
+            <div className={styles.stock}>
+              <h3 className={styles.stockT}>
+                Stock up <em>before {END_DAY}</em>
+              </h3>
+              <p className={styles.stockP}>{BF_STOCK_UP}</p>
+            </div>
+
             <p className={styles.after}>{BF_AFTER_PACKAGES}</p>
           </div>
         </section>
@@ -433,7 +441,7 @@ export default function BlackFridayContent({
               </h3>
               <p className={styles.missNow}>
                 <span className="eu-cap">Buy by {END_DAY}</span>
-                <b>{BF_PACKAGE_EXTRA_CLASSES} extra class</b> with every eligible package
+                <b>{BF_PACKAGE_EXTRA_CLASSES} extra class</b> with every eligible package you buy
               </p>
               <p className={styles.missLater}>
                 <span className="eu-cap">Buy after</span>

@@ -219,6 +219,55 @@
   white-space: nowrap;
 }
 
+/* "Stock up before Sunday": more than one package can be bought */
+.stock {
+  margin: 16px 0 0;
+  padding: 26px 22px;
+  border: 1px solid rgba(26, 38, 14, 0.16);
+  border-radius: 28px;
+  background: #f5f0e8;
+  color: #1a260e;
+}
+
+.stockT {
+  margin: 0;
+  font-family: var(--eu-display);
+  font-weight: 400;
+  font-size: 28px;
+  line-height: 1.15;
+}
+
+.stockT em {
+  font-style: italic;
+}
+
+.stockP {
+  max-width: 640px;
+  margin: 10px 0 0;
+  font-size: 15px;
+  line-height: 1.6;
+  color: #2a3a21;
+}
+
+@media (min-width: 900px) {
+  .stock {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+    padding: 30px 34px;
+  }
+
+  .stockT {
+    flex: none;
+    font-size: 32px;
+  }
+
+  .stockP {
+    margin: 0;
+  }
+}
+
 /* What ends with the offer, under each set of cards */
 .after {
   max-width: 620px;
