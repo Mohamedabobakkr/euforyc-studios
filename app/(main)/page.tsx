@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import MomenceReviews from '@/components/MomenceReviews';
 import HeroSlideshow from '@/components/HeroSlideshow';
+import BlackFridayBanner from '@/components/black-friday/BlackFridayBanner';
 import PauseOffscreen from '@/components/euforyc/PauseOffscreen';
 import PillLink from '@/components/euforyc/PillLink';
 import ClassFinder from '@/components/home/ClassFinder';
@@ -123,6 +124,9 @@ export default async function Home() {
           </PillLink>
         </div>
       </HeroSlideshow>
+
+      {/* Black Friday strip: gone on its own once the offer ends */}
+      <BlackFridayBanner afterHero />
 
       {/* 2 · Today at Euforyc (hidden when the timetable is empty or unavailable) */}
       {soon.length > 0 && <TodayStrip events={soon} renderedAt={renderedAt} />}

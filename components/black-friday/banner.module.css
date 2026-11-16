@@ -1,0 +1,178 @@
+/* The slim Black Friday strip (BlackFridayBanner). Written for a 360px phone
+   first: the offer name on one line, "Black Friday · Ends ..." under it and
+   the round arrow on the right. From 900px it becomes a single line. */
+
+/* The offer has ended but the page's HTML is older than that: hidden before
+   anything is drawn (see HIDE_IF_ENDED in useOfferEnded.ts) */
+:global(html[data-bf-ended]) .wrap {
+  display: none;
+}
+
+.wrap {
+  padding-top: 12px;
+}
+
+/* Homepage: sits on cream directly below the hero */
+.afterHero {
+  padding-top: 16px;
+  padding-bottom: 16px;
+  background: #fffcf2;
+}
+
+.strip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 60px;
+  padding: 8px 8px 8px 20px;
+  border-radius: 30px;
+  background: #1a260e;
+  color: #fffcf2;
+  text-decoration: none;
+  transition: background-color 0.4s;
+}
+
+.strip:hover {
+  background: #2a3a21;
+}
+
+.text {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.name {
+  font-family: var(--eu-display);
+  font-size: 19px;
+  line-height: 1.15;
+}
+
+.name em {
+  font-style: italic;
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 7px;
+  font-size: 12px;
+  line-height: 1.4;
+  color: #f5f0e8;
+}
+
+.label::after {
+  content: '·';
+  margin-left: 7px;
+}
+
+/* The narrowest phones: "Ends 29 November", so the line stays on one row */
+@media (max-width: 379px) {
+  .weekday {
+    display: none;
+  }
+}
+
+/* The "No price drops" line and the "See the offer" label need the room of a wide screen */
+.line,
+.goText {
+  display: none;
+}
+
+.go {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex: none;
+}
+
+.dot {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  flex: none;
+  background: #fffcf2;
+  color: #1a260e;
+  transition: transform 0.6s var(--eu-ease);
+}
+
+.strip:hover .dot {
+  transform: rotate(-45deg);
+}
+
+@media (min-width: 900px) {
+  .wrap {
+    padding-top: 0;
+  }
+
+  .afterHero {
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+
+  .strip {
+    gap: 24px;
+    padding-left: 30px;
+    border-radius: 999px;
+  }
+
+  /* One line: BLACK FRIDAY · One more, on us. · the line · Ends ... */
+  .text {
+    flex: 1;
+    flex-direction: row;
+    align-items: baseline;
+    gap: 22px;
+  }
+
+  .meta {
+    display: contents;
+  }
+
+  .label {
+    order: -1;
+    font-size: 11.5px;
+    font-weight: 400;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #f5f0e8;
+    white-space: nowrap;
+  }
+
+  .name {
+    font-size: 22px;
+    white-space: nowrap;
+  }
+
+  .until {
+    margin-left: auto;
+    font-size: 14px;
+    color: #f5f0e8;
+    white-space: nowrap;
+  }
+
+  .label::after {
+    content: none;
+  }
+
+  .goText {
+    display: inline;
+    font-size: 11.5px;
+    font-weight: 400;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+}
+
+@media (min-width: 1180px) {
+  .line {
+    display: inline;
+    font-size: 14px;
+    color: #f5f0e8;
+    white-space: nowrap;
+  }
+}

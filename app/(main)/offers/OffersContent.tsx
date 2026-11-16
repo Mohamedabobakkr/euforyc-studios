@@ -8,6 +8,7 @@ import { CheckCircle2, Sparkles, Timer, Copy, Check } from 'lucide-react';
 import Arrow from '@/components/euforyc/Arrow';
 import LoadWhenNear from '@/components/euforyc/LoadWhenNear';
 import PillLink from '@/components/euforyc/PillLink';
+import BlackFridayBanner from '@/components/black-friday/BlackFridayBanner';
 import styles from '@/components/pricing/offers.module.css';
 import { ORDERED_CLASS_TYPES } from '@/lib/classes';
 import { POLICIES, PRICING, STUDIO } from '@/lib/site';
@@ -322,6 +323,9 @@ export default function OffersContent({
 
   return (
     <div className="eu-page-top">
+      {/* Black Friday strip: gone on its own once the offer ends */}
+      <BlackFridayBanner />
+
       {/* Hero: the whole offer and one button on the first screen of a phone */}
       <section className={`eu-wrap ${styles.hero}`}>
         <div className={styles.copy}>
