@@ -99,6 +99,11 @@ export interface BfMembership {
   perClassWithBonus: string | null;
   /** "£22.50": the same, across the usual number of classes; null for Unlimited */
   perClassUsual: string | null;
+  /** Classes across the bonus months with the offer (30) and without it (24); null for Unlimited */
+  classesInBonusMonths: number | null;
+  classesUsuallyInBonusMonths: number | null;
+  /** "£135": the free classes at the membership's usual price per class; null for Unlimited */
+  freeClassesWorth: string | null;
   checkoutUrl: string | null;
 }
 
@@ -117,12 +122,22 @@ export const BF_MEMBERSHIPS: BfMembership[] = MEMBERSHIPS.map((plan) => {
     freeClasses: classesWithBonus && plan.classes ? (classesWithBonus - plan.classes) * BF_BONUS_MONTHS : null,
     perClassWithBonus: classesWithBonus ? pounds(plan.price / classesWithBonus) : null,
     perClassUsual: classesWithBonus && plan.classes ? pounds(plan.price / plan.classes) : null,
+    classesInBonusMonths: classesWithBonus ? classesWithBonus * BF_BONUS_MONTHS : null,
+    classesUsuallyInBonusMonths: classesWithBonus && plan.classes ? plan.classes * BF_BONUS_MONTHS : null,
+    freeClassesWorth:
+      classesWithBonus && plan.classes
+        ? pounds(((classesWithBonus - plan.classes) * BF_BONUS_MONTHS * plan.price) / plan.classes)
+        : null,
     checkoutUrl: MEMBERSHIP_CHECKOUT[plan.name] ?? null,
   };
 });
 
 /** The most free classes any membership gives across the bonus months (18) */
 export const BF_MAX_FREE_CLASSES = Math.max(...BF_MEMBERSHIPS.map((m) => m.freeClasses ?? 0));
+
+/** "£360": what those free classes are worth at that membership's usual price per class */
+export const BF_MAX_FREE_CLASSES_WORTH =
+  BF_MEMBERSHIPS.find((m) => m.freeClasses === BF_MAX_FREE_CLASSES)?.freeClassesWorth ?? '';
 
 export const BF_UNLIMITED_GIFT = 'A complimentary dermaplaning facial at Euforyc Skin Studio';
 /** One facial a month, for the same months as the extra classes */
@@ -161,6 +176,8 @@ export interface BfPackage {
   label: string;
   /** Which classes the package can be used on */
   covers: string;
+  /** "£26.25": the extra class at the package's usual price per class */
+  extraClassWorth: string;
   option: PackOption;
   checkoutUrl: string | null;
 }
@@ -179,6 +196,8 @@ const bfPackages = (
       kind,
       label,
       covers,
+      // "4 Classes" at £105 is £26.25 a class
+      extraClassWorth: pounds((option.price / parseInt(option.name, 10)) * BF_PACKAGE_EXTRA_CLASSES),
       option,
       checkoutUrl: checkout[option.name],
     }));
@@ -193,6 +212,12 @@ export const BF_PACKAGES: BfPackage[] = [
   ),
   ...bfPackages('move_package', 'MOVE Package', MOVE_PACKAGE_COVERS, MOVE_PACKAGE, MOVE_PACKAGE_CHECKOUT),
 ];
+
+/** "£26.25": the most an extra class is worth across the eligible packages */
+export const BF_MAX_EXTRA_CLASS_WORTH = BF_PACKAGES.reduce(
+  (best, offer) => (parseFloat(offer.extraClassWorth.slice(1)) > parseFloat(best.slice(1)) ? offer.extraClassWorth : best),
+  '£0'
+);
 
 /** "valid 30 days from your first class" — from the site's package terms */
 export const PACKAGE_VALIDITY = PRICING.euforycPackage.note.split(', ').slice(-1)[0];
@@ -325,4 +350,5 @@ export const BF_TERMS: string[] = [
   `Class packages: buy an eligible class package (${eligiblePackages}) and get ${BF_PACKAGE_EXTRA_CLASSES} extra class. Packages are ${PACKAGE_VALIDITY}.`,
   `Extra classes can be used on any Euforyc group class. ${moveNote}`,
   `The ${PRICING.introOffer.name} intro offer is not part of this offer.`,
+  '“Worth” figures use the usual price per class of the same membership or class package.',
 ];

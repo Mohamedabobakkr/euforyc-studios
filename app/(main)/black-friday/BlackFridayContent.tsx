@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, type ReactNode } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
+import Countdown from '@/components/black-friday/Countdown';
 import Arrow from '@/components/euforyc/Arrow';
 import LoadWhenNear from '@/components/euforyc/LoadWhenNear';
 import PillLink from '@/components/euforyc/PillLink';
@@ -15,7 +16,9 @@ import {
   BF_FAQS,
   BF_GROUP_CLASSES,
   BF_LINE,
+  BF_MAX_EXTRA_CLASS_WORTH,
   BF_MAX_FREE_CLASSES,
+  BF_MAX_FREE_CLASSES_WORTH,
   BF_MEMBERSHIPS,
   BF_NAME,
   BF_PACKAGES,
@@ -34,6 +37,9 @@ import { useOfferEnded, useTimeLeft } from '@/components/black-friday/useOfferEn
 // Hero, section rhythm, FAQ rows and the sticky bar are the ones /offers uses
 import offerStyles from '@/components/pricing/offers.module.css';
 import styles from './black-friday.module.css';
+
+// "Sunday 29 November": the end date without the year, for the short labels
+const END_DAY = BF_END_DATE.replace(/\s\d{4}$/, '');
 
 /** A checkout button, or a marked placeholder while its Momence link is missing */
 function Checkout({
@@ -155,6 +161,11 @@ export default function BlackFridayContent({
             <span>Ends {BF_END_DATE}</span>
           </p>
 
+          <div className={styles.timer}>
+            <p className={`eu-cap ${styles.timerLabel}`}>Limited time offer · ends in</p>
+            <Countdown variant="boxes" />
+          </div>
+
           <a ref={heroCtaRef} href="#offers" className={`eu-btn eu-btn--ink eu-btn--block ${offerStyles.heroCta} ${styles.down}`}>
             See the offers
             <span className="eu-btn__dot" aria-hidden="true">
@@ -208,7 +219,7 @@ export default function BlackFridayContent({
               </div>
               <p>
                 Extra classes every month for your first {BF_BONUS_MONTHS} months, up to {BF_MAX_FREE_CLASSES} free
-                classes in all. {MEMBERSHIP_TERM}.
+                classes in all, worth up to {BF_MAX_FREE_CLASSES_WORTH}. {MEMBERSHIP_TERM}.
               </p>
             </div>
 
@@ -245,7 +256,8 @@ export default function BlackFridayContent({
                           <small>/mo</small>
                         </span>
                         <span className={styles.free}>
-                          Up to {offer.freeClasses} free classes over {BF_BONUS_MONTHS} months
+                          Up to {offer.freeClasses} free classes over {BF_BONUS_MONTHS} months,{' '}
+                          <b>worth {offer.freeClassesWorth}</b>
                         </span>
                       </div>
                       <div className={styles.cardCta}>
@@ -253,6 +265,9 @@ export default function BlackFridayContent({
                           Join {offer.plan.name}
                         </Checkout>
                       </div>
+                      <p className={styles.cardTimer}>
+                        Limited time · ends in <Countdown variant="inline" seconds={false} />
+                      </p>
                     </div>
                   </article>
                 </li>
@@ -280,6 +295,9 @@ export default function BlackFridayContent({
                           Join Unlimited
                         </Checkout>
                       </div>
+                      <p className={styles.cardTimer}>
+                        Limited time · ends in <Countdown variant="inline" seconds={false} />
+                      </p>
                     </div>
                   </article>
                 </li>
@@ -326,13 +344,18 @@ export default function BlackFridayContent({
                     <div className={styles.cardFoot}>
                       <div className={styles.priceRow}>
                         <span className={styles.price}>£{offer.option.price}</span>
-                        <span className={styles.free}>Same price, one more class</span>
+                        <span className={styles.free}>
+                          Same price, one more class, <b>worth {offer.extraClassWorth}</b>
+                        </span>
                       </div>
                       <div className={styles.cardCta}>
                         <Checkout url={offer.checkoutUrl} variant="ink" tracking={bfPackageTracking(offer, BF_PATH)}>
                           Buy {offer.kind === 'move_package' ? `MOVE ${offer.option.name}` : offer.option.name}
                         </Checkout>
                       </div>
+                      <p className={styles.cardTimer}>
+                        Limited time · ends in <Countdown variant="inline" seconds={false} />
+                      </p>
                     </div>
                   </article>
                 </li>
@@ -343,6 +366,98 @@ export default function BlackFridayContent({
           </div>
         </section>
       </div>
+
+      {/* What is lost by waiting: the same price for less */}
+      <section className={offerStyles.section} style={{ paddingTop: 0 }} aria-labelledby="bf-miss-title">
+        <div className="eu-wrap">
+          <div className={`${offerStyles.head} eu-rv`}>
+            <div>
+              <div className="eu-cap eu-cap-num" style={{ color: '#2a3a21' }}>
+                Don&rsquo;t miss out
+              </div>
+              <h2 id="bf-miss-title" className={`eu-h2 ${offerStyles.h2}`}>
+                Wait, and it&rsquo;s the same price{' '}
+                <br />
+                <em>for less</em>
+              </h2>
+            </div>
+            <p>
+              This is a limited time offer. After {BF_END_DATE} the prices stay exactly the same and the extras are
+              gone.
+            </p>
+          </div>
+
+          <ul className={styles.miss}>
+            {classPlans.map((offer) => (
+              <li key={offer.id} className={styles.missRow}>
+                <h3 className={styles.missName}>
+                  {offer.plan.name}
+                  <small>£{offer.plan.price}/mo</small>
+                </h3>
+                <p className={styles.missNow}>
+                  <span className="eu-cap">Join by {END_DAY}</span>
+                  <b>{offer.classesInBonusMonths} classes</b> in your first {BF_BONUS_MONTHS} months
+                </p>
+                <p className={styles.missLater}>
+                  <span className="eu-cap">Join after</span>
+                  <b>{offer.classesUsuallyInBonusMonths} classes</b> for the same price
+                </p>
+                <p className={styles.missLoss}>
+                  You&rsquo;d miss <b>{offer.freeClasses} classes</b>, worth {offer.freeClassesWorth}
+                </p>
+              </li>
+            ))}
+            {unlimited.map((offer) => (
+              <li key={offer.id} className={styles.missRow}>
+                <h3 className={styles.missName}>
+                  {offer.plan.name}
+                  <small>£{offer.plan.price}/mo</small>
+                </h3>
+                <p className={styles.missNow}>
+                  <span className="eu-cap">Join by {END_DAY}</span>
+                  <b>{BF_BONUS_MONTHS} dermaplaning facials</b>, one every month
+                </p>
+                <p className={styles.missLater}>
+                  <span className="eu-cap">Join after</span>
+                  <b>No complimentary facial</b> for the same price
+                </p>
+                <p className={styles.missLoss}>
+                  You&rsquo;d miss <b>{BF_BONUS_MONTHS} facials</b> at Euforyc Skin Studio
+                </p>
+              </li>
+            ))}
+            <li className={styles.missRow}>
+              <h3 className={styles.missName}>
+                Class packages
+                <small>Usual prices</small>
+              </h3>
+              <p className={styles.missNow}>
+                <span className="eu-cap">Buy by {END_DAY}</span>
+                <b>{BF_PACKAGE_EXTRA_CLASSES} extra class</b> with every eligible package
+              </p>
+              <p className={styles.missLater}>
+                <span className="eu-cap">Buy after</span>
+                <b>No extra class</b> for the same price
+              </p>
+              <p className={styles.missLoss}>
+                You&rsquo;d miss <b>a free class</b>, worth up to {BF_MAX_EXTRA_CLASS_WORTH}
+              </p>
+            </li>
+          </ul>
+
+          <div className={styles.missCta}>
+            <a href="#offers" className={`eu-btn eu-btn--ink ${styles.missBtn} ${styles.down}`}>
+              Don&rsquo;t miss it
+              <span className="eu-btn__dot" aria-hidden="true">
+                <Arrow />
+              </span>
+            </a>
+            <p className={styles.missTimer}>
+              Ends in <Countdown variant="inline" />
+            </p>
+          </div>
+        </div>
+      </section>
 
       {/* 4. How it works */}
       <section className={`${offerStyles.section} ${offerStyles.sectionDark} eu-on-dark`} aria-labelledby="bf-how-title">
@@ -429,18 +544,21 @@ export default function BlackFridayContent({
       <section className={offerStyles.section} style={{ paddingTop: 0 }} aria-labelledby="bf-last-title">
         <div className="eu-wrap">
           <div className={`${styles.last} eu-on-dark`}>
-            <p className="eu-cap">{timeLeft || `Ends ${BF_END_DATE}`}</p>
+            <p className="eu-cap">Limited time offer · {timeLeft || `Ends ${BF_END_DATE}`}</p>
             <h2 id="bf-last-title" className={`eu-h2 ${styles.lastTitle}`}>
               Same price.{' '}
               <br />
               <em>More, on us.</em>
             </h2>
+            <div className={styles.lastTimer}>
+              <Countdown variant="boxes" />
+            </div>
             <p className={styles.lastText}>
               Join or buy by {BF_END_DATE}. After that, memberships and class packages go back to their usual number
               of classes.
             </p>
             <a href="#offers" className={`eu-btn eu-btn--cream ${styles.lastCta} ${styles.down}`}>
-              See the offers
+              Don&rsquo;t miss it
               <span className="eu-btn__dot" aria-hidden="true">
                 <Arrow />
               </span>
@@ -477,7 +595,9 @@ export default function BlackFridayContent({
       >
         <span className={styles.barText}>
           <span className="eu-cap">{BF_NAME}</span>
-          {timeLeft && <span className={styles.barLeft}>{timeLeft}</span>}
+          <span className={styles.barLeft}>
+            Ends in <Countdown variant="inline" />
+          </span>
         </span>
         <a href="#offers" className={offerStyles.mbarGo}>
           See offers

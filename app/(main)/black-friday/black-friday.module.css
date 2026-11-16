@@ -55,6 +55,17 @@
   color: #1a260e;
 }
 
+/* The countdown, between the end date and the button */
+.timer {
+  margin: 20px 0 0;
+  color: #1a260e;
+}
+
+.timerLabel {
+  margin: 0 0 12px;
+  color: #2a3a21;
+}
+
 /* The hero button scrolls down the page, so its arrow points down */
 .down :global(.eu-btn__dot) svg {
   transform: rotate(90deg);
@@ -220,6 +231,30 @@
 .after strong {
   font-weight: 500;
   color: #1a260e;
+}
+
+/* "worth £135", inside the note beside the price */
+.free b {
+  font-weight: 500;
+  color: #1a260e;
+  white-space: nowrap;
+}
+
+.cardDark .free b {
+  color: #fffcf2;
+}
+
+/* "Limited time · ends in 13d 04h 12m", under each button */
+.cardTimer {
+  margin: 12px 0 0;
+  font-size: 13px;
+  line-height: 1.4;
+  text-align: center;
+  color: #2a3a21;
+}
+
+.cardDark .cardTimer {
+  color: #f5f0e8;
 }
 
 .cardFoot {
@@ -461,6 +496,124 @@
   }
 }
 
+/* ---------- Don't miss out: with the offer and without it ---------- */
+
+.miss {
+  margin: clamp(36px, 5vw, 64px) 0 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid rgba(26, 38, 14, 0.16);
+}
+
+.missRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 14px;
+  padding: 26px 0;
+  border-bottom: 1px solid rgba(26, 38, 14, 0.16);
+}
+
+.missName {
+  margin: 0;
+  font-family: var(--eu-display);
+  font-weight: 400;
+  font-size: 26px;
+  line-height: 1.15;
+  color: #1a260e;
+}
+
+.missName small {
+  display: block;
+  margin-top: 4px;
+  font-family: var(--eu-body);
+  font-size: 14px;
+  color: #3d4a33;
+}
+
+.missNow,
+.missLater,
+.missLoss {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.5;
+  color: #2a3a21;
+}
+
+.missNow :global(.eu-cap),
+.missLater :global(.eu-cap) {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 10.5px;
+  color: #3d4a33;
+}
+
+.missNow b,
+.missLater b {
+  font-family: var(--eu-display);
+  font-weight: 400;
+  font-size: 22px;
+  color: #1a260e;
+}
+
+/* Without the offer: the smaller number, struck back to plain */
+.missLater b {
+  color: #6b6450;
+}
+
+.missLoss {
+  justify-self: start;
+  padding: 8px 16px;
+  border-radius: 999px;
+  background: #1a260e;
+  color: #fffcf2;
+  font-size: 14px;
+}
+
+.missLoss b {
+  font-weight: 500;
+}
+
+.missCta {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 32px;
+}
+
+.missBtn {
+  justify-content: space-between;
+}
+
+.missTimer {
+  margin: 0;
+  font-size: 14px;
+  text-align: center;
+  color: #2a3a21;
+}
+
+@media (min-width: 900px) {
+  .missRow {
+    /* A fixed last column, so every row's columns line up */
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr) minmax(0, 1.3fr) 330px;
+    align-items: center;
+    gap: 24px;
+  }
+
+  .missLoss {
+    justify-self: end;
+  }
+
+  .missCta {
+    flex-direction: row;
+    align-items: center;
+    gap: 24px;
+  }
+
+  .missTimer {
+    text-align: left;
+  }
+}
+
 /* ---------- A last reminder, before the terms ---------- */
 
 .last {
@@ -481,6 +634,11 @@
 
 .lastTitle {
   margin: 18px 0 0;
+  color: #fffcf2;
+}
+
+.lastTimer {
+  margin-top: 28px;
   color: #fffcf2;
 }
 
