@@ -1,3 +1,17 @@
+import {
+  BF_BONUS_MONTHS,
+  BF_END_DATE,
+  BF_HAS_PLACEHOLDERS,
+  BF_LINE,
+  BF_MEMBERSHIPS,
+  BF_NAME,
+  BF_PACKAGES,
+  BF_PACKAGE_EXTRA_CLASSES,
+  BF_PATH,
+  BF_UNLIMITED_GIFT,
+  BF_UNLIMITED_GIFT_EVERY,
+  blackFridayEnded,
+} from '@/components/black-friday/offer';
 import { ORDERED_CLASS_TYPES } from '@/lib/classes';
 import { POLICIES, PRICING, SITE_URL, STUDIO } from '@/lib/site';
 
@@ -12,6 +26,23 @@ export const dynamic = 'force-static';
 export function GET() {
   const tiers = (list: readonly { name: string; price: number }[]) =>
     list.map((tier) => `${tier.name} £${tier.price}`).join(', ');
+
+  // Black Friday: listed once its checkout links are in, and until a deploy after it ends
+  const blackFriday =
+    BF_HAS_PLACEHOLDERS || blackFridayEnded()
+      ? ''
+      : `
+## Black Friday: ${BF_NAME}
+
+- [${BF_NAME}](${SITE_URL}${BF_PATH}): ${BF_LINE} Ends ${BF_END_DATE}, UK time
+- Euforyc Membership, same price, extra classes every month for the first ${BF_BONUS_MONTHS} months: ${BF_MEMBERSHIPS.filter((m) => m.classesWithBonus)
+          .map((m) => `${m.plan.name} ${m.plan.classes} to ${m.classesWithBonus} classes a month`)
+          .join(', ')}
+- Euforyc Unlimited: ${BF_UNLIMITED_GIFT.charAt(0).toLowerCase()}${BF_UNLIMITED_GIFT.slice(1)}, ${BF_UNLIMITED_GIFT_EVERY}
+- Class packages: buy an eligible class package and get ${BF_PACKAGE_EXTRA_CLASSES} extra class: ${BF_PACKAGES.map((offer) => `${offer.label} ${offer.option.name} £${offer.option.price}`).join(', ')}
+- Existing members need to upgrade their membership to qualify
+- The ${PRICING.introOffer.name} intro offer is not part of Black Friday
+`;
 
   const body = `# ${STUDIO.name}
 
@@ -40,9 +71,9 @@ ${ORDERED_CLASS_TYPES.map(
 - Euforyc Package: ${tiers(PRICING.euforycPackage.tiers)}. ${PRICING.euforycPackage.note}
 - MOVE package: ${tiers(PRICING.movePackage.tiers)}. ${PRICING.movePackage.note}
 - Euforyc Membership (per month): ${tiers(PRICING.membership.tiers)}. ${PRICING.membership.note}
-- 1:1 Private Reformer Pilates and 1:1 Private Cadillac Reformer Pilates: ${tiers(PRICING.privateSession.tiers)}. ${PRICING.privateSession.note}
+- 1:1 Private Reformer Pilates: ${tiers(PRICING.privateSession.tiers)}. ${PRICING.privateSession.note}
 - [Full price list](${SITE_URL}/pricing)
-
+${blackFriday}
 ## Good to know
 
 - ${POLICIES.womenOnly}

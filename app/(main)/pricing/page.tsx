@@ -258,11 +258,11 @@ export default function Pricing() {
               </div>
             </div>
 
-            {/* 1-1 Private Cadillac Reformer Sessions */}
+            {/* 1-1 Private Reformer Sessions */}
             <div className={`${group} eu-rv`}>
               <div className={groupHead}>
-                <h2 className={groupH2}><Link href="/classes/private-cadillac-reformer-pilates" className={rowLink}>1-1 Private Cadillac Reformer</Link></h2>
-                <p className={groupCap}>CADILLAC REFORMER • PERSONALIZED TRAINING • 60 MIN</p>
+                <h2 className={groupH2}><Link href="/classes/private-reformer-pilates" className={rowLink}>1-1 Private Reformer</Link></h2>
+                <p className={groupCap}>ONE-TO-ONE • PERSONALIZED TRAINING • 60 MIN</p>
               </div>
 
               <div className={groupRows}>
@@ -347,7 +347,7 @@ export default function Pricing() {
             <h3 className="col-span-12 lg:col-span-4 font-serif font-normal text-[30px] md:text-[40px] leading-[1.1] text-eu-ink">Terms & Conditions</h3>
             <div className="col-span-12 lg:col-start-6 lg:col-span-7 space-y-3 text-left">
               <p className="font-sans text-[15px] leading-[1.65] text-eu-green">
-                • Class packages (Euforyc Package and MOVE) are valid for 30 days from your first class attended (1-1 Cadillac packages: 90 days)
+                • Class packages (Euforyc Package and MOVE) are valid for 30 days from your first class attended (1-1 Private Reformer packs: 90 days)
               </p>
               <p className="font-sans text-[15px] leading-[1.65] text-eu-green">
                 • Try It All is valid for 20 days from your first class attended

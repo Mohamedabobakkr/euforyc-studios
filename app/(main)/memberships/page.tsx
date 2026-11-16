@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { Crown } from 'lucide-react';
+import BlackFridayBanner from '@/components/black-friday/BlackFridayBanner';
 import Arrow from '@/components/euforyc/Arrow';
 import PillLink from '@/components/euforyc/PillLink';
 
@@ -234,6 +235,8 @@ export default function Memberships() {
 
   return (
     <div className="bg-eu-cream eu-page-top">
+      {/* Black Friday strip: gone on its own once the offer ends */}
+      <BlackFridayBanner />
 
       {/* ════════════════════════════════════════════════════════════
           HERO — Editorial opening

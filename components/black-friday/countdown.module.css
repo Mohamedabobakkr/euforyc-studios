@@ -1,0 +1,77 @@
+/* The countdown to the end of the Black Friday offer (Countdown.tsx) */
+
+/* Large: 13 | 04 | 12 | 30 with DAYS HRS MIN SEC under the numbers */
+.boxes {
+  display: inline-flex;
+  align-items: stretch;
+}
+
+.boxes .unit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 68px;
+  padding: 0 12px;
+}
+
+.boxes .unit:first-child {
+  padding-left: 0;
+  align-items: flex-start;
+  min-width: 56px;
+}
+
+.boxes .unit + .unit {
+  border-left: 1px solid rgba(120, 130, 110, 0.45);
+}
+
+.boxes .n {
+  /* Every digit the same width, so the timer does not twitch as it counts */
+  min-width: 2ch;
+  font-family: var(--eu-display);
+  font-size: 40px;
+  line-height: 1;
+  font-variant-numeric: lining-nums tabular-nums;
+  text-align: center;
+}
+
+.boxes .unit:first-child .n {
+  text-align: left;
+}
+
+.boxes .u {
+  margin-top: 8px;
+  font-size: 10.5px;
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+/* Compact: 13d 04h 12m 30s, inside a line of text */
+.inline {
+  display: inline-flex;
+  gap: 0.4em;
+  font-weight: 500;
+  font-variant-numeric: lining-nums tabular-nums;
+  white-space: nowrap;
+}
+
+.inline .n {
+  display: inline-block;
+  min-width: 2ch;
+  text-align: right;
+}
+
+@media (min-width: 900px) {
+  .boxes .unit {
+    min-width: 84px;
+    padding: 0 18px;
+  }
+
+  .boxes .unit:first-child {
+    min-width: 66px;
+  }
+
+  .boxes .n {
+    font-size: 48px;
+  }
+}

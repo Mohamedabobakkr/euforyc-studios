@@ -91,6 +91,6 @@ export const FAQS: Faq[] = [
   {
     question: 'Do you offer private pilates sessions?',
     answer:
-      'Yes, we offer one-on-one private pilates sessions tailored to your specific goals and needs. Choose 1:1 Private Reformer Pilates or 1:1 Private Cadillac Reformer Pilates: sessions are 60 minutes and cost £75, with packs of 4, 8 and 12 sessions available at a lower price per session. They are perfect for beginners, those with injuries, or anyone wanting personalized attention.',
+      'Yes, we offer one-on-one private pilates sessions tailored to your specific goals and needs. 1:1 Private Reformer Pilates sessions are 60 minutes and cost £75, with packs of 4, 8 and 12 sessions available at a lower price per session. They are perfect for beginners, those with injuries, or anyone wanting personalized attention.',
   },
 ];

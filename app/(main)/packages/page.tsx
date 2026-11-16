@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { Sparkles, Flame, Zap, Heart, Crown, Dumbbell, Music } from 'lucide-react';
+import BlackFridayBanner from '@/components/black-friday/BlackFridayBanner';
 import Arrow from '@/components/euforyc/Arrow';
 import PillLink from '@/components/euforyc/PillLink';
 
@@ -52,8 +53,8 @@ const packages = {
     ]
   },
   private: {
-    title: '1-1 Private Cadillac Reformer',
-    subtitle: 'Personalized training on our Cadillac Reformer',
+    title: '1-1 Private Reformer',
+    subtitle: 'Personalized one-to-one training on the reformer',
     note: 'Valid 90 days',
     packages: [
       { name: '4 Sessions', price: '£250', savings: 'save £50', momenceUrl: 'https://momence.com/m/473317' },
@@ -487,6 +488,9 @@ export default function Packages() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(servicesSchema) }} />
 
       <div className="eu-page-top bg-eu-cream">
+        {/* Black Friday strip: gone on its own once the offer ends */}
+        <BlackFridayBanner />
+
         {/* Hero */}
         <section className="relative pt-[clamp(48px,6vw,96px)] pb-[clamp(40px,5vw,64px)]">
           <div className="eu-wrap grid grid-cols-12 gap-x-6 items-end">

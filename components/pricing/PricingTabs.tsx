@@ -240,7 +240,7 @@ export default function PricingTabs({
       <div role="tabpanel" id="panel-private" aria-labelledby="tab-private" hidden={tab !== 'private'}>
         <div className={styles.pkGrid}>
           <div className={`${styles.introCard} eu-on-dark`}>
-            <Image src="/ps.jpg" alt="The Cadillac reformer in the private studio" fill sizes="(max-width: 1000px) 100vw, 40vw" />
+            <Image src="/ps.jpg" alt="Reformer beds with a Pilates ring at Euforyc Studios" fill sizes="(max-width: 1000px) 100vw, 40vw" />
             <div className={styles.introShade} />
             <div className={styles.introIn}>
               <span className={`eu-cap ${styles.introLabel}`}>One-to-one · 60 minutes</span>
@@ -251,7 +251,7 @@ export default function PricingTabs({
                 <span className={styles.big}>£{PRIVATE_SINGLE}</span>
                 <span>single session</span>
               </div>
-              <p>1:1 Private Reformer or 1:1 Private Cadillac Reformer — planned around your goals, body and pace.</p>
+              <p>1:1 Private Reformer Pilates — planned around your goals, body and pace.</p>
             </div>
           </div>
           <div className={styles.pkStack}>
