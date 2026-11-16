@@ -12,7 +12,7 @@ export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || 'https://euforyc.co
 export const STUDIO = {
   name: 'Euforyc Studios',
   shortDescription:
-    'Euforyc Studios is a women-only boutique Pilates studio in Edgware, North West London, offering small-group Reformer Pilates, Hot Pilates, Red Light Hot Mat Pilates, Sculpt Mat Pilates, Barre and Belly Dance classes, plus 1:1 Private Reformer Pilates and 1:1 Private Cadillac Reformer Pilates.',
+    'Euforyc Studios is a women-only boutique Pilates studio in Edgware, North West London, offering small-group Reformer Pilates, Hot Pilates, Red Light Hot Mat Pilates, Sculpt Mat Pilates, Barre and Belly Dance classes, plus 1:1 Private Reformer Pilates.',
   phoneDisplay: '+44 7375 710370',
   phoneE164: '+447375710370',
   email: 'euforyc@gmail.com',
@@ -90,7 +90,7 @@ export const PRICING = {
     ],
   },
   privateSession: {
-    note: '60-minute 1:1 Private Reformer Pilates or 1:1 Private Cadillac Reformer Pilates session; packs valid 90 days',
+    note: '60-minute 1:1 Private Reformer Pilates session; packs valid 90 days',
     tiers: [
       { name: 'Single session', price: 75 },
       { name: '4 sessions', price: 250 },

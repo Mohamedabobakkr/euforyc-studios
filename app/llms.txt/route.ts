@@ -40,7 +40,7 @@ ${ORDERED_CLASS_TYPES.map(
 - Euforyc Package: ${tiers(PRICING.euforycPackage.tiers)}. ${PRICING.euforycPackage.note}
 - MOVE package: ${tiers(PRICING.movePackage.tiers)}. ${PRICING.movePackage.note}
 - Euforyc Membership (per month): ${tiers(PRICING.membership.tiers)}. ${PRICING.membership.note}
-- 1:1 Private Reformer Pilates and 1:1 Private Cadillac Reformer Pilates: ${tiers(PRICING.privateSession.tiers)}. ${PRICING.privateSession.note}
+- 1:1 Private Reformer Pilates: ${tiers(PRICING.privateSession.tiers)}. ${PRICING.privateSession.note}
 - [Full price list](${SITE_URL}/pricing)
 
 ## Good to know

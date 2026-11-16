@@ -44,7 +44,7 @@ export const revalidate = 3600;
 
 export const metadata: Metadata = pageMetadata({
   title: 'Euforyc Studios | Women-Only Pilates Studio in Edgware, North West London',
-  description: 'Women-only boutique Pilates studio in Edgware, North West London. Reformer Pilates, Hot Pilates, Red Light Hot Mat Pilates, Sculpt Mat Pilates, Barre, Belly Dance and 1:1 private Reformer and Cadillac Reformer sessions. First-time clients: 3 classes for £60.',
+  description: 'Women-only boutique Pilates studio in Edgware, North West London. Reformer Pilates, Hot Pilates, Red Light Hot Mat Pilates, Sculpt Mat Pilates, Barre, Belly Dance and 1:1 private Reformer sessions. First-time clients: 3 classes for £60.',
   path: '/',
   absoluteTitle: true,
 });
