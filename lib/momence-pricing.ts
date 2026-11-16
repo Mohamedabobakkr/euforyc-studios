@@ -29,6 +29,17 @@ export const MOMENCE_PRICING: Record<string, MomencePriceEntry> = {
   '937346': { value: 240, currency: 'GBP', contentName: 'Euforyc Membership — Euforyc 12',       contentType: 'membership' },
   '937348': { value: 280, currency: 'GBP', contentName: 'Euforyc Membership — Euforyc Unlimited', contentType: 'membership' },
 
+  // Black Friday 2026 "One more, on us" (/black-friday) — same prices, extra classes
+  '982800': { value: 90,  currency: 'GBP', contentName: 'Black Friday — Euforyc 4 + 1 Membership',        contentType: 'membership' },
+  '982801': { value: 165, currency: 'GBP', contentName: 'Black Friday — Euforyc 8 + 2 Membership',        contentType: 'membership' },
+  '982805': { value: 240, currency: 'GBP', contentName: 'Black Friday — Euforyc 12 + 3 Membership',       contentType: 'membership' },
+  '982806': { value: 280, currency: 'GBP', contentName: 'Black Friday — Euforyc Unlimited + Monthly Facial', contentType: 'membership' },
+  '982809': { value: 105, currency: 'GBP', contentName: 'Black Friday — Euforyc Package 4 + 1 Classes',   contentType: 'euforyc_package' },
+  '982810': { value: 190, currency: 'GBP', contentName: 'Black Friday — Euforyc Package 8 + 1 Classes',   contentType: 'euforyc_package' },
+  '982814': { value: 270, currency: 'GBP', contentName: 'Black Friday — Euforyc Package 12 + 1 Classes',  contentType: 'euforyc_package' },
+  '982817': { value: 70,  currency: 'GBP', contentName: 'Black Friday — MOVE 4 + 1 Classes',              contentType: 'move_package' },
+  '982819': { value: 135, currency: 'GBP', contentName: 'Black Friday — MOVE 8 + 1 Classes',              contentType: 'move_package' },
+
   // Legacy dance packages — no longer sold on the site
   '597174': { value: 65,  currency: 'GBP', contentName: 'Dance 4 Classes',                       contentType: 'dance_package' },
   '609496': { value: 90,  currency: 'GBP', contentName: 'Dance 8 Classes',                       contentType: 'dance_package' },
