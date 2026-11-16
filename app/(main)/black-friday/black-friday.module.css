@@ -161,6 +161,10 @@
   color: #2a3a21;
 }
 
+.cardDark .every {
+  color: #f5f0e8;
+}
+
 .gift {
   margin: 26px 0 0;
   font-family: var(--eu-display);
@@ -270,25 +274,24 @@
   color: #f5f0e8;
 }
 
-.pendingNote {
-  display: inline-block;
-  padding: 6px 12px;
-  border: 1px dashed rgba(26, 38, 14, 0.5);
-  border-radius: 999px;
-  font-size: 11.5px !important;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-}
-
 @media (min-width: 700px) {
   .cards {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 16px;
   }
 
+  /* Three Euforyc Package cards on one row, two wider MOVE Package cards on the next */
   .packs {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(6, minmax(0, 1fr));
     gap: 16px;
+  }
+
+  .packs > li {
+    grid-column: span 2;
+  }
+
+  .packs > .packWide {
+    grid-column: span 3;
   }
 }
 
@@ -375,6 +378,13 @@
   margin: 24px 0 0;
   padding: 0;
   list-style: none;
+}
+
+.useOnNote {
+  margin: 20px 0 0;
+  font-size: 15px;
+  line-height: 1.6;
+  color: #f5f0e8;
 }
 
 .classes li {

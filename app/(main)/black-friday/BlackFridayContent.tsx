@@ -12,7 +12,6 @@ import {
   BF_END_DATE,
   BF_ENDS_AT,
   BF_FAQS,
-  BF_FAQS_PENDING,
   BF_GROUP_CLASSES,
   BF_LINE,
   BF_MAX_FREE_CLASSES,
@@ -23,7 +22,9 @@ import {
   BF_PATH,
   BF_TERMS,
   BF_UNLIMITED_GIFT,
+  BF_UNLIMITED_GIFT_EVERY,
   MEMBERSHIP_TERM,
+  MOVE_PACKAGE_COVERS,
   PACKAGE_VALIDITY,
   bfMembershipTracking,
   bfPackageTracking,
@@ -270,6 +271,7 @@ export default function BlackFridayContent({ serverEnded, reviews }: { serverEnd
                     <p className={styles.cardSub}>{offer.plan.sub}</p>
 
                     <p className={styles.gift}>{BF_UNLIMITED_GIFT}</p>
+                    <p className={styles.every}>{BF_UNLIMITED_GIFT_EVERY}</p>
 
                     <div className={styles.cardFoot}>
                       <div className={styles.priceRow}>
@@ -314,12 +316,13 @@ export default function BlackFridayContent({ serverEnded, reviews }: { serverEnd
 
             <ul className={styles.packs}>
               {BF_PACKAGES.map((offer) => (
-                <li key={offer.id}>
+                <li key={offer.id} className={offer.kind === 'move_package' ? styles.packWide : undefined}>
                   <article className={styles.card}>
-                    <p className={`eu-cap ${styles.packLabel}`}>Euforyc Package</p>
+                    <p className={`eu-cap ${styles.packLabel}`}>{offer.label}</p>
                     <h3 className={styles.packName}>
                       {offer.option.name} <em>+{BF_PACKAGE_EXTRA_CLASSES} class</em>
                     </h3>
+                    <p className={styles.cardSub}>{offer.covers}</p>
 
                     <div className={styles.cardFoot}>
                       <div className={styles.priceRow}>
@@ -328,7 +331,7 @@ export default function BlackFridayContent({ serverEnded, reviews }: { serverEnd
                       </div>
                       <div className={styles.cardCta}>
                         <Checkout url={offer.checkoutUrl} variant="ink" tracking={bfPackageTracking(offer, BF_PATH)}>
-                          Buy {offer.option.name}
+                          Buy {offer.kind === 'move_package' ? `MOVE ${offer.option.name}` : offer.option.name}
                         </Checkout>
                       </div>
                     </div>
@@ -387,6 +390,7 @@ export default function BlackFridayContent({ serverEnded, reviews }: { serverEnd
                 <li key={name}>{name}</li>
               ))}
             </ul>
+            <p className={styles.useOnNote}>The MOVE Package is for {MOVE_PACKAGE_COVERS}.</p>
           </div>
         </div>
       </section>
@@ -414,12 +418,6 @@ export default function BlackFridayContent({ serverEnded, reviews }: { serverEnd
               <div key={faq.question} className={offerStyles.faqItem}>
                 <h3>{faq.question}</h3>
                 <p>{faq.answer}</p>
-              </div>
-            ))}
-            {BF_FAQS_PENDING.map((question) => (
-              <div key={question} className={offerStyles.faqItem} data-placeholder="faq-answer">
-                <h3>{question}</h3>
-                <p className={styles.pendingNote}>Placeholder · answer pending</p>
               </div>
             ))}
           </div>

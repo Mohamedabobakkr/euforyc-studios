@@ -5,9 +5,11 @@ import {
   BF_LINE,
   BF_MEMBERSHIPS,
   BF_NAME,
+  BF_PACKAGES,
   BF_PACKAGE_EXTRA_CLASSES,
   BF_PATH,
   BF_UNLIMITED_GIFT,
+  BF_UNLIMITED_GIFT_EVERY,
   blackFridayEnded,
 } from '@/components/black-friday/offer';
 import { ORDERED_CLASS_TYPES } from '@/lib/classes';
@@ -36,8 +38,9 @@ export function GET() {
 - Euforyc Membership, same price, extra classes every month for the first ${BF_BONUS_MONTHS} months: ${BF_MEMBERSHIPS.filter((m) => m.classesWithBonus)
           .map((m) => `${m.plan.name} ${m.plan.classes} to ${m.classesWithBonus} classes a month`)
           .join(', ')}
-- Euforyc Unlimited: ${BF_UNLIMITED_GIFT.charAt(0).toLowerCase()}${BF_UNLIMITED_GIFT.slice(1)}
-- Class packages: buy an eligible class package and get ${BF_PACKAGE_EXTRA_CLASSES} extra class
+- Euforyc Unlimited: ${BF_UNLIMITED_GIFT.charAt(0).toLowerCase()}${BF_UNLIMITED_GIFT.slice(1)}, ${BF_UNLIMITED_GIFT_EVERY}
+- Class packages: buy an eligible class package and get ${BF_PACKAGE_EXTRA_CLASSES} extra class: ${BF_PACKAGES.map((offer) => `${offer.label} ${offer.option.name} £${offer.option.price}`).join(', ')}
+- Existing members need to upgrade their membership to qualify
 - The ${PRICING.introOffer.name} intro offer is not part of Black Friday
 `;
 
