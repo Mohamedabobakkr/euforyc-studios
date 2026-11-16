@@ -1,4 +1,5 @@
 import { MetadataRoute } from 'next';
+import { BF_HAS_PLACEHOLDERS, BF_PATH, blackFridayEnded } from '@/components/black-friday/offer';
 import { ORDERED_CLASS_TYPES } from '@/lib/classes';
 import { SITE_URL } from '@/lib/site';
 
@@ -37,6 +38,8 @@ const pages: Page[] = [
   { path: '/reviews', changeFrequency: 'daily', priority: 0.8 },
   { path: '/book', changeFrequency: 'weekly', priority: 0.8 },
   { path: '/offers', changeFrequency: 'weekly', priority: 0.8 },
+  // Black Friday: listed once its checkout links are in, and until a deploy after it ends
+  ...(BF_HAS_PLACEHOLDERS || blackFridayEnded() ? [] : [{ path: BF_PATH, changeFrequency: 'daily' as ChangeFrequency, priority: 0.8 }]),
   { path: '/packages-memberships', changeFrequency: 'weekly', priority: 0.7 },
   { path: '/about', changeFrequency: 'monthly', priority: 0.8 },
   { path: '/team', changeFrequency: 'weekly', priority: 0.7 },
