@@ -52,8 +52,8 @@ const packages = {
     ]
   },
   private: {
-    title: '1-1 Private Cadillac Reformer',
-    subtitle: 'Personalized training on our Cadillac Reformer',
+    title: '1-1 Private Reformer',
+    subtitle: 'Personalized one-to-one training on the reformer',
     note: 'Valid 90 days',
     packages: [
       { name: '4 Sessions', price: '£250', savings: 'save £50', momenceUrl: 'https://momence.com/m/473317' },

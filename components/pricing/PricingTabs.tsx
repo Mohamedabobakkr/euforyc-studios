@@ -251,7 +251,7 @@ export default function PricingTabs({
                 <span className={styles.big}>£{PRIVATE_SINGLE}</span>
                 <span>single session</span>
               </div>
-              <p>1:1 Private Reformer or 1:1 Private Cadillac Reformer — planned around your goals, body and pace.</p>
+              <p>1:1 Private Reformer Pilates — planned around your goals, body and pace.</p>
             </div>
           </div>
           <div className={styles.pkStack}>
