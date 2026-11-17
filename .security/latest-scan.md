@@ -1,6 +1,6 @@
 # Security Scan Report
 
-**Date:** 2026-11-16 12:00 UTC
+**Date:** 2026-11-17 12:00 UTC
 **Status:** CLEAN
 
 ## npm audit
@@ -22,7 +22,7 @@
 10. Safe Health Checks: PASS — no health endpoints exposing tokens; auth GET returns only { authenticated: boolean }
 
 ## Fixes Applied
-- None needed
+- None needed (GHSA-mfr8-8qww-v76h fix already applied in previous scan)
 
 ## Manual Action Required
 - None
