@@ -1,27 +1,17 @@
 # Security Scan Report
 
-**Date:** 2026-11-18 11:30 UTC
+**Date:** 2026-11-18 03:25 UTC
 **Status:** CLEAN
 
 ## npm audit
 - Critical: 0
-- High: 18 (all picomatch ReDoS — build-only tools, not production runtime)
+- High: 0
 - Medium: 0
 - Low: 0
 
-### Details
-All 18 HIGH findings are the same picomatch ReDoS vulnerability (GHSA-fc5q-39xc-vjpf) reached through:
-- **tailwindcss v3.4.19** → chokidar → anymatch/readdirp → picomatch; micromatch → picomatch
-- **eslint-config-next v16.4.6** → @next/eslint-plugin-next → fast-glob → micromatch → picomatch; typescript-eslint → @typescript-eslint/* → tinyglobby → picomatch; eslint-import-resolver-typescript → tinyglobby → picomatch
+Total dependencies scanned: 629 (567 prod, 63 optional)
 
-**Risk assessment:** LOW — these are build/lint tools that process developer-controlled glob patterns at build time. They never execute in the production runtime. The picomatch ReDoS requires attacker-controlled glob patterns, which is not possible in this architecture.
-
-**Fix path:**
-- tailwindcss: requires upgrade to v4.x (major rewrite, different config format — manual migration needed)
-- eslint-config-next: no semver-compatible fix; resolution depends on upstream adopting picomatch >= 4.0.8 or an alternative
-- `npm audit fix` has no effect (confirmed via dry-run); `--force` not used
-
-**No change since last scan (2026-11-17).** Same 18 picomatch findings, no new vulnerabilities introduced.
+**Note:** Previous scans reported 18 HIGH picomatch ReDoS findings. These have been resolved upstream — `npm audit` now returns 0 vulnerabilities.
 
 ## Code Security Checks
 1. SSRF Protection: PASS — `validateSquarePath()` blocks `..`, `//`, `\\` and enforces `/[a-zA-Z0-9/_-]+` pattern
@@ -36,8 +26,7 @@ All 18 HIGH findings are the same picomatch ReDoS vulnerability (GHSA-fc5q-39xc-
 10. Safe Health Checks: PASS — no health check endpoints expose tokens or internal config
 
 ## Fixes Applied
-- None needed — no new vulnerabilities since last scan
+- None needed — all checks pass, npm audit clean
 
 ## Manual Action Required
-- **Tailwind CSS v4 migration** — upgrading from v3.4.19 to v4.x resolves the picomatch vulnerability chain but requires manual config migration (new CSS-first config, different plugin API). Schedule during a planned refactor.
-- **eslint-config-next** — the picomatch chain through eslint-config-next will resolve when the Next.js team ships a version that uses picomatch >= 4.0.8 or drops affected transitive dependencies. Monitor future releases.
+- None
