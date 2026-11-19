@@ -1,6 +1,6 @@
 # Security Scan Report
 
-**Date:** 2026-11-18 03:25 UTC
+**Date:** 2026-11-19 00:00 UTC
 **Status:** CLEAN
 
 ## npm audit
@@ -10,8 +10,6 @@
 - Low: 0
 
 Total dependencies scanned: 629 (567 prod, 63 optional)
-
-**Note:** Previous scans reported 18 HIGH picomatch ReDoS findings. These have been resolved upstream — `npm audit` now returns 0 vulnerabilities.
 
 ## Code Security Checks
 1. SSRF Protection: PASS — `validateSquarePath()` blocks `..`, `//`, `\\` and enforces `/[a-zA-Z0-9/_-]+` pattern
