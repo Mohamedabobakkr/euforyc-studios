@@ -1,6 +1,6 @@
 # Security Scan Report
 
-**Date:** 2026-11-21 11:30 UTC
+**Date:** 2026-11-21 14:00 UTC
 **Status:** CLEAN
 
 ## npm audit
@@ -17,8 +17,8 @@
 5. Security Headers: PASS — HSTS (2yr, includeSubDomains, preload), CSP, X-Frame-Options (SAMEORIGIN), X-Content-Type-Options (nosniff), Referrer-Policy, Permissions-Policy all configured
 6. Image Hostnames: PASS — uses custom image loader, no `hostname: '**'` wildcard
 7. No Hardcoded Secrets: PASS — no `sk-`, `pk_live`, or hardcoded passwords found in app/lib/components
-8. No localStorage Credentials: PASS — only `euforyc_uid` (random analytics UUID) stored; no passwords, tokens or credentials
-9. No Error Leaks: PASS — all API routes return generic error messages; internal details logged server-side only
+8. No localStorage Credentials: PASS — only stores analytics UUID (`euforyc_uid`), no credentials
+9. No Error Leaks: PASS — all API routes return generic error messages; internal details only logged server-side
 10. Safe Health Checks: PASS — no health check endpoints expose tokens or internal config
 
 ## Fixes Applied
