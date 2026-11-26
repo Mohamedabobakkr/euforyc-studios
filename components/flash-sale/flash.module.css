@@ -1,392 +1,245 @@
-/* /flash: the Black Friday flash sale. The site's after-dark edition.
+/* /flash: the Black Friday flash sale.
 
-   The usual palette is turned over: a ground a shade deeper than the brand
-   ink, cream type, and one brass accent used only where it means something
-   (the lit step, the seam of the door, the code).
+   The whole page is closed until the server hands over a code. Closed, it is
+   one full-screen cover over a slow gradient. Open, it is one calm column on
+   the ink ground with a single light object: the cream code card.
 
-   Layout that depends on the time of day is switched by an attribute the
-   page sets on <html> before it is drawn (data-flash-phase), so the first
-   paint is already the right one and nothing moves when React takes over.
-
-   Motion is transform and opacity only. */
+   Colour: the brand's own tokens from app/globals.css and plain tints of
+   them. Nothing else. The accent on this page is cream itself.
+   Type: Playfair Display for the two headlines only. Inter for everything
+   else, the code and the countdown included.
+   Motion: transform and opacity only. */
 
 .root {
-  --fl-night: #10180a;
-  --fl-ink: #1a260e;
-  --fl-cream: #fffcf2;
-  --fl-beige: #f5f0e8;
-  --fl-soft: rgba(255, 252, 242, 0.76);
-  --fl-faint: rgba(255, 252, 242, 0.56);
-  --fl-line: rgba(255, 252, 242, 0.14);
-  --fl-brass: #c9a35c;
-  --fl-brass-hi: #ecd9a6;
-  --fl-brass-line: rgba(201, 163, 92, 0.5);
-  --fl-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
-  --fl-door-ease: cubic-bezier(0.7, 0, 0.15, 1);
+  /* Tints of cream for quieter text. 0.8 is the least used over the gradient:
+     it keeps AA against the lightest colour the field can reach under words. */
+  --fl-quiet: rgba(255, 252, 242, 0.8);
+  --fl-dim: rgba(255, 252, 242, 0.62);
+
+  /* The gradient without WebGL: ink, a swell of green, and the light along
+     the bottom edge. --fl-light is how far up the screen is clear of words. */
+  --fl-ground:
+    radial-gradient(
+      125% calc(var(--fl-light, 0.16) * 104%) at 62% 104%,
+      rgba(255, 252, 242, 0.94) 0%,
+      rgba(245, 240, 232, 0.8) 22%,
+      rgba(61, 74, 51, 0.72) 56%,
+      rgba(26, 38, 14, 0) 100%
+    ),
+    radial-gradient(
+      70% calc(var(--fl-light, 0.16) * 80%) at 6% 103%,
+      rgba(245, 240, 232, 0.5) 0%,
+      rgba(61, 74, 51, 0.45) 52%,
+      rgba(26, 38, 14, 0) 100%
+    ),
+    radial-gradient(90% 52% at 84% 2%, rgba(42, 58, 33, 0.95) 0%, rgba(42, 58, 33, 0) 72%), var(--eu-ink);
 
   position: relative;
-  background:
-    radial-gradient(90% 55% at 85% 0%, rgba(42, 58, 33, 0.55), rgba(42, 58, 33, 0) 70%),
-    var(--fl-night);
-  color: var(--fl-cream);
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: var(--eu-ink);
+  color: var(--eu-cream);
 }
 
 .root ::selection {
-  background-color: var(--fl-brass);
-  color: var(--fl-ink);
+  background-color: var(--eu-cream);
+  color: var(--eu-ink);
 }
 
-/* ---------- Stage: one column on phones, copy left and door right on desktop ---------- */
+/* ---------- The gradient: one canvas for the whole page ---------- */
 
-.stage {
-  display: flex;
-  flex-direction: column;
-  gap: 30px;
-  /* Starts below the site's fixed header */
-  padding-top: calc(var(--eu-header-space) + 28px);
-  padding-bottom: 80px;
+.field {
+  overflow: hidden;
+  pointer-events: none;
 }
 
-.lead {
-  order: 1;
-}
-
-.rail {
-  order: 2;
-}
-
-.count {
-  order: 3;
-}
-
-.door {
-  order: 4;
-}
-
-.rest {
-  order: 5;
-}
-
-/* From 12:00 the door is the first thing on a phone and the countdown follows it */
-:global(html[data-flash-phase='vip']) .door,
-:global(html[data-flash-phase='public']) .door,
-:global(html[data-flash-phase='ended']) .door {
-  order: 3;
-}
-
-:global(html[data-flash-phase='vip']) .count,
-:global(html[data-flash-phase='public']) .count {
-  order: 4;
-}
-
-:global(html[data-flash-phase='ended']) .count {
-  display: none;
-}
-
-@media (min-width: 960px) {
-  .stage {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(380px, 440px);
-    grid-template-rows: auto auto auto 1fr;
-    grid-template-areas:
-      'lead door'
-      'rail door'
-      'count door'
-      'rest door';
-    column-gap: clamp(48px, 7vw, 128px);
-    row-gap: 40px;
-    align-items: start;
-    padding-top: calc(var(--eu-header-space) + clamp(36px, 4vw, 64px));
-    padding-bottom: clamp(96px, 9vw, 150px);
-  }
-
-  .lead {
-    grid-area: lead;
-  }
-
-  .rail {
-    grid-area: rail;
-  }
-
-  .count {
-    grid-area: count;
-  }
-
-  .door {
-    grid-area: door;
-  }
-
-  .rest {
-    grid-area: rest;
-  }
-}
-
-/* ---------- Lead: the one headline that never changes ---------- */
-
-.eyebrow {
-  margin: 0;
-  font-size: 11.5px;
-  font-weight: 400;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--fl-brass);
-}
-
-.title {
-  margin: 14px 0 0;
-  font-family: var(--eu-display);
-  font-weight: 400;
-  font-size: clamp(42px, 11.4vw, 62px);
-  line-height: 1;
-  letter-spacing: -0.03em;
-}
-
-.title span {
-  display: block;
-}
-
-.title em {
-  font-style: italic;
-}
-
-.lede {
-  max-width: 46ch;
-  margin: 18px 0 0;
-  font-size: 16px;
-  line-height: 1.65;
-  color: var(--fl-soft);
-}
-
-/* The closed page has its own headline, line and link. Both sets are in the
-   page; the attribute on <html> picks one before anything is drawn. */
-.whenEnded,
-.title .whenEnded {
-  display: none;
-}
-
-:global(html[data-flash-phase='ended']) .whenLive {
-  display: none;
-}
-
-:global(html[data-flash-phase='ended']) .whenEnded,
-:global(html[data-flash-phase='ended']) .title .whenEnded {
-  display: block;
-}
-
-.endedCta {
-  margin-top: 28px;
-}
-
-@media (max-width: 959px) {
-  /* Phones, once a door is open: the door comes straight after the headline */
-  :global(html[data-flash-phase='vip']) .lede,
-  :global(html[data-flash-phase='public']) .lede {
-    display: none;
-  }
-}
-
-@media (min-width: 960px) {
-  .title {
-    font-size: clamp(64px, 6.2vw, 104px);
-    line-height: 0.96;
-  }
-
-  .lede {
-    margin-top: 26px;
-    font-size: 17px;
-  }
-}
-
-/* ---------- Timeline rail: 12:00, 18:00, 23:59 ---------- */
-
-.rail {
-  position: relative;
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  column-gap: 14px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.rail::before {
-  content: '';
-  position: absolute;
-  top: 5px;
+/* Closed: it fills the screen, above the site header, under the cover's words */
+.fieldCover {
+  position: fixed;
+  top: 0;
   left: 0;
   right: 0;
-  height: 1px;
-  background: var(--fl-line);
+  z-index: 399;
+  height: 100vh;
+  height: 100dvh;
+  background: var(--fl-ground);
 }
 
-.step {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-  min-width: 0;
-  padding-top: 24px;
-}
-
-/* The stretch of line from this step to the next fills in once the step has passed */
-.step::before {
-  content: '';
-  position: absolute;
-  top: 5px;
-  left: 0;
-  right: -14px;
-  height: 1px;
-  background: var(--fl-brass);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.9s var(--fl-ease);
-}
-
-.step:last-child::before {
-  display: none;
-}
-
-.step_past::before {
-  transform: scaleX(1);
-}
-
-.stepDot {
+/* Open: it lies softly behind the top of the page and fades into the ground */
+.fieldPage {
   position: absolute;
   top: 0;
   left: 0;
-  width: 11px;
-  height: 11px;
-  border-radius: 50%;
-  border: 1px solid var(--fl-faint);
-  background: var(--fl-night);
+  right: 0;
+  z-index: 0;
+  height: min(92vh, 780px);
+  background: radial-gradient(90% 60% at 84% 0%, rgba(61, 74, 51, 0.5) 0%, rgba(42, 58, 33, 0) 72%), var(--eu-ink);
+  -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 20%, rgba(0, 0, 0, 0) 100%);
+  mask-image: linear-gradient(180deg, #000 0%, #000 20%, rgba(0, 0, 0, 0) 100%);
 }
 
-.stepTime {
-  font-family: var(--eu-display);
-  font-size: 23px;
-  line-height: 1.1;
-  font-variant-numeric: lining-nums tabular-nums;
+/* The canvas appears over the CSS gradient once it has drawn its first frame */
+.fieldCanvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 0.9s ease;
 }
 
-.stepTitle {
-  font-size: 13px;
-  font-weight: 500;
-  line-height: 1.3;
+.fieldCanvas[data-live='true'] {
+  opacity: 1;
 }
 
-.stepDetail {
-  font-size: 12.5px;
-  line-height: 1.35;
-  color: var(--fl-soft);
+/* ---------- The cover: the closed page ---------- */
+
+.cover {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 400;
+  display: flex;
+  height: 100vh;
+  height: 100dvh;
+  padding: calc(28px + env(safe-area-inset-top, 0px)) calc(20px + env(safe-area-inset-right, 0px))
+    calc(28px + env(safe-area-inset-bottom, 0px)) calc(20px + env(safe-area-inset-left, 0px));
+  /* A screen too short for it scrolls the cover, never the page behind */
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  color: var(--eu-cream);
+  text-align: center;
 }
 
-.step_next .stepDot {
-  border-color: var(--fl-brass);
+.stack {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 420px;
+  margin: auto;
 }
 
-.step_now .stepDot {
-  border-color: var(--fl-brass);
-  background: var(--fl-brass);
+/* The wordmark from /logo.png, cropped to its lettering. It is the way home. */
+.wordmark {
+  display: block;
+  margin: -12px;
+  padding: 12px;
+  border-radius: 10px;
 }
 
-.step_now .stepDot::after {
-  content: '';
-  position: absolute;
-  inset: -5px;
-  border-radius: 50%;
-  border: 1px solid var(--fl-brass);
+.wordmarkCrop {
+  display: block;
+  width: 168px;
+  aspect-ratio: 5 / 1;
+  overflow: hidden;
+}
+
+.wordmarkCrop img {
+  display: block;
+  width: 100%;
+  height: auto;
+  transform: translateY(-33.5%);
+}
+
+/* The thin line of the landing sequence. It draws, holds and goes: the
+   settled cover is the wordmark, the headline and what is under it. */
+.introLine {
+  width: 120px;
+  height: 1px;
+  margin-top: 20px;
+  background: var(--eu-cream);
   opacity: 0;
 }
 
-.step_now .stepTime {
-  color: var(--fl-brass-hi);
-}
-
-.step_past .stepDot {
-  border-color: var(--fl-brass);
-  background: var(--fl-night);
-}
-
-.step_past .stepTime,
-.step_past .stepTitle,
-.step_past .stepDetail {
-  color: var(--fl-faint);
-  text-decoration: line-through;
-  text-decoration-thickness: 1px;
-}
-
-@media (min-width: 960px) {
-  .rail {
-    column-gap: 24px;
-    max-width: 620px;
-  }
-
-  .step::before {
-    right: -24px;
-  }
-
-  .stepTime {
-    font-size: 28px;
-  }
-
-  .stepTitle {
-    font-size: 14px;
-  }
-
-  .stepDetail {
-    font-size: 13.5px;
-  }
-}
-
-/* ---------- Countdown: rolling digits that never change width ---------- */
-
-.countLabel {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 6px 14px;
-  margin: 0 0 12px;
-  font-size: 11.5px;
+.coverTitle {
+  margin: 19px 0 0;
+  font-family: var(--eu-display);
   font-weight: 400;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--fl-soft);
+  font-size: clamp(40px, 12.2vw, 52px);
+  line-height: 1.04;
+  letter-spacing: -0.025em;
 }
 
-.countFinal {
-  display: inline-flex;
+.coverTitle:focus {
+  outline: none;
+}
+
+.coverTitle span {
+  display: block;
+}
+
+.coverTitle em {
+  font-style: italic;
+}
+
+/* Under the headline. Its height is fixed to the tallest thing it ever holds
+   (the password field), so the wordmark and headline never move when the
+   countdown gives way to the field. */
+.slot {
+  display: grid;
+  width: 100%;
+  min-height: 252px;
+  margin-top: 30px;
+}
+
+.slotItem {
+  grid-area: 1 / 1;
+  align-self: start;
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 8px;
-  color: var(--fl-brass-hi);
+  min-width: 0;
 }
 
-.countFinal::before {
-  content: '';
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--fl-brass);
+.slotOut {
+  pointer-events: none;
 }
 
-.countRow {
-  position: relative;
-  display: inline-block;
+.caption {
+  margin: 20px 0 0;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--fl-quiet);
 }
+
+.line {
+  max-width: 30ch;
+  margin: 0 0 22px;
+  font-size: 17px;
+  line-height: 1.5;
+}
+
+.line:last-child {
+  margin-bottom: 0;
+}
+
+.hint {
+  margin: 4px 0 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--fl-quiet);
+}
+
+/* ---------- Countdown: tabular figures in fixed cells ---------- */
 
 .countDigits {
   display: inline-flex;
   align-items: flex-start;
-  font-family: var(--eu-display);
-  font-size: clamp(60px, 17.6vw, 88px);
+  font-family: var(--eu-body);
+  font-weight: 300;
+  font-size: clamp(56px, 17.4vw, 76px);
   line-height: 1;
-  font-variant-numeric: lining-nums tabular-nums;
-  letter-spacing: 0;
+  font-variant-numeric: tabular-nums lining-nums;
 }
 
 .pair {
   display: inline-flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
 }
 
 .pairDigits {
@@ -395,22 +248,19 @@
 
 .pairUnit {
   margin-top: 10px;
-  font-family: var(--eu-body);
-  font-size: 10.5px;
+  font-size: 12px;
   font-weight: 400;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--fl-faint);
+  letter-spacing: 0.04em;
+  color: var(--fl-quiet);
 }
 
 .colon {
-  width: 0.36em;
+  width: 0.34em;
   text-align: center;
-  color: var(--fl-faint);
   transform: translateY(-0.07em);
 }
 
-/* One figure: a fixed cell with the old face rolling out and the new one in */
+/* One figure: the old face rolls out below as the new one rolls in from above */
 .digit {
   position: relative;
   display: inline-block;
@@ -427,224 +277,17 @@
   justify-content: center;
 }
 
-/* The last ten minutes: brass figures over a line that breathes */
-.countUrgent .countDigits {
-  color: var(--fl-brass-hi);
-}
-
-.countUrgent .countRow::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 22px;
-  height: 1px;
-  background: linear-gradient(90deg, var(--fl-brass), rgba(201, 163, 92, 0));
-  transform-origin: left;
-}
-
-@media (min-width: 960px) {
-  .countDigits {
-    font-size: clamp(84px, 7.6vw, 124px);
-  }
-}
-
-/* ---------- The door ---------- */
-
-.door {
-  --seal-top: 73%;
-  position: relative;
-  isolation: isolate;
-  display: flex;
-  width: 100%;
-  max-width: 440px;
-  min-height: 548px;
-  margin-left: auto;
-  margin-right: auto;
-  overflow: hidden;
-  border-radius: 999px 999px 18px 18px;
-  background: var(--fl-ink);
-  box-shadow: 0 50px 90px -50px rgba(0, 0, 0, 0.9);
-}
-
-/* The brass frame of the arch, drawn over everything inside it */
-.door::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: 5;
-  border-radius: inherit;
-  border: 1px solid var(--fl-brass-line);
-  pointer-events: none;
-}
-
-/* The lit room behind the doors */
-.doorLight {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  background:
-    radial-gradient(95% 50% at 50% 100%, rgba(201, 163, 92, 0.34), rgba(201, 163, 92, 0.1) 52%, rgba(201, 163, 92, 0) 80%),
-    linear-gradient(180deg, #1e2b12 0%, #141d0b 100%);
-  opacity: 0;
-  transition: opacity 1.2s ease 0.15s;
-}
-
-.doorOpen .doorLight {
-  opacity: 1;
-}
-
-.leaf {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  z-index: 2;
-  width: 50%;
-  overflow: hidden;
-  background: linear-gradient(180deg, #27371c 0%, #1c2910 55%, #18230d 100%);
-  transition: transform 1.15s var(--fl-door-ease);
-}
-
-.leafL {
-  left: 0;
-  border-right: 1px solid var(--fl-brass-line);
-}
-
-.leafR {
-  right: 0;
-}
-
-/* A recessed panel on each leaf, following the arch */
-.leaf::after {
-  content: '';
-  position: absolute;
-  inset: 20px 16px 20px 16px;
-  border: 1px solid rgba(255, 252, 242, 0.07);
-}
-
-.leafL::after {
-  border-top-left-radius: 999px;
-}
-
-.leafR::after {
-  border-top-right-radius: 999px;
-}
-
-/* The seal: one ring across the seam, half on each leaf. It parts with them. */
-.leaf::before {
-  content: '';
-  position: absolute;
-  top: var(--seal-top);
-  z-index: 1;
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  border: 1px solid var(--fl-brass);
-  background: #18230d;
-  box-shadow:
-    inset 0 0 0 6px #18230d,
-    inset 0 0 0 7px var(--fl-brass-line);
-}
-
-.leafL::before {
-  right: -20px;
-}
-
-.leafR::before {
-  left: -19px;
-}
-
-/* Open: the leaves stand at the sides of the arch, their half rings as handles */
-.doorOpen .leafL {
-  transform: translateX(-86%);
-}
-
-.doorOpen .leafR {
-  transform: translateX(86%);
-}
-
-.doorBody {
-  position: relative;
-  container-type: inline-size;
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  min-width: 0;
-  text-align: center;
-}
-
-/* Words on the closed doors */
-.doorFront {
-  z-index: 3;
-  padding: 74px 30px 150px;
-}
-
-/* Behind the words the seam and panel lines fade out, so nothing cuts through them */
-.doorWords::before {
-  content: '';
-  position: absolute;
-  top: 44px;
-  left: 12%;
-  right: 12%;
-  z-index: -1;
-  height: 62%;
-  background: linear-gradient(180deg, #25351a 0%, #1c2910 74%, #1b270f 100%);
-  -webkit-mask-image: radial-gradient(closest-side, #000 52%, rgba(0, 0, 0, 0));
-  mask-image: radial-gradient(closest-side, #000 52%, rgba(0, 0, 0, 0));
-  pointer-events: none;
-}
-
-/* What is inside, seen once they part */
-.doorInside {
-  z-index: 1;
-  padding: 70px 13% 40px;
-}
-
-.doorKicker {
-  margin: 0;
-  font-size: 11px;
+/* The last ten minutes: the figures take their full weight */
+.countFinal .countDigits {
   font-weight: 400;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--fl-brass);
 }
 
-.doorTitle {
-  margin: 12px 0 0;
-  font-family: var(--eu-display);
-  font-weight: 400;
-  font-size: clamp(30px, 8.4vw, 38px);
-  line-height: 1.08;
-  letter-spacing: -0.02em;
-}
-
-.doorTitle em {
-  font-style: italic;
-}
-
-.doorText {
-  max-width: 27ch;
-  margin: 18px 0 0;
-  font-size: 15px;
-  line-height: 1.6;
-  color: var(--fl-soft);
-}
-
-/* Teaser: where the code will be. Six blurred blanks, not a code. */
-.sealed {
-  display: flex;
-  gap: 9px;
-  margin-top: 28px;
-  filter: blur(3px);
-}
-
-.sealed span {
-  width: 26px;
-  height: 36px;
-  border-radius: 4px;
-  background: rgba(236, 217, 166, 0.34);
+/* A line of figures inside a sentence */
+.countSmall {
+  color: var(--eu-cream);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums lining-nums;
+  white-space: nowrap;
 }
 
 /* ---------- The password ---------- */
@@ -653,445 +296,417 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  max-width: 280px;
-  margin-top: 26px;
-}
-
-.gateLabel {
-  font-size: 11px;
-  font-weight: 400;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--fl-soft);
-}
-
-.gateField {
-  margin-top: 6px;
+  max-width: 320px;
 }
 
 .gateInput {
   width: 100%;
-  height: 60px;
-  padding: 0 6px;
+  height: 58px;
+  padding: 0 4px;
   border: 0;
-  border-bottom: 1px solid var(--fl-brass);
+  border-bottom: 1px solid var(--fl-dim);
   border-radius: 0;
   background: transparent;
-  color: var(--fl-cream);
-  font-family: var(--eu-display);
-  font-size: 26px;
-  letter-spacing: 0.06em;
+  color: var(--eu-cream);
+  font-family: var(--eu-body);
+  font-size: 20px;
+  font-weight: 400;
+  letter-spacing: 0.02em;
   text-align: center;
   -webkit-appearance: none;
   appearance: none;
 }
 
 .gateInput::placeholder {
-  color: var(--fl-faint);
-  font-style: italic;
-  letter-spacing: 0;
+  color: var(--fl-quiet);
+  opacity: 1;
 }
 
+/* Focus is shown on the line itself: full cream and twice as thick. No box. */
+.gateInput:focus,
 .gateInput:focus-visible {
-  border-bottom-color: var(--fl-cream);
-  outline: 2px solid var(--fl-cream);
-  outline-offset: 4px;
+  outline: none;
+  border-bottom-color: var(--eu-cream);
+  box-shadow: 0 1px 0 var(--eu-cream);
 }
 
-.gateInput[aria-invalid='true'] {
-  border-bottom-color: var(--fl-brass-hi);
+.gateInput[aria-invalid='true'],
+.gateOk .gateInput {
+  border-bottom-color: var(--eu-cream);
 }
 
 .gateGo {
-  margin-top: 20px;
+  margin-top: 18px;
 }
 
 .gateGo[aria-disabled='true'] {
-  opacity: 0.6;
   cursor: progress;
 }
 
-/* Always the height of two lines, so a message never moves the door */
+/* Always the height of two lines, so a message never moves the field */
 .gateMsg {
-  min-height: 2.9em;
+  min-height: 3em;
   margin: 12px 0 0;
   font-size: 14px;
-  line-height: 1.45;
-  color: var(--fl-beige);
+  line-height: 1.5;
 }
 
-/* ---------- The code ---------- */
+/* ---------- Opening: the cover parts down the middle ---------- */
+
+/* The two halves. They carry a still of the gradient (drawn into their
+   canvases as the cover opens) or, without WebGL, the CSS gradient. */
+.half {
+  position: fixed;
+  top: 0;
+  z-index: 1;
+  width: calc(50% + 1px);
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  visibility: hidden;
+  background: var(--fl-ground);
+  background-size: 200% 100%;
+  background-repeat: no-repeat;
+}
+
+.halfL {
+  left: 0;
+  background-position: left top;
+}
+
+.halfR {
+  right: 0;
+  background-position: right top;
+}
+
+.half canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.halvesOn .half {
+  visibility: visible;
+}
+
+/* The landing sequence starts from solid ink, which lifts off the gradient */
+.veil {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  height: 100vh;
+  height: 100dvh;
+  background: var(--eu-ink);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* A cover that has come back (midnight, with the page open) simply fades in */
+.coverReturn {
+  animation: fadeIn 0.4s ease both;
+}
+
+/* Opening lets taps through at once: the page behind is already usable */
+.coverParting,
+.coverFading {
+  pointer-events: none;
+}
+
+.coverParting .stack {
+  animation: leave 0.3s ease-in forwards;
+}
+
+.coverParting .halfL {
+  animation: partLeft 0.75s cubic-bezier(0.7, 0, 0.15, 1) 0.12s forwards;
+}
+
+.coverParting .halfR {
+  animation: partRight 0.75s cubic-bezier(0.7, 0, 0.15, 1) 0.12s forwards;
+}
+
+/* A later visit in the same session, and reduced motion: a quick fade instead */
+.coverFading {
+  animation: fadeOut 0.28s linear forwards;
+}
+
+/* ---------- The open page ---------- */
+
+.page {
+  position: relative;
+  z-index: 1;
+}
+
+.column {
+  max-width: 560px;
+  margin: 0 auto;
+  padding: calc(var(--eu-header-space) + 36px) var(--eu-gutter) 96px;
+}
+
+.eyebrow {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.4;
+  letter-spacing: 0.02em;
+  color: var(--fl-quiet);
+}
+
+.title {
+  margin: 10px 0 0;
+  font-family: var(--eu-display);
+  font-weight: 400;
+  font-size: clamp(60px, 17.4vw, 88px);
+  line-height: 0.98;
+  letter-spacing: -0.03em;
+}
+
+.title em {
+  font-style: italic;
+}
+
+/* The code card: the one light object on the page */
+.card {
+  container-type: inline-size;
+  margin-top: 32px;
+  padding: 22px;
+  border-radius: 22px;
+  background: var(--eu-cream);
+  color: var(--eu-ink);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.cardLabel {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--eu-sage);
+}
 
 .code {
-  margin: 20px 0 0;
-  border-radius: 6px;
-}
-
-/* Focus lands here after the password is accepted: a fine brass frame */
-.code:focus-visible {
-  outline: 1px solid var(--fl-brass-hi);
-  outline-offset: 9px;
-}
-
-.glyphs {
-  display: inline-flex;
-  font-family: var(--eu-display);
-  font-size: 30px;
+  margin: 4px 0 0;
+  border-radius: 4px;
+  color: var(--eu-ink);
+  font-family: var(--eu-body);
+  font-size: 32px;
+  font-weight: 600;
   line-height: 1.15;
+  letter-spacing: 0.01em;
   font-variant-numeric: lining-nums;
+  overflow-wrap: anywhere;
 }
 
 @supports (font-size: 1cqi) {
-  /* As large as the doorway allows, whatever the length of the code */
-  .glyphs {
-    font-size: min(54px, calc(100cqi * 0.72 / (var(--n) * 0.8)));
+  /* As large as the card allows, whatever the length of the code */
+  .code {
+    font-size: clamp(24px, calc(100cqi / (var(--n) * 0.7)), 44px);
   }
 }
 
-.glyph {
-  display: inline-block;
-  width: 0.8em;
-  text-align: center;
-  color: var(--fl-soft);
-}
-
-.glyphSet {
-  color: var(--fl-brass-hi);
-  background: linear-gradient(180deg, #f6ebc9 0%, #d3b06a 58%, #b08a45 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
 .copy {
-  display: inline-flex;
+  display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  min-width: 170px;
-  min-height: 48px;
-  margin-top: 16px;
-  padding: 0 22px;
-  border: 1px solid rgba(255, 252, 242, 0.42);
+  width: 100%;
+  min-height: 52px;
+  margin-top: 18px;
+  border: 0;
   border-radius: 999px;
-  background: transparent;
-  color: var(--fl-cream);
+  background: var(--eu-ink);
+  color: var(--eu-cream);
   font-family: var(--eu-body);
-  font-size: 11.5px;
+  font-size: 12px;
   font-weight: 400;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   cursor: pointer;
-  transition: background-color 0.4s, color 0.4s, border-color 0.4s;
+  transition: background-color 0.4s;
 }
 
-.copy:hover,
-.copyDone {
-  border-color: var(--fl-cream);
-  background: var(--fl-cream);
-  color: var(--fl-ink);
+.copy:hover {
+  background: var(--eu-green);
 }
 
-/* The price as a moment: the usual price struck through, then tonight's */
+/* The code takes focus when the visitor's password opens the page, so a
+   screen reader says it. It is not a control, so nothing is drawn round it. */
+.card .code:focus,
+.card .code:focus-visible {
+  outline: none;
+}
+
+/* On cream, focus is drawn in ink */
+.card .copy:focus-visible,
+.bar :focus-visible {
+  outline: 2px solid var(--eu-ink);
+  outline-offset: 3px;
+}
+
+/* The price: the usual one struck through, then tonight's */
 .price {
   display: grid;
-  justify-items: center;
-  margin: 26px 0 0;
+  margin: 30px 0 0;
 }
 
 .priceRow {
   display: inline-flex;
   align-items: baseline;
   gap: 14px;
-  font-family: var(--eu-display);
-  font-variant-numeric: lining-nums;
+  font-variant-numeric: tabular-nums lining-nums;
 }
 
-.priceWas {
-  position: relative;
-  font-size: 22px;
-  color: var(--fl-faint);
-  text-decoration: none;
+.priceRow s {
+  font-size: 20px;
+  color: var(--fl-quiet);
+  text-decoration-thickness: 1px;
 }
 
-.priceWas::after {
-  content: '';
-  position: absolute;
-  left: -3px;
-  right: -3px;
-  top: 54%;
-  height: 1px;
-  background: var(--fl-brass);
-  transform-origin: left;
-}
-
-.priceNow {
-  font-size: 56px;
-  font-weight: 400;
+.priceRow b {
+  font-size: 52px;
+  font-weight: 300;
   line-height: 1;
   letter-spacing: -0.02em;
 }
 
 .priceMaths {
   margin-top: 8px;
-  font-size: 14px;
-  line-height: 1.4;
-  color: var(--fl-soft);
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--fl-quiet);
 }
 
 .checkout {
-  width: 100%;
-  max-width: 290px;
-  margin-top: 22px;
+  margin-top: 26px;
 }
 
-.doorNote {
-  max-width: 26ch;
-  margin: 12px 0 0;
-  font-size: 13px;
+/* The site's outline button, with its arrow on a cream dot */
+.checkout :global(.eu-btn__dot) {
+  background: var(--eu-cream);
+  color: var(--eu-ink);
+}
+
+.checkout :global(.eu-btn:hover .eu-btn__dot) {
+  background: var(--eu-ink);
+  color: var(--eu-cream);
+}
+
+.note {
+  margin: 14px 0 0;
+  font-size: 14px;
   line-height: 1.5;
-  color: var(--fl-soft);
-}
-
-/* The unlock: a line of light down the seam, then a bloom from inside */
-.seam {
-  position: absolute;
-  top: 9%;
-  bottom: 3%;
-  left: 50%;
-  z-index: 4;
-  width: 2px;
-  margin-left: -1px;
-  background: linear-gradient(180deg, rgba(236, 217, 166, 0), #f6ebc9 30%, #f6ebc9 70%, rgba(236, 217, 166, 0));
-  opacity: 0;
-  pointer-events: none;
-}
-
-.bloom {
-  position: absolute;
-  top: 18%;
-  left: 50%;
-  z-index: 1;
-  width: 130%;
-  aspect-ratio: 1;
-  margin-left: -65%;
-  border-radius: 50%;
-  background: radial-gradient(closest-side, rgba(246, 235, 201, 0.5), rgba(201, 163, 92, 0.2) 48%, rgba(201, 163, 92, 0));
-  opacity: 0;
-  pointer-events: none;
-}
-
-@media (min-width: 960px) {
-  .door {
-    min-height: 620px;
-    margin-right: 0;
-  }
-
-  .doorFront {
-    padding: 96px 44px 170px;
-  }
-
-  .doorInside {
-    padding-top: 96px;
-  }
-
-  .doorTitle {
-    font-size: 40px;
-  }
-}
-
-/* The door stays beside the copy while it scrolls, on screens tall enough to hold it */
-@media (min-width: 960px) and (min-height: 800px) {
-  .door {
-    position: sticky;
-    top: calc(var(--eu-header-space) + 20px);
-  }
-}
-
-/* ---------- Below the door ---------- */
-
-.rest {
-  display: grid;
-  gap: 40px;
-  min-width: 0;
+  color: var(--fl-quiet);
 }
 
 .block {
-  padding-top: 26px;
-  border-top: 1px solid var(--fl-line);
+  margin-top: 44px;
+  padding-top: 24px;
+  border-top: 1px solid var(--eu-line-light);
 }
 
-.blockTitle {
-  margin: 0;
-  font-family: var(--eu-display);
-  font-weight: 400;
-  font-size: 26px;
-  line-height: 1.15;
-}
-
-.blockTitle em {
-  font-style: italic;
-}
-
-.actions {
-  display: grid;
-  gap: 12px;
-}
-
-.actions button {
-  width: 100%;
-  background: transparent;
+.blockLabel {
+  margin: 0 0 14px;
   font-family: var(--eu-body);
-}
-
-.actionNote {
-  min-height: 1.5em;
-  margin: 0;
   font-size: 13px;
-  line-height: 1.5;
-  color: var(--fl-soft);
+  font-weight: 500;
+  line-height: 1.4;
+  letter-spacing: 0.02em;
+  color: var(--fl-dim);
 }
 
-/* Numbered lines: the steps are a real sequence */
-.lines {
-  display: grid;
-  gap: 14px;
-  margin: 18px 0 0;
-  padding: 0;
-  list-style: none;
-  counter-reset: line;
-}
-
-.lines li {
-  position: relative;
-  padding-left: 40px;
+.closing {
+  margin: 0;
   font-size: 16px;
-  line-height: 1.55;
-  color: var(--fl-beige);
-  counter-increment: line;
-}
-
-.lines li::before {
-  content: counter(line) '.';
-  position: absolute;
-  left: 0;
-  top: -3px;
-  font-family: var(--eu-display);
-  font-style: italic;
-  font-size: 22px;
-  color: var(--fl-brass);
-  font-variant-numeric: lining-nums;
+  line-height: 1.5;
 }
 
 .honest {
-  max-width: 52ch;
-  margin: 22px 0 0;
-  padding-left: 16px;
-  border-left: 1px solid var(--fl-brass);
-  font-size: 15px;
+  max-width: 46ch;
+  margin: 10px 0 0;
+  font-size: 14.5px;
   line-height: 1.6;
-  color: var(--fl-beige);
+  color: var(--fl-quiet);
 }
 
-/* The two prices, before a door is open */
-.ledger {
+/* Three steps, as plain numbered text */
+.steps {
   display: grid;
-  margin: 16px 0 0;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: step;
+}
+
+.steps li {
+  position: relative;
+  padding-left: 28px;
+  font-size: 16px;
+  line-height: 1.5;
+  counter-increment: step;
+}
+
+.steps li::before {
+  content: counter(step);
+  position: absolute;
+  left: 0;
+  color: var(--fl-dim);
+  font-variant-numeric: tabular-nums;
+}
+
+/* The day: three rows of text and two hairlines. The current row in full cream. */
+.day {
+  margin: 0;
   padding: 0;
   list-style: none;
 }
 
-.ledger li {
+.day li {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: baseline;
-  gap: 4px 16px;
-  padding: 16px 0;
-  border-bottom: 1px solid var(--fl-line);
+  grid-template-columns: 60px minmax(0, 1fr);
+  gap: 12px;
+  padding: 13px 0;
+  border-top: 1px solid var(--eu-line-light);
+  font-size: 15.5px;
+  line-height: 1.45;
+  color: var(--fl-dim);
 }
 
-.ledger li:last-child {
-  border-bottom: 0;
+.day li:first-child {
+  padding-top: 0;
+  border-top: 0;
+}
+
+.day li:last-child {
   padding-bottom: 0;
 }
 
-.ledgerWho {
-  font-size: 15px;
-  line-height: 1.4;
+.day .dayNow {
+  color: var(--eu-cream);
 }
 
-.ledgerWho small {
-  display: block;
-  font-size: 13px;
-  color: var(--fl-soft);
-}
-
-.ledgerPrice {
-  display: inline-flex;
-  align-items: baseline;
-  gap: 10px;
-  font-family: var(--eu-display);
-  font-variant-numeric: lining-nums;
-}
-
-.ledgerPrice s {
-  font-size: 17px;
-  color: var(--fl-faint);
-  text-decoration-color: var(--fl-brass);
-  text-decoration-thickness: 1px;
-}
-
-.ledgerPrice b {
-  font-size: 30px;
-  font-weight: 400;
-  line-height: 1;
-}
-
-.ledgerMaths {
-  grid-column: 1 / -1;
-  font-size: 13.5px;
-  color: var(--fl-soft);
-}
-
-.ledgerGone .ledgerWho,
-.ledgerGone .ledgerPrice b,
-.ledgerGone .ledgerMaths {
-  color: var(--fl-faint);
-  text-decoration: line-through;
-  text-decoration-thickness: 1px;
+.dayTime {
+  font-weight: 500;
+  font-variant-numeric: tabular-nums lining-nums;
 }
 
 .terms {
   display: grid;
-  gap: 8px;
-  margin: 16px 0 0;
+  gap: 7px;
+  margin: 0;
   padding: 0;
   list-style: none;
   font-size: 14px;
-  line-height: 1.6;
-  color: var(--fl-soft);
+  line-height: 1.55;
+  color: var(--fl-dim);
 }
 
 .terms a {
-  color: var(--fl-cream);
+  color: var(--eu-cream);
   text-decoration: underline;
   text-underline-offset: 4px;
-}
-
-@media (min-width: 600px) {
-  .actions {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .actionNote {
-    grid-column: 1 / -1;
-  }
-}
-
-@media (min-width: 960px) {
-  .rest {
-    max-width: 620px;
-  }
 }
 
 /* ---------- Sticky bar (phones): the code and the checkout, always in reach ---------- */
@@ -1110,14 +725,12 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 10px;
-    padding: 8px;
-    border: 1px solid var(--fl-brass-line);
+    gap: 12px;
+    padding: 8px 8px 8px 22px;
     border-radius: 999px;
-    background: #1a260e;
-    color: #fffcf2;
-    box-shadow: 0 22px 44px -18px rgba(0, 0, 0, 0.85);
-    /* Below the screen until the door's own checkout button scrolls away */
+    background: var(--eu-cream);
+    color: var(--eu-ink);
+    /* Below the screen until the page's own checkout button scrolls away */
     transform: translateY(calc(100% + 26px + env(safe-area-inset-bottom, 0px)));
     visibility: hidden;
     transition:
@@ -1139,26 +752,31 @@
     gap: 10px;
     min-width: 0;
     min-height: 48px;
-    padding: 0 16px;
-    border: 1px dashed rgba(201, 163, 92, 0.7);
-    border-radius: 999px;
-    background: transparent;
-    color: #ecd9a6;
-    font-family: var(--eu-display);
-    font-size: 18px;
-    letter-spacing: 0.05em;
-    font-variant-numeric: lining-nums;
+    padding: 0;
+    border: 0;
+    border-radius: 6px;
+    background: none;
+    color: var(--eu-ink);
+    font-family: var(--eu-body);
+    text-align: left;
     cursor: pointer;
   }
 
-  .barCode span {
+  .barCodeText {
     overflow: hidden;
+    font-size: 17px;
+    font-weight: 600;
+    font-variant-numeric: lining-nums;
     text-overflow: ellipsis;
     white-space: nowrap;
   }
 
-  .barCode svg {
+  .barCodeHint {
     flex: none;
+    font-size: 12.5px;
+    color: var(--eu-sage);
+    text-decoration: underline;
+    text-underline-offset: 3px;
   }
 
   .barGo {
@@ -1168,8 +786,8 @@
     min-height: 48px;
     padding: 0 22px;
     border-radius: 999px;
-    background: #fffcf2;
-    color: #1a260e;
+    background: var(--eu-ink);
+    color: var(--eu-cream);
     text-decoration: none;
     font-size: 11.5px;
     font-weight: 500;
@@ -1179,194 +797,101 @@
   }
 
   .barGo:hover {
-    color: #1a260e;
+    color: var(--eu-cream);
   }
 }
 
-/* ---------- Opening animation: "The doors open" ----------
+/* ---------- Desktop: the same single column, with more room ---------- */
 
-   An overlay above the page, which is already drawn underneath. The whole
-   sequence is CSS, so it runs and ends by itself even if JavaScript is slow
-   or never arrives: at 2.2s the overlay stops being visible or tappable, and
-   a second, independent rule fades it at 3s in case anything went wrong. */
+@media (min-width: 900px) {
+  .stack {
+    max-width: 520px;
+  }
 
-.intro {
-  position: fixed;
-  inset: 0;
-  z-index: 400;
-  overflow: hidden;
-  contain: layout paint style;
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
-  animation:
-    introGone 1ms linear 2.2s forwards,
-    introFailsafe 0.3s linear 3s forwards;
-}
+  .wordmarkCrop {
+    width: 200px;
+  }
 
-:global(html[data-flash-intro='skip']) .intro {
-  display: none;
-}
+  .coverTitle {
+    font-size: 68px;
+  }
 
-/* A tap, a scroll or a key: gone at once */
-.introSkipped {
-  opacity: 0 !important;
-  pointer-events: none;
-  transition: opacity 0.2s linear;
-}
+  .slot {
+    min-height: 276px;
+    margin-top: 36px;
+  }
 
-.introDoor {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  z-index: 2;
-  width: calc(50% + 1px);
-  background: #10180a;
-}
+  .countDigits {
+    font-size: 96px;
+  }
 
-.introDoorL {
-  left: 0;
-  animation: introPartL 0.6s cubic-bezier(0.7, 0, 0.15, 1) 1.6s forwards;
-}
+  .column {
+    padding-top: calc(var(--eu-header-space) + 56px);
+    padding-bottom: 140px;
+  }
 
-.introDoorR {
-  right: 0;
-  animation: introPartR 0.6s cubic-bezier(0.7, 0, 0.15, 1) 1.6s forwards;
-}
+  .title {
+    font-size: 96px;
+  }
 
-/* The light that comes through the gap as the doors part */
-.introGlow {
-  position: absolute;
-  top: -10%;
-  bottom: -10%;
-  left: 50%;
-  z-index: 1;
-  width: 76vw;
-  margin-left: -38vw;
-  background: radial-gradient(closest-side, rgba(246, 235, 201, 0.75), rgba(201, 163, 92, 0.3) 46%, rgba(201, 163, 92, 0) 78%);
-  opacity: 0;
-  transform: scaleX(0.04);
-  animation: introGlow 0.72s ease-out 1.52s forwards;
-}
+  .card {
+    padding: 28px;
+  }
 
-.introLockup {
-  position: absolute;
-  inset: 0;
-  z-index: 3;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 24px;
-  color: #fffcf2;
-  text-align: center;
-  animation: introLeave 0.3s ease-in 1.56s forwards;
-}
-
-/* The wordmark from /logo.png, cropped to its lettering */
-.introLogo {
-  position: relative;
-  width: min(64vw, 300px);
-  aspect-ratio: 5 / 1;
-  overflow: hidden;
-  opacity: 0;
-  transform: translateY(14px);
-  animation: introRise 0.55s cubic-bezier(0.2, 0.8, 0.2, 1) 0.2s forwards;
-}
-
-.introLogo img {
-  display: block;
-  width: 100%;
-  height: auto;
-  transform: translateY(-33.5%);
-}
-
-.introLine {
-  width: min(50vw, 230px);
-  height: 1px;
-  margin-top: 18px;
-  background: linear-gradient(90deg, rgba(201, 163, 92, 0), #c9a35c 22%, #ecd9a6 50%, #c9a35c 78%, rgba(201, 163, 92, 0));
-  transform: scaleX(0);
-  animation: introDraw 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) 0.7s forwards;
-}
-
-.introTitle {
-  display: flex;
-  margin-top: 18px;
-  font-family: var(--eu-display);
-  font-style: italic;
-  font-size: clamp(42px, 12.5vw, 76px);
-  line-height: 1.05;
-  letter-spacing: -0.02em;
-}
-
-.introTitle span {
-  display: inline-block;
-  min-width: 0.26em;
-  opacity: 0;
-  transform: translateY(0.3em);
-  animation: introRise 0.3s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-  animation-delay: calc(1s + var(--i) * 26ms);
-}
-
-.introSub {
-  margin-top: 16px;
-  font-size: 11px;
-  font-weight: 400;
-  letter-spacing: 0.3em;
-  text-transform: uppercase;
-  color: #f5f0e8;
-  opacity: 0;
-  animation: introFade 0.28s linear 1.28s forwards;
-}
-
-.introSkip {
-  position: absolute;
-  right: 20px;
-  bottom: calc(20px + env(safe-area-inset-bottom, 0px));
-  z-index: 4;
-  font-size: 11px;
-  font-weight: 400;
-  letter-spacing: 0.24em;
-  text-transform: uppercase;
-  color: rgba(255, 252, 242, 0.66);
-  opacity: 0;
-  animation:
-    introFade 0.3s linear 0.5s forwards,
-    introFadeOut 0.25s linear 1.56s forwards;
-}
-
-@keyframes introGone {
-  to {
-    visibility: hidden;
+  .block {
+    margin-top: 52px;
   }
 }
 
-@keyframes introFailsafe {
-  to {
+/* ---------- Keyframes ---------- */
+
+@keyframes fadeIn {
+  from {
     opacity: 0;
-    visibility: hidden;
   }
-}
-
-@keyframes introPartL {
   to {
-    transform: translateX(-101%);
-  }
-}
-
-@keyframes introPartR {
-  to {
-    transform: translateX(101%);
-  }
-}
-
-@keyframes introGlow {
-  0% {
-    opacity: 0;
-    transform: scaleX(0.04);
-  }
-  32% {
     opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes veilLift {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes riseIn {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes lineDraw {
+  0% {
+    opacity: 1;
+    transform: scaleX(0);
+  }
+  40% {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+  65% {
+    opacity: 1;
+    transform: scaleX(1);
   }
   100% {
     opacity: 0;
@@ -1374,43 +899,35 @@
   }
 }
 
-@keyframes introRise {
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-
-@keyframes introDraw {
-  to {
-    transform: scaleX(1);
-  }
-}
-
-@keyframes introFade {
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes introFadeOut {
+@keyframes slotLeave {
   to {
     opacity: 0;
+    transform: translateY(-10px);
   }
 }
 
-@keyframes introLeave {
+@keyframes leave {
   to {
     opacity: 0;
-    transform: scale(1.04);
+    transform: scale(1.03);
   }
 }
 
-/* ---------- Motion for everyone who has not asked for less ---------- */
+@keyframes partLeft {
+  to {
+    transform: translateX(-101%);
+  }
+}
+
+@keyframes partRight {
+  to {
+    transform: translateX(101%);
+  }
+}
 
 @keyframes settle {
   from {
-    transform: translateY(26px);
+    transform: translateY(28px);
   }
   to {
     transform: none;
@@ -1432,59 +949,6 @@
   }
   to {
     transform: translateY(104%);
-  }
-}
-
-@keyframes bodyIn {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes ping {
-  0% {
-    opacity: 0.9;
-    transform: scale(0.6);
-  }
-  100% {
-    opacity: 0;
-    transform: scale(1.7);
-  }
-}
-
-@keyframes breathe {
-  0%,
-  100% {
-    opacity: 0.35;
-    transform: scaleX(0.55);
-  }
-  50% {
-    opacity: 1;
-    transform: scaleX(1);
-  }
-}
-
-@keyframes blink {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.25;
   }
 }
 
@@ -1527,89 +991,64 @@
   }
 }
 
-@keyframes seamFlash {
-  0% {
-    opacity: 0;
-    transform: scaleY(0);
-  }
-  35% {
-    opacity: 1;
-    transform: scaleY(1);
-  }
-  100% {
-    opacity: 0;
-    transform: scaleY(1);
-  }
-}
-
-@keyframes bloom {
-  0% {
-    opacity: 0;
-    transform: scale(0.4);
-  }
-  35% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-    transform: scale(1.35);
-  }
-}
-
-@keyframes pop {
-  from {
-    transform: scale(1.28);
-  }
-  to {
-    transform: none;
-  }
-}
-
-@keyframes strike {
-  from {
-    transform: scaleX(0);
-  }
-  to {
-    transform: scaleX(1);
-  }
-}
+/* ---------- Motion for everyone who has not asked for less ---------- */
 
 @media (prefers-reduced-motion: no-preference) {
-  /* The headline, timeline, countdown and door rise into place as the intro's
-     doors part (1.5s). With no intro they rise as the page arrives. No fade:
-     they are painted from the start, so the intro never delays the page. */
-  .settle {
-    animation: settle 1s var(--fl-ease) both;
-    animation-delay: calc(1.5s + var(--settle, 0) * 70ms);
+  /* The landing sequence, once per browser session. All CSS, so it runs and
+     finishes by itself even if JavaScript is slow or never arrives, and every
+     piece ends exactly where it rests. Solid ink lifts off the gradient, the
+     wordmark rises, the line draws and goes, the headline arrives. */
+  .veil {
+    animation: veilLift 1.1s ease 0.2s both;
   }
 
-  :global(html[data-flash-intro='skip']) .settle {
-    animation-duration: 0.9s;
-    animation-delay: calc(var(--settle, 0) * 70ms);
+  .wordmark {
+    animation: riseIn 0.5s var(--eu-ease) 0.15s both;
+  }
+
+  .introLine {
+    animation: lineDraw 0.85s var(--eu-ease) 0.55s both;
+  }
+
+  .coverTitle span {
+    animation: riseIn 0.45s var(--eu-ease) both;
+    animation-delay: calc(0.8s + var(--i, 0) * 90ms);
+  }
+
+  /* Not on a later visit in the same session, not once it is over (or a tap
+     has ended it), and not for a cover that has come back */
+  :global(html[data-flash-intro='skip']) .veil,
+  :global(html[data-flash-intro='skip']) .wordmark,
+  :global(html[data-flash-intro='skip']) .introLine,
+  :global(html[data-flash-intro='skip']) .coverTitle span,
+  .introOver .veil,
+  .introOver .wordmark,
+  .introOver .introLine,
+  .introOver .coverTitle span {
+    animation: none;
+  }
+
+  /* What is under the headline arrives, and gives way, in place */
+  .slotIn {
+    animation: riseIn 0.5s var(--eu-ease) both;
+  }
+
+  .slotOut {
+    animation: slotLeave 0.3s ease forwards;
+  }
+
+  /* As the cover parts, the page rises gently into place. No fade: it is
+     painted from the moment it exists. */
+  .pageArrive {
+    animation: settle 0.95s var(--eu-ease) 0.18s both;
   }
 
   .faceIn {
-    animation: rollIn 0.5s var(--fl-ease) both;
+    animation: rollIn 0.5s var(--eu-ease) both;
   }
 
   .faceOut {
-    animation: rollOut 0.5s var(--fl-ease) both;
-  }
-
-  .step_now .stepDot::after {
-    animation: ping 1.8s ease-out infinite;
-  }
-
-  .countUrgent .countRow::after {
-    animation: breathe 2s ease-in-out infinite;
-  }
-
-  .countFinal::before {
-    animation: blink 1s ease-in-out infinite;
-  }
-
-  .doorBody {
-    animation: bodyIn 0.55s var(--fl-ease) both;
+    animation: rollOut 0.5s var(--eu-ease) both;
   }
 
   .shake[data-shake='1'] {
@@ -1619,111 +1058,32 @@
   .shake[data-shake='2'] {
     animation: shakeB 0.42s ease-out;
   }
-
-  /* The visitor's own password opened the door: the best moment on the page.
-     A line of light down the seam, the leaves part, the room blooms, and the
-     contents arrive one after another while the code decodes. */
-  .doorCelebrate .leaf {
-    transition-delay: 0.3s;
-  }
-
-  .doorCelebrate .seam {
-    animation: seamFlash 0.8s ease-out both;
-  }
-
-  .doorCelebrate .bloom {
-    animation: bloom 1.7s ease-out 0.45s both;
-  }
-
-  .doorCelebrate .doorBody {
-    animation: none;
-  }
-
-  .doorCelebrate .doorBody > * {
-    animation: bodyIn 0.6s var(--fl-ease) both;
-    animation-delay: calc(0.55s + var(--k, 0) * 0.16s);
-  }
-
-  .doorCelebrate .doorBody > :nth-child(2) {
-    --k: 1;
-  }
-
-  .doorCelebrate .doorBody > :nth-child(3) {
-    --k: 2;
-  }
-
-  .doorCelebrate .doorBody > :nth-child(4) {
-    --k: 6;
-  }
-
-  .doorCelebrate .doorBody > :nth-child(5) {
-    --k: 7.5;
-  }
-
-  .doorCelebrate .doorBody > :nth-child(6) {
-    --k: 9;
-  }
-
-  .doorCelebrate .doorBody > :nth-child(7) {
-    --k: 10;
-  }
-
-  .doorCelebrate .glyphSet {
-    animation: pop 0.3s var(--fl-ease) both;
-  }
-
-  .doorCelebrate .priceWas::after {
-    animation: strike 0.5s var(--fl-ease) 1.9s both;
-  }
 }
 
 /* ---------- Reduced motion: everything still works, with plain fades ---------- */
 
 @media (prefers-reduced-motion: reduce) {
-  /* No doors: a 300ms fade from ink green to the page */
-  .intro {
-    background: #10180a;
-    animation:
-      introFadeOut 0.3s linear 0.05s forwards,
-      introGone 1ms linear 0.36s forwards;
-  }
-
-  .introDoor,
-  .introGlow,
-  .introLockup,
-  .introSkip {
-    display: none;
-  }
-
-  /* The doors fade rather than slide */
-  .leaf {
-    transition: opacity 0.3s linear;
-  }
-
-  .doorOpen .leafL,
-  .doorOpen .leafR {
-    transform: none;
-    opacity: 0;
-  }
-
-  .doorLight {
-    transition: opacity 0.3s linear;
-  }
-
-  .doorBody {
+  .slotIn {
     animation: fadeIn 0.3s linear both;
   }
 
-  .faceOut,
-  .seam,
-  .bloom {
+  .slotOut,
+  .faceOut {
     display: none;
   }
 
-  .step::before {
-    transition: none;
+  /* The cover never slides: it fades (FlashCover picks the fade as well) */
+  .coverParting {
+    animation: fadeOut 0.28s linear forwards;
   }
 
+  .coverParting .stack,
+  .coverParting .halfL,
+  .coverParting .halfR {
+    animation: none;
+  }
+
+  .fieldCanvas,
   .bar,
   .barShow {
     transition: none;

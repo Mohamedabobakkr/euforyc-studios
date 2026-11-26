@@ -1,10 +1,24 @@
-/* /flash turns the lights down. The page paints its own dark ground; this
-   also darkens what shows around it: the gaps beside the footer's rounded
-   corners and the area a phone reveals when the page is pulled past its end.
-   Applies only while the /flash page is on screen. */
+/* /flash, outside its own elements. Applies only while the /flash page is on
+   screen; nothing here touches the layout's files.
+
+   The ground: the page paints its own ink, and this darkens what shows
+   around it too (the gaps beside the footer's rounded corners, and the area
+   a phone reveals when the page is pulled past its end). */
 html:has([data-flash-root]),
-html:has([data-flash-root]) body,
-html[data-flash-phase],
-html[data-flash-phase] body {
-  background-color: #10180a;
+html:has([data-flash-root]) body {
+  background-color: #1a260e; /* --eu-ink */
+}
+
+/* The closed page does not scroll. FlashSale.tsx locks it from code as well;
+   this holds it from the very first paint, before any code has run, and lets
+   go by itself the moment the cover starts to open. */
+html:has([data-flash-cover='closed']) {
+  overflow: hidden;
+}
+
+/* Room for the scrollbar is kept whether or not the page can scroll, so
+   nothing moves sideways when the cover opens (desktop browsers that draw
+   a permanent scrollbar). */
+html:has([data-flash-root]) {
+  scrollbar-gutter: stable;
 }

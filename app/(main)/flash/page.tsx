@@ -8,6 +8,10 @@
  * visitor's cookie say they may. The public facts (times, prices, words) are
  * in components/flash-sale/config.ts.
  *
+ * What is prerendered here is the closed page: a full-screen cover and
+ * nothing of the sale. It opens in the browser only when the server hands
+ * over a code (components/flash-sale/view.ts).
+ *
  * Not in the sitemap or llms.txt, and no structured data, by design.
  */
 import type { Metadata, Viewport } from 'next';
@@ -24,7 +28,7 @@ import {
 } from '@/components/flash-sale/config';
 import { pageMetadata } from '@/lib/site';
 
-const TITLE = 'Black Friday: One Night Only';
+const TITLE = 'Black Friday Flash Sale';
 
 const shared = pageMetadata({
   title: TITLE,
@@ -50,16 +54,16 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
-// The browser's own bars go dark with the page
+// The browser's own bars take the page's ink (--eu-ink)
 export const viewport: Viewport = {
-  themeColor: '#10180a',
+  themeColor: '#1a260e',
 };
 
 export default function FlashPage() {
   return (
     <>
-      {/* Picks the layout for the time of day and decides whether the opening
-          animation plays, before anything is drawn (components/flash-sale/config.ts) */}
+      {/* Decides, before anything is drawn, whether the landing sequence plays
+          (once per browser session; components/flash-sale/config.ts) */}
       <script dangerouslySetInnerHTML={{ __html: BEFORE_PAINT }} />
       {/* Read by the site's pixel code (app/(main)/layout.tsx) for the ViewContent event */}
       <div

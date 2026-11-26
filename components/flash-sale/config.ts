@@ -159,22 +159,17 @@ export function flashTracking(tier: 'vip' | 'public') {
 // Before the page is drawn
 // ---------------------------------------------------------------------------
 
-/**
- * Set on <html>: the phase the layout is drawn for. The page's HTML is the
- * same static file all day, so the visitor's own clock picks the layout
- * before anything is painted and the server's answer corrects it if needed.
- * This only arranges the page. It cannot reveal a code: none is on the page.
- */
-export const PHASE_ATTR = 'data-flash-phase';
-
-/** Set on <html>: whether the opening animation plays ("play") or not ("skip") */
+/** Set on <html>: whether the landing sequence plays ("play") or not ("skip") */
 export const INTRO_ATTR = 'data-flash-intro';
 export const INTRO_SEEN_KEY = 'euforyc_flash_intro';
 
 /**
- * A one-line script that runs before the page is drawn. It sets the two
- * attributes above. The doors play once per browser session and never after
- * the sale is over; if the browser will not let us remember (storage
- * blocked), they simply play.
+ * A one-line script that runs before the page is drawn and sets the attribute
+ * above. The landing sequence (the wordmark rising, the line, the headline)
+ * plays once per browser session and never after the sale is over; if the
+ * browser will not let us remember (storage blocked), it simply plays.
+ *
+ * It decides how the cover arrives, nothing else. Whether the cover OPENS is
+ * decided by the server alone (components/flash-sale/view.ts).
  */
-export const BEFORE_PAINT = `(function(){var d=document.documentElement,n=Date.now(),p=n<${FLASH_VIP_AT}?'teaser':n<${FLASH_PUBLIC_AT}?'vip':n<${FLASH_ENDS_AT}?'public':'ended',m='play';try{if(p==='ended'||sessionStorage.getItem('${INTRO_SEEN_KEY}')){m='skip'}else{sessionStorage.setItem('${INTRO_SEEN_KEY}','1')}}catch(e){}d.setAttribute('${PHASE_ATTR}',p);d.setAttribute('${INTRO_ATTR}',m)})()`;
+export const BEFORE_PAINT = `(function(){var m='play';try{if(Date.now()>=${FLASH_ENDS_AT}||sessionStorage.getItem('${INTRO_SEEN_KEY}')){m='skip'}else{sessionStorage.setItem('${INTRO_SEEN_KEY}','1')}}catch(e){}document.documentElement.setAttribute('${INTRO_ATTR}',m)})()`;
