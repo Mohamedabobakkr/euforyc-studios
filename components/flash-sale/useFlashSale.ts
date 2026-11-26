@@ -2,7 +2,8 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
 
-import { nextPhaseAt, phaseAt, type FlashPhase, type FlashState } from './config';
+import type { FlashPhase, FlashState } from './config';
+import { readFlash, type FlashOffer, type FlashView } from './view';
 
 // The page is a static shell: everything that depends on the time, the
 // password or the codes comes from these two routes
@@ -10,21 +11,7 @@ const STATE_URL = '/api/flash/state';
 const UNLOCK_URL = '/api/flash/unlock';
 const REFRESH_MS = 60_000;
 
-export interface FlashOffer {
-  code: string;
-  checkoutUrl: string;
-}
-
-/** What the door is doing */
-export type FlashView =
-  | 'loading' // the server has not answered yet
-  | 'teaser' // sealed until 12:00
-  | 'gate' // 12:00 to 18:00, waiting for the password
-  | 'soldout' // 12:00 to 18:00, the 20 are gone
-  | 'vipOpen' // 12:00 to 18:00, password accepted
-  | 'publicOpen' // 18:00 to midnight
-  | 'unavailable' // 18:00 to midnight, but the server has no code to give
-  | 'ended';
+export type { FlashOffer, FlashView };
 
 export type UnlockResult =
   | { status: 'ok' }
@@ -76,7 +63,7 @@ export function useFlashSale() {
   // memory only (never in storage), so it survives a refresh of the state
   // even in a browser that refuses the cookie.
   const [held, setHeld] = useState<FlashOffer | null>(null);
-  // True from the moment the visitor's own password opens the door
+  // True from the moment the visitor's own password opens the page
   const [justUnlocked, setJustUnlocked] = useState(false);
   const latestRequest = useRef(0);
 
@@ -133,10 +120,9 @@ export function useFlashSale() {
   const seconds = useServerSeconds(offset);
   const now = seconds === null ? null : seconds * 1000;
 
-  // Until the server answers, the browser's clock draws the timeline and the
-  // countdown. That is cosmetic: no code exists on the page to reveal early.
-  const phase: FlashPhase | null = state ? state.phase : now === null ? null : phaseAt(now);
-  const target = state ? state.nextPhaseAt : phase ? nextPhaseAt(phase) : null;
+  // The phase, and the moment it ends, come from the server and nowhere else
+  const phase: FlashPhase | null = state ? state.phase : null;
+  const target = state ? state.nextPhaseAt : null;
   const secondsLeft = target === null || now === null ? null : Math.max(0, Math.round((target - now) / 1000));
 
   // The countdown has reached zero: ask the server, and keep asking until it
@@ -169,24 +155,8 @@ export function useFlashSale() {
     }
   }, [state, inVip]);
 
-  const fromServer: FlashOffer | null =
-    state?.code && state.checkoutUrl ? { code: state.code, checkoutUrl: state.checkoutUrl } : null;
-
-  let view: FlashView = 'loading';
-  let offer: FlashOffer | null = null;
-  if (state) {
-    if (state.phase === 'teaser') {
-      view = 'teaser';
-    } else if (state.phase === 'vip') {
-      offer = state.soldOutVip ? null : fromServer ?? held;
-      view = state.soldOutVip ? 'soldout' : offer ? 'vipOpen' : 'gate';
-    } else if (state.phase === 'public') {
-      offer = fromServer;
-      view = offer ? 'publicOpen' : 'unavailable';
-    } else {
-      view = 'ended';
-    }
-  }
+  // The one rule: open if, and only if, the server has handed over a code
+  const { view, offer, open } = readFlash(state, held);
 
   const unlock = useCallback(async (password: string): Promise<UnlockResult> => {
     try {
@@ -219,9 +189,11 @@ export function useFlashSale() {
 
   return {
     view,
-    /** The phase to draw the timeline with; null only while the page is being built */
+    /** Null until the server has answered */
     phase,
     offer,
+    /** The cover may open: the server has handed over a code */
+    open,
     soldOutVip: state?.soldOutVip ?? false,
     secondsLeft,
     /** The countdown is at zero and the next phase is being fetched */

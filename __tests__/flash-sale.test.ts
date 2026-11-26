@@ -19,7 +19,10 @@ import {
   flashTracking,
   nextPhaseAt,
   phaseAt,
+  type FlashPhase,
+  type FlashState,
 } from '@/components/flash-sale/config';
+import { readFlash } from '@/components/flash-sale/view';
 import {
   createUnlockToken,
   flashNow,
@@ -156,6 +159,101 @@ describe('phase calculation', () => {
   it('prices the pack at 50% and 40% off £56', () => {
     expect(FLASH_PRICES.vip).toMatchObject({ value: 28, price: '£28', perClass: '£14' });
     expect(FLASH_PRICES.public).toMatchObject({ value: 33.6, price: '£33.60', perClass: '£16.80' });
+  });
+});
+
+// ---------------------------------------------------------------------------
+
+describe('the cover: it opens if, and only if, the server has handed over a code', () => {
+  const VIP_OFFER = { code: FAKE.FLASH_CODE_VIP, checkoutUrl: FAKE.FLASH_CHECKOUT_URL };
+  const PUBLIC_OFFER = { code: FAKE.FLASH_CODE_PUBLIC, checkoutUrl: FAKE.FLASH_CHECKOUT_URL };
+
+  // An answer from GET /api/flash/state, as the page receives it
+  const answer = (phase: FlashPhase, extra: Partial<FlashState> = {}): FlashState => ({
+    phase,
+    serverNow: at(13),
+    nextPhaseAt: nextPhaseAt(phase),
+    soldOutVip: false,
+    ready: true,
+    ...extra,
+  });
+
+  it('is closed until the server has answered, whatever the page is holding', () => {
+    expect(readFlash(null)).toEqual({ view: 'loading', offer: null, open: false });
+    expect(readFlash(null, VIP_OFFER)).toEqual({ view: 'loading', offer: null, open: false });
+  });
+
+  it('is closed before 12:00 and after midnight, even if a code were to arrive', () => {
+    for (const phase of ['teaser', 'ended'] as const) {
+      expect(readFlash(answer(phase))).toEqual({ view: phase, offer: null, open: false });
+      expect(readFlash(answer(phase, VIP_OFFER), VIP_OFFER)).toEqual({ view: phase, offer: null, open: false });
+    }
+  });
+
+  it('is closed in the password phase while the state carries no code', () => {
+    expect(readFlash(answer('vip'))).toEqual({ view: 'gate', offer: null, open: false });
+  });
+
+  it('opens in the password phase when the state carries the code (a valid cookie)', () => {
+    expect(readFlash(answer('vip', VIP_OFFER))).toEqual({ view: 'vipOpen', offer: VIP_OFFER, open: true });
+  });
+
+  it('opens on the code the unlock route returned for this visitor’s own password', () => {
+    expect(readFlash(answer('vip'), VIP_OFFER)).toEqual({ view: 'vipOpen', offer: VIP_OFFER, open: true });
+  });
+
+  it('is closed once the first 20 are gone, even for someone holding a code', () => {
+    const gone = answer('vip', { soldOutVip: true });
+    expect(readFlash(gone, VIP_OFFER)).toEqual({ view: 'soldout', offer: null, open: false });
+    expect(readFlash({ ...gone, ...VIP_OFFER })).toEqual({ view: 'soldout', offer: null, open: false });
+  });
+
+  it('opens for everyone in the public phase, on the code the state carries and no other', () => {
+    expect(readFlash(answer('public', PUBLIC_OFFER))).toEqual({ view: 'publicOpen', offer: PUBLIC_OFFER, open: true });
+    // A 50% code held from earlier is not shown in its place
+    expect(readFlash(answer('public', PUBLIC_OFFER), VIP_OFFER).offer).toEqual(PUBLIC_OFFER);
+  });
+
+  it('is closed in the public phase if the server sends no code, whatever the page is holding', () => {
+    expect(readFlash(answer('public'))).toEqual({ view: 'unavailable', offer: null, open: false });
+    expect(readFlash(answer('public'), VIP_OFFER)).toEqual({ view: 'unavailable', offer: null, open: false });
+  });
+
+  it('needs both the code and the checkout link', () => {
+    expect(readFlash(answer('public', { code: FAKE.FLASH_CODE_PUBLIC })).open).toBe(false);
+    expect(readFlash(answer('public', { checkoutUrl: FAKE.FLASH_CHECKOUT_URL })).open).toBe(false);
+    expect(readFlash(answer('vip', { code: '', checkoutUrl: FAKE.FLASH_CHECKOUT_URL })).open).toBe(false);
+  });
+
+  it('takes no notice of any clock: only the phase and the code the server sent', () => {
+    // A browser or a response claiming it is already evening changes nothing
+    const lateClock = { serverNow: Date.UTC(2026, 10, 27, 23, 0, 0), nextPhaseAt: null };
+    expect(readFlash(answer('teaser', lateClock)).open).toBe(false);
+    expect(readFlash(answer('vip', lateClock)).open).toBe(false);
+    // And the same answer reads the same whenever it is read
+    const early = readFlash(answer('public', { ...PUBLIC_OFFER, serverNow: 0 }));
+    const late = readFlash(answer('public', { ...PUBLIC_OFFER, serverNow: Date.UTC(2030, 0, 1) }));
+    expect(early).toEqual(late);
+  });
+
+  it('agrees with the server: what the state route sends in each phase opens or keeps shut the right covers', async () => {
+    const cookie = validCookie();
+    const cases: Array<[string, string | undefined, boolean]> = [
+      [TEASER, cookie, false],
+      [VIP, undefined, false],
+      [VIP, cookie, true],
+      [PUBLIC, undefined, true],
+      [ENDED, cookie, false],
+    ];
+
+    for (const [clock, who, opens] of cases) {
+      setClock(clock);
+      const { body } = await readState(who);
+      const reading = readFlash(body as unknown as FlashState);
+      expect(reading.open).toBe(opens);
+      // Open means a code is there; closed means none reached the page at all
+      expect('code' in body).toBe(opens);
+    }
   });
 });
 
