@@ -1,0 +1,1398 @@
+/* /flash: the Black Friday flash sale.
+
+   The whole page is closed until the server hands over a code. Closed, it is
+   one full-screen cover over a slow gradient. Open, it is one calm column on
+   the ink ground with a single bright object: the cream code card.
+
+   Colour: the brand's own tokens from app/globals.css and plain tints of
+   them. Nothing else. The accent on this page is cream itself.
+   Type: Playfair Display for the headlines, the pack's title, prices, times
+   and the open page's countdown, and for one italic accent in a sentence
+   where a word matters. Inter for everything else, the code included.
+   Motion: transform and opacity only. Nothing relies on hover. */
+
+.root {
+  /* Tints of cream for quieter text. 0.8 is the least used over the gradient:
+     it keeps AA against the lightest colour the field can reach under words. */
+  --fl-quiet: rgba(255, 252, 242, 0.8);
+  --fl-dim: rgba(255, 252, 242, 0.62);
+
+  /* The gradient without WebGL: ink, a swell of green, and the light along
+     the bottom edge. --fl-light is how far up the screen is clear of words. */
+  --fl-ground:
+    radial-gradient(
+      125% calc(var(--fl-light, 0.16) * 104%) at 62% 104%,
+      rgba(255, 252, 242, 0.94) 0%,
+      rgba(245, 240, 232, 0.8) 22%,
+      rgba(61, 74, 51, 0.72) 56%,
+      rgba(26, 38, 14, 0) 100%
+    ),
+    radial-gradient(
+      70% calc(var(--fl-light, 0.16) * 80%) at 6% 103%,
+      rgba(245, 240, 232, 0.5) 0%,
+      rgba(61, 74, 51, 0.45) 52%,
+      rgba(26, 38, 14, 0) 100%
+    ),
+    radial-gradient(90% 52% at 84% 2%, rgba(42, 58, 33, 0.95) 0%, rgba(42, 58, 33, 0) 72%), var(--eu-ink);
+
+  position: relative;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: var(--eu-ink);
+  color: var(--eu-cream);
+}
+
+.root ::selection {
+  background-color: var(--eu-cream);
+  color: var(--eu-ink);
+}
+
+/* Every button and link answers a press, on touch as much as with a mouse */
+.root :global(.eu-btn):active,
+.copy:active,
+.barCode:active,
+.barGo:active,
+.wordmark:active {
+  transform: scale(0.98);
+}
+
+/* ---------- The gradient: one canvas for the whole page ---------- */
+
+.field {
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* Closed: it fills the screen, above the site header, under the cover's words */
+.fieldCover {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 399;
+  height: 100vh;
+  height: 100dvh;
+  background: var(--fl-ground);
+}
+
+/* Open: it lies softly behind the top of the page and fades into the ground */
+.fieldPage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 0;
+  height: min(92vh, 780px);
+  background: radial-gradient(90% 60% at 84% 0%, rgba(61, 74, 51, 0.5) 0%, rgba(42, 58, 33, 0) 72%), var(--eu-ink);
+  -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 20%, rgba(0, 0, 0, 0) 100%);
+  mask-image: linear-gradient(180deg, #000 0%, #000 20%, rgba(0, 0, 0, 0) 100%);
+}
+
+/* Coming back to a page that was open: no cover and no gradient over the
+   screen while the server is asked again, only the ink ground */
+.fieldHidden {
+  visibility: hidden;
+}
+
+/* The canvas appears over the CSS gradient once it has drawn its first frame */
+.fieldCanvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 0.9s ease;
+}
+
+.fieldCanvas[data-live='true'] {
+  opacity: 1;
+}
+
+/* ---------- The cover: the closed page ---------- */
+
+.cover {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 400;
+  display: flex;
+  height: 100vh;
+  height: 100dvh;
+  padding: calc(28px + env(safe-area-inset-top, 0px)) calc(20px + env(safe-area-inset-right, 0px))
+    calc(28px + env(safe-area-inset-bottom, 0px)) calc(20px + env(safe-area-inset-left, 0px));
+  /* A screen too short for it scrolls the cover, never the page behind */
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  color: var(--eu-cream);
+  text-align: center;
+}
+
+.stack {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 420px;
+  margin: auto;
+}
+
+/* The wordmark from /logo.png, cropped to its lettering. It is the way home. */
+.wordmark {
+  display: block;
+  margin: -12px;
+  padding: 12px;
+  border-radius: 10px;
+}
+
+.wordmarkCrop {
+  display: block;
+  width: 168px;
+  aspect-ratio: 5 / 1;
+  overflow: hidden;
+}
+
+.wordmarkCrop img {
+  display: block;
+  width: 100%;
+  height: auto;
+  transform: translateY(-33.5%);
+}
+
+/* The thin line of the landing sequence. It draws, holds and goes: the
+   settled cover is the wordmark, the headline and what is under it. */
+.introLine {
+  width: 120px;
+  height: 1px;
+  margin-top: 20px;
+  background: var(--eu-cream);
+  opacity: 0;
+}
+
+.coverTitle {
+  margin: 19px 0 0;
+  font-family: var(--eu-display);
+  font-weight: 400;
+  font-size: clamp(40px, 12.2vw, 52px);
+  line-height: 1.04;
+  letter-spacing: -0.025em;
+}
+
+.coverTitle:focus {
+  outline: none;
+}
+
+.coverTitle span {
+  display: block;
+}
+
+.coverTitle em {
+  font-style: italic;
+}
+
+/* Under the headline. Its height is fixed to the tallest thing it ever holds
+   (the password field), so the wordmark and headline never move when the
+   countdown gives way to the field. */
+.slot {
+  display: grid;
+  width: 100%;
+  min-height: 252px;
+  margin-top: 30px;
+}
+
+.slotItem {
+  grid-area: 1 / 1;
+  align-self: start;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 0;
+}
+
+.slotOut {
+  pointer-events: none;
+}
+
+.caption {
+  margin: 20px 0 0;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--fl-quiet);
+}
+
+.line {
+  max-width: 30ch;
+  margin: 0 0 22px;
+  font-size: 17px;
+  line-height: 1.5;
+}
+
+.line:last-child {
+  margin-bottom: 0;
+}
+
+.hint {
+  margin: 4px 0 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--fl-quiet);
+}
+
+/* ---------- Countdown: every digit in its own cell of fixed width ---------- */
+
+.countDigits {
+  display: inline-flex;
+  align-items: flex-start;
+  font-family: var(--eu-body);
+  font-weight: 300;
+  font-size: clamp(56px, 17.4vw, 76px);
+  line-height: 1;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+.pair {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.pairDigits {
+  display: inline-flex;
+}
+
+.pairUnit {
+  margin-top: 10px;
+  font-family: var(--eu-body);
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  color: var(--fl-quiet);
+}
+
+.colon {
+  width: 0.34em;
+  text-align: center;
+  transform: translateY(-0.07em);
+}
+
+/* One figure: the old face rolls out below as the new one rolls in from above */
+.digit {
+  position: relative;
+  display: inline-block;
+  width: 0.62em;
+  height: 1em;
+  overflow: hidden;
+}
+
+.face {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* The last ten minutes on the cover: the figures take their full weight */
+.countFinal .countDigits {
+  font-weight: 400;
+}
+
+/* On the open page the figures are Playfair Display, as the site sets its
+   prices. Playfair's figures differ in width, which is what the cells are
+   for: a 1 sits in the same space as an 8, so the time never moves. */
+.countSerif .countDigits {
+  font-family: var(--eu-display);
+  font-weight: 400;
+  font-size: clamp(54px, 16.4vw, 68px);
+  letter-spacing: 0;
+}
+
+.countSerif .pair {
+  align-items: flex-start;
+}
+
+.countSerif .digit {
+  width: 0.6em;
+  height: 1.04em;
+}
+
+.countSerif .colon {
+  width: 0.38em;
+  color: var(--fl-dim);
+}
+
+.countSerif .pairUnit {
+  margin-top: 8px;
+  padding-left: 0.08em;
+}
+
+/* The last ten minutes on the open page: the figures lean into italic */
+.countSerif.countFinal .countDigits {
+  font-style: italic;
+}
+
+.countSerif.countFinal .colon {
+  color: var(--eu-cream);
+}
+
+/* A line of figures inside a sentence */
+.countSmall {
+  color: var(--eu-cream);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums lining-nums;
+  white-space: nowrap;
+}
+
+/* ---------- The password ---------- */
+
+.gate {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 320px;
+}
+
+.gateInput {
+  width: 100%;
+  height: 58px;
+  padding: 0 4px;
+  border: 0;
+  border-bottom: 1px solid var(--fl-dim);
+  border-radius: 0;
+  background: transparent;
+  color: var(--eu-cream);
+  font-family: var(--eu-body);
+  font-size: 20px;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  text-align: center;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.gateInput::placeholder {
+  color: var(--fl-quiet);
+  opacity: 1;
+}
+
+/* Focus is shown on the line itself: full cream and twice as thick. No box. */
+.gateInput:focus,
+.gateInput:focus-visible {
+  outline: none;
+  border-bottom-color: var(--eu-cream);
+  box-shadow: 0 1px 0 var(--eu-cream);
+}
+
+.gateInput[aria-invalid='true'],
+.gateOk .gateInput {
+  border-bottom-color: var(--eu-cream);
+}
+
+.gateGo {
+  margin-top: 18px;
+}
+
+.gateGo[aria-disabled='true'] {
+  cursor: progress;
+}
+
+/* Always the height of two lines, so a message never moves the field */
+.gateMsg {
+  min-height: 3em;
+  margin: 12px 0 0;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* ---------- Opening: the cover parts down the middle ---------- */
+
+/* The two halves. They carry a still of the gradient (drawn into their
+   canvases as the cover opens) or, without WebGL, the CSS gradient. */
+.half {
+  position: fixed;
+  top: 0;
+  z-index: 1;
+  width: calc(50% + 1px);
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  visibility: hidden;
+  background: var(--fl-ground);
+  background-size: 200% 100%;
+  background-repeat: no-repeat;
+}
+
+.halfL {
+  left: 0;
+  background-position: left top;
+}
+
+.halfR {
+  right: 0;
+  background-position: right top;
+}
+
+.half canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.halvesOn .half {
+  visibility: visible;
+}
+
+/* The landing sequence starts from solid ink, which lifts off the gradient */
+.veil {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  height: 100vh;
+  height: 100dvh;
+  background: var(--eu-ink);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* A cover that has come back (midnight, with the page open) simply fades in */
+.coverReturn {
+  animation: fadeIn 0.4s ease both;
+}
+
+/* Opening lets taps through at once: the page behind is already usable */
+.coverParting,
+.coverFading {
+  pointer-events: none;
+}
+
+.coverParting .stack {
+  animation: leave 0.3s ease-in forwards;
+}
+
+.coverParting .halfL {
+  animation: partLeft 0.75s cubic-bezier(0.7, 0, 0.15, 1) 0.12s forwards;
+}
+
+.coverParting .halfR {
+  animation: partRight 0.75s cubic-bezier(0.7, 0, 0.15, 1) 0.12s forwards;
+}
+
+/* A later visit in the same session, and reduced motion: a quick fade instead */
+.coverFading {
+  animation: fadeOut 0.28s linear forwards;
+}
+
+/* ---------- The open page ----------
+
+   One column, one left edge, one scale of space: 8, 12, 16, 24, 32, 48.
+   Related things sit 16 apart, a card's own padding is 24, and each new
+   part of the page starts 48 below the last. */
+
+.page {
+  position: relative;
+  z-index: 1;
+}
+
+.column {
+  --sp-1: 8px;
+  --sp-2: 12px;
+  --sp-3: 16px;
+  --sp-4: 24px;
+  --sp-5: 32px;
+  --sp-6: 48px;
+
+  max-width: 560px;
+  margin: 0 auto;
+  padding: calc(var(--eu-header-space) + var(--sp-5)) var(--eu-gutter)
+    calc(var(--sp-6) * 2 + env(safe-area-inset-bottom, 0px));
+}
+
+/* The site's italic Playfair accent, for the one word in a sentence that
+   matters. A little larger than the Inter around it, so the two sit level. */
+.accent {
+  font-family: var(--eu-display);
+  font-size: 1.18em;
+  font-style: italic;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  color: var(--eu-cream);
+  font-variant-numeric: lining-nums;
+}
+
+.eyebrow {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.4;
+  letter-spacing: 0.02em;
+  color: var(--fl-quiet);
+}
+
+.title {
+  margin: var(--sp-1) 0 0;
+  font-family: var(--eu-display);
+  font-weight: 400;
+  font-size: clamp(60px, 17.4vw, 88px);
+  line-height: 0.98;
+  letter-spacing: -0.03em;
+}
+
+.title em {
+  font-style: italic;
+}
+
+/* The code card: the brightest thing on the page. A tap anywhere copies. */
+.card {
+  container-type: inline-size;
+  margin-top: var(--sp-5);
+  padding: var(--sp-4);
+  border-radius: 22px;
+  background: var(--eu-cream);
+  color: var(--eu-ink);
+  cursor: pointer;
+  transition: transform 0.2s var(--eu-ease);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.card:active {
+  transform: scale(0.985);
+}
+
+.cardLabel {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--eu-sage);
+}
+
+.code {
+  margin: 4px 0 0;
+  border-radius: 4px;
+  color: var(--eu-ink);
+  font-family: var(--eu-body);
+  font-size: 32px;
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: 0.01em;
+  font-variant-numeric: lining-nums;
+  overflow-wrap: anywhere;
+}
+
+@supports (font-size: 1cqi) {
+  /* As large as the card allows, whatever the length of the code. The line
+     keeps the height of the largest size, so a longer or shorter code at
+     18:00 does not change the height of the card. */
+  .code {
+    display: flex;
+    align-items: center;
+    min-height: 51px;
+    font-size: clamp(24px, calc(100cqi / (var(--n) * 0.7)), 44px);
+  }
+}
+
+.copy {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 52px;
+  margin-top: var(--sp-3);
+  border: 0;
+  border-radius: 999px;
+  background: var(--eu-ink);
+  color: var(--eu-cream);
+  font-family: var(--eu-body);
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color 0.4s;
+}
+
+/* The code takes focus when the visitor's password opens the page, so a
+   screen reader says it. It is not a control, so nothing is drawn round it. */
+.card .code:focus,
+.card .code:focus-visible {
+  outline: none;
+}
+
+/* On cream, focus is drawn in ink */
+.card .copy:focus-visible,
+.bar :focus-visible {
+  outline: 2px solid var(--eu-ink);
+  outline-offset: 3px;
+}
+
+/* The pack: what the code buys, shown before anyone is asked to check out.
+   A quieter surface than the code card: green lifted off the ink, one
+   hairline edge, and the checkout button as its action. */
+.pack {
+  margin-top: var(--sp-3);
+  padding: var(--sp-4);
+  border: 1px solid var(--eu-line-light);
+  border-radius: 22px;
+  background: var(--eu-green);
+}
+
+.packLabel {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--fl-quiet);
+}
+
+.packTitle {
+  margin: var(--sp-1) 0 0;
+  font-family: var(--eu-display);
+  font-weight: 400;
+  font-size: 38px;
+  line-height: 1.05;
+  letter-spacing: -0.015em;
+  font-variant-numeric: lining-nums;
+}
+
+.packLines {
+  display: grid;
+  gap: var(--sp-1);
+  margin: var(--sp-3) 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--eu-beige);
+}
+
+/* The price, set as the site sets its prices: Playfair, large and tight.
+   The usual price stays quiet beside it. */
+.price {
+  margin-top: var(--sp-4);
+  padding-top: var(--sp-4);
+  border-top: 1px solid var(--eu-line-light);
+}
+
+.priceRow {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  margin: 0;
+  font-family: var(--eu-display);
+  font-variant-numeric: lining-nums;
+}
+
+.priceRow s {
+  font-size: 22px;
+  color: var(--fl-quiet);
+  text-decoration-thickness: 1px;
+}
+
+.priceRow b {
+  font-size: 68px;
+  font-weight: 400;
+  line-height: 0.9;
+  letter-spacing: -0.035em;
+}
+
+.priceMaths {
+  margin: var(--sp-2) 0 0;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--fl-quiet);
+}
+
+.checkout {
+  margin-top: var(--sp-4);
+}
+
+/* Two lines tall whatever it says, so the confirmation never moves the card */
+.packNote {
+  min-height: 3em;
+  margin: var(--sp-2) 0 0;
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--fl-quiet);
+}
+
+/* The countdown: a moment of its own, below the pack and quieter than the code */
+.clock {
+  margin-top: var(--sp-6);
+}
+
+/* One line of fixed height: the "final minutes" accent arriving, or leaving
+   at the change of phase, must not move the digits under it */
+.clockLabel {
+  display: flex;
+  align-items: baseline;
+  gap: var(--sp-2);
+  height: 24px;
+  margin: 0 0 var(--sp-2);
+  font-size: 14px;
+  line-height: 24px;
+  color: var(--fl-quiet);
+  white-space: nowrap;
+}
+
+/* Three lines tall whichever version it holds (the longer one runs to three
+   on a phone and on desktop), so the 18:00 change does not move the page */
+.honest {
+  max-width: 44ch;
+  min-height: 4.8em;
+  margin: var(--sp-4) 0 0;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--eu-beige);
+}
+
+.quietLine {
+  margin: var(--sp-2) 0 0;
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--fl-quiet);
+}
+
+.block {
+  margin-top: var(--sp-6);
+  padding-top: var(--sp-4);
+  border-top: 1px solid var(--eu-line-light);
+}
+
+.blockLabel {
+  margin: 0 0 var(--sp-3);
+  font-family: var(--eu-body);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.4;
+  letter-spacing: 0.02em;
+  color: var(--fl-dim);
+}
+
+/* Three steps, as plain numbered text */
+.steps {
+  display: grid;
+  gap: var(--sp-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: step;
+}
+
+.steps li {
+  position: relative;
+  padding-left: 30px;
+  font-size: 16px;
+  line-height: 1.5;
+  counter-increment: step;
+}
+
+.steps li::before {
+  content: counter(step);
+  position: absolute;
+  left: 0;
+  top: -1px;
+  color: var(--fl-dim);
+  font-family: var(--eu-display);
+  font-size: 19px;
+  font-variant-numeric: lining-nums;
+}
+
+/* The day: done, now, still to come. Rows of type and hairlines: no rail, no
+   dots. The current row is in full cream with its time a little larger, and
+   the hairline under it fills across the length of its phase. When the phase
+   changes, the rows change places by opacity and scale alone. */
+.day {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.dayRow {
+  position: relative;
+  display: grid;
+  /* The last column is a fixed width, so "Now" turning into "Done" moves nothing */
+  grid-template-columns: 86px minmax(0, 1fr) 40px;
+  column-gap: var(--sp-2);
+  align-items: baseline;
+  padding: var(--sp-3) 0 calc(var(--sp-3) + 1px);
+  opacity: 0.6;
+  transition: opacity 0.8s ease;
+}
+
+.dayRow:first-child {
+  padding-top: var(--sp-1);
+}
+
+.dayRow:last-child {
+  padding-bottom: 0;
+}
+
+.day_now {
+  opacity: 1;
+}
+
+.dayTime {
+  font-family: var(--eu-display);
+  font-size: 26px;
+  line-height: 1;
+  font-variant-numeric: lining-nums;
+  transform-origin: left bottom;
+  transition: transform 0.8s var(--eu-ease);
+}
+
+.day_now .dayTime {
+  transform: scale(1.16);
+}
+
+.dayText {
+  display: grid;
+  gap: 2px;
+  font-size: 15.5px;
+  line-height: 1.4;
+}
+
+/* Quieter than the title in the current row; dimmed rows are already quiet */
+.dayDetail {
+  font-size: 14px;
+}
+
+.day_now .dayDetail {
+  color: var(--fl-quiet);
+}
+
+.dayTag {
+  font-size: 12.5px;
+  font-weight: 500;
+  line-height: 1.4;
+  letter-spacing: 0.02em;
+  text-align: right;
+}
+
+.dayTrack {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  overflow: hidden;
+  background: var(--eu-line-light);
+}
+
+.dayFill {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: var(--eu-cream);
+  transform-origin: left center;
+  transition: transform 1s linear;
+}
+
+.terms {
+  display: grid;
+  gap: var(--sp-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--fl-dim);
+}
+
+/* A link in a line of small print still gets a full-size place to tap */
+.terms a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  margin: -12px 0;
+  color: var(--eu-cream);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.terms a:active {
+  opacity: 0.6;
+}
+
+/* ---------- Sticky bar (phones): the code and the checkout, always in reach ---------- */
+
+.bar,
+.toast {
+  display: none;
+}
+
+@media (max-width: 700px) {
+  .bar {
+    position: fixed;
+    left: 12px;
+    right: 12px;
+    bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+    z-index: 60;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 8px 8px 8px 22px;
+    border-radius: 999px;
+    background: var(--eu-cream);
+    color: var(--eu-ink);
+    /* Below the screen until the page's own checkout button scrolls away */
+    transform: translateY(calc(100% + 26px + env(safe-area-inset-bottom, 0px)));
+    visibility: hidden;
+    transition:
+      transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1),
+      visibility 0s linear 0.45s;
+  }
+
+  .barShow {
+    transform: none;
+    visibility: visible;
+    transition:
+      transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1),
+      visibility 0s;
+  }
+
+  .barCode {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+    min-height: 48px;
+    padding: 0;
+    border: 0;
+    border-radius: 6px;
+    background: none;
+    color: var(--eu-ink);
+    font-family: var(--eu-body);
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .barCodeText {
+    overflow: hidden;
+    font-size: 17px;
+    font-weight: 600;
+    font-variant-numeric: lining-nums;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .barCodeHint {
+    flex: none;
+    font-size: 12.5px;
+    color: var(--eu-sage);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .barGo {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    min-height: 48px;
+    padding: 0 22px;
+    border-radius: 999px;
+    background: var(--eu-ink);
+    color: var(--eu-cream);
+    text-decoration: none;
+    font-size: 11.5px;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  /* "BF50 copied. Paste it in Discount code.", just above the bar, after a
+     tap on the bar's own checkout */
+  .toast {
+    position: fixed;
+    left: 12px;
+    right: 12px;
+    bottom: calc(88px + env(safe-area-inset-bottom, 0px));
+    z-index: 59;
+    display: block;
+    margin: 0;
+    padding: 12px 18px;
+    border: 1px solid var(--eu-line-light);
+    border-radius: 16px;
+    background: var(--eu-green);
+    color: var(--eu-cream);
+    font-size: 14px;
+    line-height: 1.4;
+    text-align: center;
+    opacity: 0;
+    transform: translateY(8px);
+    visibility: hidden;
+    pointer-events: none;
+    transition:
+      opacity 0.3s ease,
+      transform 0.3s ease,
+      visibility 0s linear 0.3s;
+  }
+
+  .toastShow {
+    opacity: 1;
+    transform: none;
+    visibility: visible;
+    transition:
+      opacity 0.3s ease,
+      transform 0.3s ease,
+      visibility 0s;
+  }
+}
+
+/* Hover is an extra for those who have it, never the only sign */
+@media (hover: hover) {
+  .copy:hover {
+    background: var(--eu-green);
+  }
+
+  .barGo:hover {
+    color: var(--eu-cream);
+  }
+}
+
+/* ---------- Desktop: the same single column, with more room ---------- */
+
+@media (min-width: 900px) {
+  .stack {
+    max-width: 520px;
+  }
+
+  .wordmarkCrop {
+    width: 200px;
+  }
+
+  .coverTitle {
+    font-size: 68px;
+  }
+
+  .slot {
+    min-height: 276px;
+    margin-top: 36px;
+  }
+
+  .countDigits {
+    font-size: 96px;
+  }
+
+  .column {
+    --sp-6: 64px;
+
+    padding-top: calc(var(--eu-header-space) + var(--sp-6));
+  }
+
+  .title {
+    font-size: 96px;
+  }
+
+  .card,
+  .pack {
+    padding: var(--sp-5);
+  }
+
+  .packTitle {
+    font-size: 44px;
+  }
+
+  .priceRow b {
+    font-size: 80px;
+  }
+
+  .countSerif .countDigits {
+    font-size: 84px;
+  }
+}
+
+/* ---------- Keyframes ---------- */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes veilLift {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes riseIn {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes lineDraw {
+  0% {
+    opacity: 1;
+    transform: scaleX(0);
+  }
+  40% {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+  65% {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scaleX(1);
+  }
+}
+
+@keyframes slotLeave {
+  to {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes leave {
+  to {
+    opacity: 0;
+    transform: scale(1.03);
+  }
+}
+
+@keyframes partLeft {
+  to {
+    transform: translateX(-101%);
+  }
+}
+
+@keyframes partRight {
+  to {
+    transform: translateX(101%);
+  }
+}
+
+@keyframes settle {
+  from {
+    transform: translateY(28px);
+  }
+  to {
+    transform: none;
+  }
+}
+
+@keyframes rollIn {
+  from {
+    transform: translateY(-104%);
+  }
+  to {
+    transform: none;
+  }
+}
+
+@keyframes rollOut {
+  from {
+    transform: none;
+  }
+  to {
+    transform: translateY(104%);
+  }
+}
+
+@keyframes beat {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.25;
+  }
+}
+
+@keyframes nudge {
+  0%,
+  100% {
+    transform: none;
+  }
+  35% {
+    transform: translateX(7px);
+  }
+  70% {
+    transform: translateX(-2px);
+  }
+}
+
+@keyframes shakeA {
+  0%,
+  100% {
+    transform: none;
+  }
+  20% {
+    transform: translateX(-7px);
+  }
+  40% {
+    transform: translateX(6px);
+  }
+  60% {
+    transform: translateX(-4px);
+  }
+  80% {
+    transform: translateX(2px);
+  }
+}
+
+/* The same movement under a second name, so a second wrong try shakes again */
+@keyframes shakeB {
+  0%,
+  100% {
+    transform: none;
+  }
+  20% {
+    transform: translateX(-7px);
+  }
+  40% {
+    transform: translateX(6px);
+  }
+  60% {
+    transform: translateX(-4px);
+  }
+  80% {
+    transform: translateX(2px);
+  }
+}
+
+/* ---------- Motion for everyone who has not asked for less ---------- */
+
+@media (prefers-reduced-motion: no-preference) {
+  /* The landing sequence, once per browser session. All CSS, so it runs and
+     finishes by itself even if JavaScript is slow or never arrives, and every
+     piece ends exactly where it rests. Solid ink lifts off the gradient, the
+     wordmark rises, the line draws and goes, the headline arrives. */
+  .veil {
+    animation: veilLift 1.1s ease 0.2s both;
+  }
+
+  .wordmark {
+    animation: riseIn 0.5s var(--eu-ease) 0.15s both;
+  }
+
+  .introLine {
+    animation: lineDraw 0.85s var(--eu-ease) 0.55s both;
+  }
+
+  .coverTitle span {
+    animation: riseIn 0.45s var(--eu-ease) both;
+    animation-delay: calc(0.8s + var(--i, 0) * 90ms);
+  }
+
+  /* Not on a later visit in the same session, not once it is over (or a tap
+     has ended it), and not for a cover that has come back */
+  :global(html[data-flash-intro='skip']) .veil,
+  :global(html[data-flash-intro='skip']) .wordmark,
+  :global(html[data-flash-intro='skip']) .introLine,
+  :global(html[data-flash-intro='skip']) .coverTitle span,
+  .introOver .veil,
+  .introOver .wordmark,
+  .introOver .introLine,
+  .introOver .coverTitle span {
+    animation: none;
+  }
+
+  /* What is under the headline arrives, and gives way, in place */
+  .slotIn {
+    animation: riseIn 0.5s var(--eu-ease) both;
+  }
+
+  .slotOut {
+    animation: slotLeave 0.3s ease forwards;
+  }
+
+  /* As the cover parts, the page rises gently into place. No fade: it is
+     painted from the moment it exists. */
+  .pageArrive {
+    animation: settle 0.95s var(--eu-ease) 0.18s both;
+  }
+
+  .faceIn {
+    animation: rollIn 0.5s var(--eu-ease) both;
+  }
+
+  .faceOut {
+    animation: rollOut 0.5s var(--eu-ease) both;
+  }
+
+  /* The last ten minutes on the open page: the colons keep the beat */
+  .countSerif.countFinal .colon {
+    animation: beat 1s ease-in-out infinite;
+  }
+
+  /* After a copy, the checkout button's arrow moves once to draw the eye */
+  .checkoutNudge :global(.eu-btn__dot) {
+    animation: nudge 0.9s var(--eu-ease) 0.12s 1;
+  }
+
+  .shake[data-shake='1'] {
+    animation: shakeA 0.42s ease-out;
+  }
+
+  .shake[data-shake='2'] {
+    animation: shakeB 0.42s ease-out;
+  }
+}
+
+/* ---------- Reduced motion: everything still works, with plain fades ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .slotIn {
+    animation: fadeIn 0.3s linear both;
+  }
+
+  .slotOut,
+  .faceOut {
+    display: none;
+  }
+
+  /* The cover never slides: it fades (FlashCover picks the fade as well) */
+  .coverParting {
+    animation: fadeOut 0.28s linear forwards;
+  }
+
+  .coverParting .stack,
+  .coverParting .halfL,
+  .coverParting .halfR {
+    animation: none;
+  }
+
+  .fieldCanvas,
+  .card,
+  .dayRow,
+  .dayTime,
+  .dayFill,
+  .bar,
+  .barShow,
+  .toast,
+  .toastShow {
+    transition: none;
+  }
+}
