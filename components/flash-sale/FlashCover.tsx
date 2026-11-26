@@ -101,7 +101,9 @@ function Gate({ onUnlock }: { onUnlock: (password: string) => Promise<UnlockResu
       </label>
       <div className={styles.shake} data-shake={shake}>
         {/* The name and id avoid "first", "last", "email" and "phone", which the
-            site's pixel code reads from form fields. This field is never read. */}
+            site's pixel code reads from form fields. This field is never read.
+            Phones type capitals (the check ignores case either way). Nothing
+            here hints at how long the password is: no boxes, no maxlength. */}
         <input
           ref={input}
           id="door-password"
@@ -109,12 +111,11 @@ function Gate({ onUnlock }: { onUnlock: (password: string) => Promise<UnlockResu
           className={styles.gateInput}
           type="text"
           inputMode="text"
-          autoCapitalize="off"
+          autoCapitalize="characters"
           autoComplete="off"
           autoCorrect="off"
           spellCheck={false}
           enterKeyHint="go"
-          maxLength={128}
           placeholder="Password"
           value={password}
           readOnly={status === 'ok'}

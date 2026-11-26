@@ -21,7 +21,7 @@ import { createHash, createHmac, timingSafeEqual } from 'node:crypto';
 import { FLASH_ENDS_AT } from '@/components/flash-sale/config';
 
 // ---------------------------------------------------------------------------
-// Local testing
+// Testing: moving the clock, never in production
 // ---------------------------------------------------------------------------
 
 /**
@@ -30,6 +30,26 @@ import { FLASH_ENDS_AT } from '@/components/flash-sale/config';
  */
 export function isLocalDev(): boolean {
   return process.env.VERCEL_ENV !== 'production' && process.env.NODE_ENV !== 'production';
+}
+
+/**
+ * FLASH_TEST_SHIFT_MINUTES, in milliseconds: the sale's clock is the real time
+ * plus that many minutes (minus, if negative). A plain shift of the real
+ * clock, so every serverless instance agrees and the clock keeps running,
+ * which is what makes it usable on a Vercel preview with a real phone.
+ *
+ * Honoured only on a Vercel preview deployment or a developer's machine.
+ * On Vercel production it is ignored completely, and so it is in any other
+ * production build.
+ */
+function testShiftMs(): number {
+  if (process.env.VERCEL_ENV === 'production') return 0;
+  if (process.env.VERCEL_ENV !== 'preview' && !isLocalDev()) return 0;
+
+  const raw = (process.env.FLASH_TEST_SHIFT_MINUTES ?? '').trim();
+  if (!raw) return 0;
+  const minutes = Number(raw);
+  return Number.isFinite(minutes) ? Math.round(minutes * 60_000) : 0;
 }
 
 interface TestClock {
@@ -44,18 +64,23 @@ const globalClock = globalThis as typeof globalThis & { __euforycFlashTestClock?
 
 /**
  * The server's clock: the only authority on which phase the sale is in.
+ * In production it is the real time and nothing can move it.
  *
- * On a developer's machine FLASH_TEST_NOW (an ISO timestamp, for example
- * 2026-11-27T11:59:30Z) simulates the day: the clock starts at that moment on
- * the first request and then runs forward in real time, so a phase change can
- * be watched as it happens. It is ignored in production.
+ * Two ways to move it for testing:
+ *  - FLASH_TEST_NOW (an ISO timestamp, for example 2026-11-27T11:59:30Z), on
+ *    a developer's machine only. The clock starts at that moment on the first
+ *    request and then runs forward in real time, so a phase change can be
+ *    watched as it happens.
+ *  - FLASH_TEST_SHIFT_MINUTES, on a Vercel preview or a developer's machine:
+ *    the real time plus that many minutes (see testShiftMs above).
+ * If both are set on a developer's machine, FLASH_TEST_NOW is the one used.
  */
 export function flashNow(): number {
   const raw = isLocalDev() ? process.env.FLASH_TEST_NOW : undefined;
-  if (!raw) return Date.now();
+  if (!raw) return Date.now() + testShiftMs();
 
   const simulated = Date.parse(raw);
-  if (Number.isNaN(simulated)) return Date.now();
+  if (Number.isNaN(simulated)) return Date.now() + testShiftMs();
 
   // Kept on globalThis so both API routes share one simulated clock
   let clock = globalClock.__euforycFlashTestClock;
@@ -135,7 +160,9 @@ export function vipSoldOut(): boolean {
 
 export const MAX_PASSWORD_LENGTH = 128;
 
-// People type it on phones: spaces at the ends and capitals are forgiven
+// The password may be any length. The studio keeps it very short on purpose,
+// so it is easy to say and to type; two characters is valid. People type it
+// on phones: spaces at the ends and capitals are forgiven.
 const normalise = (value: string) => value.normalize('NFKC').trim().toLowerCase();
 
 const sha256 = (value: string) => createHash('sha256').update(value, 'utf8').digest();
@@ -217,9 +244,14 @@ export function unlockCookieOptions() {
 // Honest limits of this: the counter lives in the memory of one serverless
 // instance. Vercel can run several instances at once and starts fresh ones
 // whenever it likes, and each starts counting from zero. So this slows a
-// brute-force attempt down; it does not make one impossible. The real
-// protection is that the password is long, and that the code it guards stops
-// working after 20 uses in Momence whoever holds it.
+// brute-force attempt down; it does not make one impossible.
+//
+// And the password is short on purpose, so it can be guessed: a two-character
+// one is among a few hundred possibilities, which this limit only stretches
+// over some hours for a single patient visitor. The password keeps the early
+// code among people who were told it, as a courtesy, not as a lock. What
+// actually bounds the 50% code is Momence: it stops working after 20 uses,
+// whoever holds it.
 const MAX_ATTEMPTS = 20;
 const WINDOW_MS = 15 * 60 * 1000;
 const MAX_TRACKED_IPS = 5000;

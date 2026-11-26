@@ -647,6 +647,24 @@ describe('the password check', () => {
     expect(passwordMatches(FAKE.FLASH_VIP_PASSWORD.slice(0, -1), config())).toBe(false);
     expect(passwordMatches(`${FAKE.FLASH_VIP_PASSWORD}x`, config())).toBe(false);
   });
+
+  it('works with a password of two characters: the sale is ready and it opens, trimmed and whatever the case', async () => {
+    env.FLASH_VIP_PASSWORD = 'Zq';
+
+    expect(readFlashConfig()).not.toBeNull();
+    expect((await readState()).body.ready).toBe(true);
+
+    expect(passwordMatches('zq', config())).toBe(true);
+    expect(passwordMatches(' ZQ ', config())).toBe(true);
+    expect(passwordMatches('z', config())).toBe(false);
+    expect(passwordMatches('zqq', config())).toBe(false);
+
+    // As a phone types it with capitals on, through the route itself
+    const opened = await unlock('ZQ');
+    expect(opened.response.status).toBe(200);
+    expect(opened.body.code).toBe(FAKE.FLASH_CODE_VIP);
+    expect((await unlock('z')).body).toEqual(REFUSED);
+  });
 });
 
 // ---------------------------------------------------------------------------
@@ -682,6 +700,93 @@ describe('FLASH_TEST_NOW', () => {
   it('falls back to the real clock when it is not a date', () => {
     setClock('not-a-date');
     expect(nearRealNow(flashNow())).toBe(true);
+  });
+});
+
+// ---------------------------------------------------------------------------
+
+describe('FLASH_TEST_SHIFT_MINUTES', () => {
+  const MINUTE = 60 * 1000;
+  const near = (time: number, expected: number) => Math.abs(time - expected) < 5000;
+  // The shift that puts the clock at a given moment, as a whole number of minutes
+  const shiftTo = (iso: string) => String(Math.round((Date.parse(iso) - Date.now()) / MINUTE));
+
+  beforeEach(() => {
+    delete env.FLASH_TEST_NOW;
+  });
+
+  it('moves the clock by that many minutes on a Vercel preview, which is a production build', () => {
+    env.NODE_ENV = 'production';
+    env.VERCEL_ENV = 'preview';
+
+    env.FLASH_TEST_SHIFT_MINUTES = '90';
+    expect(near(flashNow(), Date.now() + 90 * MINUTE)).toBe(true);
+
+    env.FLASH_TEST_SHIFT_MINUTES = '-30';
+    expect(near(flashNow(), Date.now() - 30 * MINUTE)).toBe(true);
+  });
+
+  it('decides the phase the API reports on a preview', async () => {
+    env.NODE_ENV = 'production';
+    env.VERCEL_ENV = 'preview';
+
+    env.FLASH_TEST_SHIFT_MINUTES = shiftTo(PUBLIC);
+    const evening = await readState();
+    expect(evening.body.phase).toBe('public');
+    expect(evening.body.code).toBe(FAKE.FLASH_CODE_PUBLIC);
+
+    env.FLASH_TEST_SHIFT_MINUTES = shiftTo(TEASER);
+    const morning = await readState();
+    expect(morning.body.phase).toBe('teaser');
+    expect(morning.body).not.toHaveProperty('code');
+  });
+
+  it('moves the clock on a developer machine too', () => {
+    env.NODE_ENV = 'development';
+    env.FLASH_TEST_SHIFT_MINUTES = '60';
+    expect(near(flashNow(), Date.now() + 60 * MINUTE)).toBe(true);
+  });
+
+  it('is ignored completely on Vercel production', async () => {
+    env.FLASH_TEST_SHIFT_MINUTES = shiftTo(PUBLIC);
+    env.VERCEL_ENV = 'production';
+
+    for (const nodeEnv of ['production', 'development', 'test']) {
+      env.NODE_ENV = nodeEnv;
+      expect(near(flashNow(), Date.now())).toBe(true);
+    }
+
+    // And so the API answers by the real clock, not the shifted one
+    env.NODE_ENV = 'production';
+    const { body } = await readState();
+    expect(near(body.serverNow as number, Date.now())).toBe(true);
+    expect(body.phase).toBe(phaseAt(Date.now()));
+  });
+
+  it('is ignored in a production build that is not a Vercel preview', () => {
+    env.NODE_ENV = 'production';
+    env.FLASH_TEST_SHIFT_MINUTES = '600';
+
+    delete env.VERCEL_ENV;
+    expect(near(flashNow(), Date.now())).toBe(true);
+
+    env.VERCEL_ENV = 'development';
+    expect(near(flashNow(), Date.now())).toBe(true);
+  });
+
+  it('ignores a value that is not a number', () => {
+    env.NODE_ENV = 'production';
+    env.VERCEL_ENV = 'preview';
+    for (const nonsense of ['soon', '', '  ', 'NaN', 'Infinity']) {
+      env.FLASH_TEST_SHIFT_MINUTES = nonsense;
+      expect(near(flashNow(), Date.now())).toBe(true);
+    }
+  });
+
+  it('gives way to FLASH_TEST_NOW on a developer machine', () => {
+    setClock(VIP);
+    env.FLASH_TEST_SHIFT_MINUTES = '600';
+    expect(near(flashNow(), Date.parse(VIP))).toBe(true);
   });
 });
 
