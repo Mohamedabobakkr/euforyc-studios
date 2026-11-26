@@ -153,6 +153,8 @@ interface FlashCoverProps {
   /** The countdown is at zero and the server is being asked what comes next */
   turning: boolean;
   unreachable: boolean;
+  /** The server has stopped answering; the cover is showing the last state it knew */
+  offline: boolean;
   onUnlock: (password: string) => Promise<UnlockResult>;
   /** The server has handed over a code: the cover is to open */
   wantOpen: boolean;
@@ -183,6 +185,7 @@ export default function FlashCover({
   secondsLeft,
   turning,
   unreachable,
+  offline,
   onUnlock,
   wantOpen,
   confirmed,
@@ -458,6 +461,12 @@ export default function FlashCover({
           {content && (
             <div key={slotKey} ref={slotItem} className={`${styles.slotItem} ${styles.slotIn}`} style={slotStyle}>
               {content}
+              {/* One quiet line, and only once the server has failed to answer several times running */}
+              {offline && (
+                <p className={styles.caption} aria-live="polite">
+                  We can’t reach the studio just now. Still trying.
+                </p>
+              )}
             </div>
           )}
           <noscript>

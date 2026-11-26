@@ -12,8 +12,18 @@ html:has([data-flash-root]) body {
 /* The closed page does not scroll. FlashSale.tsx locks it from code as well;
    this holds it from the very first paint, before any code has run, and lets
    go by itself the moment the cover starts to open. */
-html:has([data-flash-cover='closed']) {
+html:not([data-flash-return='open']):has([data-flash-cover='closed']) {
   overflow: hidden;
+}
+
+/* Coming back to a page that was open earlier in this session (from Momence,
+   or a refresh): the cover and its gradient are not drawn while the server is
+   asked again, so there is no flash of them before the page. The attribute is
+   set before the first paint (BEFORE_PAINT) and taken off as soon as the
+   server has answered. */
+html[data-flash-return='open'] [data-flash-cover],
+html[data-flash-return='open'] [data-flash-field='cover'] {
+  visibility: hidden;
 }
 
 /* Room for the scrollbar is kept whether or not the page can scroll, so

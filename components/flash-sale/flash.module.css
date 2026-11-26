@@ -2,13 +2,14 @@
 
    The whole page is closed until the server hands over a code. Closed, it is
    one full-screen cover over a slow gradient. Open, it is one calm column on
-   the ink ground with a single light object: the cream code card.
+   the ink ground with a single bright object: the cream code card.
 
    Colour: the brand's own tokens from app/globals.css and plain tints of
    them. Nothing else. The accent on this page is cream itself.
-   Type: Playfair Display for the two headlines only. Inter for everything
-   else, the code and the countdown included.
-   Motion: transform and opacity only. */
+   Type: Playfair Display for the headlines, the pack's title, prices, times
+   and the open page's countdown, and for one italic accent in a sentence
+   where a word matters. Inter for everything else, the code included.
+   Motion: transform and opacity only. Nothing relies on hover. */
 
 .root {
   /* Tints of cream for quieter text. 0.8 is the least used over the gradient:
@@ -46,6 +47,15 @@
   color: var(--eu-ink);
 }
 
+/* Every button and link answers a press, on touch as much as with a mouse */
+.root :global(.eu-btn):active,
+.copy:active,
+.barCode:active,
+.barGo:active,
+.wordmark:active {
+  transform: scale(0.98);
+}
+
 /* ---------- The gradient: one canvas for the whole page ---------- */
 
 .field {
@@ -76,6 +86,12 @@
   background: radial-gradient(90% 60% at 84% 0%, rgba(61, 74, 51, 0.5) 0%, rgba(42, 58, 33, 0) 72%), var(--eu-ink);
   -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 20%, rgba(0, 0, 0, 0) 100%);
   mask-image: linear-gradient(180deg, #000 0%, #000 20%, rgba(0, 0, 0, 0) 100%);
+}
+
+/* Coming back to a page that was open: no cover and no gradient over the
+   screen while the server is asked again, only the ink ground */
+.fieldHidden {
+  visibility: hidden;
 }
 
 /* The canvas appears over the CSS gradient once it has drawn its first frame */
@@ -224,7 +240,7 @@
   color: var(--fl-quiet);
 }
 
-/* ---------- Countdown: tabular figures in fixed cells ---------- */
+/* ---------- Countdown: every digit in its own cell of fixed width ---------- */
 
 .countDigits {
   display: inline-flex;
@@ -248,7 +264,9 @@
 
 .pairUnit {
   margin-top: 10px;
+  font-family: var(--eu-body);
   font-size: 12px;
+  font-style: normal;
   font-weight: 400;
   letter-spacing: 0.04em;
   color: var(--fl-quiet);
@@ -277,9 +295,47 @@
   justify-content: center;
 }
 
-/* The last ten minutes: the figures take their full weight */
+/* The last ten minutes on the cover: the figures take their full weight */
 .countFinal .countDigits {
   font-weight: 400;
+}
+
+/* On the open page the figures are Playfair Display, as the site sets its
+   prices. Playfair's figures differ in width, which is what the cells are
+   for: a 1 sits in the same space as an 8, so the time never moves. */
+.countSerif .countDigits {
+  font-family: var(--eu-display);
+  font-weight: 400;
+  font-size: clamp(54px, 16.4vw, 68px);
+  letter-spacing: 0;
+}
+
+.countSerif .pair {
+  align-items: flex-start;
+}
+
+.countSerif .digit {
+  width: 0.6em;
+  height: 1.04em;
+}
+
+.countSerif .colon {
+  width: 0.38em;
+  color: var(--fl-dim);
+}
+
+.countSerif .pairUnit {
+  margin-top: 8px;
+  padding-left: 0.08em;
+}
+
+/* The last ten minutes on the open page: the figures lean into italic */
+.countSerif.countFinal .countDigits {
+  font-style: italic;
+}
+
+.countSerif.countFinal .colon {
+  color: var(--eu-cream);
 }
 
 /* A line of figures inside a sentence */
@@ -433,7 +489,11 @@
   animation: fadeOut 0.28s linear forwards;
 }
 
-/* ---------- The open page ---------- */
+/* ---------- The open page ----------
+
+   One column, one left edge, one scale of space: 8, 12, 16, 24, 32, 48.
+   Related things sit 16 apart, a card's own padding is 24, and each new
+   part of the page starts 48 below the last. */
 
 .page {
   position: relative;
@@ -441,9 +501,30 @@
 }
 
 .column {
+  --sp-1: 8px;
+  --sp-2: 12px;
+  --sp-3: 16px;
+  --sp-4: 24px;
+  --sp-5: 32px;
+  --sp-6: 48px;
+
   max-width: 560px;
   margin: 0 auto;
-  padding: calc(var(--eu-header-space) + 36px) var(--eu-gutter) 96px;
+  padding: calc(var(--eu-header-space) + var(--sp-5)) var(--eu-gutter)
+    calc(var(--sp-6) * 2 + env(safe-area-inset-bottom, 0px));
+}
+
+/* The site's italic Playfair accent, for the one word in a sentence that
+   matters. A little larger than the Inter around it, so the two sit level. */
+.accent {
+  font-family: var(--eu-display);
+  font-size: 1.18em;
+  font-style: italic;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  color: var(--eu-cream);
+  font-variant-numeric: lining-nums;
 }
 
 .eyebrow {
@@ -455,7 +536,7 @@
 }
 
 .title {
-  margin: 10px 0 0;
+  margin: var(--sp-1) 0 0;
   font-family: var(--eu-display);
   font-weight: 400;
   font-size: clamp(60px, 17.4vw, 88px);
@@ -467,16 +548,21 @@
   font-style: italic;
 }
 
-/* The code card: the one light object on the page */
+/* The code card: the brightest thing on the page. A tap anywhere copies. */
 .card {
   container-type: inline-size;
-  margin-top: 32px;
-  padding: 22px;
+  margin-top: var(--sp-5);
+  padding: var(--sp-4);
   border-radius: 22px;
   background: var(--eu-cream);
   color: var(--eu-ink);
   cursor: pointer;
+  transition: transform 0.2s var(--eu-ease);
   -webkit-tap-highlight-color: transparent;
+}
+
+.card:active {
+  transform: scale(0.985);
 }
 
 .cardLabel {
@@ -501,8 +587,13 @@
 }
 
 @supports (font-size: 1cqi) {
-  /* As large as the card allows, whatever the length of the code */
+  /* As large as the card allows, whatever the length of the code. The line
+     keeps the height of the largest size, so a longer or shorter code at
+     18:00 does not change the height of the card. */
   .code {
+    display: flex;
+    align-items: center;
+    min-height: 51px;
     font-size: clamp(24px, calc(100cqi / (var(--n) * 0.7)), 44px);
   }
 }
@@ -511,9 +602,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 8px;
   width: 100%;
   min-height: 52px;
-  margin-top: 18px;
+  margin-top: var(--sp-3);
   border: 0;
   border-radius: 999px;
   background: var(--eu-ink);
@@ -525,10 +617,6 @@
   text-transform: uppercase;
   cursor: pointer;
   transition: background-color 0.4s;
-}
-
-.copy:hover {
-  background: var(--eu-green);
 }
 
 /* The code takes focus when the visitor's password opens the page, so a
@@ -545,69 +633,141 @@
   outline-offset: 3px;
 }
 
-/* The price: the usual one struck through, then tonight's */
-.price {
+/* The pack: what the code buys, shown before anyone is asked to check out.
+   A quieter surface than the code card: green lifted off the ink, one
+   hairline edge, and the checkout button as its action. */
+.pack {
+  margin-top: var(--sp-3);
+  padding: var(--sp-4);
+  border: 1px solid var(--eu-line-light);
+  border-radius: 22px;
+  background: var(--eu-green);
+}
+
+.packLabel {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--fl-quiet);
+}
+
+.packTitle {
+  margin: var(--sp-1) 0 0;
+  font-family: var(--eu-display);
+  font-weight: 400;
+  font-size: 38px;
+  line-height: 1.05;
+  letter-spacing: -0.015em;
+  font-variant-numeric: lining-nums;
+}
+
+.packLines {
   display: grid;
-  margin: 30px 0 0;
+  gap: var(--sp-1);
+  margin: var(--sp-3) 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--eu-beige);
+}
+
+/* The price, set as the site sets its prices: Playfair, large and tight.
+   The usual price stays quiet beside it. */
+.price {
+  margin-top: var(--sp-4);
+  padding-top: var(--sp-4);
+  border-top: 1px solid var(--eu-line-light);
 }
 
 .priceRow {
-  display: inline-flex;
+  display: flex;
   align-items: baseline;
   gap: 14px;
-  font-variant-numeric: tabular-nums lining-nums;
+  margin: 0;
+  font-family: var(--eu-display);
+  font-variant-numeric: lining-nums;
 }
 
 .priceRow s {
-  font-size: 20px;
+  font-size: 22px;
   color: var(--fl-quiet);
   text-decoration-thickness: 1px;
 }
 
 .priceRow b {
-  font-size: 52px;
-  font-weight: 300;
-  line-height: 1;
-  letter-spacing: -0.02em;
+  font-size: 68px;
+  font-weight: 400;
+  line-height: 0.9;
+  letter-spacing: -0.035em;
 }
 
 .priceMaths {
-  margin-top: 8px;
-  font-size: 15px;
-  line-height: 1.5;
+  margin: var(--sp-2) 0 0;
+  font-size: 14px;
+  line-height: 1.55;
   color: var(--fl-quiet);
 }
 
 .checkout {
-  margin-top: 26px;
+  margin-top: var(--sp-4);
 }
 
-/* The site's outline button, with its arrow on a cream dot */
-.checkout :global(.eu-btn__dot) {
-  background: var(--eu-cream);
-  color: var(--eu-ink);
+/* Two lines tall whatever it says, so the confirmation never moves the card */
+.packNote {
+  min-height: 3em;
+  margin: var(--sp-2) 0 0;
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--fl-quiet);
 }
 
-.checkout :global(.eu-btn:hover .eu-btn__dot) {
-  background: var(--eu-ink);
-  color: var(--eu-cream);
+/* The countdown: a moment of its own, below the pack and quieter than the code */
+.clock {
+  margin-top: var(--sp-6);
 }
 
-.note {
-  margin: 14px 0 0;
+/* One line of fixed height: the "final minutes" accent arriving, or leaving
+   at the change of phase, must not move the digits under it */
+.clockLabel {
+  display: flex;
+  align-items: baseline;
+  gap: var(--sp-2);
+  height: 24px;
+  margin: 0 0 var(--sp-2);
   font-size: 14px;
+  line-height: 24px;
+  color: var(--fl-quiet);
+  white-space: nowrap;
+}
+
+/* Three lines tall whichever version it holds (the longer one runs to three
+   on a phone and on desktop), so the 18:00 change does not move the page */
+.honest {
+  max-width: 44ch;
+  min-height: 4.8em;
+  margin: var(--sp-4) 0 0;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--eu-beige);
+}
+
+.quietLine {
+  margin: var(--sp-2) 0 0;
+  font-size: 13.5px;
   line-height: 1.5;
   color: var(--fl-quiet);
 }
 
 .block {
-  margin-top: 44px;
-  padding-top: 24px;
+  margin-top: var(--sp-6);
+  padding-top: var(--sp-4);
   border-top: 1px solid var(--eu-line-light);
 }
 
 .blockLabel {
-  margin: 0 0 14px;
+  margin: 0 0 var(--sp-3);
   font-family: var(--eu-body);
   font-size: 13px;
   font-weight: 500;
@@ -616,24 +776,10 @@
   color: var(--fl-dim);
 }
 
-.closing {
-  margin: 0;
-  font-size: 16px;
-  line-height: 1.5;
-}
-
-.honest {
-  max-width: 46ch;
-  margin: 10px 0 0;
-  font-size: 14.5px;
-  line-height: 1.6;
-  color: var(--fl-quiet);
-}
-
 /* Three steps, as plain numbered text */
 .steps {
   display: grid;
-  gap: 10px;
+  gap: var(--sp-2);
   margin: 0;
   padding: 0;
   list-style: none;
@@ -642,7 +788,7 @@
 
 .steps li {
   position: relative;
-  padding-left: 28px;
+  padding-left: 30px;
   font-size: 16px;
   line-height: 1.5;
   counter-increment: step;
@@ -652,49 +798,106 @@
   content: counter(step);
   position: absolute;
   left: 0;
+  top: -1px;
   color: var(--fl-dim);
-  font-variant-numeric: tabular-nums;
+  font-family: var(--eu-display);
+  font-size: 19px;
+  font-variant-numeric: lining-nums;
 }
 
-/* The day: three rows of text and two hairlines. The current row in full cream. */
+/* The day: done, now, still to come. Rows of type and hairlines: no rail, no
+   dots. The current row is in full cream with its time a little larger, and
+   the hairline under it fills across the length of its phase. When the phase
+   changes, the rows change places by opacity and scale alone. */
 .day {
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-.day li {
+.dayRow {
+  position: relative;
   display: grid;
-  grid-template-columns: 60px minmax(0, 1fr);
-  gap: 12px;
-  padding: 13px 0;
-  border-top: 1px solid var(--eu-line-light);
-  font-size: 15.5px;
-  line-height: 1.45;
-  color: var(--fl-dim);
+  /* The last column is a fixed width, so "Now" turning into "Done" moves nothing */
+  grid-template-columns: 86px minmax(0, 1fr) 40px;
+  column-gap: var(--sp-2);
+  align-items: baseline;
+  padding: var(--sp-3) 0 calc(var(--sp-3) + 1px);
+  opacity: 0.6;
+  transition: opacity 0.8s ease;
 }
 
-.day li:first-child {
-  padding-top: 0;
-  border-top: 0;
+.dayRow:first-child {
+  padding-top: var(--sp-1);
 }
 
-.day li:last-child {
+.dayRow:last-child {
   padding-bottom: 0;
 }
 
-.day .dayNow {
-  color: var(--eu-cream);
+.day_now {
+  opacity: 1;
 }
 
 .dayTime {
+  font-family: var(--eu-display);
+  font-size: 26px;
+  line-height: 1;
+  font-variant-numeric: lining-nums;
+  transform-origin: left bottom;
+  transition: transform 0.8s var(--eu-ease);
+}
+
+.day_now .dayTime {
+  transform: scale(1.16);
+}
+
+.dayText {
+  display: grid;
+  gap: 2px;
+  font-size: 15.5px;
+  line-height: 1.4;
+}
+
+/* Quieter than the title in the current row; dimmed rows are already quiet */
+.dayDetail {
+  font-size: 14px;
+}
+
+.day_now .dayDetail {
+  color: var(--fl-quiet);
+}
+
+.dayTag {
+  font-size: 12.5px;
   font-weight: 500;
-  font-variant-numeric: tabular-nums lining-nums;
+  line-height: 1.4;
+  letter-spacing: 0.02em;
+  text-align: right;
+}
+
+.dayTrack {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  overflow: hidden;
+  background: var(--eu-line-light);
+}
+
+.dayFill {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: var(--eu-cream);
+  transform-origin: left center;
+  transition: transform 1s linear;
 }
 
 .terms {
   display: grid;
-  gap: 7px;
+  gap: var(--sp-1);
   margin: 0;
   padding: 0;
   list-style: none;
@@ -703,15 +906,25 @@
   color: var(--fl-dim);
 }
 
+/* A link in a line of small print still gets a full-size place to tap */
 .terms a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  margin: -12px 0;
   color: var(--eu-cream);
   text-decoration: underline;
   text-underline-offset: 4px;
 }
 
+.terms a:active {
+  opacity: 0.6;
+}
+
 /* ---------- Sticky bar (phones): the code and the checkout, always in reach ---------- */
 
-.bar {
+.bar,
+.toast {
   display: none;
 }
 
@@ -796,6 +1009,51 @@
     white-space: nowrap;
   }
 
+  /* "BF50 copied. Paste it in Discount code.", just above the bar, after a
+     tap on the bar's own checkout */
+  .toast {
+    position: fixed;
+    left: 12px;
+    right: 12px;
+    bottom: calc(88px + env(safe-area-inset-bottom, 0px));
+    z-index: 59;
+    display: block;
+    margin: 0;
+    padding: 12px 18px;
+    border: 1px solid var(--eu-line-light);
+    border-radius: 16px;
+    background: var(--eu-green);
+    color: var(--eu-cream);
+    font-size: 14px;
+    line-height: 1.4;
+    text-align: center;
+    opacity: 0;
+    transform: translateY(8px);
+    visibility: hidden;
+    pointer-events: none;
+    transition:
+      opacity 0.3s ease,
+      transform 0.3s ease,
+      visibility 0s linear 0.3s;
+  }
+
+  .toastShow {
+    opacity: 1;
+    transform: none;
+    visibility: visible;
+    transition:
+      opacity 0.3s ease,
+      transform 0.3s ease,
+      visibility 0s;
+  }
+}
+
+/* Hover is an extra for those who have it, never the only sign */
+@media (hover: hover) {
+  .copy:hover {
+    background: var(--eu-green);
+  }
+
   .barGo:hover {
     color: var(--eu-cream);
   }
@@ -826,20 +1084,30 @@
   }
 
   .column {
-    padding-top: calc(var(--eu-header-space) + 56px);
-    padding-bottom: 140px;
+    --sp-6: 64px;
+
+    padding-top: calc(var(--eu-header-space) + var(--sp-6));
   }
 
   .title {
     font-size: 96px;
   }
 
-  .card {
-    padding: 28px;
+  .card,
+  .pack {
+    padding: var(--sp-5);
   }
 
-  .block {
-    margin-top: 52px;
+  .packTitle {
+    font-size: 44px;
+  }
+
+  .priceRow b {
+    font-size: 80px;
+  }
+
+  .countSerif .countDigits {
+    font-size: 84px;
   }
 }
 
@@ -952,6 +1220,29 @@
   }
 }
 
+@keyframes beat {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.25;
+  }
+}
+
+@keyframes nudge {
+  0%,
+  100% {
+    transform: none;
+  }
+  35% {
+    transform: translateX(7px);
+  }
+  70% {
+    transform: translateX(-2px);
+  }
+}
+
 @keyframes shakeA {
   0%,
   100% {
@@ -1051,6 +1342,16 @@
     animation: rollOut 0.5s var(--eu-ease) both;
   }
 
+  /* The last ten minutes on the open page: the colons keep the beat */
+  .countSerif.countFinal .colon {
+    animation: beat 1s ease-in-out infinite;
+  }
+
+  /* After a copy, the checkout button's arrow moves once to draw the eye */
+  .checkoutNudge :global(.eu-btn__dot) {
+    animation: nudge 0.9s var(--eu-ease) 0.12s 1;
+  }
+
   .shake[data-shake='1'] {
     animation: shakeA 0.42s ease-out;
   }
@@ -1084,8 +1385,14 @@
   }
 
   .fieldCanvas,
+  .card,
+  .dayRow,
+  .dayTime,
+  .dayFill,
   .bar,
-  .barShow {
+  .barShow,
+  .toast,
+  .toastShow {
     transition: none;
   }
 }
