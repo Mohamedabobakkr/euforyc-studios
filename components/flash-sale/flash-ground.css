@@ -1,0 +1,10 @@
+/* /flash turns the lights down. The page paints its own dark ground; this
+   also darkens what shows around it: the gaps beside the footer's rounded
+   corners and the area a phone reveals when the page is pulled past its end.
+   Applies only while the /flash page is on screen. */
+html:has([data-flash-root]),
+html:has([data-flash-root]) body,
+html[data-flash-phase],
+html[data-flash-phase] body {
+  background-color: #10180a;
+}
