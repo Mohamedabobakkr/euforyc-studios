@@ -207,16 +207,20 @@ export function unlockCookieOptions() {
 }
 
 // ---------------------------------------------------------------------------
-// Rate limit: 5 attempts per 15 minutes per IP
+// Rate limit: 20 attempts per 15 minutes per IP
 // ---------------------------------------------------------------------------
 
+// 20, not the 5 of the Sips login: everyone on the studio's Wi-Fi shares one
+// IP address, and a few mistyped passwords in the room must not lock all of
+// them out for a quarter of an hour.
+//
 // Honest limits of this: the counter lives in the memory of one serverless
 // instance. Vercel can run several instances at once and starts fresh ones
 // whenever it likes, and each starts counting from zero. So this slows a
 // brute-force attempt down; it does not make one impossible. The real
 // protection is that the password is long, and that the code it guards stops
 // working after 20 uses in Momence whoever holds it.
-const MAX_ATTEMPTS = 5;
+const MAX_ATTEMPTS = 20;
 const WINDOW_MS = 15 * 60 * 1000;
 const MAX_TRACKED_IPS = 5000;
 

@@ -2,7 +2,10 @@
  * GET /api/flash/state
  * What the /flash page shows right now, decided by the server's clock.
  *
- * Always returns { phase, serverNow, nextPhaseAt, soldOutVip }.
+ * Always returns { phase, serverNow, nextPhaseAt, soldOutVip, ready }.
+ * `ready` is true only when all five required environment variables are
+ * present and valid. It is a bare yes or no, the same in every phase: it
+ * never names a variable and never carries a value.
  * Adds { code, checkoutUrl } only when the visitor is entitled to them:
  *  - public phase: the 40% code, for everyone
  *  - vip phase: the 50% code, only with a valid signed unlock cookie
@@ -27,10 +30,18 @@ export async function GET(request: NextRequest) {
   const phase = phaseAt(now);
   const soldOutVip = vipSoldOut();
 
-  const state: FlashState = { phase, serverNow: now, nextPhaseAt: nextPhaseAt(phase), soldOutVip };
+  // All five secrets, or null if any one is missing or unusable
+  const config = readFlashConfig();
+
+  const state: FlashState = {
+    phase,
+    serverNow: now,
+    nextPhaseAt: nextPhaseAt(phase),
+    soldOutVip,
+    ready: config !== null,
+  };
 
   // No configuration means no code, whatever the phase
-  const config = readFlashConfig();
   if (config) {
     if (phase === 'public') {
       state.code = config.codePublic;

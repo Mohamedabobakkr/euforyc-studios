@@ -6,7 +6,7 @@
  *
  * Security:
  *  - Only accepted in the vip phase, and only from the site's own pages
- *  - Rate limited: 5 attempts per 15 minutes per IP (see lib/flash-sale.ts
+ *  - Rate limited: 20 attempts per 15 minutes per IP (see lib/flash-sale.ts
  *    for what that does and does not protect against)
  *  - Body must be JSON, at most 1 KB; password at most 128 characters
  *  - Password compared in constant time

@@ -48,6 +48,12 @@ export interface FlashState {
   nextPhaseAt: number | null;
   /** True once the studio has marked the 20 password codes as used up */
   soldOutVip: boolean;
+  /**
+   * True only when the server has all five of the sale's secrets, each of
+   * them valid. A plain yes or no in every phase: it never says which one is
+   * missing, and it carries no value.
+   */
+  ready: boolean;
   code?: string;
   checkoutUrl?: string;
 }

@@ -25,6 +25,7 @@ import {
   flashNow,
   passwordMatches,
   readFlashConfig,
+  takeAttempt,
   unlockCookieName,
   unlockCookieOptions,
   verifyUnlockToken,
@@ -160,6 +161,27 @@ describe('phase calculation', () => {
 
 // ---------------------------------------------------------------------------
 
+// What the state route always returns, and all it returns unless a code is due
+const ALWAYS = ['nextPhaseAt', 'phase', 'ready', 'serverNow', 'soldOutVip'];
+
+// Each way one of the five required variables can be missing or unusable
+const BROKEN_CONFIGS: Array<[string, string | undefined]> = [
+  ['FLASH_VIP_PASSWORD', undefined],
+  ['FLASH_CODE_VIP', undefined],
+  ['FLASH_CODE_PUBLIC', ''],
+  ['FLASH_CHECKOUT_URL', undefined],
+  ['FLASH_CHECKOUT_URL', 'http://not-https.example.test'],
+  ['FLASH_SESSION_SECRET', undefined],
+  ['FLASH_SESSION_SECRET', 'too-short'],
+];
+
+/** The full fake configuration, with one variable removed or replaced */
+function breakConfig(name: string, value: string | undefined) {
+  Object.assign(env, FAKE);
+  if (value === undefined) delete env[name];
+  else env[name] = value;
+}
+
 describe('GET /api/flash/state', () => {
   it('returns no code and no checkout link in the teaser, even with a valid cookie', async () => {
     const cookie = validCookie();
@@ -168,7 +190,7 @@ describe('GET /api/flash/state', () => {
 
     expect(response.status).toBe(200);
     expect(body.phase).toBe('teaser');
-    expect(Object.keys(body).sort()).toEqual(['nextPhaseAt', 'phase', 'serverNow', 'soldOutVip']);
+    expect(Object.keys(body).sort()).toEqual(ALWAYS);
     expect(body.nextPhaseAt).toBe(FLASH_VIP_AT);
     SECRET_VALUES.forEach((secret) => expect(JSON.stringify(body)).not.toContain(secret));
   });
@@ -241,20 +263,9 @@ describe('GET /api/flash/state', () => {
   it('fails closed: with any secret missing or unusable, no code in any phase', async () => {
     jest.spyOn(console, 'error').mockImplementation(() => {});
     const cookie = validCookie();
-    const broken: Array<[string, string | undefined]> = [
-      ['FLASH_VIP_PASSWORD', undefined],
-      ['FLASH_CODE_VIP', undefined],
-      ['FLASH_CODE_PUBLIC', ''],
-      ['FLASH_CHECKOUT_URL', undefined],
-      ['FLASH_CHECKOUT_URL', 'http://not-https.example.test'],
-      ['FLASH_SESSION_SECRET', undefined],
-      ['FLASH_SESSION_SECRET', 'too-short'],
-    ];
 
-    for (const [name, value] of broken) {
-      Object.assign(env, FAKE);
-      if (value === undefined) delete env[name];
-      else env[name] = value;
+    for (const [name, value] of BROKEN_CONFIGS) {
+      breakConfig(name, value);
       expect(readFlashConfig()).toBeNull();
 
       for (const clock of [VIP, PUBLIC]) {
@@ -264,6 +275,49 @@ describe('GET /api/flash/state', () => {
         expect(body).not.toHaveProperty('code');
         expect(body).not.toHaveProperty('checkoutUrl');
       }
+    }
+  });
+
+  it('says ready: true in every phase when all five secrets are present and valid', async () => {
+    for (const clock of [TEASER, VIP, PUBLIC, ENDED]) {
+      setClock(clock);
+      const { body } = await readState();
+      expect(body.ready).toBe(true);
+    }
+
+    // The sold-out switch is optional: it does not make the sale "not ready"
+    env.FLASH_VIP_SOLD_OUT = 'true';
+    setClock(VIP);
+    expect((await readState()).body.ready).toBe(true);
+  });
+
+  it('says ready: false in every phase when any one is missing or invalid, and says nothing more', async () => {
+    jest.spyOn(console, 'error').mockImplementation(() => {});
+
+    for (const clock of [TEASER, VIP, PUBLIC, ENDED]) {
+      const answers: string[] = [];
+
+      for (const [name, value] of BROKEN_CONFIGS) {
+        breakConfig(name, value);
+        setClock(clock);
+        const { response, body } = await readState();
+
+        expect(response.status).toBe(200);
+        expect(body.ready).toBe(false);
+        // Nothing but the usual fields: no detail about what is wrong
+        expect(Object.keys(body).sort()).toEqual(ALWAYS);
+
+        const text = JSON.stringify(body);
+        expect(text).not.toContain('FLASH_');
+        expect(text).not.toContain(name);
+        SECRET_VALUES.forEach((secret) => expect(text).not.toContain(secret));
+        if (value) expect(text).not.toContain(value);
+
+        answers.push(JSON.stringify({ ...body, serverNow: 0 }));
+      }
+
+      // Whichever variable is the problem, the answer is word for word the same
+      expect(new Set(answers).size).toBe(1);
     }
   });
 
@@ -364,14 +418,14 @@ describe('POST /api/flash/unlock', () => {
     expect(noOrigin.body).toEqual(REFUSED);
   });
 
-  it('rate limits an IP after 5 attempts in 15 minutes', async () => {
+  it('rate limits an IP after 20 attempts in 15 minutes', async () => {
     const ip = freshIp();
-    for (let attempt = 1; attempt <= 5; attempt += 1) {
+    for (let attempt = 1; attempt <= 20; attempt += 1) {
       const { response } = await unlock('wrong', { ip });
       expect(response.status).toBe(401);
     }
 
-    // The sixth is turned away, even with the right password
+    // The twenty-first is turned away, even with the right password
     const { response, body } = await unlock(FAKE.FLASH_VIP_PASSWORD, { ip });
     expect(response.status).toBe(429);
     expect(body.ok).toBe(false);
@@ -383,15 +437,23 @@ describe('POST /api/flash/unlock', () => {
 
     // Someone else is not affected
     expect((await unlock(FAKE.FLASH_VIP_PASSWORD)).response.status).toBe(200);
-  });
+    // 20 refusals each wait out the fixed pause, so this test needs longer than Jest's 5 seconds
+  }, 30_000);
 
   it('clears the count after a correct password', async () => {
     const ip = freshIp();
-    for (let attempt = 1; attempt <= 4; attempt += 1) await unlock('wrong', { ip });
+    // 19 attempts already against this IP. Counted directly, which skips the pause.
+    for (let attempt = 1; attempt <= 19; attempt += 1) expect(takeAttempt(ip).limited).toBe(false);
+
+    // The 20th is the right password: accepted, and the count starts again
     expect((await unlock(FAKE.FLASH_VIP_PASSWORD, { ip })).response.status).toBe(200);
-    for (let attempt = 1; attempt <= 4; attempt += 1) {
-      expect((await unlock('wrong', { ip })).response.status).toBe(401);
-    }
+
+    // So a full 20 more are allowed, and only the 21st is over the limit
+    for (let attempt = 1; attempt <= 20; attempt += 1) expect(takeAttempt(ip).limited).toBe(false);
+    const over = takeAttempt(ip);
+    expect(over.limited).toBe(true);
+    expect(over.retryAfter).toBeGreaterThan(0);
+    expect((await unlock(FAKE.FLASH_VIP_PASSWORD, { ip })).response.status).toBe(429);
   });
 
   it('never logs the password, a code, the link or the secret', async () => {
