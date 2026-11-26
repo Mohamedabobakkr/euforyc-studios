@@ -180,7 +180,7 @@ export default function FlashOpen({
             </PillLink>
           </div>
           <p className={styles.packNote} aria-live="polite">
-            {confirmation ?? 'Your code is copied for you. Paste it in “Discount code” before you pay.'}
+            {confirmation ?? 'This copies your code. Paste it in “Discount code” before you pay.'}
           </p>
         </section>
 
