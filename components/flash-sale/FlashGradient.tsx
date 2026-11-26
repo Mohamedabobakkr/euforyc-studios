@@ -201,6 +201,8 @@ interface FlashGradientProps {
   paused: boolean;
   /** One still frame and no drift at all, for the closed page after midnight */
   still: boolean;
+  /** Not drawn at all: a visitor coming back to an open page, while the server is asked again */
+  hidden?: boolean;
 }
 
 interface LiveField {
@@ -211,7 +213,7 @@ interface LiveField {
 }
 
 const FlashGradient = forwardRef<FlashGradientHandle, FlashGradientProps>(function FlashGradient(
-  { mode, lightBelow, paused, still },
+  { mode, lightBelow, paused, still, hidden = false },
   ref
 ) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -439,7 +441,11 @@ const FlashGradient = forwardRef<FlashGradientHandle, FlashGradientProps>(functi
   }, [light, paused, still]);
 
   return (
-    <div className={`${styles.field} ${mode === 'page' ? styles.fieldPage : styles.fieldCover}`} aria-hidden="true">
+    <div
+      className={`${styles.field} ${mode === 'page' ? styles.fieldPage : styles.fieldCover} ${hidden ? styles.fieldHidden : ''}`}
+      data-flash-field={mode}
+      aria-hidden="true"
+    >
       <canvas ref={canvasRef} className={styles.fieldCanvas} />
     </div>
   );

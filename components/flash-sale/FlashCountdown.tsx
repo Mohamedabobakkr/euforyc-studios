@@ -6,12 +6,14 @@ import styles from './flash.module.css';
 
 const PLACEHOLDER = '-';
 /** The last ten minutes before a change */
-const FINAL_SECONDS = 10 * 60;
+export const FINAL_SECONDS = 10 * 60;
 
 /**
- * One digit. When it changes, the old figure rolls out below and the new one
- * rolls in from above. Only `transform` moves, and the cell never changes
- * size, so nothing around it shifts.
+ * One digit, in its own cell of fixed width. Playfair's figures are not all
+ * as wide as each other (a 1 is narrower than an 8), so the cell is what
+ * keeps the time from moving as it ticks. When the digit changes, the old
+ * figure rolls out below and the new one rolls in from above: only
+ * `transform` moves.
  */
 function Digit({ value }: { value: string }) {
   // The figure on show and the one it replaced
@@ -68,23 +70,33 @@ function worthSaying(seconds: number): boolean {
   return seconds === 60 || seconds === 30 || seconds === 10;
 }
 
+const UNITS = {
+  short: ['hrs', 'min', 'sec'],
+  long: ['hours', 'minutes', 'seconds'],
+};
+
 /**
  * The countdown to the next moment of the day: 12:00, then 18:00, then
  * midnight. `secondsLeft` is already corrected by the server's clock.
  *
- * "large" is the one on the cover, with rolling digits. "small" is a line of
- * figures inside a sentence. Both use tabular figures in fixed cells, so the
- * time never changes width.
+ * "large" has rolling digits in fixed cells: in Inter on the cover ("sans"),
+ * in Playfair Display on the open page ("serif"). "small" is a line of
+ * figures inside a sentence. In the last ten minutes the large one tightens:
+ * heavier on the cover, italic with beating colons on the open page.
  */
 export default function FlashCountdown({
   secondsLeft,
   until,
   size = 'large',
+  face = 'sans',
+  units = 'short',
 }: {
   secondsLeft: number | null;
   /** For screen readers: "until the page opens for everyone" */
   until: string;
   size?: 'large' | 'small';
+  face?: 'sans' | 'serif';
+  units?: 'short' | 'long';
 }) {
   const hours = secondsLeft === null ? null : Math.min(99, Math.floor(secondsLeft / 3600));
   const minutes = secondsLeft === null ? null : Math.floor((secondsLeft % 3600) / 60);
@@ -110,15 +122,17 @@ export default function FlashCountdown({
     );
   }
 
+  const [hoursUnit, minutesUnit, secondsUnit] = UNITS[units];
+
   return (
-    <div className={`${styles.count} ${final ? styles.countFinal : ''}`}>
+    <div className={`${face === 'serif' ? styles.countSerif : ''} ${final ? styles.countFinal : ''}`}>
       <div role="timer" aria-label={`Time ${until}`}>
         <span className={styles.countDigits} aria-hidden="true">
-          <Pair value={hours} unit="hrs" />
+          <Pair value={hours} unit={hoursUnit} />
           <span className={styles.colon}>:</span>
-          <Pair value={minutes} unit="min" />
+          <Pair value={minutes} unit={minutesUnit} />
           <span className={styles.colon}>:</span>
-          <Pair value={seconds} unit="sec" />
+          <Pair value={seconds} unit={secondsUnit} />
         </span>
       </div>
       <p className="eu-sr-only" aria-live="polite">

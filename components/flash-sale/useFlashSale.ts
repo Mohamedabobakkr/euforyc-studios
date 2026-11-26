@@ -196,10 +196,17 @@ export function useFlashSale() {
     open,
     soldOutVip: state?.soldOutVip ?? false,
     secondsLeft,
+    /** The server's clock, in milliseconds, to the second. Null while the page is being built. */
+    now,
     /** The countdown is at zero and the next phase is being fetched */
     turning,
     /** The server cannot be reached and nothing has been loaded yet */
     unreachable: state === null && failures > 1,
+    /**
+     * The server has stopped answering, three times running. The page keeps
+     * the last state it knew and keeps trying; this is only for one quiet line.
+     */
+    offline: state !== null && failures >= 3,
     justUnlocked,
     unlock,
   };

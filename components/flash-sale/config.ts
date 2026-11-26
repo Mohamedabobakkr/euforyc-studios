@@ -101,16 +101,35 @@ export const FLASH_USUAL_PRICE = pounds(FLASH_PACK_PRICE);
 /** "£28": a class at the pack's usual price */
 export const FLASH_USUAL_PER_CLASS = pounds(FLASH_PACK_PRICE / FLASH_PACK_CLASSES);
 
+/**
+ * The pack as the open page shows it, before the checkout button: what it is
+ * called and what it covers. Plain words kept here, not fetched from Momence.
+ * Class names follow the site's own (lib/classes.ts): "Sculpt Mat Pilates"
+ * and "Belly Dance", never a bare "Mat Pilates" or "Dance".
+ */
+export const FLASH_PACK = {
+  label: 'Black Friday Flash',
+  title: `${FLASH_PACK_CLASSES} Classes`,
+  lines: [
+    'Any group class: Reformer, Hot Pilates, Red Light, Sculpt Mat Pilates, Barre or Belly Dance',
+    'Valid for 30 days from your first class',
+    'One per person',
+  ],
+};
+
 // ---------------------------------------------------------------------------
-// The three moments on the timeline
+// The three moments of the day
 // ---------------------------------------------------------------------------
 
 export interface FlashStep {
-  /** The phase during which this step is the lit one */
+  /** The phase during which this step is the current one */
   phase: Exclude<FlashPhase, 'teaser'>;
   time: string;
   title: string;
   detail: string;
+  /** When this step begins, and when the next takes over (null for the last) */
+  startsAt: number;
+  endsAt: number | null;
 }
 
 export const FLASH_STEPS: FlashStep[] = [
@@ -119,9 +138,18 @@ export const FLASH_STEPS: FlashStep[] = [
     time: '12:00',
     title: 'Password holders',
     detail: `${FLASH_VIP_PERCENT}% off, ${FLASH_VIP_LIMIT} only`,
+    startsAt: FLASH_VIP_AT,
+    endsAt: FLASH_PUBLIC_AT,
   },
-  { phase: 'public', time: '18:00', title: 'Everyone', detail: `${FLASH_PUBLIC_PERCENT}% off` },
-  { phase: 'ended', time: '23:59', title: 'Gone', detail: 'The codes expire' },
+  {
+    phase: 'public',
+    time: '18:00',
+    title: 'Everyone',
+    detail: `${FLASH_PUBLIC_PERCENT}% off`,
+    startsAt: FLASH_PUBLIC_AT,
+    endsAt: FLASH_ENDS_AT,
+  },
+  { phase: 'ended', time: '23:59', title: 'Gone', detail: 'The codes expire', startsAt: FLASH_ENDS_AT, endsAt: null },
 ];
 
 // ---------------------------------------------------------------------------
@@ -164,12 +192,23 @@ export const INTRO_ATTR = 'data-flash-intro';
 export const INTRO_SEEN_KEY = 'euforyc_flash_intro';
 
 /**
- * A one-line script that runs before the page is drawn and sets the attribute
- * above. The landing sequence (the wordmark rising, the line, the headline)
- * plays once per browser session and never after the sale is over; if the
- * browser will not let us remember (storage blocked), it simply plays.
+ * Set on <html> ("open") when the page was open earlier in this browser
+ * session: someone coming back from Momence, or refreshing. The cover is then
+ * not drawn while the server is asked again, so there is no flash of it.
+ * The session remembers only that the page was open, never the code: the
+ * page stays empty until the server hands the code over again, and the cover
+ * returns if it does not.
+ */
+export const RETURN_ATTR = 'data-flash-return';
+export const OPEN_SEEN_KEY = 'euforyc_flash_open';
+
+/**
+ * A one-line script that runs before the page is drawn and sets the two
+ * attributes above. The landing sequence (the wordmark rising, the line, the
+ * headline) plays once per browser session and never after the sale is over;
+ * if the browser will not let us remember (storage blocked), it simply plays.
  *
- * It decides how the cover arrives, nothing else. Whether the cover OPENS is
+ * It decides how the page arrives, nothing else. Whether the cover OPENS is
  * decided by the server alone (components/flash-sale/view.ts).
  */
-export const BEFORE_PAINT = `(function(){var m='play';try{if(Date.now()>=${FLASH_ENDS_AT}||sessionStorage.getItem('${INTRO_SEEN_KEY}')){m='skip'}else{sessionStorage.setItem('${INTRO_SEEN_KEY}','1')}}catch(e){}document.documentElement.setAttribute('${INTRO_ATTR}',m)})()`;
+export const BEFORE_PAINT = `(function(){var d=document.documentElement,over=Date.now()>=${FLASH_ENDS_AT},m='play';try{if(over||sessionStorage.getItem('${INTRO_SEEN_KEY}')){m='skip'}else{sessionStorage.setItem('${INTRO_SEEN_KEY}','1')}if(!over&&sessionStorage.getItem('${OPEN_SEEN_KEY}')){d.setAttribute('${RETURN_ATTR}','open')}}catch(e){}d.setAttribute('${INTRO_ATTR}',m)})()`;
